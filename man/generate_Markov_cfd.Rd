@@ -28,11 +28,15 @@ Generate Markov Trajectories
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 
-QJK <- matrix(1/3, nrow = 4, ncol = 4) - diag(rep(1/3,4))
+K <- 4
+QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)
-d_JK = generate_Markov_cfd (n = 100, K = 4, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+d_JK = generate_Markov_cfd (n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
 head(d_JK)
 
 
+}
+\author{
+Cristian Preda
 }
