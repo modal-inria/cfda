@@ -1,3 +1,5 @@
+#' @importFrom stats rexp
+#' 
 #' @title cfda
 #' @docType package
 #' @aliases cfda-package
