@@ -1,0 +1,33 @@
+language: r
+sudo: true
+cache: packages
+cran: http://cran.rstudio.com
+
+os:
+  - linux
+  - osx
+  
+r:
+  - oldrel
+  - release
+  - devel
+
+matrix:
+  exclude:
+  - r: devel
+    os: osx
+   
+
+r_packages:
+  - devtools
+  - covr
+  - testthat
+
+script:
+  - R CMD build .
+  - R CMD check *.tar.gz --as-cran
+  
+after_success:
+  - Rscript -e 'devtools::install();devtools::test()'
+  - Rscript -e 'covr::codecov()'
+
