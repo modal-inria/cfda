@@ -1,4 +1,6 @@
+#' @import msm
 #' @importFrom stats rexp
+#' 
 #' 
 #' @title cfda
 #' @docType package
