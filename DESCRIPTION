@@ -8,6 +8,7 @@ Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@i
 Copyright: Inria - Université de Lille
 Description: To DO. To Do.
 License: GPL (>= 2)
+License: AGPL-3
 Suggests: testthat
 Encoding: UTF-8
 RoxygenNote: 6.1.1
