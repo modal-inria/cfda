@@ -25,11 +25,33 @@
 estimation_Markov <- function(data_msm)
 {
   aux <- statetable.msm(data_msm$state, data_msm$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
-  aux1 <- aux
-  
+
   # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
   # add row for the missing state
-  # TODO tester dans le cas où il y a plusieurs manquants
+  aux1 <- completeStatetable(aux)
+
+  
+  matA <- crudeinits.msm(data_msm$state ~ data_msm$time, subject = data_msm$id, 
+                         qmatrix = matrix(as.numeric(aux1 > 0), ncol = length(unique(data_msm$state))))
+  
+  # estimation of the time spent in each state
+  lambda_est <- -diag(matA) 
+  
+  # estimation of the transition matrix 
+  Q_est <- diag(1/lambda_est)%*%(matA + diag(lambda_est))
+  colnames(Q_est) = rownames(Q_est) = colnames(aux1)
+
+  return(list(Q = Q_est, lambda = lambda_est))  
+}
+
+
+# identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
+# add row (containing 0s) for the missing state
+#
+# @param aux output of statetable.msm
+completeStatetable <- function(aux)
+{
+  aux1 <- aux
   for(i in which(!as.numeric(colnames(aux))%in%as.numeric(row.names(aux))))
   {
     if(i == 1) 
@@ -46,18 +68,8 @@ estimation_Markov <- function(data_msm)
     }
   }
   
-  colnames(aux1) = levels(as.factor(data_msm$state))[table(data_msm$state)>0]
-
+  rownames(aux1) = colnames(aux)
   
-  matA <- crudeinits.msm(data_msm$state ~ data_msm$time, subject = data_msm$id, 
-                         qmatrix = matrix(as.numeric(aux1 > 0), ncol = length(unique(data_msm$state))))
-  
-  # estimation of the time spent in each state
-  lambda_est <- -diag(matA) 
-  
-  # estimation of the transition matrix 
-  Q_est <- diag(1/lambda_est)%*%(matA + diag(lambda_est))
-  colnames(Q_est) = rownames(Q_est) = colnames(aux1)
-
-  return(list(Q = Q_est, lambda = lambda_est))  
+  return(aux1)
 }
+

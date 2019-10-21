@@ -25,15 +25,14 @@
 generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1)
 {
   d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
+  
   for(i in 1:n)
   {
-    #tirage de l'etat initial
-    etat_initial <- sample(1:K, 1, prob = pi_0) 
-    e <- etat_initial
-    t = 0
+    e <- sample(1:K, 1, prob = pi_0) 
+    t <- 0
     while(t <= Tmax)
     {
-      d = rbind(d, data.frame(id = i, time=t, state = e))
+      d = rbind(d, data.frame(id = i, time = t, state = e))
       sej = rexp(1, lambda[e]) 
       t = t + sej
       e = sample(1:K, 1, prob = Q[e,])
