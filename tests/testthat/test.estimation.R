@@ -1,5 +1,6 @@
 context("Markov estimation")
 
+set.seed(42)
 
 test_that("completeStatetable does not change a square statetable", {
   
@@ -70,6 +71,6 @@ test_that("estimation_Markov estimates well", {
   
   mark <- estimation_Markov(d_JK)
   
-  expect_lte(sqrt(mean((mark$lambda-lambda_QJK)^2)), 0.05)
+  expect_lte(sqrt(mean((mark$lambda-lambda_QJK)^2)), 0.06)
   expect_lte(sqrt(mean((mark$Q-QJK)^2)), 0.02)
 })
