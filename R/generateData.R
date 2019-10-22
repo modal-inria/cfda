@@ -5,7 +5,7 @@
 #' @param Q matrix which indicates the allowed transitions in the continuous-time Markov chain, and optionally also the initial values of those transitions
 #' @param lambda time spent in each state
 #' @param pi_0 initial distribution of states
-#' @param Tmax length of trajectories
+#' @param Tmax maximal duration of trajectories
 #' 
 #' @return 
 #' a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
