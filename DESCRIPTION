@@ -10,6 +10,8 @@ Description: To DO. To Do.
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
 Imports: msm, diagram
-Suggests: testthat
+Suggests: 
+    testthat,
+    covr
 Encoding: UTF-8
 RoxygenNote: 6.1.1
