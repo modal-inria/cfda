@@ -2,6 +2,7 @@
 
 export(estimation_Markov)
 export(generate_Markov_cfd)
+export(msm2msmTmax)
 export(plot_Markov)
 import(diagram)
 import(msm)
