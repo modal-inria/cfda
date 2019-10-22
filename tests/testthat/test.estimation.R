@@ -74,3 +74,14 @@ test_that("estimation_Markov estimates well", {
   expect_lte(sqrt(mean((mark$lambda-lambda_QJK)^2)), 0.06)
   expect_lte(sqrt(mean((mark$Q-QJK)^2)), 0.02)
 })
+
+
+test_that("plot_Markov does not produce warnings", {
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K, dimnames = list(1:4, 1:4)) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+
+  dat <- list(Q = QJK, lambda = lambda_QJK)
+  
+  expect_warning(plot_Markov(dat), regexp = NA)
+})

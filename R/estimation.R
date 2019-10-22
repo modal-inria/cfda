@@ -6,7 +6,6 @@
 #' @return list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state
 #'
 #'
-#'
 #' @examples
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
 #' K <- 4
@@ -73,3 +72,33 @@ completeStatetable <- function(aux)
   return(aux1)
 }
 
+
+#' Plot the transition graph
+#' 
+#' Plot the transition graph between the different states. A node corresponds to a state with the mean 
+#' time spent in this state. Each arrow represents the probability of transtion between states.
+#'
+#' @param res_Markov output of \code{\link{estimation_Markov}} function
+#'
+#' @examples
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK = generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' # estimation  
+#' mark <- estimation_Markov(d_JK)
+#' 
+#' plot_Markov(mark)
+#'
+#' @author Cristian Preda
+#' 
+#' @export
+plot_Markov <- function(res_Markov)
+{ 
+  plotmat(t(round(res_Markov$Q, 2)), main = "The transition graph", box.prop = 0.3, box.type = "circle", 
+          box.col = "yellow", relsize = 0.9, arr.length = 0.2, lcol = "black", dtext = 0.3, arr.pos = 0.5,
+          name = paste(colnames(res_Markov$Q), rep("(", ncol(res_Markov$Q)), round(1/res_Markov$lambda, 2),
+                     rep(")", ncol(res_Markov$Q)), sep = ""))
+}

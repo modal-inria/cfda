@@ -2,5 +2,7 @@
 
 export(estimation_Markov)
 export(generate_Markov_cfd)
+export(plot_Markov)
+import(diagram)
 import(msm)
 importFrom(stats,rexp)

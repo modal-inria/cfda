@@ -1,4 +1,5 @@
 #' @import msm
+#' @import diagram
 #' @importFrom stats rexp
 #' 
 #' 
