@@ -50,3 +50,43 @@ compute_Time_Spent_intern <- function(data_msm, K)
   return(aux)
 }          
 
+
+
+
+#' Extract the state of each individual at a given time
+#' 
+#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param t real
+#' 
+#' @return a vector containing the state of each individual at time t 
+#' 
+#' 
+#' @examples
+#' @examples
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' get_state(d_JK, 6)
+#' 
+#' @author Cristian Preda
+#' 
+#' @export
+get_state <- function(data_msm, t) 
+{
+  out <- by(data_msm, data_msm$id, function(x){id_get_state(x, t)})
+  out2 <- as.vector(out)
+  names(out2) = names(out)
+  
+  return(out2)
+}
+
+
+# x un individu de type msm et t un temps
+id_get_state <- function(x, t) 
+{
+  aux <- max(which(x[,"time"]  <= t))
+  return(x[aux,"state"])
+}
