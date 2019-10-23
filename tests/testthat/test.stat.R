@@ -33,3 +33,23 @@ test_that("compute_Time_Spent works", {
   expect_equal(out, expectedOut)
 })
 
+
+test_that("id_get_state returns the right state", {
+  dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))
+
+  out <- id_get_state(dat, 3) 
+    
+  expect_equal(out, 3)
+})
+
+
+test_that("get_state returns the right state", {
+  dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
+  
+  out <- get_state(dat, 3) 
+  
+  expect_equivalent(out, c(3, 2))
+})
+
+
+
