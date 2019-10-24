@@ -132,3 +132,33 @@ estimate_pt <- function(data_msm)
   }
   return(list(pt = res, t = t_jumps))
 }
+
+
+#' Plot probabilities
+#'
+#' Plot the probabilities of each state at each given time
+#'
+#' @param pt output of \code{\link{estimate_pt}}
+#' @param ... extra \code{plot} parameters
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#' 
+#' pt <- estimate_pt(d_JK2)
+#' 
+#' plot_pt(pt)
+#' 
+#' @author Cristian Preda
+#' 
+#' @export
+plot_pt <- function(pt, ...)
+{
+  matplot(pt$t, t(pt$pt), type = "l", lty = 1, xlab = "Time", ylab = "p(t)", main = "P(X(t) = x)", ...)
+  legend("topright", paste0(1:nrow(pt$pt)), col = 1:nrow(pt$pt), lty = 1, title = "state (x)")  
+}

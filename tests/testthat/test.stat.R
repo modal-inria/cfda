@@ -77,3 +77,18 @@ test_that("estimate_pt works with different t", {
   expect_equal(out$pt, matrix(c(1/2, 1/2, 0, 0, 1/2, 1/2, 0, 0, 1, 1/2, 1/2, 0, 1, 0, 0, 1/2, 1/2, 0, 1/2, 1/2, 0, 1/2, 1/2, 0), nrow = 3, dimnames = list(1:3, out$t)))
 })
 
+
+test_that("plot_pt does not produce warnings", {
+  # simulate the Jukes Cantor models of nucleotides replacement.
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+
+  d_JK2 <- msm2msmTmax(d_JK, 10)
+
+  pt <- estimate_pt(d_JK2)
+
+  expect_warning(plot_pt(pt), regexp = NA)
+})
+
