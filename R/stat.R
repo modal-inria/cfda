@@ -62,7 +62,6 @@ compute_Time_Spent_intern <- function(data_msm, K)
 #' 
 #' 
 #' @examples
-#' @examples
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -89,4 +88,47 @@ id_get_state <- function(x, t)
 {
   aux <- max(which(x[,"time"]  <= t))
   return(x[aux,"state"])
+}
+
+
+
+#' Estimate probabilities to be in each state
+#' 
+#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same Tmax (use \code{\link{msm2msmTmax}}).
+#' 
+#' @return A list of two elements:
+#' \itemize{
+#'   \item{t: vector of time}
+#'   \item{pt: a matrix with K (= number of states) rows and with \code{length(t)} columns containing the probabilities to be in each state at each time.}
+#' }
+#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#' 
+#' estimate_pt(d_JK2)
+#' 
+#' @author Cristian Preda
+#' 
+#' @export   
+estimate_pt <- function(data_msm)
+{
+  t_jumps <- sort(unique(data_msm$time)) 
+  n <- length(unique(data_msm$id))
+  states <- unique(data_msm[,"state"])  
+  res <- matrix(0, nrow = length(states), ncol = length(t_jumps), dimnames = list(1:length(states), round(t_jumps, 3)))
+  
+  for(i in seq_along(t_jumps))
+  {
+    aux <- as.vector(by(data_msm, data_msm$id, function(x){id_get_state(x, t_jumps[i])})) 
+    # donne pour chaque temps, le nb d'individus dans chacun des état
+    res[,i] = tabulate(aux, nbins = length(states))/n
+  }
+  return(list(pt = res, t = t_jumps))
 }

@@ -52,4 +52,28 @@ test_that("get_state returns the right state", {
 })
 
 
+test_that("estimate_pt works with same t", {
+  dat <- data.frame(id = rep(1:2, each = 6), time = rep(0:5, 2), state = c(1, 3, 2, 1, 1, 1, 
+                                                                           2, 3, 1, 2, 3, 1))
+  out <- estimate_pt(dat) 
+  
+  expect_length(out, 2)
+  expect_equal(names(out), c("pt", "t"))
+  expect_equal(out$t, 0:5)
+  expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
+  expect_equal(out$pt, matrix(c(1/2, 1/2, 0, 0, 0, 1, 1/2, 1/2, 0, 1/2, 1/2, 0, 1/2, 0, 1/2, 1, 0, 0), nrow = 3, dimnames = list(1:3, 0:5)))
+})
+
+
+test_that("estimate_pt works with different t", {
+  dat <- data.frame(id = rep(1:2, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1, 3, 2, 1, 1, 1, 
+                                                                                         2, 3, 1, 2, 2))
+  out <- estimate_pt(dat) 
+  
+  expect_length(out, 2)
+  expect_equal(names(out), c("pt", "t"))
+  expect_equal(out$t, c(0, 1, 1.5, 2, 3, 3.5, 4, 5))
+  expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
+  expect_equal(out$pt, matrix(c(1/2, 1/2, 0, 0, 1/2, 1/2, 0, 0, 1, 1/2, 1/2, 0, 1, 0, 0, 1/2, 1/2, 0, 1/2, 1/2, 0, 1/2, 1/2, 0), nrow = 3, dimnames = list(1:3, out$t)))
+})
 
