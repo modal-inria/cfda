@@ -4,12 +4,10 @@
 \alias{plot_pt}
 \title{Plot probabilities}
 \usage{
-plot_pt(pt, ...)
+plot_pt(pt)
 }
 \arguments{
 \item{pt}{output of \code{\link{estimate_pt}}}
-
-\item{...}{extra \code{plot} parameters}
 }
 \description{
 Plot the probabilities of each state at each given time

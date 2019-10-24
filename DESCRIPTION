@@ -9,7 +9,7 @@ Copyright: Inria - Université de Lille
 Description: To DO. To Do.
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
-Imports: msm, diagram
+Imports: msm, diagram, ggplot2
 Suggests: 
     testthat,
     covr

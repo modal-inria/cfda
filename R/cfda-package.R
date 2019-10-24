@@ -1,7 +1,7 @@
 #' @import msm
 #' @import diagram
+#' @import ggplot2
 #' @importFrom stats rexp
-#' @importFrom graphics legend matplot
 #' 
 #' @title cfda
 #' @docType package

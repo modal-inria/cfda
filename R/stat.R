@@ -139,7 +139,6 @@ estimate_pt <- function(data_msm)
 #' Plot the probabilities of each state at each given time
 #'
 #' @param pt output of \code{\link{estimate_pt}}
-#' @param ... extra \code{plot} parameters
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -157,8 +156,11 @@ estimate_pt <- function(data_msm)
 #' @author Cristian Preda
 #' 
 #' @export
-plot_pt <- function(pt, ...)
+plot_pt <- function(pt)
 {
-  matplot(pt$t, t(pt$pt), type = "l", lty = 1, xlab = "Time", ylab = "p(t)", main = "P(X(t) = x)", ...)
-  legend("topright", paste0(1:nrow(pt$pt)), col = 1:nrow(pt$pt), lty = 1, title = "state (x)")  
+  plot_data <- data.frame(state = as.factor(rep(1:nrow(pt$pt), each = ncol(pt$pt))), proba = as.vector(t(pt$pt)), time = rep(pt$t, nrow(pt$pt)))
+  
+  ggplot(plot_data, aes_string(x = "time", y = "proba", group = "state", colour = "state")) +
+    geom_point() + geom_line() + ylim(0, 1) +
+    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
 }
