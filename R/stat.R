@@ -32,7 +32,7 @@ compute_Time_Spent <- function(data_msm, K)
   
   return(out)
 }
-  
+
 
 # combien de temps passe un id dans [0,T] dans chaque etat, x vient d'un msmT
 compute_Time_Spent_intern <- function(data_msm, K)
@@ -139,6 +139,7 @@ estimate_pt <- function(data_msm)
 #' Plot the probabilities of each state at each given time
 #'
 #' @param pt output of \code{\link{estimate_pt}}
+#' @param ribbon if TRUE, use ribbon to plot probabilities 
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -151,16 +152,67 @@ estimate_pt <- function(data_msm)
 #' 
 #' pt <- estimate_pt(d_JK2)
 #' 
-#' plot_pt(pt)
+#' plot_pt(pt, ribbon = TRUE)
 #' 
-#' @author Cristian Preda
+#' @author Quentin Grimonprez
 #' 
 #' @export
-plot_pt <- function(pt)
+plot_pt <- function(pt, ribbon = FALSE)
 {
-  plot_data <- data.frame(state = as.factor(rep(1:nrow(pt$pt), each = ncol(pt$pt))), proba = as.vector(t(pt$pt)), time = rep(pt$t, nrow(pt$pt)))
+  if(ribbon)
+    p <- plot_pt_classic(pt)
+  else
+    p <- plot_pt_ribbon(pt)
   
-  ggplot(plot_data, aes_string(x = "time", y = "proba", group = "state", colour = "state")) +
+  return(p)
+}
+
+
+# plot line
+# @author Quentin Grimonprez
+plot_pt_classic <- function(pt)
+{
+  plot_data <- data.frame(state = as.factor(rep(1:nrow(pt$pt), each = ncol(pt$pt))), 
+                          proba = as.vector(t(pt$pt)), 
+                          time = rep(pt$t, nrow(pt$pt)))
+  
+  p <- ggplot(plot_data, aes_string(x = "time", y = "proba", group = "state", colour = "state")) +
     geom_point() + geom_line() + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
+  
+  return(p)
 }
+
+
+
+# plot probabilities using ribbon
+# @author Quentin Grimonprez
+plot_pt_ribbon <- function(pt, col = NULL)
+{
+  plot_data <- as.data.frame(t(apply(pt$pt, 2, cumsum)))
+  nState <- ncol(plot_data)
+  names(plot_data) = paste0("state", names(plot_data))
+  plot_data$time = pt$t
+  plot_data$state0 = rep(0, nrow(plot_data))
+  
+  if(is.null(col))
+    col <- brewer.pal(9, "Set1")
+  
+  p <- ggplot(plot_data)
+  for(i in 1:nState)
+    p = p + geom_ribbon(aes_string(ymin = paste0("state", i-1), 
+                                   ymax = paste0("state", i), x="time"), 
+                        fill = col[i], alpha = 0.8)
+  
+  if(nState > 1)
+  {
+    for(i in 1:(nState-1))
+      p = p + geom_line(aes_string(x = "time", y = paste0("state", i)))
+  }
+  
+  p = p  + ylim(0, 1) +
+    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
+  
+  return(p)
+}
+

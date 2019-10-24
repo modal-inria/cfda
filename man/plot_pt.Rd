@@ -4,10 +4,12 @@
 \alias{plot_pt}
 \title{Plot probabilities}
 \usage{
-plot_pt(pt)
+plot_pt(pt, ribbon = FALSE)
 }
 \arguments{
 \item{pt}{output of \code{\link{estimate_pt}}}
+
+\item{ribbon}{if TRUE, use ribbon to plot probabilities}
 }
 \description{
 Plot the probabilities of each state at each given time
@@ -23,9 +25,9 @@ d_JK2 <- msm2msmTmax(d_JK, 10)
 
 pt <- estimate_pt(d_JK2)
 
-plot_pt(pt)
+plot_pt(pt, ribbon = TRUE)
 
 }
 \author{
-Cristian Preda
+Quentin Grimonprez
 }

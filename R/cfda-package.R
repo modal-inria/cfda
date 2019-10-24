@@ -1,6 +1,7 @@
 #' @import msm
 #' @import diagram
 #' @import ggplot2
+#' @import RColorBrewer
 #' @importFrom stats rexp
 #' 
 #' @title cfda
