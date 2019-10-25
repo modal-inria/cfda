@@ -1,7 +1,8 @@
-#' @import msm
 #' @import diagram
+#' @import fda
 #' @import ggplot2
-#' @importFrom stats rexp
+#' @import msm
+#' @importFrom stats integrate rexp
 #' 
 #' @title cfda
 #' @docType package

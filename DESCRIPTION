@@ -10,6 +10,7 @@ Description: To DO. To Do.
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
 Imports: msm, diagram, ggplot2
+Depends: fda
 Suggests: 
     testthat,
     covr
