@@ -2,14 +2,14 @@ Package: cfda
 Type: Package
 Title: Categorical Functional Data Analysis
 Version: 0.1
-Date: 2019-10-24
+Date: 2019-10-25
 Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@inria.fr"),
              person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"))
 Copyright: Inria - Université de Lille
 Description: To DO. To Do.
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
-Imports: msm, diagram, ggplot2, RColorBrewer
+Imports: msm, diagram, ggplot2
 Suggests: 
     testthat,
     covr

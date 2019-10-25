@@ -187,7 +187,7 @@ plot_pt_classic <- function(pt)
 
 # plot probabilities using ribbon
 # @author Quentin Grimonprez
-plot_pt_ribbon <- function(pt, col = NULL)
+plot_pt_ribbon <- function(pt)
 {
   plot_data <- as.data.frame(t(apply(pt$pt, 2, cumsum)))
   nState <- ncol(plot_data)
@@ -195,23 +195,14 @@ plot_pt_ribbon <- function(pt, col = NULL)
   plot_data$time = pt$t
   plot_data$state0 = rep(0, nrow(plot_data))
   
-  if(is.null(col))
-    col <- brewer.pal(9, "Set1")
-  
   p <- ggplot(plot_data)
   for(i in 1:nState)
     p = p + geom_ribbon(aes_string(ymin = paste0("state", i-1), 
-                                   ymax = paste0("state", i), x = "time"), 
-                        fill = col[i], alpha = 0.8)
-  
-  if(nState > 1)
-  {
-    for(i in 1:(nState-1))
-      p = p + geom_line(aes_string(x = "time", y = paste0("state", i)))
-  }
+                                   ymax = paste0("state", i), x = "time", fill = factor(i, levels = 1:nState)), colour = "black", 
+                         alpha = 0.8)
   
   p = p  + ylim(0, 1) +
-    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
+    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)", fill = "state")
   
   return(p)
 }
