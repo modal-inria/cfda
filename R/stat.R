@@ -160,9 +160,9 @@ estimate_pt <- function(data_msm)
 plot_pt <- function(pt, ribbon = FALSE)
 {
   if(ribbon)
-    p <- plot_pt_classic(pt)
-  else
     p <- plot_pt_ribbon(pt)
+  else
+    p <- plot_pt_classic(pt)
   
   return(p)
 }
@@ -201,7 +201,7 @@ plot_pt_ribbon <- function(pt, col = NULL)
   p <- ggplot(plot_data)
   for(i in 1:nState)
     p = p + geom_ribbon(aes_string(ymin = paste0("state", i-1), 
-                                   ymax = paste0("state", i), x="time"), 
+                                   ymax = paste0("state", i), x = "time"), 
                         fill = col[i], alpha = 0.8)
   
   if(nState > 1)
