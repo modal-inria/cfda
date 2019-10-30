@@ -3,7 +3,7 @@
 #' @import ggplot2
 #' @import msm
 #' @import mgcv
-#' @importFrom stats cov integrate rexp
+#' @importFrom stats cov integrate rexp runif
 #' 
 #' @title cfda
 #' @docType package

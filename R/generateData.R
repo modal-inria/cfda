@@ -41,3 +41,31 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
   
   return(d)
 }
+
+#' Generate data following a 2 states model
+#'
+#' @param n number of individuals
+#'
+#' @return 
+#' a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
+#'
+#' @details 
+#' Let \eqn{\theta\sim \mathcal{U}[0, 1]}
+#'
+#' The state at time t is defined by \eqn{X_t(w) = 1} if \eqn{t < \theta(w)}, 2 otherwise.
+#'
+#' @author Cristian Preda
+#'
+#' @export
+generate_2State <- function(n)
+{
+  d <- data.frame(id = numeric(0), time = numeric(0),  state = numeric(0))
+  for (i in 1:n)
+  {
+    d = rbind(d, data.frame(id = i, time = 0, state = 1))
+    t = runif(1)
+    d = rbind(d, data.frame(id = i, time = t, state = 2))
+  }
+  
+  return(d)
+}
