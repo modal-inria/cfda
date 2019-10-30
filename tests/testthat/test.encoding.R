@@ -125,3 +125,27 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   expect_length(out, K*m)
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
+
+
+test_that("compute_optimal_encoding works", {
+  set.seed(42)
+  n <- 200
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- msm2msmTmax(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b)
+  
+  expect_type(fmca, "list")
+  expect_named(fmca, c("vp", "alpha", "pc", "F", "G", "V"))
+  
+  # eigenvaleus
+  expect_length(fmca$vp, 2*m)
+  trueEigVal <- 1/((1:m) * (2:(m+1)))
+  expect_lte(max(abs(fmca$vp[1:m] - trueEigVal)), 0.01)
+  
+})
