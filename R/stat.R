@@ -94,7 +94,7 @@ id_get_state <- function(x, t)
 
 #' Estimate probabilities to be in each state
 #' 
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' 
 #' @return A list of two elements:
 #' \itemize{

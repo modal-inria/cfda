@@ -7,7 +7,7 @@
 estimate_pt(data_msm)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same Tmax (use \code{\link{msm2msmTmax}}).}
+\item{data_msm}{data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
 }
 \value{
 A list of two elements:

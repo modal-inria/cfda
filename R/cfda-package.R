@@ -2,7 +2,8 @@
 #' @import fda
 #' @import ggplot2
 #' @import msm
-#' @importFrom stats integrate rexp
+#' @import mgcv
+#' @importFrom stats cov integrate rexp
 #' 
 #' @title cfda
 #' @docType package
