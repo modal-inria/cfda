@@ -1,4 +1,4 @@
-# compute Uij
+# compute Uxij
 #
 # compute int_0^T phi_i(t) phi_j(t) 1_{X_{t}=x}  
 #
@@ -6,8 +6,8 @@
 # @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
 # @param K number of state
 #
-# @return vector of size K*nBasis*K*nBasis: U[(x=1,i=1),(x=1,j=1)], 
-# U[(x=1,i=1), (x=1,j=2)],..., U[(x=1,i=1), (x=1,j=nBasis)], U[(x=2,i=1), (x=2,j=1)], U[(x=2,i=1), (x=2,j=2)] 
+# @return vector of size K*nBasis*nBasis: U[(x=1,i=1),(x=1,j=1)], 
+# U[(x=1,i=1), (x=1,j=2)],..., U[(x=1,i=1), (x=1,j=nBasis)], U[(x=2,i=1), (x=2,j=1)], U[(x=2,i=1), (x=2,j=2)], ...
 # 
 # @examples
 # K <- 4
@@ -47,4 +47,55 @@ compute_Uxij <- function(x, phi, K)
         }
       }
   return(aux)     
+}
+
+
+# compute_Vxi  (plutot Vxj = \int_0^Tphi_j(t)X_t=x dt
+#
+# @param x one individual (id, time, state) 
+# @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
+# @param K number of state
+# @return vector of size K*nBasis: V[(x=1,i=1)], 
+# V[(x=1,i=2)],..., V[(x=1,i=nBasis)], V[(x=2,i=1)], V[(x=2,i=2)], ...
+# 
+# @examples
+# K <- 4
+# Tmax <- 10
+# QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+# lambda_QJK <- c(1, 1, 1, 1)
+# d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+# d_JK2 <- msm2msmTmax(d_JK, 10)
+#
+# m <- 10
+# b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+# I <- diag(rep(1, m))
+# phi <- fd(I, b)
+# compute_Vxi(d_JK2[d_JK2$id == 1, ], phi, K)
+#
+# @author Cristian Preda
+compute_Vxi <- function(x, phi, K) 
+{
+  nBasis <- phi$basis$nbasis
+  aux = rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
+  for(state in 1:K) 
+  {
+    idx <- which(x$state == state)
+    
+    for(j in 1:nBasis)  # j = la base
+    {
+      for(u in idx)
+      {
+        if(u < nrow(x))
+        {
+          aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
+            integrate(function(t){
+              eval.fd(t, phi[j])
+            }, lower = x[u, "time"], upper = x[u+1, "time"], 
+            stop.on.error = FALSE)$value
+        }
+      }
+    }
+  }
+
+  return(aux)
 }
