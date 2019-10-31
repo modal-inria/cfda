@@ -84,6 +84,7 @@ test_that("plot_Markov does not produce warnings", {
   lambda_QJK <- c(1, 1, 1, 1)
 
   dat <- list(Q = QJK, lambda = lambda_QJK)
+  class(dat) = "Markov"
   
-  expect_warning(plot_Markov(dat), regexp = NA)
+  expect_warning(plot(dat), regexp = NA)
 })
