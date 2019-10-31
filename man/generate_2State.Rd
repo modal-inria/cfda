@@ -21,5 +21,5 @@ Let \eqn{\theta\sim \mathcal{U}[0, 1]}
 The state at time t is defined by \eqn{X_t(w) = 1} if \eqn{t < \theta(w)}, 2 otherwise.
 }
 \author{
-Cristian Preda
+Cristian Preda, Quentin Grimonprez
 }

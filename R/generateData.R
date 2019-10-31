@@ -28,14 +28,14 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
   
   for(i in 1:n)
   {
-    e <- sample(1:K, 1, prob = pi_0) 
+    e <- sample(K, 1, prob = pi_0) 
     t <- 0
     while(t <= Tmax)
     {
       d = rbind(d, data.frame(id = i, time = t, state = e))
       sej = rexp(1, lambda[e]) 
       t = t + sej
-      e = sample(1:K, 1, prob = Q[e,])
+      e = sample(K, 1, prob = Q[e,])
     }
   }
   
@@ -54,18 +54,14 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
 #'
 #' The state at time t is defined by \eqn{X_t(w) = 1} if \eqn{t < \theta(w)}, 2 otherwise.
 #'
-#' @author Cristian Preda
+#' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
 generate_2State <- function(n)
 {
-  d <- data.frame(id = numeric(0), time = numeric(0),  state = numeric(0))
-  for (i in 1:n)
-  {
-    d = rbind(d, data.frame(id = i, time = 0, state = 1))
-    t = runif(1)
-    d = rbind(d, data.frame(id = i, time = t, state = 2))
-  }
+  temps <- rep(0, 2*n)
+  temps[(1:n*2)] = runif(n)
+  d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(1:2, n))
   
   return(d)
 }
