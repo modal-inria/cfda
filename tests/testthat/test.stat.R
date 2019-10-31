@@ -1,3 +1,5 @@
+# Author: Quentin Grimonprez
+
 context("Statistics on data_msm object")
 
 test_that("compute_Time_Spent_intern works", {

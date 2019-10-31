@@ -1,3 +1,5 @@
+# Author: Quentin Grimonprez
+
 context("Data pretreatment")
 
 test_that("cut_cfd with equal Tmax", {

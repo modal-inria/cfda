@@ -1,3 +1,5 @@
+# Author: Quentin Grimonprez
+
 context("Data generation")
 
 

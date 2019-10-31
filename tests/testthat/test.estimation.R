@@ -1,3 +1,5 @@
+# Author: Quentin Grimonprez
+
 context("Markov estimation")
 
 set.seed(42)
