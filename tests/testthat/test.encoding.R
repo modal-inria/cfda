@@ -141,11 +141,12 @@ test_that("compute_optimal_encoding works", {
   fmca <- compute_optimal_encoding(dT, b)
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("vp", "alpha", "pc", "F", "G", "V"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V"))
   
-  # eigenvaleus
-  expect_length(fmca$vp, 2*m)
+  # eigenvalues
+  expect_length(fmca$eigenvalues, 2*m)
   trueEigVal <- 1/((1:m) * (2:(m+1)))
-  expect_lte(max(abs(fmca$vp[1:m] - trueEigVal)), 0.01)
+  expect_lte(max(abs(fmca$eigenvalues[1:m] - trueEigVal)), 0.01)
+  
   
 })

@@ -6,7 +6,7 @@
 #'
 #' @return a list containing:
 #' \itemize{
-#'   \item vp eigenvalues
+#'   \item eigenvalues eigenvalues
 #'   \item alpha optimal encoding coefficients
 #'   \item pc principal components
 #'   \item F 
@@ -82,7 +82,7 @@ compute_optimal_encoding <- function(data_msm, basisobj)
 
   pc <- V %*% (solve(F05) %*% res$vectors)
 
-  return(list(vp = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V))
+  return(list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V))
 
 }
 

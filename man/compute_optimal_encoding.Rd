@@ -14,7 +14,7 @@ compute_optimal_encoding(data_msm, basisobj)
 \value{
 a list containing:
 \itemize{
-  \item vp eigenvalues
+  \item eigenvalues eigenvalues
   \item alpha optimal encoding coefficients
   \item pc principal components
   \item F 
