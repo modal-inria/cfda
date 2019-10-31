@@ -4,6 +4,7 @@
 #' @import msm
 #' @import mgcv
 #' @importFrom stats cov integrate rexp runif
+#' @importFrom graphics boxplot
 #' 
 #' @title cfda
 #' @docType package

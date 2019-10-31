@@ -31,8 +31,18 @@ test_that("compute_Time_Spent works", {
                        c(3, 3, 0))
   colnames(expectedOut) = 1:3
   rownames(expectedOut) = 1:2
+  class(expectedOut) = "timeSpent"
   
   expect_equal(out, expectedOut)
+})
+
+test_that("boxplot.timeSpent does not produce warnings", {
+  dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
+  
+  out <- compute_Time_Spent(dat, K = 3)
+
+  expect_warning(boxplot(out), regexp = NA)
+  
 })
 
 

@@ -29,6 +29,7 @@ compute_Time_Spent <- function(data_msm, K)
   res <- by(data_msm, data_msm$id, function(x){compute_Time_Spent_intern(x, K)})
   out <- do.call(rbind, res)
   colnames(out) = 1:K
+  class(out) = "timeSpent"
   
   return(out)
 }
@@ -50,7 +51,35 @@ compute_Time_Spent_intern <- function(data_msm, K)
   return(aux)
 }          
 
-
+#' Boxplot of time spent in each state
+#'
+#' @param x output od \code{\link{compute_Time_Spent}} function
+#' @param ... not used
+#'
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' # cut at Tmax = 8
+#' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
+#'
+#' #  compute time spent by each id in each state
+#' timeSpent <- compute_Time_Spent(d_JK2, K)
+#' 
+#' boxplot(timeSpent)
+#' 
+#' @author Quentin Grimonprez
+#'
+#' @export
+boxplot.timeSpent <- function(x, ...)
+{
+  ggplot(data.frame(timeSpent = as.vector(x), state = rep(colnames(x), each = nrow(x))), 
+         aes_string(x = "state", y = "timeSpent", fill = "state")) + 
+    geom_boxplot() + labs(x = "State", y = "Time Spent", fill = "State")
+}
 
 
 #' Extract the state of each individual at a given time
