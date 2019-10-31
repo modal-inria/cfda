@@ -243,3 +243,33 @@ plot_pt_ribbon <- function(pt)
   return(p)
 }
 
+
+#' Compute the number of jumps
+#' 
+#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' 
+#' @return A vector containing the number of jumps for each individual#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' nJump <- compute_number_jumps(d_JK)
+#' 
+#' @author Cristian Preda
+#' 
+#' @export  
+compute_number_jumps <- function(data_msm)
+{
+  out <- by(data_msm, data_msm$id, function(x){length(x$time)-1})
+  nom <- names(out)
+  out <- as.vector(out)
+  names(out) = nom
+  class(out) = "njump"
+  
+  return(out)
+}
+

@@ -135,3 +135,13 @@ test_that("plot_pt does not produce warnings", {
   expect_warning(plot(pt, ribbon = TRUE), regexp = NA)
 })
 
+
+test_that("compute_number_jumps works", {
+  dat <- data.frame(id = rep(1:2, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- compute_number_jumps(dat) 
+  expectedOut <- c(5, 4)
+  class(expectedOut) = "njump"
+  
+  expect_equivalent(out, expectedOut)
+})
+
