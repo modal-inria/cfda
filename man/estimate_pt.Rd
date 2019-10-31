@@ -31,6 +31,9 @@ d_JK2 <- msm2msmTmax(d_JK, 10)
 estimate_pt(d_JK2)
 
 }
+\seealso{
+\link{plot.pt}
+}
 \author{
 Cristian Preda
 }

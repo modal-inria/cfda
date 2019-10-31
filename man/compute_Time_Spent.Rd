@@ -30,7 +30,9 @@ d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #  compute time spent by each id in each state
 timeSpent <- compute_Time_Spent(d_JK2, K)
 
-
+}
+\seealso{
+\link{boxplot.timeSpent}
 }
 \author{
 Cristian Preda

@@ -18,6 +18,8 @@
 #' mark$Q
 #' mark$lambda
 #'
+#' @seealso \link{plot.Markov}
+#'
 #' @author Cristian Preda
 #' 
 #' @export

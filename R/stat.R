@@ -20,6 +20,7 @@
 #' #  compute time spent by each id in each state
 #' timeSpent <- compute_Time_Spent(d_JK2, K)
 #' 
+#' @seealso \link{boxplot.timeSpent}
 #' 
 #' @author Cristian Preda
 #'
@@ -143,6 +144,8 @@ id_get_state <- function(x, t)
 #' 
 #' estimate_pt(d_JK2)
 #' 
+#' @seealso \link{plot.pt}
+#' 
 #' @author Cristian Preda
 #' 
 #' @export   
@@ -258,6 +261,8 @@ plot_pt_ribbon <- function(pt)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' nJump <- compute_number_jumps(d_JK)
+#' 
+#' @seealso \link{hist.njump}
 #' 
 #' @author Cristian Preda
 #' 

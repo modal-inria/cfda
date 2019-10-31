@@ -25,6 +25,9 @@ d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 
 nJump <- compute_number_jumps(d_JK)
 
 }
+\seealso{
+\link{hist.njump}
+}
 \author{
 Cristian Preda
 }
