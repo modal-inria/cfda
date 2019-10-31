@@ -273,3 +273,35 @@ compute_number_jumps <- function(data_msm)
   return(out)
 }
 
+#' Compute the number of jumps
+#' 
+#' @param x output of \code{\link{compute_number_jumps}} function
+#' @param breaks number of breaks. If not given use the sturges rule
+#' @param ... not used
+#' 
+#' @return A vector containing the number of jumps for each individual#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' nJump <- compute_number_jumps(d_JK)
+#' 
+#' hist(nJump)
+#' 
+#' @author Quentin Grimonprez
+#' 
+#' @export  
+hist.njump <- function(x, breaks = NULL, ...)
+{
+  # choose the number of breaks using sturges rule
+  if(is.null(breaks))
+    breaks <- floor(1 + log2(length(x)))
+  
+  ggplot(data.frame(njump = as.vector(x)), aes_string(x = "njump"))+
+    geom_histogram(fill = "lightblue", color = "black", bins = breaks) +
+    labs(x = "Number of jumps", y = "Frequency")
+}

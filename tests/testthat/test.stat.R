@@ -145,3 +145,17 @@ test_that("compute_number_jumps works", {
   expect_equivalent(out, expectedOut)
 })
 
+
+test_that("hist.njump does not produce warnings", {
+  # simulate the Jukes Cantor models of nucleotides replacement.
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  
+  njump <- compute_number_jumps(d_JK)
+  
+  expect_warning(hist(njump), regexp = NA)
+})
+
+
