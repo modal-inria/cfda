@@ -120,10 +120,13 @@ compute_Uxij <- function(x, phi, K)
   aux <- rep(0, K * nBasis * nBasis)
   
   for(state in 1:K) 
+  {
+    idx <- which(x$state == state)
+    
     for(i in 1:nBasis) 
+    {
       for(j in 1:nBasis)  
       {
-        idx <- which(x$state == state)
         for(u in idx)
         {
           if(u < nrow(x))
@@ -136,6 +139,10 @@ compute_Uxij <- function(x, phi, K)
           }
         }
       }
+    }
+
+  }
+
   return(aux)     
 }
 
