@@ -144,9 +144,24 @@ test_that("compute_optimal_encoding works", {
   expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V"))
   
   # eigenvalues
-  expect_length(fmca$eigenvalues, 2*m)
+  expect_length(fmca$eigenvalues, K*m)
   trueEigVal <- 1/((1:m) * (2:(m+1)))
   expect_lte(max(abs(fmca$eigenvalues[1:m] - trueEigVal)), 0.01)
   
+  # alpha
+  expect_type(fmca$alpha, "list")
+  expect_length(fmca$alpha, m * K)
+  expect_equal(dim(fmca$alpha[[1]]), c(m, K))
   
+  # pc
+  expect_equal(dim(fmca$pc), c(n, m * K))
+  
+  # F
+  expect_equal(dim(fmca$F), c(2*m, 2*m))
+  
+  # G
+  expect_equal(dim(fmca$G), c(2*m, 2*m))
+  
+  # V
+  expect_equal(dim(fmca$V), c(n, 2*m))
 })
