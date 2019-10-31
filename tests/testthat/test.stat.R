@@ -121,7 +121,7 @@ test_that("plot_pt does not produce warnings", {
 
   pt <- estimate_pt(d_JK2)
 
-  expect_warning(plot_pt(pt, ribbon = FALSE), regexp = NA)
-  expect_warning(plot_pt(pt, ribbon = TRUE), regexp = NA)
+  expect_warning(plot(pt, ribbon = FALSE), regexp = NA)
+  expect_warning(plot(pt, ribbon = TRUE), regexp = NA)
 })
 

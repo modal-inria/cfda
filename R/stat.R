@@ -130,7 +130,11 @@ estimate_pt <- function(data_msm)
     # donne pour chaque temps, le nb d'individus dans chacun des état
     res[,i] = tabulate(aux, nbins = length(states))/n
   }
-  return(list(pt = res, t = t_jumps))
+  
+  out <- list(pt = res, t = t_jumps)
+  class(out) = "pt"
+  
+  return(out)
 }
 
 
@@ -138,8 +142,9 @@ estimate_pt <- function(data_msm)
 #'
 #' Plot the probabilities of each state at each given time
 #'
-#' @param pt output of \code{\link{estimate_pt}}
+#' @param x output of \code{\link{estimate_pt}}
 #' @param ribbon if TRUE, use ribbon to plot probabilities 
+#' @param ... unused
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -152,17 +157,19 @@ estimate_pt <- function(data_msm)
 #' 
 #' pt <- estimate_pt(d_JK2)
 #' 
-#' plot_pt(pt, ribbon = TRUE)
+#' plot(pt, ribbon = TRUE)
 #' 
 #' @author Quentin Grimonprez
 #' 
+#' @method plot pt
+#' 
 #' @export
-plot_pt <- function(pt, ribbon = FALSE)
+plot.pt <- function(x, ribbon = FALSE, ...)
 {
   if(ribbon)
-    p <- plot_pt_ribbon(pt)
+    p <- plot_pt_ribbon(x)
   else
-    p <- plot_pt_classic(pt)
+    p <- plot_pt_classic(x)
   
   return(p)
 }
