@@ -42,6 +42,9 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 encoding <- compute_optimal_encoding(d_JK2, b)
 
 }
+\seealso{
+plot.fmca
+}
 \author{
 Cristian Preda
 }

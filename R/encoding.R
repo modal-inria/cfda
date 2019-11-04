@@ -30,6 +30,8 @@
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b)
 #'
+#' @seealso plot.fmca
+#'
 #' @author Cristian Preda
 #' 
 #' @export
@@ -197,5 +199,48 @@ compute_Vxi <- function(x, phi, K)
   }
 
   return(aux)
+}
+
+
+#' Plot the optimal encoding
+#'
+#' @param x output of \code{\link{compute_optimal_encoding}} function
+#' @param ... not used
+#'
+#' @author Quentin Grimonprez
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' Tmax <- 10
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#'
+#' # create basis object
+#' m <- 10
+#' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+#' 
+#' # compute encoding
+#' encoding <- compute_optimal_encoding(d_JK2, b)
+#' 
+#' plot(encoding)
+#' 
+#' @export
+plot.fmca <- function(x, ...)
+{
+  fdObj <- fd(x$alpha[[1]], x$basisobj)
+  rangex <- fdObj$basis$rangeval
+  nBasis <- fdObj$basis$nbasis
+  nx <- max(c(501, 10 * nBasis + 1))
+  y <- seq(rangex[1], rangex[2], length = nx)
+  
+  fdmat <- eval.fd(y, fdObj)
+  df <- data.frame(x = rep(y, ncol(fdmat)), y = as.vector(fdmat), State = factor(rep(1:ncol(fdmat), each = nx), levels = 1:ncol(fdmat)))
+  
+  ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
+    geom_line() +
+    labs(x = "Time", y = "a_x(t)", title = "First eigen optimal encoding")
 }
 

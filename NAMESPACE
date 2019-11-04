@@ -3,6 +3,7 @@
 S3method(boxplot,timeSpent)
 S3method(hist,njump)
 S3method(plot,Markov)
+S3method(plot,fmca)
 S3method(plot,pt)
 export(compute_Time_Spent)
 export(compute_number_jumps)
