@@ -2,7 +2,7 @@
 % Please edit documentation in R/encoding.R
 \name{plotComponent}
 \alias{plotComponent}
-\title{Plot Xomponents}
+\title{Plot Components}
 \usage{
 plotComponent(x, comp = c(1, 2))
 }
@@ -12,7 +12,7 @@ plotComponent(x, comp = c(1, 2))
 \item{comp}{a vector of two elements indicating the components to plot}
 }
 \description{
-Plot Xomponents
+Plot Components
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

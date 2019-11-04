@@ -253,7 +253,7 @@ plot.fmca <- function(x, ...)
 }
 
 
-#' Plot Xomponents
+#' Plot Components
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param comp a vector of two elements indicating the components to plot
