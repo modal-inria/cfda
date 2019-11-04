@@ -82,8 +82,10 @@ compute_optimal_encoding <- function(data_msm, basisobj)
 
   pc <- V %*% (solve(F05) %*% res$vectors)
 
-  return(list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V))
-
+  out <- list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V, basisobj = basisobj)
+  class(out) = "fmca"
+  
+  return(out)
 }
 
 
@@ -196,3 +198,4 @@ compute_Vxi <- function(x, phi, K)
 
   return(aux)
 }
+
