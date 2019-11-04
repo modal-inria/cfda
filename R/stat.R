@@ -310,3 +310,29 @@ hist.njump <- function(x, breaks = NULL, ...)
     geom_histogram(fill = "lightblue", color = "black", bins = breaks) +
     labs(x = "Number of jumps", y = "Frequency")
 }
+
+
+#' Table of transitions
+#'
+#' Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.
+#'
+#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#'
+#' @return a vector of length \code{K} containing the total time spent in each state
+#'
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' # table of transitions
+#' statetable(d_JK)
+#' 
+#'
+#' @export
+statetable <- function(data_msm)
+{
+  statetable.msm(as.numeric(data_msm$state), data_msm$id)
+}

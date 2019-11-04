@@ -159,3 +159,13 @@ test_that("hist.njump does not produce warnings", {
 })
 
 
+test_that("statetable works", {
+  dat <- data.frame(id = rep(1:2, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- statetable(dat) 
+  
+  expectedOut <- matrix(0, nrow = 5, ncol = 6)
+  expectedOut[1, 2] = expectedOut[2, 3] = expectedOut[3, 4] = expectedOut[4, 5] = 2
+  expectedOut[5, 6] = 1
+
+  expect_equivalent(out, as.table(expectedOut))
+})
