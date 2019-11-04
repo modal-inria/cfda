@@ -29,8 +29,14 @@
 #' 
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b)
+#' 
+#' # plot the optimal encoding
+#' plot(encoding)
+#' 
+#' # plot the two first components
+#' plotComponent(encoding, comp = c(1, 2))
 #'
-#' @seealso plot.fmca
+#' @seealso \link{plot.fmca} \link{plotComponent}
 #'
 #' @author Cristian Preda
 #' 
@@ -227,6 +233,8 @@ compute_Vxi <- function(x, phi, K)
 #' 
 #' plot(encoding)
 #' 
+#' @seealso \link{plotComponent}
+#' 
 #' @export
 plot.fmca <- function(x, ...)
 {
@@ -244,3 +252,42 @@ plot.fmca <- function(x, ...)
     labs(x = "Time", y = "a_x(t)", title = "First eigen optimal encoding")
 }
 
+
+#' Plot Xomponents
+#'
+#' @param x output of \code{\link{compute_optimal_encoding}} function
+#' @param comp a vector of two elements indicating the components to plot
+#'
+#' @author Quentin Grimonprez
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' Tmax <- 10
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#'
+#' # create basis object
+#' m <- 10
+#' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+#' 
+#' # compute encoding
+#' encoding <- compute_optimal_encoding(d_JK2, b)
+#' 
+#' plotComponent(encoding, comp = c(1, 2))
+#' 
+#' @seealso \link{plot.fmca}
+#' 
+#' @export
+plotComponent <- function(x, comp = c(1, 2))
+{
+  df <- as.data.frame(x$pc)
+  df$name = 1:nrow(x$pc)
+  
+  ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
+    geom_point() + 
+    geom_text(aes_string(label = "name"), hjust = -0.15, vjust = -0.15) +
+    labs(x = paste0("Comp ", comp[1]), y = paste0("Comp ", comp[2]))
+}

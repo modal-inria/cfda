@@ -41,9 +41,15 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b)
 
+# plot the optimal encoding
+plot(encoding)
+
+# plot the two first components
+plotComponent(encoding, comp = c(1, 2))
+
 }
 \seealso{
-plot.fmca
+\link{plot.fmca} \link{plotComponent}
 }
 \author{
 Cristian Preda

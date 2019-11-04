@@ -186,3 +186,19 @@ test_that("plot.fmca does not produce warnings", {
   
   expect_warning(plot(fmca), regexp = NA)
 })
+
+
+test_that("plotComponent does not produce warnings", {
+  n <- 50
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- msm2msmTmax(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b)
+  
+  expect_warning(plotComponent(fmca), regexp = NA)
+})
