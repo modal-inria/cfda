@@ -4,7 +4,7 @@
 \alias{compute_Time_Spent}
 \title{Compute time spent in each state}
 \usage{
-compute_Time_Spent(data_msm, K)
+compute_Time_Spent(data_msm, K = max(data_msm$state))
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})}

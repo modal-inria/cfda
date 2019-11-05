@@ -25,7 +25,7 @@
 #' @author Cristian Preda
 #'
 #' @export
-compute_Time_Spent <- function(data_msm, K)
+compute_Time_Spent <- function(data_msm, K = max(data_msm$state))
 {
   res <- by(data_msm, data_msm$id, function(x){compute_Time_Spent_intern(x, K)})
   out <- do.call(rbind, res)
