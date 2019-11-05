@@ -1,0 +1,255 @@
+---
+title: "Categorical Functional Data Analysis"
+author: "Cristian Preda, Quentin Grimonprez"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{cfda}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", fig.width = 5, fig.height = 5)
+```
+
+
+## Dataset Simulation
+
+``` {r load, echo=TRUE, message=FALSE}
+library(cfda)
+set.seed(42)
+```
+
+We simulate the Jukes Cantor models of nucleotides replacement. 
+
+Denote the set of nucleotides: $E = \{A, T, G, C\}$. A DNA sequence is seen as a string of nucleotides: ATGCATTAC.
+
+Each \textbf{site} in the sequence is subject to mutation over time.
+
+In the Jukes-Cantor model (1969), each site is a Markovian jump process with continuous time having as generator:
+
+$$ Q = \ \ \ \begin{array}{c|cccc}
+&A&T&G&C \\ \hline
+A&-3\alpha&\alpha&\alpha&\alpha\\ 
+T&\alpha&-3\alpha&\alpha&\alpha\\ 
+G&\alpha&\alpha&-3\alpha&\alpha\\
+C&\alpha&\alpha&\alpha&-3\alpha\\ \hline
+\end{array}$$
+
+for some $\alpha >0$.
+
+
+Let assume that the process is observed over the period $[0,T_{\max}]$ in $n$ sites with the nucleotide $A$ at time $t=0$. In the following, nucleotides are recoded: $A\leftrightarrow 1$, $T\leftrightarrow 2$, $G\leftrightarrow 3$, $C\leftrightarrow 4$. 
+
+
+```{r genData, echo=TRUE}
+K <- 4
+QJK1 <- matrix(1/3, ncol = K, nrow = K) - diag(rep(1/3, K))
+lambda_QJK1 = c(1, 1, 1, 1)
+
+Tmax <- 10
+n <- 100
+
+d_JK1 <- generate_Markov_cfd (n = n, K = 4, Q = QJK1, lambda = lambda_QJK1, Tmax = Tmax)
+
+head(d_JK1, 10)
+```
+
+The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different indiviuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
+
+
+Some methods requires that the end of each individuals is $T_{\max}$, this can be done with the following function:
+
+```{r cutT, echo=TRUE}
+d_JK1T <- msm2msmTmax(d_JK1, Tmax = Tmax)
+```
+
+
+A trajectory of one indivuals can be plotted: 
+```{r plot, echo=TRUE}
+plot(d_JK1[d_JK1$id == 1, c("time", "state")], type = "S", yaxt = "n", bty = "n", lwd = 3)
+axis(2, 1:4, c("A", "T", "C", "G"), las = 2)
+abline(h = 1:4, lty = 2, col = "red")
+```
+
+
+## Basic statistics
+
+Generally, in categorical functional data analysis, the following basic statistics are computed.
+
+### Time spent in each state over a period of length $T_{\max}$:
+
+For each individual, the time spent in each of the $K$ states is computed.
+ 
+```{r, echo=TRUE}  
+timeSpent <- compute_Time_Spent(d_JK1T, K)
+timeSpent[1:10,]
+```
+
+The results can be plotted:
+```{r, echo=TRUE}  
+boxplot(timeSpent)
+```  
+
+
+### Number of jumps in $[0,T_{\max}]$ :
+ 
+For each individual, the number of jumps occuring in $[0,T_{\max}]$ is computed.
+```{r, echo=TRUE}  
+nJump <- compute_number_jumps(d_JK1)
+head(nJump)
+``` 
+
+The results can be plotted:
+```{r, echo=TRUE}  
+hist(nJump)
+``` 
+  
+
+### Probabilities to be in some state $x$ at time $t$, $p_{x}(t)$: 
+
+An other interesting statistic is the evolution of the probability to be in each state.
+```{r, echo=TRUE}  
+pt_evol <- estimate_pt(d_JK1T)
+pt_evol$pt[1:K, 1:10]
+head(pt_evol$t)
+```
+
+The output is a list with two elements: `t` the different time values and `pt` a matrix where each row contains the probability to be in a given state for all the time values. The result can be plotted:
+
+```{r, echo=TRUE}  
+plot(pt_evol, ribbon = TRUE)
+```  
+  
+  
+### Transitions in $[0,T_{\max}]$ : 
+
+The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.
+
+```{r, echo=TRUE}  
+ statetable(d_JK1)
+``` 
+
+
+Assuming that the data follows a Markov process, parameters $Q$ and $\lambda$ of the processus can be estimated.
+```{r, echo=TRUE}  
+mark <- estimation_Markov(d_JK1)
+mark
+```
+
+The estimated parameters are closed to the ones used. The results can be plotted through a transition graph where each node corresponds to a state with the mean time spent within (corresponding to $1/\lambda$) and arrows correspond to transition probabilities between states.
+
+```{r, echo=TRUE}  
+plot(mark)
+```
+
+
+
+
+## Encoding
+
+### Concept
+
+$X$ is a continuous stochastic process with jumps. We define categorical functional data as a set of sample paths of $X$.
+
+The pioneer work of J.-C. Deville and G. Saporta (1980-1982) on cfda.
+
+Deville J.C. (1982) \textit{Analyse de donn\'ees chronologiques
+qualitatives: comment analyser des calendriers ?}, Annales de
+l'INSEE, No 45, p. 45-104.
+
+
+**cfda** is seen as an extension of the multiple correspondence analysis to a stochastic process.
+
+The idea is to find a scalar real random variable $z \in L_2(\Omega)$ that is the *most correlated* to ${X} = \{X_{t}\ : \ t\in [0,T_{\max}]\}$.
+
+
+### Mathematical Background
+
+For a fixed $t\in [0,T_{\max}]$, let $E^{t}$ the projection operator,
+$$E^{t}(z) = \mathbb{E}(z|X_{t}) = \sum_{x\in S}{\mathbb{E}(z|X_t=x) \mathbf{1}_{X_t=x}}$$
+Then, the correlation coefficient between $z$ and $X_{t}$ is: $$\eta^{2}(z, X_{t}) = \frac{var(\mathbb{E}(z|X_{t}))}{var(z)}$$ 
+
+
+
+
+For $t, s \in [0,T_{\max}]$, the *(simple) correspondence analysis* looks for $z$ such that it maximizes $$\displaystyle\frac{1}{2}\left(\eta^{2}(z, X_{t})+\eta^{2}(z, X_{s})\right)$$   
+and the solution is :
+
+$$(E^{t}+E^{s})z = \lambda z$$
+$z$ is called a *principal component*.
+
+
+As an extension, the *functional correspondance analysis* is defined as the solution of
+the optimization problem: 
+
+ $$ \arg\max_{z}\displaystyle\frac{1}{T_{max}}\int_{0}^{T_{max}}\eta^{2}(z, X_{t})dt$$
+Solution : $$\int_{0}^{T_{max}}E^{s}z\ ds = \lambda z$$
+
+Denote $\xi_t = E^{t}z$, 
+$$\int_0^T_{/max}K(t,s)\xi_s\ ds = \lambda \xi_t, \ \ \ \ \mbox{with}\ K(s,t) = E^tE^s. $$  
+
+
+It follows that,  
+$$\xi_{t} = \sum_{x\in S}a_{x}(t)\mathbf{1}_{X_t=x}$$
+with $a_x(t) =\mathbb{E}(z|X_t= x), \ \ \forall x \in S$.
+
+For each $x\in S$, the functions $a_x: [0,T_{\max}|\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$. 
+
+The eigen-value problem becomes in terms of encodings:
+
+$$\lambda a_x(t) = \sum_{y\in S}\displaystyle\int_{0}^{T_{\max}}\frac{p_{x,y}(t,s)}{p_x(t)}a_y(s)ds, \ \ \ \ \ \forall x \in S, \forall t\in [0,T_{\max}], $$
+where$p_{x,y}(t,s) = \mathbb{P}(X_t=x, X_s=y)$ and $p_x(t)= \mathbb{P}(X_t=x)$.
+
+
+
+Under general conditions (continuity in probability of $X$), there exists $\{\lambda_i\}_{i\geq1}$ positive eigen-values and
+$\{a_x^i\}_{i\geq 1}$
+eigen-functions.  
+
+The folowing expansion formula holds (Mercer thm.):
+
+$$p_{x,y}(t,s) = p_x(t)p_y(s)\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)$$
+For $x=y$, one obtains :
+
+$$p_x(t) =\displaystyle\frac{1}{\displaystyle\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)}$$
+
+
+
+### Application
+
+
+Firstly, a basis of functions must be defined. We choose a B-splines basis of order 4.
+```{r, echo=TRUE} 
+m <- 10
+b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+```
+
+The optimal encoding is computed using:
+
+```{r, echo=TRUE}
+fmca <- compute_optimal_encoding(d_JK1T, b)
+```
+
+The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G` and `V`.
+
+```{r, echo=TRUE}
+ barplot(fmca$eigenvalues, main = "Eigenvalues")
+```
+
+The optimal encoding coefficients $\alpha$'s:
+```{r, echo=TRUE}
+print(fmca$alpha[[1]])
+```
+
+The resulting encoding can be plotted:
+```{r, echo=TRUE}
+plot(fmca)
+```
+
+Plot the two first components.
+```{r, echo=TRUE}
+plotComponent(fmca, comp = c(1, 2))
+```

@@ -11,8 +11,7 @@ BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
 Imports: msm, diagram, ggplot2, mgcv
 Depends: fda
-Suggests: 
-    testthat,
-    covr
+Suggests: testthat, covr, knitr
 Encoding: UTF-8
+VignetteBuilder: knitr
 RoxygenNote: 6.1.1
