@@ -216,7 +216,7 @@ plot_pt_classic <- function(pt)
                           time = rep(pt$t, nrow(pt$pt)))
   
   p <- ggplot(plot_data, aes_string(x = "time", y = "proba", group = "state", colour = "state")) +
-    geom_point() + geom_line() + ylim(0, 1) +
+    geom_line() + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
   
   return(p)
