@@ -2,7 +2,7 @@
 % Please edit documentation in R/encoding.R
 \name{compute_optimal_encoding}
 \alias{compute_optimal_encoding}
-\title{Compute the optimal encodings f each state}
+\title{Compute the optimal encodings for each state}
 \usage{
 compute_optimal_encoding(data_msm, basisobj)
 }
@@ -12,7 +12,7 @@ compute_optimal_encoding(data_msm, basisobj)
 \item{basisobj}{is a basis create using \code{fda} package}
 }
 \value{
-a list containing:
+A list containing:
 \itemize{
   \item eigenvalues eigenvalues
   \item alpha optimal encoding coefficients
@@ -23,7 +23,7 @@ a list containing:
 }
 }
 \description{
-Compute the optimal encodings f each state
+Compute the optimal encodings for each state
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

@@ -1,10 +1,10 @@
-#' Compute the optimal encodings f each state
+#' Compute the optimal encodings for each state
 #'
 #'
 #' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj is a basis create using \code{fda} package
 #'
-#' @return a list containing:
+#' @return A list containing:
 #' \itemize{
 #'   \item eigenvalues eigenvalues
 #'   \item alpha optimal encoding coefficients
@@ -123,7 +123,7 @@ compute_optimal_encoding <- function(data_msm, basisobj)
 # phi <- fd(I, b)
 # compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
-# @author Cristian Preda
+# @author Cristian Preda, Quentin Grimonprez
 compute_Uxij <- function(x, phi, K)
 {
   nBasis <- phi$basis$nbasis
@@ -132,20 +132,27 @@ compute_Uxij <- function(x, phi, K)
   for(state in 1:K) 
   {
     idx <- which(x$state == state)
-    
-    for(i in 1:nBasis) 
+    for(u in idx)
     {
-      for(j in 1:nBasis)  
+      for(i in 1:nBasis) 
       {
-        for(u in idx)
+        for(j in i:nBasis) # symmetry between i and j  
         {
           if(u < nrow(x))
           {
-            aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + 
-              integrate(function(t) {
-                eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-              }, lower = x[u, "time"], upper = x[u+1, "time"],
+            integral <- integrate(function(t) { 
+              eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+              }, lower = x[u, "time"], upper = x[u+1, "time"], 
               stop.on.error = FALSE)$value
+            
+            aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
+
+            
+            # when i == j, we are on the diagonal of the matrix, no symmetry to apply
+            if(i != j)
+            {
+              aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
+            }
           }
         }
       }
