@@ -9,9 +9,10 @@
 #'   \item eigenvalues eigenvalues
 #'   \item alpha optimal encoding coefficients
 #'   \item pc principal components
-#'   \item F 
-#'   \item G  
+#'   \item F
 #'   \item V 
+#'   \item G covariance matrix of \code{V}
+#'   \item basisobj \code{basisobj} parameter
 #' }
 #'
 #' @examples
@@ -39,6 +40,9 @@
 #' @seealso \link{plot.fmca} \link{plotComponent}
 #'
 #' @author Cristian Preda
+#' 
+#' @references 
+#' Deville J.C. (1982) Analyse de donn\'ees chronologiques qualitatives: comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
 compute_optimal_encoding <- function(data_msm, basisobj)
