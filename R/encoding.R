@@ -268,6 +268,7 @@ plot.fmca <- function(x, ...)
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param comp a vector of two elements indicating the components to plot
+#' @param addNames if TRUE, add the id labels on the plot
 #'
 #' @author Quentin Grimonprez
 #' 
@@ -292,13 +293,18 @@ plot.fmca <- function(x, ...)
 #' @seealso \link{plot.fmca}
 #' 
 #' @export
-plotComponent <- function(x, comp = c(1, 2))
+plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
 {
   df <- as.data.frame(x$pc)
   df$name = 1:nrow(x$pc)
   
-  ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
+  p <- ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
     geom_point() + 
-    geom_text(aes_string(label = "name"), hjust = -0.15, vjust = -0.15) +
     labs(x = paste0("Comp ", comp[1]), y = paste0("Comp ", comp[2]))
+  
+  if(addNames)
+    p = p + geom_text(aes_string(label = "name"), hjust = -0.15, vjust = -0.15)
+
+  
+  p
 }

@@ -253,5 +253,6 @@ test_that("plotComponent does not produce warnings", {
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   fmca <- compute_optimal_encoding(dT, b)
   
-  expect_warning(plotComponent(fmca), regexp = NA)
+  expect_warning(plotComponent(fmca, addNames = TRUE), regexp = NA)
+  expect_warning(plotComponent(fmca, addNames = FALSE), regexp = NA)
 })

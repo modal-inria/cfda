@@ -4,12 +4,14 @@
 \alias{plotComponent}
 \title{Plot Components}
 \usage{
-plotComponent(x, comp = c(1, 2))
+plotComponent(x, comp = c(1, 2), addNames = TRUE)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
 
 \item{comp}{a vector of two elements indicating the components to plot}
+
+\item{addNames}{if TRUE, add the id labels on the plot}
 }
 \description{
 Plot Components
