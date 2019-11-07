@@ -46,15 +46,15 @@ Let assume that the process is observed over the period $[0,T_{\max}]$ in $n$ si
 
 ```{r genData, echo=TRUE}
 K <- 4
-QJK1 <- matrix(1/3, ncol = K, nrow = K) - diag(rep(1/3, K))
-lambda_QJK1 = c(1, 1, 1, 1)
+QJK <- matrix(1/3, ncol = K, nrow = K) - diag(rep(1/3, K))
+lambda_QJK = c(1, 1, 1, 1)
 
 Tmax <- 10
 n <- 100
 
-d_JK1 <- generate_Markov_cfd (n = n, K = 4, Q = QJK1, lambda = lambda_QJK1, Tmax = Tmax)
+d_JK <- generate_Markov_cfd (n = n, K = 4, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 
-head(d_JK1, 10)
+head(d_JK, 10)
 ```
 
 The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different indiviuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
@@ -63,15 +63,13 @@ The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains
 Some methods requires that the end of each individuals is $T_{\max}$, this can be done with the following function:
 
 ```{r cutT, echo=TRUE}
-d_JK1T <- msm2msmTmax(d_JK1, Tmax = Tmax)
+d_JKT <- msm2msmTmax(d_JK, Tmax = Tmax)
 ```
 
 
-A trajectory of one indivuals can be plotted: 
-```{r plot, echo=TRUE}
-plot(d_JK1[d_JK1$id == 1, c("time", "state")], type = "S", yaxt = "n", bty = "n", lwd = 3)
-axis(2, 1:4, c("A", "T", "C", "G"), las = 2)
-abline(h = 1:4, lty = 2, col = "red")
+Individuals can be plotted: 
+```{r plot, echo=TRUE, fig.height = 7}
+plotData(d_JKT)
 ```
 
 
@@ -84,7 +82,7 @@ Generally, in categorical functional data analysis, the following basic statisti
 For each individual, the time spent in each of the $K$ states is computed.
  
 ```{r, echo=TRUE}  
-timeSpent <- compute_Time_Spent(d_JK1T, K)
+timeSpent <- compute_Time_Spent(d_JKT, K)
 timeSpent[1:10,]
 ```
 
@@ -98,7 +96,7 @@ boxplot(timeSpent)
  
 For each individual, the number of jumps occuring in $[0,T_{\max}]$ is computed.
 ```{r, echo=TRUE}  
-nJump <- compute_number_jumps(d_JK1)
+nJump <- compute_number_jumps(d_JK)
 head(nJump)
 ``` 
 
@@ -112,7 +110,7 @@ hist(nJump)
 
 An other interesting statistic is the evolution of the probability to be in each state.
 ```{r, echo=TRUE}  
-pt_evol <- estimate_pt(d_JK1T)
+pt_evol <- estimate_pt(d_JKT)
 pt_evol$pt[1:K, 1:10]
 head(pt_evol$t)
 ```
@@ -129,13 +127,13 @@ plot(pt_evol, ribbon = TRUE)
 The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.
 
 ```{r, echo=TRUE}  
- statetable(d_JK1)
+ statetable(d_JK)
 ``` 
 
 
 Assuming that the data follows a Markov process, parameters $Q$ and $\lambda$ of the processus can be estimated.
 ```{r, echo=TRUE}  
-mark <- estimation_Markov(d_JK1)
+mark <- estimation_Markov(d_JK)
 mark
 ```
 
@@ -252,7 +250,7 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 The optimal encoding is computed using:
 
 ```{r, echo=TRUE}
-fmca <- compute_optimal_encoding(d_JK1T, b)
+fmca <- compute_optimal_encoding(d_JKT, b)
 ```
 
 The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`.
