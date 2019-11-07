@@ -169,3 +169,22 @@ test_that("statetable works", {
 
   expect_equivalent(out, as.table(expectedOut))
 })
+
+
+test_that("rep_large_ind works", {
+  dat <- data.frame(id = rep(1:2, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(id = rep(1:2, c(5, 4)), 
+                            t_start = c(0:4, 0, 1.5, 2, 3.5), 
+                            t_end = c(1:5, 1.5, 2, 3.5, 5),
+                            state = c(1:5, 1:4))
+  
+  expect_equivalent(out, expectedOut)
+  
+  
+  
+  out <- rep_large_ind(dat[dat$id == 1, ])
+  
+  expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
+})
+

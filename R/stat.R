@@ -336,3 +336,20 @@ statetable <- function(data_msm)
 {
   statetable.msm(as.numeric(data_msm$state), data_msm$id)
 }
+
+
+
+# transform the data_msm format to a new format with 4 columns: id, t_stast, t_end, state.
+# usefull for ggplot
+rep_large_ind <- function(data_msm)
+{
+  out <- by(data_msm, data_msm$id, function(x){
+    data.frame(id = x[1:(nrow(x)-1), "id"] , 
+               t_start = x[1:(nrow(x)-1), "time"], 
+               t_end = x[2:nrow(x), "time"], 
+               state = x[1:(nrow(x)-1), "state"])
+  })
+  
+  return(do.call(rbind, out))
+}
+
