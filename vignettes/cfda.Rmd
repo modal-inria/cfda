@@ -94,7 +94,7 @@ boxplot(timeSpent)
 ```  
 
 
-### Number of jumps in $[0,T_{\max}]$ :
+### Number of jumps in $[0,T_{\max}]$:
  
 For each individual, the number of jumps occuring in $[0,T_{\max}]$ is computed.
 ```{r, echo=TRUE}  
@@ -124,7 +124,7 @@ plot(pt_evol, ribbon = TRUE)
 ```  
   
   
-### Transitions in $[0,T_{\max}]$ : 
+### Transitions in $[0,T_{\max}]$: 
 
 The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.
 
@@ -176,7 +176,7 @@ Then, the correlation coefficient between $z$ and $X_{t}$ is: $$\eta^{2}(z, X_{t
 
 
 For $t, s \in [0,T_{\max}]$, the *(simple) correspondence analysis* looks for $z$ such that it maximizes $$\displaystyle\frac{1}{2}\left(\eta^{2}(z, X_{t})+\eta^{2}(z, X_{s})\right)$$   
-and the solution is :
+and the solution is:
 
 $$(E^{t}+E^{s})z = \lambda z$$
 $z$ is called a *principal component*.
@@ -186,10 +186,11 @@ As an extension, the *functional correspondance analysis* is defined as the solu
 the optimization problem: 
 
  $$ \arg\max_{z}\displaystyle\frac{1}{T_{max}}\int_{0}^{T_{max}}\eta^{2}(z, X_{t})dt$$
-Solution : $$\int_{0}^{T_{max}}E^{s}z\ ds = \lambda z$$
+Solution: $$\int_{0}^{T_{max}}E^{s}z\ ds = \lambda z$$
 
 Denote $\xi_t = E^{t}z$, 
-$$\int_0^T_{/max}K(t,s)\xi_s\ ds = \lambda \xi_t, \ \ \ \ \mbox{with}\ K(s,t) = E^tE^s. $$  
+
+$$\int_0^{T_{\max}}K(t,s)\xi_s\ ds = \lambda \xi_t, \ \ \ \ \mbox{with}\ K(s,t) = E^tE^s. $$  
 
 
 It follows that,  
@@ -212,9 +213,30 @@ eigen-functions.
 The folowing expansion formula holds (Mercer thm.):
 
 $$p_{x,y}(t,s) = p_x(t)p_y(s)\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)$$
-For $x=y$, one obtains :
+For $x=y$, one obtains:
 
 $$p_x(t) =\displaystyle\frac{1}{\displaystyle\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)}$$
+
+
+
+We are interested in approximating the encoding functions, $a_x$, by 
+
+$$a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i, $$
+where $\mathbf{\alpha_x} = (\alpha_{x,1}, \ldots, \alpha_{x,m}) \in \mathbb{R}^m$ are the expansion coefficients onto a basis of functions defined on $[0,T]$, $\{\phi_1, \ldots, \phi_m\}$, $m \geq 1$. 
+
+
+
+
+The main result (Deville, 1982) is that $\alpha = (\alpha_{1}, \ldots, \alpha_{K}) \in \mathbb{R}^{Km}$
+is the solution of the following eigen-value problem:
+
+$$F^{-1}G\alpha = \lambda\alpha, $$
+where $G$ and $F$ the matrix defined by: $$G = cov(\{V_{(x,i)}\}_{x\in S; i=1:m }),$$
+$$F = \mathbb{E}\left(\{F_{(x,i),(y,j)}\}_{x,y\in S ; i,j=1:m}\right)$$
+with the random variables $V_{(x,i)}$ and $F_{(x,i),(x,j)}$ defined by: $$V_{(x,i)} = \int_{0}^{T_{\max}}\phi_i(t)\mathbf{1}_xdt \ \ \ \ \mbox{and}\ \ \ \ 
+F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}_y dt$$
+
+
 
 
 
@@ -233,7 +255,7 @@ The optimal encoding is computed using:
 fmca <- compute_optimal_encoding(d_JK1T, b)
 ```
 
-The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G` and `V`.
+The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`.
 
 ```{r, echo=TRUE}
  barplot(fmca$eigenvalues, main = "Eigenvalues")
