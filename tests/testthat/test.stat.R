@@ -188,3 +188,15 @@ test_that("rep_large_ind works", {
   expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
 })
 
+
+
+test_that("plotData does not produce warnings", {
+  # simulate the Jukes Cantor models of nucleotides replacement.
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
+
+  expect_warning(plotData(d_JK), regexp = NA)
+})

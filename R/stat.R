@@ -338,6 +338,52 @@ statetable <- function(data_msm)
 }
 
 
+#' Plot categorical functional data
+#'
+#' @param data_msm  data.frame containing \code{id}, \code{time} and \code{state}
+#' @param addLabel If TRUE, add id labels
+#' @param addBorder If TRUE add black border to each individuals
+#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' # add a line with time Tmax at the end of each individuals
+#' d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
+#' 
+#' plotData(d_JKT)
+#'   
+#' @author Cristian Preda, Quentin Grimonprez
+#' 
+#' @export
+plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
+{
+  d_graph <- rep_large_ind(data_msm)
+
+  K <- max(data_msm$state)
+  d_graph$state = factor(d_graph$state, levels = 1:K)
+  
+  nInd <- length(unique(d_graph$id))
+  d_graph$id2 <- unclass(factor(d_graph$id))
+  
+  p <- ggplot() + 
+    scale_x_continuous(name = "time") + 
+    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "id2 - 0.5", ymax = "id2 + 0.5", fill = "state"), color = ifelse(addBorder, "black", NA), alpha = 0.7)
+  
+  if(addLabel)
+  {
+    p = p + scale_y_continuous(name = "id", breaks = 1:nInd)
+  }else{
+    p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
+  }
+    
+  p
+}
+
 
 # transform the data_msm format to a new format with 4 columns: id, t_stast, t_end, state.
 # usefull for ggplot
