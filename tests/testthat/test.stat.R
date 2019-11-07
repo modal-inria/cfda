@@ -198,5 +198,6 @@ test_that("plotData does not produce warnings", {
   d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
 
-  expect_warning(plotData(d_JK), regexp = NA)
+  expect_warning(plotData(d_JK, addLabel = TRUE, addBorder = TRUE), regexp = NA)
+  expect_warning(plotData(d_JK, addLabel = FALSE, addBorder = FALSE), regexp = NA)
 })
