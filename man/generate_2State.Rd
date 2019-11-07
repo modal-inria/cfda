@@ -10,7 +10,7 @@ generate_2State(n)
 \item{n}{number of individuals}
 }
 \value{
-a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
+a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 }
 \description{
 Generate data following a 2 states model

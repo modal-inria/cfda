@@ -2,7 +2,7 @@
 #'
 #' For each individual, compute the time spent in each state
 #'
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' @param K maximal number of state
 #'
 #' @return a vector of length \code{K} containing the total time spent in each state
@@ -85,7 +85,7 @@ boxplot.timeSpent <- function(x, ...)
 
 #' Extract the state of each individual at a given time
 #' 
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' @param t real
 #' 
 #' @return a vector containing the state of each individual at time t 
@@ -124,7 +124,7 @@ id_get_state <- function(x, t)
 
 #' Estimate probabilities to be in each state
 #' 
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' 
 #' @return A list of two elements:
 #' \itemize{
@@ -249,7 +249,7 @@ plot_pt_ribbon <- function(pt)
 
 #' Compute the number of jumps
 #' 
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' 
 #' @return A vector containing the number of jumps for each individual#' 
 #' 
@@ -316,7 +316,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #'
 #' Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.
 #'
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #'
 #' @return a vector of length \code{K} containing the total time spent in each state
 #'
@@ -340,7 +340,7 @@ statetable <- function(data_msm)
 
 #' Plot categorical functional data
 #'
-#' @param data_msm  data.frame containing \code{id}, \code{time} and \code{state}
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' @param addLabel If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
 #' 

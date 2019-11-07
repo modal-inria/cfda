@@ -7,7 +7,7 @@
 plotData(data_msm, addLabel = TRUE, addBorder = TRUE)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, \code{time} and \code{state}}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).}
 
 \item{addLabel}{If TRUE, add id labels}
 

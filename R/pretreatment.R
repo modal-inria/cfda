@@ -1,6 +1,6 @@
 #' Cut data to a maximal given time
 #'
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' @param Tmax max time considered
 #' 
 #' @return a data.frame with the same format as \code{data_msm} where each individual has \code{Tmax} as last time entry.

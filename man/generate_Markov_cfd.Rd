@@ -21,7 +21,7 @@ generate_Markov_cfd(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1,
 \item{Tmax}{maximal duration of trajectories}
 }
 \value{
-a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
+a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 }
 \description{
 Generate Markov Trajectories

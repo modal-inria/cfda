@@ -8,7 +8,7 @@
 #' @param Tmax maximal duration of trajectories
 #' 
 #' @return 
-#' a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
+#' a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -47,7 +47,7 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
 #' @param n number of individuals
 #'
 #' @return 
-#' a data.frame with 3 columns : \code{id}, id of the trajectory, \code{time}, time at chich a change occurs and \code{state}, new state.
+#' a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 #'
 #' @details 
 #' Let \eqn{\theta\sim \mathcal{U}[0, 1]}

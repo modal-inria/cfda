@@ -1,7 +1,7 @@
 #' Compute the optimal encodings for each state
 #'
 #'
-#' @param data_msm data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}}). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj is a basis create using \code{fda} package
 #'
 #' @return A list containing:

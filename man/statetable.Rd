@@ -7,7 +7,7 @@
 statetable(data_msm)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, \code{time} and \code{state} (see \code{\link{generate_Markov_cfd}})}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).}
 }
 \value{
 a vector of length \code{K} containing the total time spent in each state
