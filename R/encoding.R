@@ -133,35 +133,32 @@ compute_Uxij <- function(x, phi, K)
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
   
-  for(state in 1:K) 
+  for(u in 1:(nrow(x)-1))
   {
-    idx <- which(x$state == state)
-    for(u in idx)
+    state <- x[u, "state"]
+    for(i in 1:nBasis) 
     {
-      for(i in 1:nBasis) 
+      for(j in i:nBasis) # symmetry between i and j  
       {
-        for(j in i:nBasis) # symmetry between i and j  
+        
+        integral <- integrate(function(t) { 
+          eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+        }, lower = x[u, "time"], upper = x[u+1, "time"], 
+        stop.on.error = FALSE)$value
+        
+        aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
+        
+        
+        # when i == j, we are on the diagonal of the matrix, no symmetry to apply
+        if(i != j)
         {
-          if(u < nrow(x))
-          {
-            integral <- integrate(function(t) { 
-              eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-              }, lower = x[u, "time"], upper = x[u+1, "time"], 
-              stop.on.error = FALSE)$value
-            
-            aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
-
-            
-            # when i == j, we are on the diagonal of the matrix, no symmetry to apply
-            if(i != j)
-            {
-              aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
-            }
-          }
+          aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
         }
+        
       }
+      
     }
-
+    
   }
 
   return(aux)     
@@ -194,25 +191,21 @@ compute_Uxij <- function(x, phi, K)
 compute_Vxi <- function(x, phi, K) 
 {
   nBasis <- phi$basis$nbasis
-  aux = rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
-  for(state in 1:K) 
+  aux <- rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
+  
+  for(u in 1:(nrow(x)-1))
   {
-    idx <- which(x$state == state)
+    state = x[u, "state"]
     
     for(j in 1:nBasis)  # j = la base
     {
-      for(u in idx)
-      {
-        if(u < nrow(x))
-        {
-          aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
-            integrate(function(t){
-              eval.fd(t, phi[j])
-            }, lower = x[u, "time"], upper = x[u+1, "time"], 
-            stop.on.error = FALSE)$value
-        }
-      }
+      aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
+        integrate(function(t){
+          eval.fd(t, phi[j])
+        }, lower = x[u, "time"], upper = x[u+1, "time"], 
+        stop.on.error = FALSE)$value
     }
+    
   }
 
   return(aux)
