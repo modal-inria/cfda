@@ -26,7 +26,7 @@ test_that("compute_Time_Spent_intern works with a higher K", {
 test_that("compute_Time_Spent works", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
-  out <- compute_Time_Spent(dat, K = 3)
+  out <- compute_Time_Spent(dat)
   expectedOut <- rbind(c(1.5 + 1, 1, 2.5),
                        c(3, 3, 0))
   colnames(expectedOut) = 1:3
@@ -39,7 +39,7 @@ test_that("compute_Time_Spent works", {
 test_that("boxplot.timeSpent does not produce warnings", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
-  out <- compute_Time_Spent(dat, K = 3)
+  out <- compute_Time_Spent(dat)
 
   expect_warning(boxplot(out), regexp = NA)
   

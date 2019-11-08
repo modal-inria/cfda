@@ -3,7 +3,6 @@
 #' For each individual, compute the time spent in each state
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
-#' @param K maximal number of state
 #'
 #' @return a vector of length \code{K} containing the total time spent in each state
 #'
@@ -18,20 +17,20 @@
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
-#' timeSpent <- compute_Time_Spent(d_JK2, K)
+#' timeSpent <- compute_Time_Spent(d_JK2)
 #' 
 #' @seealso \link{boxplot.timeSpent}
 #' 
 #' @author Cristian Preda
 #'
 #' @export
-compute_Time_Spent <- function(data_msm, K = max(data_msm$state))
+compute_Time_Spent <- function(data_msm)
 {
   ## check parameters
   checkDataMsm(data_msm)
-  if((length(K) != 1) || (K <= 0))
-    stop("K must be a positive integer.")
   ## end check
+  
+  K <- max(data_msm$state)
   
   res <- by(data_msm, data_msm$id, function(x){compute_Time_Spent_intern(x, K)})
   out <- do.call(rbind, res)
@@ -74,7 +73,7 @@ compute_Time_Spent_intern <- function(data_msm, K)
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
-#' timeSpent <- compute_Time_Spent(d_JK2, K)
+#' timeSpent <- compute_Time_Spent(d_JK2)
 #' 
 #' # plot the result
 #' boxplot(timeSpent)

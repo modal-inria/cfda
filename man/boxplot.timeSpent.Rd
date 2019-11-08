@@ -25,7 +25,7 @@ d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 
 d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 
 # compute time spent by each id in each state
-timeSpent <- compute_Time_Spent(d_JK2, K)
+timeSpent <- compute_Time_Spent(d_JK2)
 
 # plot the result
 boxplot(timeSpent)

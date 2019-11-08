@@ -4,12 +4,10 @@
 \alias{compute_Time_Spent}
 \title{Compute time spent in each state}
 \usage{
-compute_Time_Spent(data_msm, K = max(data_msm$state))
+compute_Time_Spent(data_msm)
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).}
-
-\item{K}{maximal number of state}
 }
 \value{
 a vector of length \code{K} containing the total time spent in each state
@@ -28,7 +26,7 @@ d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 
 d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 
 # compute time spent by each id in each state
-timeSpent <- compute_Time_Spent(d_JK2, K)
+timeSpent <- compute_Time_Spent(d_JK2)
 
 }
 \seealso{
