@@ -4,7 +4,7 @@
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #'
-#' @return a vector of length \code{K} containing the total time spent in each state
+#' @return a matrix with \code{K} columns containing the total time spent in each state for each individuals
 #'
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -21,7 +21,7 @@
 #' 
 #' @seealso \link{boxplot.timeSpent}
 #' 
-#' @author Cristian Preda
+#' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
 compute_Time_Spent <- function(data_msm)
@@ -88,6 +88,40 @@ boxplot.timeSpent <- function(x, ...)
     geom_boxplot() + labs(x = "State", y = "Time Spent", fill = "State")
 }
 
+
+#' Compute duration of individuals
+#'
+#' For each individual, compute the duration
+#'
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
+#'
+#' @return a vector containing the duration of each trajectories
+#'
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#'
+#' # compute duration of each individual
+#' duration <- compute_Duration(d_JK)
+#' 
+#' 
+#' @author Cristian Preda, Quentin Grimonprez
+#'
+#' @export
+compute_Duration <- function(data_msm)
+{
+  ## check parameters
+  checkDataMsm(data_msm)
+  ## end check
+  
+  out <- tapply(data_msm$time, as.factor(data_msm$id), function(x) diff(range(x)))
+
+  return(out)
+}
 
 #' Extract the state of each individual at a given time
 #' 

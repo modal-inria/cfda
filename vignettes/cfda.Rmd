@@ -60,7 +60,13 @@ head(d_JK, 10)
 The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different indiviuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
 
 
-Some methods requires that the end of each individuals is $T_{\max}$, this can be done with the following function:
+We can compute the duration of each trajectory.
+```{r, echo=TRUE}
+duration <- compute_Duration(d_JK)
+head(duration)
+```
+
+All individuals has a different length. Some methods require that the end time of each individual is the same ($T_{\max}$), this can be done with the following function:
 
 ```{r cutT, echo=TRUE}
 d_JKT <- msm2msmTmax(d_JK, Tmax = Tmax)

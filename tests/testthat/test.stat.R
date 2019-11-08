@@ -46,6 +46,16 @@ test_that("boxplot.timeSpent does not produce warnings", {
 })
 
 
+test_that("compute_Duration works", {
+  dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 7, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
+  
+  out <- compute_Duration(dat)
+  expectedOut <- c("1" = 7, "2" = 6)
+  
+  expect_equivalent(out, expectedOut)
+})
+
+
 test_that("id_get_state returns the right state", {
   dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))
 
