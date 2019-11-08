@@ -88,7 +88,7 @@ completeStatetable <- function(aux)
 #' time spent in this state. Each arrow represents the probability of transtion between states.
 #'
 #' @param x output of \code{\link{estimation_Markov}} function
-#' @param ... not used
+#' @param ... parameters of \code{plotmat} function from \code{diagram} package
 #' 
 #' @examples
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -100,6 +100,7 @@ completeStatetable <- function(aux)
 #' # estimation  
 #' mark <- estimation_Markov(d_JK)
 #' 
+#' # transition graph
 #' plot(mark)
 #'
 #' @author Cristian Preda
@@ -110,5 +111,5 @@ plot.Markov <- function(x, ...)
   plotmat(t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, box.type = "circle", 
           box.col = "yellow", relsize = 0.9, arr.length = 0.2, lcol = "black", dtext = 0.3, arr.pos = 0.5,
           name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
-                     rep(")", ncol(x$Q)), sep = ""))
+                     rep(")", ncol(x$Q)), sep = ""), ...)
 }

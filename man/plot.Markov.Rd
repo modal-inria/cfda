@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{output of \code{\link{estimation_Markov}} function}
 
-\item{...}{not used}
+\item{...}{parameters of \code{plotmat} function from \code{diagram} package}
 }
 \description{
 Plot the transition graph between the different states. A node corresponds to a state with the mean 
@@ -25,6 +25,7 @@ d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax =
 # estimation  
 mark <- estimation_Markov(d_JK)
 
+# transition graph
 plot(mark)
 
 }
