@@ -22,6 +22,12 @@
 #' @export
 msm2msmTmax <- function(data_msm, Tmax)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  if(!is.numeric(Tmax) || (length(Tmax) != 1))
+    stop("Tmax must be a real.")
+  ## end check
+  
   do.call(rbind, by(data_msm, data_msm$id, function(x){cut_cfd(x, Tmax)}))
 }
 

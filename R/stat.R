@@ -27,6 +27,12 @@
 #' @export
 compute_Time_Spent <- function(data_msm, K = max(data_msm$state))
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  if((length(K) != 1) || (K <= 0))
+    stop("K must be a positive integer.")
+  ## end check
+  
   res <- by(data_msm, data_msm$id, function(x){compute_Time_Spent_intern(x, K)})
   out <- do.call(rbind, res)
   colnames(out) = 1:K
@@ -105,6 +111,12 @@ boxplot.timeSpent <- function(x, ...)
 #' @export
 get_state <- function(data_msm, t) 
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  if(!is.numeric(t) || (length(t) != 1))
+    stop("t must be a real.")
+  ## end check
+  
   out <- by(data_msm, data_msm$id, function(x){id_get_state(x, t)})
   out2 <- as.vector(out)
   names(out2) = names(out)
@@ -151,6 +163,10 @@ id_get_state <- function(x, t)
 #' @export   
 estimate_pt <- function(data_msm)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  ## end check
+  
   t_jumps <- sort(unique(data_msm$time)) 
   n <- length(unique(data_msm$id))
   states <- unique(data_msm[,"state"])  
@@ -198,6 +214,10 @@ estimate_pt <- function(data_msm)
 #' @export
 plot.pt <- function(x, ribbon = FALSE, ...)
 {
+  ## check parameters
+  checkLogical(ribbon, "ribbon")
+  ## end check
+  
   if(ribbon)
     p <- plot_pt_ribbon(x)
   else
@@ -269,6 +289,10 @@ plot_pt_ribbon <- function(pt)
 #' @export  
 compute_number_jumps <- function(data_msm)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  ## end check
+  
   out <- by(data_msm, data_msm$id, function(x){length(x$time)-1})
   nom <- names(out)
   out <- as.vector(out)
@@ -334,6 +358,10 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' @export
 statetable <- function(data_msm)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  ## end check
+  
   statetable.msm(as.numeric(data_msm$state), data_msm$id)
 }
 
@@ -362,6 +390,12 @@ statetable <- function(data_msm)
 #' @export
 plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  checkLogical(addLabel, "addLabel")
+  checkLogical(addBorder, "addBorde")
+  ## end check
+  
   d_graph <- rep_large_ind(data_msm)
 
   K <- max(data_msm$state)

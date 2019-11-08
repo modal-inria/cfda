@@ -24,6 +24,22 @@
 #' @export
 generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1)
 {
+  ## check parameters
+  if((length(n) != 1) || !is.whole.number(n))
+    stop("n must be a positive integer.")
+  if((length(K) != 1) || !is.whole.number(K) || (K <= 1))
+    stop("K must be an integer > 1.")
+  if(!is.numeric(Tmax) || (length(Tmax) != 1))
+    stop("Tmax must be a real.")
+  if(!is.matrix(Q) || (nrow(Q) != K) || (nrow(Q) != K) || any(Q < 0))
+    stop("Q must be a matrix of size K x K of positive real.")
+  if(!is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
+     stop("lambda must be a vector of length K of positive real.")
+  if(!is.vector(pi_0) || (length(pi_0) != K) || any(pi_0 < 0))
+    stop("pi_0 must be a vector of length K of positive real.")  
+  ## end check
+  
+  
   d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
   
   for(i in 1:n)
@@ -59,6 +75,11 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
 #' @export
 generate_2State <- function(n)
 {
+  ## check parameters
+  if((length(n) != 1) || !is.whole.number(n))
+    stop("n must be a positive integer.")
+  ## end check
+  
   temps <- rep(0, 2*n)
   temps[(1:n*2)] = runif(n)
   d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(1:2, n))

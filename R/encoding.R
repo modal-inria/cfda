@@ -47,6 +47,13 @@
 #' @export
 compute_optimal_encoding <- function(data_msm, basisobj)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  checkDataEndTmax(data_msm)
+  if(!is.basis(basisobj))
+    stop("basisobj is not a basis object.")
+  ## end check
+  
   Tmax <- max(data_msm$time)
   
   K <- length(unique(data_msm$state))
@@ -288,6 +295,16 @@ plot.fmca <- function(x, ...)
 #' @export
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
 {
+  ## check parameters
+  if(class(x) != "fmca")
+    stop("x must be a fmca object.")
+  checkLogical(addNames, "addNames")
+  if(length(comp) != 2)
+    stop("comp must be a vector of positive integers of length 2.")
+  if(any(!is.whole.number(comp)) || any(comp < 0))
+    stop("comp must be a vector of positive integers of length 2.")
+  ##
+  
   df <- as.data.frame(x$pc)
   df$name = 1:nrow(x$pc)
   

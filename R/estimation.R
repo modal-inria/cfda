@@ -25,6 +25,10 @@
 #' @export
 estimation_Markov <- function(data_msm)
 {
+  ## check parameters
+  checkDataMsm(data_msm)
+  ## end check
+  
   aux <- statetable.msm(data_msm$state, data_msm$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
 
   # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
