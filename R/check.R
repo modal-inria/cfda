@@ -3,17 +3,20 @@
 checkDataMsm <- function(data_msm)
 {
   if(!is.data.frame(data_msm))
-    stop("data_msm must be a data.frame")
+    stop("data_msm must be a data.frame.")
     
-  requiredColNames <- c("id", "time", "state", "aaa", "bb")
+  requiredColNames <- c("id", "time", "state")
   missColNames <-  !(requiredColNames %in% colnames(data_msm))
   if(any(missColNames))
-    stop(paste0("Missing columns in data_msm: ", paste(requiredColNames[missColNames], collapse = ", ")))
+    stop(paste0("Missing columns in data_msm: ", paste(requiredColNames[missColNames], collapse = ", "), "."))
+  
+  if(nrow(data_msm) <= 1)
+    stop("There is only one row or less.")
   
   if(any(is.na(data_msm)))
     stop("There is some missing values.")
   
-  if(!is.whole.number(data_msm$state) || any(data_msm$state <= 0))
+  if(any(!is.whole.number(data_msm$state)) || any(data_msm$state <= 0))
     stop("state must be strictly positive integer.")
   
   invisible(return(NULL))
@@ -51,5 +54,5 @@ checkLogical <- function(x, paramName)
 # @author Quentin Grimonprez
 is.whole.number <- function(x)
 {
-  all(x == as.integer(x))
+  x == as.integer(x)
 }
