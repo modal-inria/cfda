@@ -2,7 +2,7 @@
 % Please edit documentation in R/stat.R
 \name{hist.njump}
 \alias{hist.njump}
-\title{Compute the number of jumps}
+\title{Plot the number of jumps}
 \usage{
 \method{hist}{njump}(x, breaks = NULL, ...)
 }
@@ -13,11 +13,8 @@
 
 \item{...}{not used}
 }
-\value{
-A vector containing the number of jumps for each individual#'
-}
 \description{
-Compute the number of jumps
+Plot the number of jumps
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

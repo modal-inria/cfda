@@ -17,14 +17,17 @@ A list containing:
   \item eigenvalues eigenvalues
   \item alpha optimal encoding coefficients
   \item pc principal components
-  \item F
-  \item V 
+  \item F matrix containing the \eqn{F_{(x,i)(y,j)}}
+  \item V matrix containing the \eqn{V_{(x,i)}}
   \item G covariance matrix of \code{V}
   \item basisobj \code{basisobj} parameter
 }
 }
 \description{
 Compute the optimal encodings for each state
+}
+\details{
+see the vignette for the mathematical background: \code{vignette("cfda", package = "cfda")}
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

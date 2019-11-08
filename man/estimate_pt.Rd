@@ -28,6 +28,7 @@ d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 
 
 d_JK2 <- msm2msmTmax(d_JK, 10)
 
+# estimate probabilities
 estimate_pt(d_JK2)
 
 }

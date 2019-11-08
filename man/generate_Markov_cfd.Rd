@@ -24,7 +24,7 @@ generate_Markov_cfd(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1,
 a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 }
 \description{
-Generate Markov Trajectories
+Simulate individuals from a Markov process defined by a transition matrix, time spent in each time and initial probabilities.
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

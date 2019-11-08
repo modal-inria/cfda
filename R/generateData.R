@@ -1,5 +1,7 @@
 #' Generate Markov Trajectories
 #' 
+#' Simulate individuals from a Markov process defined by a transition matrix, time spent in each time and initial probabilities.
+#' 
 #' @param n number of trajectories to generate
 #' @param K number of states
 #' @param Q matrix which indicates the allowed transitions in the continuous-time Markov chain, and optionally also the initial values of those transitions

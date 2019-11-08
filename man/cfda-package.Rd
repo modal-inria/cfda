@@ -7,4 +7,9 @@
 \description{
 Categorical Functional Data Analysis
 }
+\examples{
+# See the vignette for a detailled example and mathematical background
+vignette("cfda")
+
+}
 \keyword{package}

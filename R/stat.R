@@ -17,7 +17,7 @@
 #' # cut at Tmax = 8
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
-#' #  compute time spent by each id in each state
+#' # compute time spent by each id in each state
 #' timeSpent <- compute_Time_Spent(d_JK2, K)
 #' 
 #' @seealso \link{boxplot.timeSpent}
@@ -73,9 +73,10 @@ compute_Time_Spent_intern <- function(data_msm, K)
 #' # cut at Tmax = 8
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
-#' #  compute time spent by each id in each state
+#' # compute time spent by each id in each state
 #' timeSpent <- compute_Time_Spent(d_JK2, K)
 #' 
+#' # plot the result
 #' boxplot(timeSpent)
 #' 
 #' @author Quentin Grimonprez
@@ -104,6 +105,7 @@ boxplot.timeSpent <- function(x, ...)
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
+#' # get the state of each individuals at time t = 6
 #' get_state(d_JK, 6)
 #' 
 #' @author Cristian Preda
@@ -154,6 +156,7 @@ id_get_state <- function(x, t)
 #' 
 #' d_JK2 <- msm2msmTmax(d_JK, 10)
 #' 
+#' # estimate probabilities
 #' estimate_pt(d_JK2)
 #' 
 #' @seealso \link{plot.pt}
@@ -269,9 +272,11 @@ plot_pt_ribbon <- function(pt)
 
 #' Compute the number of jumps
 #' 
+#' For each individual, compute the number of jumps performed
+#' 
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
 #' 
-#' @return A vector containing the number of jumps for each individual#' 
+#' @return A vector containing the number of jumps for each individual 
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -302,13 +307,13 @@ compute_number_jumps <- function(data_msm)
   return(out)
 }
 
-#' Compute the number of jumps
+#' Plot the number of jumps
+#' 
 #' 
 #' @param x output of \code{\link{compute_number_jumps}} function
 #' @param breaks number of breaks. If not given use the sturges rule
 #' @param ... not used
 #' 
-#' @return A vector containing the number of jumps for each individual#' 
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -372,6 +377,8 @@ statetable <- function(data_msm)
 #' @param addLabel If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
 #' 
+#' @return
+#' each row represent an individual over [0:Tmax]. The color at a given time gives the state of the individual. 
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 

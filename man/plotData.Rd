@@ -13,6 +13,9 @@ plotData(data_msm, addLabel = TRUE, addBorder = TRUE)
 
 \item{addBorder}{If TRUE add black border to each individuals}
 }
+\value{
+each row represent an individual over [0:Tmax]. The color at a given time gives the state of the individual.
+}
 \description{
 Plot categorical functional data
 }
