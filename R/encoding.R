@@ -3,6 +3,7 @@
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj is a basis create using \code{fda} package
+#' @param nCores number of Cores used for parallelization. Default is the half of cores.
 #'
 #' @return A list containing:
 #' \itemize{
@@ -32,7 +33,7 @@
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
-#' encoding <- compute_optimal_encoding(d_JK2, b)
+#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
 #' 
 #' # plot the optimal encoding
 #' plot(encoding)
@@ -48,14 +49,19 @@
 #' Deville J.C. (1982) Analyse de donn\'ees chronologiques qualitatives: comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
-compute_optimal_encoding <- function(data_msm, basisobj)
+compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)))
 {
+
   ## check parameters
   checkDataMsm(data_msm)
   checkDataEndTmax(data_msm)
   if(!is.basis(basisobj))
     stop("basisobj is not a basis object.")
+  if(!is.whole.number(nCores) || (nCores < 1))
+    stop("nCores must be an integer > 0.")
   ## end check
+  
+  nCore <- min(max(1, nCores), detectCores())
   
   Tmax <- max(data_msm$time)
   
@@ -64,12 +70,25 @@ compute_optimal_encoding <- function(data_msm, basisobj)
   I <- diag(rep(1, nBasis))
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
+  # declare parallelization
+  cl <- makeCluster(nCores)
+  registerDoParallel(cl)
+  
+  
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  res <- by(data_msm, data_msm$id, function(x){compute_Vxi(x, phi, K)})
+  res <- foreach(i = unique(data_msm$id))%dopar%{
+    return(compute_Vxi(data_msm[data_msm$id == i, ], phi, K))
+  }
   V <- do.call(rbind, res)
   G = cov(V)
   #print("matrix G : computed !")
-  res <- by(data_msm, data_msm$id, function(x){compute_Uxij(x, phi, K)})
+  res <- foreach(i = unique(data_msm$id))%dopar%{
+    return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K))
+  } 
+    
+  # stop parallelization
+  stopCluster(cl)
+  
   Fval <- do.call(rbind, res)
   Fval = colMeans(Fval)
   Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K bloks de taille nBasis*nBasis sur la diagonale
@@ -106,6 +125,7 @@ compute_optimal_encoding <- function(data_msm, basisobj)
 
   out <- list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V, basisobj = basisobj)
   class(out) = "fmca"
+  
   
   return(out)
 }
@@ -243,7 +263,7 @@ compute_Vxi <- function(x, phi, K)
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
-#' encoding <- compute_optimal_encoding(d_JK2, b)
+#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
 #' 
 #' plot(encoding)
 #' 
@@ -289,7 +309,7 @@ plot.fmca <- function(x, ...)
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
-#' encoding <- compute_optimal_encoding(d_JK2, b)
+#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
 #' 
 #' plotComponent(encoding, comp = c(1, 2))
 #' 

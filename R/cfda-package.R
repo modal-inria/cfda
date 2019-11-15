@@ -1,8 +1,6 @@
-#' @import diagram
-#' @import fda
-#' @import ggplot2
-#' @import msm
-#' @import mgcv
+#' @import diagram doParallel fda ggplot2 msm mgcv 
+#' @importFrom parallel makeCluster stopCluster detectCores
+#' @importFrom foreach foreach %dopar%
 #' @importFrom stats cov integrate rexp runif
 #' @importFrom graphics boxplot
 #' 
