@@ -74,25 +74,34 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  cl <- makeCluster(nCores)
-  registerDoParallel(cl)
+  if(nCore > 1)
+  {
+    cl <- makeCluster(nCores)
+    registerDoParallel(cl)
+  }else{
+    registerDoSEQ()
+  }
+
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  res <- foreach(i = unique(data_msm$id))%dopar%{
+  V <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
     return(compute_Vxi(data_msm[data_msm$id == i, ], phi, K, ...))
   }
-  V <- do.call(rbind, res)
+  rownames(V) = NULL
   G = cov(V)
-  #print("matrix G : computed !")
-  res <- foreach(i = unique(data_msm$id))%dopar%{
+  
+  Fval <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
     return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...))
   } 
     
   # stop parallelization
-  stopCluster(cl)
+  if(nCore > 1)
+  {
+    stopCluster(cl)
+  }
   
-  Fval <- do.call(rbind, res)
+  # create F matrix
   Fval = colMeans(Fval)
   Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K blocs de taille nBasis*nBasis sur la diagonale
   for(i in 1:K)
@@ -101,6 +110,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
 
+  
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
   invF05 <- solve(F05)

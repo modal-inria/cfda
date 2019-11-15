@@ -3,7 +3,7 @@
 \docType{package}
 \name{cfda-package}
 \alias{cfda-package}
-\title{cfda}
+\title{Categorical Functional Data Analysis}
 \description{
 Categorical Functional Data Analysis
 }
