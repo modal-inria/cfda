@@ -2,8 +2,9 @@
 #'
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
-#' @param basisobj is a basis create using \code{fda} package
+#' @param basisobj is a basis create using \code{fda} package.
 #' @param nCores number of Cores used for parallelization. Default is the half of cores.
+#' @param ... parameters for \code{\link{integrate}} function.
 #'
 #' @return A list containing:
 #' \itemize{
@@ -49,7 +50,7 @@
 #' Deville J.C. (1982) Analyse de donn\'ees chronologiques qualitatives: comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
-compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)))
+compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)), ...)
 {
 
   ## check parameters
@@ -77,13 +78,13 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
   res <- foreach(i = unique(data_msm$id))%dopar%{
-    return(compute_Vxi(data_msm[data_msm$id == i, ], phi, K))
+    return(compute_Vxi(data_msm[data_msm$id == i, ], phi, K, ...))
   }
   V <- do.call(rbind, res)
   G = cov(V)
   #print("matrix G : computed !")
   res <- foreach(i = unique(data_msm$id))%dopar%{
-    return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K))
+    return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...))
   } 
     
   # stop parallelization
@@ -139,6 +140,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 # @param x one individual (id, time, state) 
 # @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
 # @param K number of state
+# @param ... parameters for integrate function
 #
 # @return vector of size K*nBasis*nBasis: U[(x=1,i=1),(x=1,j=1)], 
 # U[(x=1,i=1), (x=1,j=2)],..., U[(x=1,i=1), (x=1,j=nBasis)], U[(x=2,i=1), (x=2,j=1)], U[(x=2,i=1), (x=2,j=2)], ...
@@ -158,7 +160,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 # compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Uxij <- function(x, phi, K)
+compute_Uxij <- function(x, phi, K, ...)
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
@@ -174,7 +176,7 @@ compute_Uxij <- function(x, phi, K)
         integral <- integrate(function(t) { 
           eval.fd(t, phi[i]) * eval.fd(t, phi[j])
         }, lower = x[u, "time"], upper = x[u+1, "time"], 
-        stop.on.error = FALSE)$value
+        stop.on.error = FALSE, ...)$value
         
         aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
         
@@ -200,6 +202,8 @@ compute_Uxij <- function(x, phi, K)
 # @param x one individual (id, time, state) 
 # @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
 # @param K number of state
+# @param ... parameters for integrate function
+#
 # @return vector of size K*nBasis: V[(x=1,i=1)], 
 # V[(x=1,i=2)],..., V[(x=1,i=nBasis)], V[(x=2,i=1)], V[(x=2,i=2)], ...
 # 
@@ -218,7 +222,7 @@ compute_Uxij <- function(x, phi, K)
 # compute_Vxi(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda
-compute_Vxi <- function(x, phi, K) 
+compute_Vxi <- function(x, phi, K, ...) 
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
@@ -233,7 +237,7 @@ compute_Vxi <- function(x, phi, K)
         integrate(function(t){
           eval.fd(t, phi[j])
         }, lower = x[u, "time"], upper = x[u+1, "time"], 
-        stop.on.error = FALSE)$value
+        stop.on.error = FALSE, ...)$value
     }
     
   }
