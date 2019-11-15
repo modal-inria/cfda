@@ -274,6 +274,12 @@ The resulting encoding can be plotted:
 ```{r, echo=TRUE}
 plot(fmca)
 ```
+or extracted as a \code{fd} object (or matrix):
+```{r, echo=TRUE}
+encoding <- getEncoding(fmca, fdObject = TRUE)
+```
+
+
 
 Plot the two first components.
 ```{r, echo=TRUE}

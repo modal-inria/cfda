@@ -1,5 +1,7 @@
 #' Compute the optimal encodings for each state
 #'
+#' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
+#'
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj is a basis create using \code{fda} package.
@@ -47,7 +49,7 @@
 #' @author Cristian Preda
 #' 
 #' @references 
-#' Deville J.C. (1982) Analyse de donn\'ees chronologiques qualitatives: comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+#' Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
 compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)), ...)
@@ -269,6 +271,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
 #' 
+#' # plot the optimal encoding
 #' plot(encoding)
 #' 
 #' @seealso \link{plotComponent}
@@ -276,19 +279,72 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @export
 plot.fmca <- function(x, ...)
 {
-  fdObj <- fd(x$alpha[[1]], x$basisobj)
-  rangex <- fdObj$basis$rangeval
-  nBasis <- fdObj$basis$nbasis
-  nx <- max(c(501, 10 * nBasis + 1))
-  y <- seq(rangex[1], rangex[2], length = nx)
-  
-  fdmat <- eval.fd(y, fdObj)
-  df <- data.frame(x = rep(y, ncol(fdmat)), y = as.vector(fdmat), State = factor(rep(1:ncol(fdmat), each = nx), levels = 1:ncol(fdmat)))
+  fdmat <- getEncoding(x, fdObject = FALSE)
+  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(1:ncol(fdmat$y), each = nrow(fdmat$y)), levels = 1:ncol(fdmat$y)))
   
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +
     labs(x = "Time", y = "a_x(t)", title = "First eigen optimal encoding")
 }
+
+
+#' Extract the computed encoding
+#'
+#' Extract the optimal encoding as an \code{fd} object or as a matrix
+#' 
+#' @param x Output of \code{\link{compute_optimal_encoding}}
+#' @param fdObject If TRUE returns a \code{fd} object else a matrix
+#' @param nx (Only if \code{fdObject = TRUE}) Number of points to evaluate the encoding
+#'
+#' @return a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing the encoding of the state and \code{x}, the vector with time values.
+#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' Tmax <- 10
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#'
+#' # create basis object
+#' m <- 10
+#' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+#' 
+#' # compute encoding
+#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
+#' 
+#' # extract the encoding
+#' encodFd <- getEncoding(encoding, fdObject = TRUE)
+#' encodMat <- getEncoding(encoding, nx = 200)
+#' 
+#' @author Cristian Preda
+#'
+#' @export
+getEncoding <- function(x, fdObject = FALSE, nx = NULL)
+{
+  fdObj <- fd(x$alpha[[1]], x$basisobj)
+  
+  if(fdObject)
+  {
+    return(fdObj)
+  }else{
+    rangex <- fdObj$basis$rangeval
+    nBasis <- fdObj$basis$nbasis
+    
+    if(is.null(nx))
+      nx = max(501, 10 * nBasis + 1)
+    
+    timeVal <- seq(rangex[1], rangex[2], length = nx)
+    
+    fdmat <- eval.fd(timeVal, fdObj)
+    
+    return(list(x = timeVal, y = fdmat))
+  }
+
+}
+
 
 
 #' Plot Components

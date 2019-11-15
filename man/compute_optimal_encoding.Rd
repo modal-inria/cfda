@@ -29,7 +29,7 @@ A list containing:
 }
 }
 \description{
-Compute the optimal encodings for each state
+Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 }
 \details{
 see the vignette for the mathematical background: \code{vignette("cfda", package = "cfda")}
@@ -58,7 +58,7 @@ plotComponent(encoding, comp = c(1, 2))
 
 }
 \references{
-Deville J.C. (1982) Analyse de donn\'ees chronologiques qualitatives: comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 }
 \seealso{
 \link{plot.fmca} \link{plotComponent}

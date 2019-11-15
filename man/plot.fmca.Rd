@@ -30,6 +30,7 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b, nCores = 2)
 
+# plot the optimal encoding
 plot(encoding)
 
 }
