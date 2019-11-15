@@ -92,37 +92,37 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   Fval <- do.call(rbind, res)
   Fval = colMeans(Fval)
-  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K bloks de taille nBasis*nBasis sur la diagonale
+  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K blocs de taille nBasis*nBasis sur la diagonale
   for(i in 1:K)
   {
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
-  #print("matrix F : computed !")
 
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
+  invF05 <- solve(F05)
   #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
-  res <- eigen(solve(t(F05)) %*% G %*% solve(F05))
+  res <- eigen(t(invF05) %*% G %*% invF05)
 
   # les vecteurs propres (qui donneent les coeffs des m=nBasis codages, pour chaque val propre)
   # je les mets sous la forme d'une liste de matrices de taille m x K. La premiere matrice
   # correspond au premier vecteur propre. ce vecteur (1ere colonne dans res$vectors) contient
-  # les coefs du codage pour l'état 1 sur les premières m positions, ensuite pour l'état 2 sur
+  # les coefs du codage pour l'état 1 sur les premières m (=nBasis) positions, ensuite pour l'état 2 sur
   # m positions et enfin pour le k-eme état. Je mets cette première colonne sous forme de
   # matrice et les coefs sont sous forme de colonnes de taille m
 
   # met la matrice de vecteurs propres comme une liste
 
   # aux1 = split(res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
-  aux1 = split(solve(F05) %*% res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
+  aux1 = split(invF05 %*% res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
 
   # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
   # 2eme col les coefs pour état 2, etc
 
   aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K))})
 
-  pc <- V %*% (solve(F05) %*% res$vectors)
+  pc <- V %*% (invF05 %*% res$vectors)
 
   out <- list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V, basisobj = basisobj)
   class(out) = "fmca"
