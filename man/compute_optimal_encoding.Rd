@@ -10,22 +10,22 @@ compute_optimal_encoding(data_msm, basisobj, nCores = max(1,
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
 
-\item{basisobj}{is a basis create using \code{fda} package.}
+\item{basisobj}{basis created using the \code{fda} package.}
 
-\item{nCores}{number of Cores used for parallelization. Default is the half of cores.}
+\item{nCores}{number of cores used for parallelization. Default is the half of cores.}
 
 \item{...}{parameters for \code{\link{integrate}} function.}
 }
 \value{
 A list containing:
 \itemize{
-  \item eigenvalues eigenvalues
-  \item alpha optimal encoding coefficients
-  \item pc principal components
-  \item F matrix containing the \eqn{F_{(x,i)(y,j)}}
-  \item V matrix containing the \eqn{V_{(x,i)}}
-  \item G covariance matrix of \code{V}
-  \item basisobj \code{basisobj} parameter
+  \item \code{eigenvalues} eigenvalues
+  \item \code{alpha} optimal encoding coefficients
+  \item \code{pc} principal components
+  \item \code{F} matrix containing the \eqn{F_{(x,i)(y,j)}}
+  \item \code{V} matrix containing the \eqn{V_{(x,i)}}
+  \item \code{G} covariance matrix of \code{V}
+  \item \code{basisobj} \code{basisobj} input parameter
 }
 }
 \description{
@@ -61,8 +61,8 @@ plotComponent(encoding, comp = c(1, 2))
 Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 }
 \seealso{
-\link{plot.fmca} \link{plotComponent}
+\link{plot.fmca} \link{plotComponent} \link{getEncoding}
 }
 \author{
-Cristian Preda
+Cristian Preda, Quentin Grimonprez
 }
