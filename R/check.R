@@ -17,7 +17,7 @@ checkDataMsm <- function(data_msm)
     stop("There is some missing values.")
   
   if(any(!is.whole.number(data_msm$state)) || any(data_msm$state <= 0))
-    stop("state must be strictly positive integer.")
+    stop("state must be a strictly positive integer.")
   
   invisible(return(NULL))
 }
@@ -32,7 +32,7 @@ checkDataEndTmax <- function(data_msm)
   nLastTime <- length(unique(lastTime))
   
   if(nLastTime != 1)
-    stop("Each individual must finished by the same time value.")
+    stop("Each individual must end with the same time value.")
   
   invisible(return(NULL))
 }

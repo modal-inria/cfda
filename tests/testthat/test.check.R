@@ -19,7 +19,7 @@ test_that("checkDataMsm works", {
   expect_error(checkDataMsm(df), "There is some missing values.")
   
   df <- data.frame(id = 1:2, time = 1:2, state = 0:1)
-  expect_error(checkDataMsm(df), "state must be strictly positive integer.")
+  expect_error(checkDataMsm(df), "state must be a strictly positive integer.")
   
   df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
   expect_silent(checkDataMsm(df))
@@ -39,7 +39,7 @@ test_that("is.whole.number works", {
 
 test_that("checkDataEndTmax works", {
   df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
-  expect_error(checkDataEndTmax(df), "Each individual must finished by the same time value.")
+  expect_error(checkDataEndTmax(df), "Each individual must end with the same time value.")
   
   df <- data.frame(id = 1:2, time = rep(1, 2), state = 1:2)
   expect_silent(checkDataEndTmax(df))
