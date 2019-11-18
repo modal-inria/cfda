@@ -308,6 +308,7 @@ plot_pt_ribbon <- function(pt)
 #' For each individual, compute the number of jumps performed
 #' 
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
+#' @param countDuplicated if \code{TRUE}, jumps in the same state are counted as jump
 #' 
 #' @return A vector containing the number of jumps for each individual 
 #' 
@@ -318,20 +319,22 @@ plot_pt_ribbon <- function(pt)
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
+#' # compute the number of jumps
 #' nJump <- compute_number_jumps(d_JK)
 #' 
 #' @seealso \link{hist.njump}
 #' 
-#' @author Cristian Preda
+#' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export  
-compute_number_jumps <- function(data_msm)
+compute_number_jumps <- function(data_msm, countDuplicated = TRUE)
 {
   ## check parameters
   checkDataMsm(data_msm)
+  checkLogical(countDuplicated, "countDuplicated")
   ## end check
   
-  out <- by(data_msm, data_msm$id, function(x){length(x$time)-1})
+  out <- by(data_msm, data_msm$id, function(x){compute_number_jumpsIntern(x, countDuplicated)})
   nom <- names(out)
   out <- as.vector(out)
   names(out) = nom
@@ -339,6 +342,21 @@ compute_number_jumps <- function(data_msm)
   
   return(out)
 }
+
+# @param state vector with state, ordered by time
+# @param countDuplicated if TRUE jump in the same state are counted
+# @author Quentin Grimonprez
+compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
+{
+  if(countDuplicated)
+  {
+    return(length(x$state)-1)
+  }else{
+    out <- rle(x$state[order(x$time)])$values
+    return(length(out)-1)
+  }
+}
+
 
 #' Plot the number of jumps
 #' 

@@ -4,10 +4,12 @@
 \alias{compute_number_jumps}
 \title{Compute the number of jumps}
 \usage{
-compute_number_jumps(data_msm)
+compute_number_jumps(data_msm, countDuplicated = TRUE)
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).}
+
+\item{countDuplicated}{if \code{TRUE}, jumps in the same state are counted as jump}
 }
 \value{
 A vector containing the number of jumps for each individual
@@ -22,6 +24,7 @@ QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
+# compute the number of jumps
 nJump <- compute_number_jumps(d_JK)
 
 }
@@ -29,5 +32,5 @@ nJump <- compute_number_jumps(d_JK)
 \link{hist.njump}
 }
 \author{
-Cristian Preda
+Cristian Preda, Quentin Grimonprez
 }
