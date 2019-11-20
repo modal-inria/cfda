@@ -13,7 +13,7 @@
 #' 
 #' @examples 
 #' # See the vignette for a detailled example and mathematical background
-#' vignette("cfda")
+#' RShowDoc("cfda", package = "cfda")
 #' 
 #' @keywords package
 NULL

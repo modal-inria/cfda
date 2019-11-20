@@ -32,7 +32,7 @@ A list containing:
 Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 }
 \details{
-see the vignette for the mathematical background: \code{vignette("cfda", package = "cfda")}
+See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 
