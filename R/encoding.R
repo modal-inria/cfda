@@ -42,6 +42,9 @@
 #' 
 #' # plot the two first components
 #' plotComponent(encoding, comp = c(1, 2))
+#' 
+#' # extract the optimal encoding
+#' getEncoding(encoding)
 #'
 #' @seealso \link{plot.fmca} \link{plotComponent} \link{getEncoding}
 #'

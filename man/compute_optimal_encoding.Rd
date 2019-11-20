@@ -56,6 +56,9 @@ plot(encoding)
 # plot the two first components
 plotComponent(encoding, comp = c(1, 2))
 
+# extract the optimal encoding
+getEncoding(encoding)
+
 }
 \references{
 Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
