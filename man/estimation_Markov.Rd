@@ -7,7 +7,7 @@
 estimation_Markov(data_msm)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
 list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state

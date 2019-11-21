@@ -3,7 +3,7 @@
 #'
 #' Calculates crude initial values for transition intensities by assuming that the data represent the exact transition times of the Markov process.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
 #' @return list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state
 #'
@@ -31,6 +31,12 @@ estimation_Markov <- function(data_msm)
   checkDataMsm(data_msm)
   ## end check
   
+  # msm requires state as integer
+  out <- stateToInteger(data_msm$state)
+  data_msm$state = out$state
+  label <- out$label
+  rm(out)
+  
   aux <- statetable.msm(data_msm$state, data_msm$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
 
   # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
@@ -46,7 +52,7 @@ estimation_Markov <- function(data_msm)
   
   # estimation of the transition matrix 
   Q_est <- diag(1/lambda_est)%*%(matA + diag(lambda_est))
-  colnames(Q_est) = rownames(Q_est) = colnames(aux1)
+  colnames(Q_est) = rownames(Q_est) = label$label[match(colnames(aux1), label$code)]
 
   out <- list(Q = Q_est, lambda = lambda_est)
   class(out) = "Markov"
