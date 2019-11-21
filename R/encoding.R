@@ -66,7 +66,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
     stop("nCores must be an integer > 0.")
   ## end check
   
-  nCore <- min(max(1, nCores), detectCores())
+  nCores <- min(max(1, nCores), detectCores())
   
   Tmax <- max(data_msm$time)
   
@@ -76,7 +76,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  if(nCore > 1)
+  if(nCores > 1)
   {
     cl <- makeCluster(nCores)
     registerDoParallel(cl)
