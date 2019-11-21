@@ -116,8 +116,8 @@ completeStatetable <- function(aux)
 #' @export
 plot.Markov <- function(x, ...)
 { 
-  plotmat(t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, box.type = "circle", 
-          box.col = "yellow", relsize = 0.9, arr.length = 0.2, lcol = "black", dtext = 0.3, arr.pos = 0.5,
+  plotmat(t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
+          box.col = "yellow", relsize = 0.9, arr.length = 0.2,
           name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
                      rep(")", ncol(x$Q)), sep = ""), ...)
 }
