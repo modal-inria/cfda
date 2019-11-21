@@ -5,7 +5,7 @@
 \title{Generate Markov Trajectories}
 \usage{
 generate_Markov_cfd(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1,
-  K), pi_0 = c(1, rep(0, K - 1)), Tmax = 1)
+  K), pi_0 = c(1, rep(0, K - 1)), Tmax = 1, labels = NULL)
 }
 \arguments{
 \item{n}{number of trajectories to generate}
@@ -19,6 +19,8 @@ generate_Markov_cfd(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1,
 \item{pi_0}{initial distribution of states}
 
 \item{Tmax}{maximal duration of trajectories}
+
+\item{labels}{state names. If \code{NULL}, integers are used}
 }
 \value{
 a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
@@ -31,7 +33,8 @@ Simulate individuals from a Markov process defined by a transition matrix, time 
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)
-d_JK = generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, 
+                            labels = c("A", "C", "G", "T"))
 
 head(d_JK)
 

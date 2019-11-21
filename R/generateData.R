@@ -8,6 +8,7 @@
 #' @param lambda time spent in each state
 #' @param pi_0 initial distribution of states
 #' @param Tmax maximal duration of trajectories
+#' @param labels state names. If \code{NULL}, integers are used
 #' 
 #' @return 
 #' a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
@@ -17,14 +18,15 @@
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK = generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, 
+#'                             labels = c("A", "C", "G", "T"))
 #' 
 #' head(d_JK)
 #' 
 #' 
 #' @author Cristian Preda
 #' @export
-generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1)
+generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
   ## check parameters
   if((length(n) != 1) || !is.whole.number(n))
@@ -38,7 +40,12 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
   if(!is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
      stop("lambda must be a vector of length K of positive real.")
   if(!is.vector(pi_0) || (length(pi_0) != K) || any(pi_0 < 0))
-    stop("pi_0 must be a vector of length K of positive real.")  
+    stop("pi_0 must be a vector of length K of positive real.")
+  if(!is.null(labels))
+  {
+    if(!is.vector(labels) || (length(labels) != K))
+      stop("labels must be NULL or a vector of length K.")  
+  }
   ## end check
   
   
@@ -56,6 +63,9 @@ generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K
       e = sample(K, 1, prob = Q[e,])
     }
   }
+  
+  if(!is.null(labels))
+    d$state = labels[d$state]
   
   return(d)
 }
