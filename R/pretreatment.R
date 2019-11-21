@@ -55,3 +55,45 @@ cut_cfd <- function(data_msm, Tmax)
   }
   
 }
+
+# change the labels into integer
+#
+# @param state vector with labels
+# @return a lsit with state containing the new formatted state and label, 
+# a data.frame containing the labels and corresponding integers
+# 
+# @author Quentin Grimonprez
+stateToInteger <- function(state)
+{
+  lab <- data.frame(label = unique(state), code = 1:length(unique(state)))
+  
+  newstate <- refactorCategorical(state, lab$label, lab$code)
+  
+  return(list(state = newstate, label = lab))
+}
+
+
+# Rename a categorical value
+#
+# @param data matrix/data.frame/vector containing the data
+# @param oldCateg vector containing categories to change
+# @param newCateg vector containing new categorical values
+#
+# @return Data with new categorical values
+#
+# @examples
+# dat <- c("single", "married", "married", "divorced", "single")
+# refactorCategorical(dat, c("single", "married", "divorced"), 1:3)
+#
+# @author Quentin Grimonprez
+refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:length(oldCateg))
+{
+  ind <- match(data, oldCateg)
+  
+  if(any(is.na(ind[!is.na(data)])))
+    warning("NA produced.")
+  
+  return(newCateg[ind])
+}
+
+
