@@ -65,7 +65,7 @@ cut_cfd <- function(data_msm, Tmax)
 # @author Quentin Grimonprez
 stateToInteger <- function(state)
 {
-  lab <- data.frame(label = unique(state), code = 1:length(unique(state)))
+  lab <- data.frame(label = sort(unique(state)), code = 1:length(unique(state)))
   
   newstate <- refactorCategorical(state, lab$label, lab$code)
   

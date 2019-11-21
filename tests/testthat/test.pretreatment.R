@@ -120,4 +120,12 @@ test_that("stateToInteger works", {
   expectedOut <- list(state = 1:6, label = data.frame(label = x, code = 1:6))
   
   expect_equal(out, expectedOut)
+  
+  
+  x <- letters[6:1]
+  
+  out <- stateToInteger(x)
+  expectedOut <- list(state = 6:1, label = data.frame(label = letters[1:6], code = 1:6))
+  
+  expect_equal(out, expectedOut)
 })
