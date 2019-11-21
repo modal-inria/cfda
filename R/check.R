@@ -16,9 +16,6 @@ checkDataMsm <- function(data_msm)
   if(any(is.na(data_msm)))
     stop("There is some missing values.")
   
-  if(any(!is.whole.number(data_msm$state)) || any(data_msm$state <= 0))
-    stop("state must be a strictly positive integer.")
-  
   invisible(return(NULL))
 }
 
