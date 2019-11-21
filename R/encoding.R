@@ -2,7 +2,7 @@
 #'
 #' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj basis created using the \code{fda} package.
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param ... parameters for \code{\link{integrate}} function.
@@ -65,6 +65,13 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   if(!is.whole.number(nCores) || (nCores < 1))
     stop("nCores must be an integer > 0.")
   ## end check
+  
+  # change state as integer
+  out <- stateToInteger(data_msm$state)
+  data_msm$state = out$state
+  label <- out$label
+  rm(out)
+  
   
   nCores <- min(max(1, nCores), detectCores())
   
@@ -134,7 +141,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
   # 2eme col les coefs pour état 2, etc
 
-  aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K))})
+  aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
 
   pc <- V %*% (invF05 %*% res$vectors)
 
@@ -292,7 +299,7 @@ compute_Vxi <- function(x, phi, K, ...)
 plot.fmca <- function(x, ...)
 {
   fdmat <- getEncoding(x, fdObject = FALSE)
-  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(1:ncol(fdmat$y), each = nrow(fdmat$y)), levels = 1:ncol(fdmat$y)))
+  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
   
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +

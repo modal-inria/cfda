@@ -8,7 +8,7 @@ compute_optimal_encoding(data_msm, basisobj, nCores = max(1,
   ceiling(detectCores()/2)), ...)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state (integer starting at 1). All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
 
 \item{basisobj}{basis created using the \code{fda} package.}
 
