@@ -98,7 +98,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   } 
     
   # stop parallelization
-  if(nCore > 1)
+  if(nCores > 1)
   {
     stopCluster(cl)
   }
