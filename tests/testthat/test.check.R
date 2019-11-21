@@ -9,17 +9,14 @@ test_that("checkDataMsm works", {
   df <- data.frame(id = 1)
   expect_error(checkDataMsm(df), "Missing columns in data_msm: time, state.")
   
-  df <- data.frame(id = 1, time = 1, state = 1)
+  df <- data.frame(id = 1, time = 1, state = "e")
   expect_error(checkDataMsm(df), "There is only one row or less.")
   
   df <- data.frame(id = 1:2, time = c(1, NA), state = 1:2)
   expect_error(checkDataMsm(df), "There is some missing values.")
   
-  df <- data.frame(id = 1:2, time = c(1, NA), state = 1:2)
+  df <- data.frame(id = 1:2, time = c(1, NA), state = letters[1:2])
   expect_error(checkDataMsm(df), "There is some missing values.")
-  
-  df <- data.frame(id = 1:2, time = 1:2, state = 0:1)
-  expect_error(checkDataMsm(df), "state must be a strictly positive integer.")
   
   df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
   expect_silent(checkDataMsm(df))

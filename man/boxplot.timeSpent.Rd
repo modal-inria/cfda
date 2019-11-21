@@ -7,7 +7,7 @@
 \method{boxplot}{timeSpent}(x, ...)
 }
 \arguments{
-\item{x}{output od \code{\link{compute_Time_Spent}} function}
+\item{x}{output of \code{\link{compute_Time_Spent}} function}
 
 \item{...}{not used}
 }
