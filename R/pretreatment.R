@@ -38,7 +38,7 @@ cut_cfd <- function(data_msm, Tmax)
   currTmax <- max(data_msm$time)
   if(Tmax > currTmax) 
   {
-    return(rbind(data_msm, data.frame(id = data_msm[1, "id"], state = data_msm[l, "state"], time = Tmax)))
+    return(rbind(data_msm, data.frame(id = data_msm$id[1], state = data_msm$state[l], time = Tmax)))
   }
   else
   {
@@ -49,7 +49,7 @@ cut_cfd <- function(data_msm, Tmax)
     else
     {
       k <- max(which(data_msm$time <= Tmax))  
-      return(rbind(data_msm[1:k,], data.frame(state = data_msm[k, "state"], time = Tmax, id = data_msm[1, "id"])))  
+      return(rbind(data_msm[1:k,], data.frame(state = data_msm$state[k], time = Tmax, id = data_msm$id[1])))  
     }
     
   }

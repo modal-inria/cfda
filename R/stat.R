@@ -51,7 +51,7 @@ compute_Time_Spent_intern <- function(data_msm, labels)
     for(u in idx)
     {
       if(u < nrow(data_msm))
-        aux[i] = aux[i] + data_msm[u+1, "time"] - data_msm[u, "time"]
+        aux[i] = aux[i] + data_msm$time[u+1] - data_msm$time[u]
     }  
   }
   return(aux)
@@ -491,10 +491,10 @@ plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
 rep_large_ind <- function(data_msm)
 {
   out <- by(data_msm, data_msm$id, function(x){
-    data.frame(id = x[1:(nrow(x)-1), "id"] , 
-               t_start = x[1:(nrow(x)-1), "time"], 
-               t_end = x[2:nrow(x), "time"], 
-               state = x[1:(nrow(x)-1), "state"])
+    data.frame(id = x$id[1:(nrow(x)-1)] , 
+               t_start = x$time[1:(nrow(x)-1)], 
+               t_end = x$time[2:nrow(x)], 
+               state = x$state[1:(nrow(x)-1)])
   })
   
   return(do.call(rbind, out))

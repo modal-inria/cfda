@@ -77,7 +77,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   label <- out$label
   rm(out)
   
-  nCores <- min(max(1, nCores), detectCores())
+  nCores <- min(max(1, nCores), detectCores()-1)
   
   Tmax <- max(data_msm$time)
   K <- length(label$label)
@@ -216,7 +216,7 @@ compute_Uxij <- function(x, phi, K, ...)
   
   for(u in 1:(nrow(x)-1))
   {
-    state <- x[u, "state"]
+    state <- x$state[u]
     for(i in 1:nBasis) 
     {
       for(j in i:nBasis) # symmetry between i and j  
@@ -224,7 +224,7 @@ compute_Uxij <- function(x, phi, K, ...)
         
         integral <- integrate(function(t) { 
           eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-        }, lower = x[u, "time"], upper = x[u+1, "time"], 
+        }, lower = x$time[u], upper = x$time[u+1], 
         stop.on.error = FALSE, ...)$value
         
         aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
@@ -278,14 +278,14 @@ compute_Vxi <- function(x, phi, K, ...)
   
   for(u in 1:(nrow(x)-1))
   {
-    state = x[u, "state"]
+    state = x$state[u]
     
     for(j in 1:nBasis)  # j = la base
     {
       aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
         integrate(function(t){
           eval.fd(t, phi[j])
-        }, lower = x[u, "time"], upper = x[u+1, "time"], 
+        }, lower = x$time[u], upper = x$time[u+1], 
         stop.on.error = FALSE, ...)$value
     }
     

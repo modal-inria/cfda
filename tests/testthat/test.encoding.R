@@ -24,7 +24,7 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
   for(i in 1:K)
   {
     idx <- which(x$state == i)
-    expectedOut[i] = sum(x[idx+1,"time"]-x[idx,"time"], na.rm = TRUE)
+    expectedOut[i] = sum(x$time[idx+1]-x$time[idx], na.rm = TRUE)
   }
 
   expect_length(out, K*m*m)
@@ -53,11 +53,11 @@ test_that("compute_Uxij works with a simple basis of 2 functions", {
   for(i in 1:K)
   {
     idx <- which(x$state == i)
-    idx1 <- idx[x[idx,"time"] <= 5]
-    expectedOut[1 + (i-1)*m*m] = sum(pmin(x[idx1+1,"time"], 5) - x[idx1,"time"], na.rm = TRUE)
+    idx1 <- idx[x$time[idx] <= 5]
+    expectedOut[1 + (i-1)*m*m] = sum(pmin(x$time[idx1+1], 5) - x$time[idx1], na.rm = TRUE)
     
-    idx2 <- idx[x[idx+1,"time"] > 5]
-    expectedOut[4 + (i-1)*m*m] = sum(x[idx2+1,"time"] - pmax(x[idx2,"time"], 5), na.rm = TRUE)
+    idx2 <- idx[x$time[idx+1] > 5]
+    expectedOut[4 + (i-1)*m*m] = sum(x$time[idx2+1] - pmax(x$time[idx2], 5), na.rm = TRUE)
   }
   
   expect_length(out, K*m*m)
@@ -83,7 +83,7 @@ oldcompute_Uxij <- function(x, phi, K)
             aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + 
               integrate(function(t) {
                 eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-              }, lower = x[u, "time"], upper = x[u+1, "time"],
+              }, lower = x$time[u], upper = x$time[u+1],
               stop.on.error = FALSE)$value
           }
         }
@@ -139,7 +139,7 @@ test_that("compute_Vxi works with a simple basis of 1 function", {
   for(i in 1:K)
   {
     idx <- which(x$state == i)
-    expectedOut[i] = sum(x[idx+1,"time"]-x[idx,"time"], na.rm = TRUE)
+    expectedOut[i] = sum(x$time[idx+1]-x$time[idx], na.rm = TRUE)
   }
   
   
@@ -170,11 +170,11 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   for(i in 1:K)
   {
     idx <- which(x$state == i)
-    idx1 <- idx[x[idx,"time"] <= 5]
-    expectedOut[1 + (i-1)*m] = sum(pmin(x[idx1+1,"time"], 5) - x[idx1,"time"], na.rm = TRUE)
+    idx1 <- idx[x$time[idx] <= 5]
+    expectedOut[1 + (i-1)*m] = sum(pmin(x$time[idx1+1], 5) - x$time[idx1], na.rm = TRUE)
     
-    idx2 <- idx[x[idx+1,"time"] > 5]
-    expectedOut[2 + (i-1)*m] = sum(x[idx2+1,"time"] - pmax(x[idx2,"time"], 5), na.rm = TRUE)
+    idx2 <- idx[x$time[idx+1] > 5]
+    expectedOut[2 + (i-1)*m] = sum(x$time[idx2+1] - pmax(x$time[idx2], 5), na.rm = TRUE)
   }
   
   expect_length(out, K*m)
