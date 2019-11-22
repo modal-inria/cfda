@@ -331,7 +331,7 @@ plot.fmca <- function(x, ...)
   
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +
-    labs(x = "Time", y = "a_x(t)", title = "First eigen optimal encoding")
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = "First eigen optimal encoding")
 }
 
 

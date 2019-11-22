@@ -465,7 +465,7 @@ plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
   
   d_graph <- rep_large_ind(data_msm)
 
-  d_graph$state = factor(d_graph$state, levels = unique(data_msm$state))
+  d_graph$state = factor(d_graph$state, levels = sort(unique(data_msm$state)))
   
   nInd <- length(unique(d_graph$id))
   d_graph$id2 <- unclass(factor(d_graph$id))
