@@ -36,5 +36,5 @@ estimate_pt(d_JK2)
 \link{plot.pt}
 }
 \author{
-Cristian Preda
+Cristian Preda, Quentin Grimonprez
 }

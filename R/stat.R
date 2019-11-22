@@ -194,7 +194,7 @@ id_get_state <- function(x, t)
 #' 
 #' @seealso \link{plot.pt}
 #' 
-#' @author Cristian Preda
+#' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export   
 estimate_pt <- function(data_msm)
@@ -204,18 +204,23 @@ estimate_pt <- function(data_msm)
   ## end check
   
   t_jumps <- sort(unique(data_msm$time)) 
-  n <- length(unique(data_msm$id))
+  uniqueId <- unique(data_msm$id)
+  n <- length(uniqueId)
   states <- sort(unique(data_msm$state))
   res <- matrix(0, nrow = length(states), ncol = length(t_jumps), dimnames = list(states, round(t_jumps, 3)))
   
-  for(i in seq_along(t_jumps))
+  for(id in uniqueId)
   {
-    aux <- as.vector(by(data_msm, data_msm$id, function(x){id_get_state(x, t_jumps[i])})) 
-    
-    # donne pour chaque temps, le nb d'individus dans chacun des état
-    tab <- table(aux)/n
-    res[match(names(tab), states), i] = tab
+    x <- data_msm[data_msm$id == id,]
+    for(i in seq_along(t_jumps))
+    {
+      aux <- id_get_state(x, t_jumps[i]) 
+      
+      res[match(aux, states), i] = res[match(aux, states), i] + 1
+    }
   }
+  
+  res = res/n
   
   out <- list(pt = res, t = t_jumps)
   class(out) = "pt"
