@@ -301,8 +301,8 @@ plot_pt_ribbon <- function(pt)
   
   p <- ggplot(plot_data)
   for(i in 1:nState)
-    p = p + geom_ribbon(aes_string(ymin = labels[i], 
-                                   ymax = labels[i+1], x = "time", fill = factor(shortLabels[i], levels = shortLabels)), colour = "black", 
+    p = p + geom_ribbon(aes_string(ymin = paste0("`", labels[i], "`"), 
+                                   ymax = paste0("`", labels[i+1], "`"), x = "time", fill = factor(shortLabels[i], levels = shortLabels)), colour = "black", 
                          alpha = 0.8)
   
   p = p  + ylim(0, 1) +
