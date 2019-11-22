@@ -193,7 +193,7 @@ test_that("compute_optimal_encoding works", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  expect_silent(fmca <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
   expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj"))
@@ -224,6 +224,20 @@ test_that("compute_optimal_encoding works", {
   expect_equal(fmca$basisobj, b)
 })
 
+test_that("compute_optimal_encoding works verbose", {
+  set.seed(42)
+  K <- 2
+  d_JK <- generate_2State(n = 10)
+  d_JK2 <- msm2msmTmax(d_JK, 1)
+  
+  # create basis object
+  m <- 10
+  b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
+  
+  # compute encoding
+  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = TRUE))
+  
+})
 
 test_that("plot.fmca does not produce warnings", {
   n <- 50

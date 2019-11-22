@@ -5,7 +5,7 @@
 \title{Compute the optimal encodings for each state}
 \usage{
 compute_optimal_encoding(data_msm, basisobj, nCores = max(1,
-  ceiling(detectCores()/2)), ...)
+  ceiling(detectCores()/2)), verbose = TRUE, ...)
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
@@ -13,6 +13,8 @@ compute_optimal_encoding(data_msm, basisobj, nCores = max(1,
 \item{basisobj}{basis created using the \code{fda} package.}
 
 \item{nCores}{number of cores used for parallelization. Default is the half of cores.}
+
+\item{verbose}{if TRUE print some information}
 
 \item{...}{parameters for \code{\link{integrate}} function.}
 }

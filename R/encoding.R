@@ -5,6 +5,7 @@
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
 #' @param basisobj basis created using the \code{fda} package.
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
+#' @param verbose if TRUE print some information
 #' @param ... parameters for \code{\link{integrate}} function.
 #'
 #' @return A list containing:
@@ -54,9 +55,9 @@
 #' Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
-compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)), ...)
+compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE,  ...)
 {
-
+  t1 <- proc.time()
   ## check parameters
   checkDataMsm(data_msm)
   checkDataEndTmax(data_msm)
@@ -66,19 +67,31 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
     stop("nCores must be an integer > 0.")
   ## end check
   
+  if(verbose)
+    cat("######### Compute encodings #########\n")
+  
+  
   # change state as integer
   out <- stateToInteger(data_msm$state)
   data_msm$state = out$state
   label <- out$label
   rm(out)
   
-  
   nCores <- min(max(1, nCores), detectCores())
   
   Tmax <- max(data_msm$time)
-  
-  K <- length(unique(data_msm$state))
+  K <- length(label$label)
   nBasis <- basisobj$nbasis  # nombre de fonctions de base
+  
+  if(verbose)
+  {
+    cat(paste0("Number of individuals: ", length(unique(data_msm$id)), "\n"))
+    cat(paste0("Number of states: ", K, "\n"))
+    cat(paste0("Number of basis functions: ", nBasis, "\n"))
+    cat(paste0("Number of cores: ", nCores, "\n"))
+  }
+  
+
   I <- diag(rep(1, nBasis))
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
@@ -91,7 +104,10 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
     registerDoSEQ()
   }
 
-  
+
+  if(verbose)
+    cat("---- Compute V matrix:\n")
+  t2 <- proc.time()
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
   V <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
@@ -99,6 +115,10 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   }
   rownames(V) = NULL
   G = cov(V)
+  t3 <- proc.time()
+  
+  if(verbose)
+    cat(paste0("DONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
   
   Fval <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
     return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...))
@@ -118,7 +138,10 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
-
+  
+  t4 <- proc.time()
+  if(verbose)
+    cat(paste0("DONE in ", round((t4-t3)[3], 2), "s\n---- Compute encoding: "))
   
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
@@ -144,11 +167,16 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
 
   pc <- V %*% (invF05 %*% res$vectors)
-
+  if(verbose)
+    cat("DONE\n")
+  
   out <- list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V, basisobj = basisobj)
   class(out) = "fmca"
-  
-  
+  t6 <- proc.time()
+
+  if(verbose)
+    cat(paste0("Run Time: ", round((t6-t1)[3], 2), "s\n"))
+    
   return(out)
 }
 
