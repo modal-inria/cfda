@@ -52,7 +52,7 @@ lambda_QJK = c(1, 1, 1, 1)
 Tmax <- 10
 n <- 100
 
-d_JK <- generate_Markov_cfd (n = n, K = 4, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+d_JK <- generate_Markov_cfd (n = n, K = 4, Q = QJK, lambda = lambda_QJK, Tmax = Tmax, labels = c("A", "C", "G", "T"))
 
 head(d_JK, 10)
 ```
