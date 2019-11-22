@@ -2,10 +2,10 @@
 
 context("Statistics on data_msm object")
 
-test_that("compute_Time_Spent_intern works", {
+test_that("compute_time_spent_intern works", {
   dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))
   
-  out <- compute_Time_Spent_intern(dat, 1:3)
+  out <- compute_time_spent_intern(dat, 1:3)
   expectedOut <- c(1.5 + 1, 1, 2.5)
   
   expect_equal(sum(out), max(dat$time))
@@ -13,20 +13,20 @@ test_that("compute_Time_Spent_intern works", {
 })
 
 
-test_that("compute_Time_Spent_intern works with more labels", {
+test_that("compute_time_spent_intern works with more labels", {
   dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))
   
-  out <- compute_Time_Spent_intern(dat, 1:4)
+  out <- compute_time_spent_intern(dat, 1:4)
   expectedOut <- c(1.5 + 1, 1, 2.5, 0)
   
   expect_equal(sum(out), max(dat$time))
   expect_equal(out, expectedOut)
 })
 
-test_that("compute_Time_Spent works", {
+test_that("compute_time_spent works", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
-  out <- compute_Time_Spent(dat)
+  out <- compute_time_spent(dat)
   expectedOut <- rbind(c(1.5 + 1, 1, 2.5),
                        c(3, 3, 0))
   colnames(expectedOut) = 1:3
@@ -39,17 +39,17 @@ test_that("compute_Time_Spent works", {
 test_that("boxplot.timeSpent does not produce warnings", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
-  out <- compute_Time_Spent(dat)
+  out <- compute_time_spent(dat)
 
   expect_warning(boxplot(out), regexp = NA)
   
 })
 
 
-test_that("compute_Duration works", {
+test_that("compute_duration works", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 7, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
-  out <- compute_Duration(dat)
+  out <- compute_duration(dat)
   expectedOut <- c("1" = 7, "2" = 6)
   
   expect_equivalent(out, expectedOut)

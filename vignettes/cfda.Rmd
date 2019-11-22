@@ -62,7 +62,7 @@ The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains
 
 We can compute the duration of each trajectory.
 ```{r, echo=TRUE}
-duration <- compute_Duration(d_JK)
+duration <- compute_duration(d_JK)
 head(duration)
 ```
 
@@ -88,7 +88,7 @@ Generally, in categorical functional data analysis, the following basic statisti
 For each individual, the time spent in each of the $K$ states is computed.
  
 ```{r, echo=TRUE}  
-timeSpent <- compute_Time_Spent(d_JKT)
+timeSpent <- compute_time_spent(d_JKT)
 timeSpent[1:10,]
 ```
 

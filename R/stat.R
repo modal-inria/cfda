@@ -17,14 +17,14 @@
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
-#' timeSpent <- compute_Time_Spent(d_JK2)
+#' timeSpent <- compute_time_spent(d_JK2)
 #' 
 #' @seealso \link{boxplot.timeSpent}
 #' 
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
-compute_Time_Spent <- function(data_msm)
+compute_time_spent <- function(data_msm)
 {
   ## check parameters
   checkDataMsm(data_msm)
@@ -32,7 +32,7 @@ compute_Time_Spent <- function(data_msm)
   
   labels <- sort(unique(data_msm$state))
   
-  res <- by(data_msm, data_msm$id, function(x){compute_Time_Spent_intern(x, labels)})
+  res <- by(data_msm, data_msm$id, function(x){compute_time_spent_intern(x, labels)})
   out <- do.call(rbind, res)
   colnames(out) = labels
   class(out) = "timeSpent"
@@ -42,7 +42,7 @@ compute_Time_Spent <- function(data_msm)
 
 
 # combien de temps passe un id dans [0,T] dans chaque etat, x vient d'un msmT
-compute_Time_Spent_intern <- function(data_msm, labels)
+compute_time_spent_intern <- function(data_msm, labels)
 {
   aux <- rep(0, length(labels))            
   for(i in seq_along(labels))
@@ -59,7 +59,7 @@ compute_Time_Spent_intern <- function(data_msm, labels)
 
 #' Boxplot of time spent in each state
 #'
-#' @param x output of \code{\link{compute_Time_Spent}} function
+#' @param x output of \code{\link{compute_time_spent}} function
 #' @param ... not used
 #'
 #' @examples 
@@ -73,7 +73,7 @@ compute_Time_Spent_intern <- function(data_msm, labels)
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
-#' timeSpent <- compute_Time_Spent(d_JK2)
+#' timeSpent <- compute_time_spent(d_JK2)
 #' 
 #' # plot the result
 #' boxplot(timeSpent)
@@ -106,13 +106,13 @@ boxplot.timeSpent <- function(x, ...)
 #' 
 #'
 #' # compute duration of each individual
-#' duration <- compute_Duration(d_JK)
+#' duration <- compute_duration(d_JK)
 #' 
 #' 
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
-compute_Duration <- function(data_msm)
+compute_duration <- function(data_msm)
 {
   ## check parameters
   checkDataMsm(data_msm)
