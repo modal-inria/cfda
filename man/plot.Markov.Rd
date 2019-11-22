@@ -9,11 +9,20 @@
 \arguments{
 \item{x}{output of \code{\link{estimation_Markov}} function}
 
-\item{...}{parameters of \code{plotmat} function from \code{diagram} package}
+\item{...}{parameters of \code{plotmat} function from \code{diagram} package (see details).}
 }
 \description{
 Plot the transition graph between the different states. A node corresponds to a state with the mean 
 time spent in this state. Each arrow represents the probability of transtion between states.
+}
+\details{
+Some usefull extra parameters:
+\itemize{
+  \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
+  \item \code{relsize}	scaling factor for size of the graph (default = 1).
+  \item \code{box.size}	size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
+  \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
+}
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

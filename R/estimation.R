@@ -96,7 +96,16 @@ completeStatetable <- function(aux)
 #' time spent in this state. Each arrow represents the probability of transtion between states.
 #'
 #' @param x output of \code{\link{estimation_Markov}} function
-#' @param ... parameters of \code{plotmat} function from \code{diagram} package
+#' @param ... parameters of \code{plotmat} function from \code{diagram} package (see details). 
+#' 
+#' @details 
+#' Some usefull extra parameters:
+#' \itemize{
+#'   \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
+#'   \item \code{relsize}	scaling factor for size of the graph (default = 1).
+#'   \item \code{box.size}	size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
+#'   \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
+#' }
 #' 
 #' @examples
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -116,8 +125,13 @@ completeStatetable <- function(aux)
 #' @export
 plot.Markov <- function(x, ...)
 { 
-  plotmat(t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
-          box.col = "yellow", relsize = 0.9, arr.length = 0.2,
-          name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
-                     rep(")", ncol(x$Q)), sep = ""), ...)
+  extraParam <- list(...)
+  defaultParam <- list(A = t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
+                       box.col = "yellow", arr.length = 0.2,
+                       name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
+                                    rep(")", ncol(x$Q)), sep = ""))
+  
+  param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
+  
+  do.call(plotmat, param)
 }
