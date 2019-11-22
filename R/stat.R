@@ -141,7 +141,7 @@ compute_Duration <- function(data_msm)
 #' # get the state of each individuals at time t = 6
 #' get_state(d_JK, 6)
 #' 
-#' @author Cristian Preda
+#' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
 get_state <- function(data_msm, t) 
@@ -163,10 +163,9 @@ get_state <- function(data_msm, t)
 # x un individu de type msm et t un temps
 id_get_state <- function(x, t) 
 {
-  aux <- max(which(x[,"time"]  <= t))
-  return(x[aux,"state"])
+  aux <- which(x$time <= t)
+  return(x$state[aux[length(aux)]])
 }
-
 
 
 #' Estimate probabilities to be in each state

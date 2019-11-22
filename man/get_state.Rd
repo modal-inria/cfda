@@ -29,5 +29,5 @@ get_state(d_JK, 6)
 
 }
 \author{
-Cristian Preda
+Cristian Preda, Quentin Grimonprez
 }
