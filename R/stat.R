@@ -427,7 +427,13 @@ statetable <- function(data_msm)
   checkDataMsm(data_msm)
   ## end check
   
-  statetable.msm(data_msm$state, data_msm$id)
+  newState = stateToInteger(data_msm$state)
+  
+  out <- statetable.msm(newState$state, data_msm$id)
+  colnames(out) = newState$label$label[match(colnames(out), newState$label$code)]
+  rownames(out) = newState$label$label[match(rownames(out), newState$label$code)]
+  
+  return(out)
 }
 
 
