@@ -395,6 +395,17 @@ plot.fmca <- function(x, ...)
 #' @export
 getEncoding <- function(x, fdObject = FALSE, nx = NULL)
 {
+  ## check parameters
+  if(class(x) != "fmca")
+    stop("x must be a fmca object.")
+  checkLogical(fdObject, "fdObject")
+  if(!is.null(nx))
+  {
+    if((length(nx) > 1) || !is.whole.number(nx) || (nx < 0))
+      stop("nx must be a positive integer.")
+  }
+  ##
+  
   fdObj <- fd(x$alpha[[1]], x$basisobj)
   
   if(fdObject)
