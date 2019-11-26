@@ -4,15 +4,20 @@
 \alias{plot.fmca}
 \title{Plot the optimal encoding}
 \usage{
-\method{plot}{fmca}(x, ...)
+\method{plot}{fmca}(x, nHarm = 1, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
+
+\item{nHarm}{number of harmonics to use for the encoding}
 
 \item{...}{not used}
 }
 \description{
 Plot the optimal encoding
+}
+\details{
+The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -27,10 +32,10 @@ d_JK2 <- msm2msmTmax(d_JK, Tmax)
 m <- 10
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
-# compute encoding
+# compute encoding 
 encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 
-# plot the optimal encoding
+# plot the encoding using 1 harmonic
 plot(encoding)
 
 }

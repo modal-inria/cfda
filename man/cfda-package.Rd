@@ -33,10 +33,10 @@ plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
 # plot the two first components
 plotComponent(encoding, comp = c(1, 2))
 
-# plot the optimal encoding
+# plot the encoding using the first harmonic
 plot(encoding)
 
-# extract the optimal encoding
+# extract the encoding using the first harmonic
 getEncoding(encoding)
 
 

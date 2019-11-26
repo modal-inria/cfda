@@ -4,10 +4,12 @@
 \alias{getEncoding}
 \title{Extract the computed encoding}
 \usage{
-getEncoding(x, fdObject = FALSE, nx = NULL)
+getEncoding(x, nHarm = 1, fdObject = FALSE, nx = NULL)
 }
 \arguments{
 \item{x}{Output of \code{\link{compute_optimal_encoding}}}
+
+\item{nHarm}{number of harmonics to use for the encoding}
 
 \item{fdObject}{If TRUE returns a \code{fd} object else a matrix}
 
@@ -17,7 +19,10 @@ getEncoding(x, fdObject = FALSE, nx = NULL)
 a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing the encoding of the state and \code{x}, the vector with time values.
 }
 \description{
-Extract the optimal encoding as an \code{fd} object or as a matrix
+Extract the encoding as an \code{fd} object or as a matrix
+}
+\details{
+The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -35,7 +40,7 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 
-# extract the encoding
+# extract the encoding using 1 harmonic
 encodFd <- getEncoding(encoding, fdObject = TRUE)
 encodMat <- getEncoding(encoding, nx = 200)
 

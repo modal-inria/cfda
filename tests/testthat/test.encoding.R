@@ -239,6 +239,43 @@ test_that("compute_optimal_encoding works verbose", {
   
 })
 
+
+test_that("getEncoding works", {
+  n <- 50
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- msm2msmTmax(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  
+  out <- getEncoding(fmca, fdObject = TRUE)
+  expect_s3_class(out, "fd")
+  
+  out <- getEncoding(fmca, nHarm = 3, fdObject = TRUE)
+  expect_s3_class(out, "fd")
+  
+  out <- getEncoding(fmca, fdObject = FALSE)
+  expect_named(out, c("x", "y"))
+  expect_equal(dim(out$y), c(501, 2))
+  expect_length(out$x, 501)
+  
+  out <- getEncoding(fmca, nHarm = 3, fdObject = FALSE)
+  expect_named(out, c("x", "y"))
+  expect_equal(dim(out$y), c(501, 2))
+  expect_length(out$x, 501)
+  
+  out <- getEncoding(fmca, fdObject = FALSE, nx = 100)
+  expect_named(out, c("x", "y"))
+  expect_equal(dim(out$y), c(100, 2))
+  expect_length(out$x, 100)
+  
+})
+
+
 test_that("plot.fmca does not produce warnings", {
   n <- 50
   Tmax <- 1
@@ -252,6 +289,7 @@ test_that("plot.fmca does not produce warnings", {
   fmca <- compute_optimal_encoding(dT, b, nCores = 1)
   
   expect_warning(plot(fmca), regexp = NA)
+  expect_warning(plot(fmca, nHarm = 3), regexp = NA)
 })
 
 
@@ -288,31 +326,4 @@ test_that("plotEigenvalues does not produce warnings", {
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = FALSE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE), regexp = NA)
-})
-
-test_that("getEncoding works", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- msm2msmTmax(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
-  
-  out <- getEncoding(fmca, fdObject = TRUE)
-  expect_s3_class(out, "fd")
-
-  out <- getEncoding(fmca, fdObject = FALSE)
-  expect_named(out, c("x", "y"))
-  expect_equal(dim(out$y), c(501, 2))
-  expect_length(out$x, 501)
-  
-  out <- getEncoding(fmca, fdObject = FALSE, nx = 100)
-  expect_named(out, c("x", "y"))
-  expect_equal(dim(out$y), c(100, 2))
-  expect_length(out$x, 100)
-  
 })

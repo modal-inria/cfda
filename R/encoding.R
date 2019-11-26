@@ -322,7 +322,12 @@ compute_Vxi <- function(x, phi, K, ...)
 #' Plot the optimal encoding
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
+#' @param nHarm number of harmonics to use for the encoding
 #' @param ... not used
+#'
+#'
+#' @details 
+#' The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
 #'
 #' @author Quentin Grimonprez
 #' 
@@ -339,35 +344,39 @@ compute_Vxi <- function(x, phi, K, ...)
 #' m <- 10
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
-#' # compute encoding
+#' # compute encoding 
 #' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 #' 
-#' # plot the optimal encoding
+#' # plot the encoding using 1 harmonic
 #' plot(encoding)
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
 #' @export
-plot.fmca <- function(x, ...)
+plot.fmca <- function(x, nHarm = 1, ...)
 {
-  fdmat <- getEncoding(x, fdObject = FALSE)
+  fdmat <- getEncoding(x, nHarm = nHarm, fdObject = FALSE)
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
   
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = "First eigen optimal encoding")
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with ", nHarm, " harmonics"))
 }
 
 
 #' Extract the computed encoding
 #'
-#' Extract the optimal encoding as an \code{fd} object or as a matrix
+#' Extract the encoding as an \code{fd} object or as a matrix
 #' 
 #' @param x Output of \code{\link{compute_optimal_encoding}}
+#' @param nHarm number of harmonics to use for the encoding
 #' @param fdObject If TRUE returns a \code{fd} object else a matrix
 #' @param nx (Only if \code{fdObject = TRUE}) Number of points to evaluate the encoding
 #'
 #' @return a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing the encoding of the state and \code{x}, the vector with time values.
+#' 
+#' @details 
+#' The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
 #' 
 #' 
 #' @examples 
@@ -386,14 +395,14 @@ plot.fmca <- function(x, ...)
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 #' 
-#' # extract the encoding
+#' # extract the encoding using 1 harmonic
 #' encodFd <- getEncoding(encoding, fdObject = TRUE)
 #' encodMat <- getEncoding(encoding, nx = 200)
 #' 
 #' @author Cristian Preda
 #'
 #' @export
-getEncoding <- function(x, fdObject = FALSE, nx = NULL)
+getEncoding <- function(x, nHarm = 1, fdObject = FALSE, nx = NULL)
 {
   ## check parameters
   if(class(x) != "fmca")
@@ -404,9 +413,17 @@ getEncoding <- function(x, fdObject = FALSE, nx = NULL)
     if((length(nx) > 1) || !is.whole.number(nx) || (nx < 0))
       stop("nx must be a positive integer.")
   }
+  if((length(nHarm) > 1) || !is.whole.number(nHarm) || (nHarm < 1) || (nHarm > length(x$alpha)))
+    stop("nHarm must be an integer between 1 and the number of components.")
   ##
   
   fdObj <- fd(x$alpha[[1]], x$basisobj)
+  if(nHarm > 1)
+  {
+    for(harm in 2:nHarm)
+      fdObj = fdObj + fd(x$alpha[[harm]], x$basisobj)
+  }
+
   
   if(fdObject)
   {
