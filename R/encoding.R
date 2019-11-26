@@ -99,36 +99,60 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   if(nCores > 1)
   {
     cl <- makeCluster(nCores)
-    registerDoParallel(cl)
+    registerDoSNOW(cl)
   }else{
     registerDoSEQ()
   }
 
-
+  
   if(verbose)
+  {
     cat("---- Compute V matrix:\n")
+    pb <- txtProgressBar(0, length(unique(data_msm$id)), style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  }else{
+    opts <- list()
+  }
   t2 <- proc.time()
   
+  
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
-    return(compute_Vxi(data_msm[data_msm$id == i, ], phi, K, ...))
+  V <- foreach(i = unique(data_msm$id), .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Vxi(data_msm[data_msm$id == i, ], phi, K, ...)
+    if((nCores == 1) && verbose)
+      setTxtProgressBar(pb, i)
+    return(res)
   }
   rownames(V) = NULL
   G = cov(V)
   t3 <- proc.time()
   
   if(verbose)
-    cat(paste0("DONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
+  {
+    close(pb)
+    cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
+    pb <- txtProgressBar(0, length(unique(data_msm$id)), style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  }else{
+    opts <- list()
+  }
+
   
-  Fval <- foreach(i = unique(data_msm$id), .combine = rbind)%dopar%{
-    return(compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...))
+  Fval <- foreach(i = unique(data_msm$id), .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...)
+    if((nCores == 1) && verbose)
+      setTxtProgressBar(pb, i)
+    return(res)
   } 
     
+  if(verbose)
+    close(pb)
+  
   # stop parallelization
   if(nCores > 1)
-  {
     stopCluster(cl)
-  }
   
   # create F matrix
   Fval = colMeans(Fval)
@@ -141,8 +165,8 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   t4 <- proc.time()
   if(verbose)
-    cat(paste0("DONE in ", round((t4-t3)[3], 2), "s\n---- Compute encoding: "))
-  
+    cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n---- Compute encoding: "))
+
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
   invF05 <- solve(F05)
