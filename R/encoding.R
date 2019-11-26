@@ -345,7 +345,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' # plot the optimal encoding
 #' plot(encoding)
 #' 
-#' @seealso \link{plotComponent}
+#' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
 #' @export
 plot.fmca <- function(x, ...)
@@ -455,7 +455,7 @@ getEncoding <- function(x, fdObject = FALSE, nx = NULL)
 #' 
 #' plotComponent(encoding, comp = c(1, 2))
 #' 
-#' @seealso \link{plot.fmca}
+#' @seealso \link{plot.fmca} \link{plotEigenvalues}
 #' 
 #' @export
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
@@ -480,6 +480,64 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
   if(addNames)
     p = p + geom_text(aes_string(label = "name"), hjust = -0.15, vjust = -0.15)
 
+  
+  p
+}
+
+
+#' Plot Eigenvalues
+#'
+#' @param x output of \code{\link{compute_optimal_encoding}} function
+#' @param cumulative if TRUE, plot the cumualtive eigenvalues
+#' @param normalize if TRUE eigenvalues are normalized for summing to 1
+#'
+#' @author Quentin Grimonprez
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' Tmax <- 6
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#'
+#' # create basis object
+#' m <- 10
+#' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+#' 
+#' # compute encoding
+#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
+#' 
+#' # plot eigenvalues
+#' plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
+#' 
+#' @seealso \link{plot.fmca} \link{plotComponent}
+#' 
+#' @export
+plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE)
+{
+  ## check parameters
+  if(class(x) != "fmca")
+    stop("x must be a fmca object.")
+  checkLogical(cumulative, "cumulative")
+  checkLogical(normalize, "normalize")
+  ##
+  
+  if(normalize)
+    eigenv <- x$eigenvalues/sum(x$eigenvalues)
+  else
+    eigenv <- x$eigenvalues
+  
+  if(cumulative)
+    eigenv = cumsum(eigenv)
+
+  
+  df <- data.frame(eigenvalues = eigenv, component = seq_along(eigenv))
+
+  p <- ggplot(df, aes_string(x = "component", y = "eigenvalues")) +
+    geom_point() + geom_line() +
+    labs(title = ifelse(cumulative, "Cumulative eigenvalues", "Eigenvalues"))
   
   p
 }

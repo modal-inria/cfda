@@ -36,7 +36,7 @@ plotComponent(encoding, comp = c(1, 2))
 
 }
 \seealso{
-\link{plot.fmca}
+\link{plot.fmca} \link{plotEigenvalues}
 }
 \author{
 Quentin Grimonprez

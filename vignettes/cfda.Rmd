@@ -262,7 +262,7 @@ fmca <- compute_optimal_encoding(d_JKT, b, nCores = 2)
 The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`.
 
 ```{r, echo=TRUE}
- barplot(fmca$eigenvalues, main = "Eigenvalues")
+plotEigenvalues(fmca, cumulative = TRUE)
 ```
 
 The optimal encoding coefficients $\alpha$'s:

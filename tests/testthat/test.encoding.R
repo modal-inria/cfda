@@ -272,6 +272,24 @@ test_that("plotComponent does not produce warnings", {
 })
 
 
+test_that("plotEigenvalues does not produce warnings", {
+  n <- 50
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- msm2msmTmax(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  
+  expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = FALSE), regexp = NA)
+  expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)
+  expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = FALSE), regexp = NA)
+  expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE), regexp = NA)
+})
+
 test_that("getEncoding works", {
   n <- 50
   Tmax <- 1
