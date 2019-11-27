@@ -68,7 +68,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   ## end check
   
   if(verbose)
-    cat("######### Compute encodings #########\n")
+    cat("######### Compute encoding #########\n")
   
   
   # change state as integer
@@ -76,6 +76,12 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   data_msm$state = out$state
   label <- out$label
   rm(out)
+  
+  # refactor labels as 1:nbId
+  uniqueId <- unique(data_msm$id)
+  nId <- length(uniqueId)
+  id2 <- refactorCategorical(data_msm$id, uniqueId, seq_along(uniqueId)) 
+  uniqueId2 <- unique(id2)
   
   nCores <- min(max(1, nCores), detectCores()-1)
   
@@ -85,7 +91,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   if(verbose)
   {
-    cat(paste0("Number of individuals: ", length(unique(data_msm$id)), "\n"))
+    cat(paste0("Number of individuals: ", nId, "\n"))
     cat(paste0("Number of states: ", K, "\n"))
     cat(paste0("Number of basis functions: ", nBasis, "\n"))
     cat(paste0("Number of cores: ", nCores, "\n"))
@@ -108,7 +114,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   if(verbose)
   {
     cat("---- Compute V matrix:\n")
-    pb <- txtProgressBar(0, length(unique(data_msm$id)), style = 3)
+    pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
   }else{
@@ -118,8 +124,8 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = unique(data_msm$id), .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Vxi(data_msm[data_msm$id == i, ], phi, K, ...)
+  V <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Vxi(data_msm[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)
@@ -132,7 +138,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   {
     close(pb)
     cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
-    pb <- txtProgressBar(0, length(unique(data_msm$id)), style = 3)
+    pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
   }else{
@@ -140,8 +146,8 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   }
 
   
-  Fval <- foreach(i = unique(data_msm$id), .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Uxij(data_msm[data_msm$id == i, ], phi, K, ...)
+  Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Uxij(data_msm[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)
@@ -191,6 +197,8 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
 
   pc <- V %*% (invF05 %*% res$vectors)
+  rownames(pc) = uniqueId
+  
   if(verbose)
     cat("DONE\n")
   
