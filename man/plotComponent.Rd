@@ -4,7 +4,8 @@
 \alias{plotComponent}
 \title{Plot Components}
 \usage{
-plotComponent(x, comp = c(1, 2), addNames = TRUE)
+plotComponent(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1,
+  nudge_y = 0.1, size = 4)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
@@ -12,6 +13,10 @@ plotComponent(x, comp = c(1, 2), addNames = TRUE)
 \item{comp}{a vector of two elements indicating the components to plot}
 
 \item{addNames}{if TRUE, add the id labels on the plot}
+
+\item{nudge_x, nudge_y}{horizontal and vertical adjustment to nudge labels by}
+
+\item{size}{size of labels}
 }
 \description{
 Plot Components

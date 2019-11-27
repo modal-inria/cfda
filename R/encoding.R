@@ -459,6 +459,8 @@ getEncoding <- function(x, nHarm = 1, fdObject = FALSE, nx = NULL)
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param comp a vector of two elements indicating the components to plot
 #' @param addNames if TRUE, add the id labels on the plot
+#' @param nudge_x,nudge_y horizontal and vertical adjustment to nudge labels by
+#' @param size size of labels
 #'
 #' @author Quentin Grimonprez
 #' 
@@ -483,7 +485,7 @@ getEncoding <- function(x, nHarm = 1, fdObject = FALSE, nx = NULL)
 #' @seealso \link{plot.fmca} \link{plotEigenvalues}
 #' 
 #' @export
-plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
+plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4)
 {
   ## check parameters
   if(class(x) != "fmca")
@@ -496,16 +498,15 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE)
   ##
   
   df <- as.data.frame(x$pc)
-  df$name = 1:nrow(x$pc)
+  df$name = rownames(x$pc)
   
   p <- ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
     geom_point() + 
     labs(x = paste0("Comp ", comp[1]), y = paste0("Comp ", comp[2]))
   
   if(addNames)
-    p = p + geom_text(aes_string(label = "name"), hjust = -0.15, vjust = -0.15)
+    p = p + geom_text(aes_string(label = "name"), nudge_x = nudge_x, nudge_y = nudge_y, size = size)
 
-  
   p
 }
 
