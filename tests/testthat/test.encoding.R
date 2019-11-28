@@ -275,6 +275,16 @@ test_that("getEncoding works", {
   
 })
 
+test_that("compute_optimal_encoding throws an error when the basis is not well suited", {
+  
+  data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
+  b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
+  
+  expect_error({fmca <- compute_optimal_encoding(data_msm, b, nCores = 1)}, 
+               regexp = "In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support).", 
+               fixed = TRUE)
+})
+
 
 test_that("plot.fmca does not produce warnings", {
   n <- 50
