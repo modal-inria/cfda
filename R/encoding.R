@@ -557,7 +557,7 @@ plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE)
   df <- data.frame(eigenvalues = eigenv, component = seq_along(eigenv))
 
   p <- ggplot(df, aes_string(x = "component", y = "eigenvalues")) +
-    geom_point() + geom_line() +
+    geom_point() + geom_step() +
     labs(title = ifelse(cumulative, "Cumulative eigenvalues", "Eigenvalues"))
   
   p
