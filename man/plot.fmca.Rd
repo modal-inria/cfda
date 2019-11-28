@@ -4,12 +4,12 @@
 \alias{plot.fmca}
 \title{Plot the optimal encoding}
 \usage{
-\method{plot}{fmca}(x, nHarm = 1, ...)
+\method{plot}{fmca}(x, harm = 1, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
 
-\item{nHarm}{number of harmonics to use for the encoding}
+\item{harm}{harmonic to use for the encoding}
 
 \item{...}{not used}
 }

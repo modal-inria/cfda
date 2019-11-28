@@ -330,7 +330,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' Plot the optimal encoding
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
-#' @param nHarm number of harmonics to use for the encoding
+#' @param harm harmonic to use for the encoding
 #' @param ... not used
 #'
 #'
@@ -361,14 +361,14 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
 #' @export
-plot.fmca <- function(x, nHarm = 1, ...)
+plot.fmca <- function(x, harm = 1, ...)
 {
-  fdmat <- getEncoding(x, nHarm = nHarm, fdObject = FALSE)
+  fdmat <- getEncoding(x, harm = harm, fdObject = FALSE)
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
   
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with ", nHarm, " harmonics"))
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
 }
 
 
@@ -377,7 +377,7 @@ plot.fmca <- function(x, nHarm = 1, ...)
 #' Extract the encoding as an \code{fd} object or as a matrix
 #' 
 #' @param x Output of \code{\link{compute_optimal_encoding}}
-#' @param nHarm number of harmonics to use for the encoding
+#' @param harm harmonic to use for the encoding
 #' @param fdObject If TRUE returns a \code{fd} object else a matrix
 #' @param nx (Only if \code{fdObject = TRUE}) Number of points to evaluate the encoding
 #'
@@ -410,7 +410,7 @@ plot.fmca <- function(x, nHarm = 1, ...)
 #' @author Cristian Preda
 #'
 #' @export
-getEncoding <- function(x, nHarm = 1, fdObject = FALSE, nx = NULL)
+getEncoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 {
   ## check parameters
   if(class(x) != "fmca")
@@ -421,16 +421,11 @@ getEncoding <- function(x, nHarm = 1, fdObject = FALSE, nx = NULL)
     if((length(nx) > 1) || !is.whole.number(nx) || (nx < 0))
       stop("nx must be a positive integer.")
   }
-  if((length(nHarm) > 1) || !is.whole.number(nHarm) || (nHarm < 1) || (nHarm > length(x$alpha)))
-    stop("nHarm must be an integer between 1 and the number of components.")
+  if((length(harm) > 1) || !is.whole.number(harm) || (harm < 1) || (harm > length(x$alpha)))
+    stop("harm must be an integer between 1 and the number of components.")
   ##
   
-  fdObj <- fd(x$alpha[[1]], x$basisobj)
-  if(nHarm > 1)
-  {
-    for(harm in 2:nHarm)
-      fdObj = fdObj + fd(x$alpha[[harm]], x$basisobj)
-  }
+  fdObj <- fd(x$alpha[[harm]], x$basisobj)
 
   
   if(fdObject)

@@ -4,12 +4,12 @@
 \alias{getEncoding}
 \title{Extract the computed encoding}
 \usage{
-getEncoding(x, nHarm = 1, fdObject = FALSE, nx = NULL)
+getEncoding(x, harm = 1, fdObject = FALSE, nx = NULL)
 }
 \arguments{
 \item{x}{Output of \code{\link{compute_optimal_encoding}}}
 
-\item{nHarm}{number of harmonics to use for the encoding}
+\item{harm}{harmonic to use for the encoding}
 
 \item{fdObject}{If TRUE returns a \code{fd} object else a matrix}
 

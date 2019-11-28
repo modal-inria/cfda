@@ -255,7 +255,7 @@ test_that("getEncoding works", {
   out <- getEncoding(fmca, fdObject = TRUE)
   expect_s3_class(out, "fd")
   
-  out <- getEncoding(fmca, nHarm = 3, fdObject = TRUE)
+  out <- getEncoding(fmca, harm = 3, fdObject = TRUE)
   expect_s3_class(out, "fd")
   
   out <- getEncoding(fmca, fdObject = FALSE)
@@ -263,7 +263,7 @@ test_that("getEncoding works", {
   expect_equal(dim(out$y), c(501, 2))
   expect_length(out$x, 501)
   
-  out <- getEncoding(fmca, nHarm = 3, fdObject = FALSE)
+  out <- getEncoding(fmca, harm = 3, fdObject = FALSE)
   expect_named(out, c("x", "y"))
   expect_equal(dim(out$y), c(501, 2))
   expect_length(out$x, 501)
@@ -289,7 +289,7 @@ test_that("plot.fmca does not produce warnings", {
   fmca <- compute_optimal_encoding(dT, b, nCores = 1)
   
   expect_warning(plot(fmca), regexp = NA)
-  expect_warning(plot(fmca, nHarm = 3), regexp = NA)
+  expect_warning(plot(fmca, harm = 3), regexp = NA)
 })
 
 
