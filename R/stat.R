@@ -234,7 +234,7 @@ estimate_pt <- function(data_msm)
 #'
 #' @param x output of \code{\link{estimate_pt}}
 #' @param ribbon if TRUE, use ribbon to plot probabilities 
-#' @param ... unused
+#' @param ... only if \code{ribbon = TRUE}, parameter \code{addBorder}, if TRUE, add black border to the ribbons.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -261,7 +261,7 @@ plot.pt <- function(x, ribbon = FALSE, ...)
   ## end check
   
   if(ribbon)
-    p <- plot_pt_ribbon(x)
+    p <- plot_pt_ribbon(x, ...)
   else
     p <- plot_pt_classic(x)
   
@@ -288,8 +288,12 @@ plot_pt_classic <- function(pt)
 
 # plot probabilities using ribbon
 # @author Quentin Grimonprez
-plot_pt_ribbon <- function(pt)
+plot_pt_ribbon <- function(pt, addBorder = TRUE)
 {
+  ## check parameters
+  checkLogical(addBorder, "addBorder")
+  ## end check
+  
   plot_data <- as.data.frame(t(apply(pt$pt, 2, cumsum)))
   nState <- ncol(plot_data)
   labels <- paste0("state", names(plot_data))
@@ -302,8 +306,9 @@ plot_pt_ribbon <- function(pt)
   p <- ggplot(plot_data)
   for(i in 1:nState)
     p = p + geom_ribbon(aes_string(ymin = paste0("`", labels[i], "`"), 
-                                   ymax = paste0("`", labels[i+1], "`"), x = "time", fill = factor(shortLabels[i], levels = shortLabels)), colour = "black", 
-                         alpha = 0.8)
+                                   ymax = paste0("`", labels[i+1], "`"), x = "time", 
+                                   fill = factor(shortLabels[i], levels = shortLabels)), 
+                        colour = ifelse(addBorder, "black", NA), alpha = 0.8)
   
   p = p  + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)", fill = "state")

@@ -11,7 +11,7 @@
 
 \item{ribbon}{if TRUE, use ribbon to plot probabilities}
 
-\item{...}{unused}
+\item{...}{only if \code{ribbon = TRUE}, parameter \code{addBorder}, if TRUE, add black border to the ribbons.}
 }
 \description{
 Plot the probabilities of each state at each given time
