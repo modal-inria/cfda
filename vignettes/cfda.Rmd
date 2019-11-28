@@ -256,7 +256,7 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 The optimal encoding is computed using:
 
 ```{r, echo=TRUE}
-fmca <- compute_optimal_encoding(d_JKT, b, nCores = 2)
+fmca <- compute_optimal_encoding(d_JKT, b, nCores = 2, verbose = FALSE)
 ```
 
 The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`.
