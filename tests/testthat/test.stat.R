@@ -42,6 +42,7 @@ test_that("boxplot.timeSpent does not produce warnings", {
   out <- compute_time_spent(dat)
 
   expect_warning(boxplot(out), regexp = NA)
+  expect_warning(boxplot(out, col = c("red", "blue", "green")), regexp = NA)
   
 })
 
@@ -142,8 +143,10 @@ test_that("plot_pt does not produce warnings", {
   pt <- estimate_pt(d_JK2)
 
   expect_warning(plot(pt, ribbon = FALSE), regexp = NA)
+  expect_warning(plot(pt, ribbon = FALSE, col = c("red", "blue", "green", "black")), regexp = NA)
   expect_warning(plot(pt, ribbon = TRUE, addBorder = TRUE), regexp = NA)
   expect_warning(plot(pt, ribbon = TRUE, addBorder = FALSE), regexp = NA)
+  expect_warning(plot(pt, ribbon = TRUE, addBorder = FALSE, col = c("red", "blue", "green", "black")), regexp = NA)
 })
 
 
@@ -242,5 +245,6 @@ test_that("plotData does not produce warnings", {
   d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
 
   expect_warning(plotData(d_JK, addLabel = TRUE, addBorder = TRUE), regexp = NA)
-  expect_warning(plotData(d_JK, addLabel = FALSE, addBorder = FALSE), regexp = NA)
+  expect_warning(plotData(d_JK, addLabel = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
+  
 })

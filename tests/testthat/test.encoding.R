@@ -299,7 +299,7 @@ test_that("plot.fmca does not produce warnings", {
   fmca <- compute_optimal_encoding(dT, b, nCores = 1)
   
   expect_warning(plot(fmca), regexp = NA)
-  expect_warning(plot(fmca, harm = 3), regexp = NA)
+  expect_warning(plot(fmca, harm = 3, col = c("red", "blue")), regexp = NA)
 })
 
 

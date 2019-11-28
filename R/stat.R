@@ -60,6 +60,7 @@ compute_time_spent_intern <- function(data_msm, labels)
 #' Boxplot of time spent in each state
 #'
 #' @param x output of \code{\link{compute_time_spent}} function
+#' @param col a vector containing color for each state
 #' @param ... not used
 #'
 #' @examples 
@@ -81,11 +82,16 @@ compute_time_spent_intern <- function(data_msm, labels)
 #' @author Quentin Grimonprez
 #'
 #' @export
-boxplot.timeSpent <- function(x, ...)
+boxplot.timeSpent <- function(x, col = NULL, ...)
 {
-  ggplot(data.frame(timeSpent = as.vector(x), state = rep(colnames(x), each = nrow(x))), 
-         aes_string(x = "state", y = "timeSpent", fill = "state")) + 
+  p <- ggplot(data.frame(timeSpent = as.vector(x), state = rep(colnames(x), each = nrow(x))), 
+              aes_string(x = "state", y = "timeSpent", fill = "state")) + 
     geom_boxplot() + labs(x = "State", y = "Time Spent", fill = "State")
+  
+  if(!is.null(col))
+    p = p + scale_fill_manual(values = col)
+  
+  return(p)
 }
 
 
@@ -233,6 +239,7 @@ estimate_pt <- function(data_msm)
 #' Plot the probabilities of each state at each given time
 #'
 #' @param x output of \code{\link{estimate_pt}}
+#' @param col a vector containing color for each state
 #' @param ribbon if TRUE, use ribbon to plot probabilities 
 #' @param ... only if \code{ribbon = TRUE}, parameter \code{addBorder}, if TRUE, add black border to the ribbons.
 #' 
@@ -254,16 +261,16 @@ estimate_pt <- function(data_msm)
 #' @method plot pt
 #' 
 #' @export
-plot.pt <- function(x, ribbon = FALSE, ...)
+plot.pt <- function(x, col = NULL, ribbon = FALSE, ...)
 {
   ## check parameters
   checkLogical(ribbon, "ribbon")
   ## end check
   
   if(ribbon)
-    p <- plot_pt_ribbon(x, ...)
+    p <- plot_pt_ribbon(x, col, ...)
   else
-    p <- plot_pt_classic(x)
+    p <- plot_pt_classic(x, col)
   
   return(p)
 }
@@ -271,7 +278,7 @@ plot.pt <- function(x, ribbon = FALSE, ...)
 
 # plot line
 # @author Quentin Grimonprez
-plot_pt_classic <- function(pt)
+plot_pt_classic <- function(pt, col = NULL)
 {
   plot_data <- data.frame(state = as.factor(rep(rownames(pt$pt), each = ncol(pt$pt))), 
                           proba = as.vector(t(pt$pt)), 
@@ -281,6 +288,9 @@ plot_pt_classic <- function(pt)
     geom_line() + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
   
+  if(!is.null(col))
+    p = p + scale_colour_manual(values = col)
+  
   return(p)
 }
 
@@ -288,7 +298,7 @@ plot_pt_classic <- function(pt)
 
 # plot probabilities using ribbon
 # @author Quentin Grimonprez
-plot_pt_ribbon <- function(pt, addBorder = TRUE)
+plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 {
   ## check parameters
   checkLogical(addBorder, "addBorder")
@@ -309,6 +319,9 @@ plot_pt_ribbon <- function(pt, addBorder = TRUE)
                                    ymax = paste0("`", labels[i+1], "`"), x = "time", 
                                    fill = factor(shortLabels[i], levels = shortLabels)), 
                         colour = ifelse(addBorder, "black", NA), alpha = 0.8)
+  
+  if(!is.null(col))
+    p = p + scale_fill_manual(values = col)
   
   p = p  + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)", fill = "state")
@@ -445,6 +458,7 @@ statetable <- function(data_msm)
 #' Plot categorical functional data
 #'
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param col a vector containing color for each state
 #' @param addLabel If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
 #' 
@@ -466,7 +480,7 @@ statetable <- function(data_msm)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
+plotData <- function(data_msm, col = NULL, addLabel = TRUE, addBorder = TRUE)
 {
   ## check parameters
   checkDataMsm(data_msm)
@@ -493,7 +507,10 @@ plotData <- function(data_msm, addLabel = TRUE, addBorder = TRUE)
     p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
     
-  p
+  if(!is.null(col))
+    p = p + scale_fill_manual(values = col)
+  
+  return(p)
 }
 
 

@@ -335,6 +335,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param harm harmonic to use for the encoding
+#' @param col a vector containing color for each state
 #' @param ... not used
 #'
 #'
@@ -365,14 +366,19 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
 #' @export
-plot.fmca <- function(x, harm = 1, ...)
+plot.fmca <- function(x, harm = 1, col = NULL, ...)
 {
   fdmat <- getEncoding(x, harm = harm, fdObject = FALSE)
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
   
-  ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
+  p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line() +
     labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+  
+  if(!is.null(col))
+    p = p + scale_colour_manual(values = col)
+  
+  return(p)
 }
 
 

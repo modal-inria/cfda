@@ -4,10 +4,12 @@
 \alias{boxplot.timeSpent}
 \title{Boxplot of time spent in each state}
 \usage{
-\method{boxplot}{timeSpent}(x, ...)
+\method{boxplot}{timeSpent}(x, col = NULL, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_time_spent}} function}
+
+\item{col}{a vector containing color for each state}
 
 \item{...}{not used}
 }

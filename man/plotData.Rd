@@ -4,10 +4,12 @@
 \alias{plotData}
 \title{Plot categorical functional data}
 \usage{
-plotData(data_msm, addLabel = TRUE, addBorder = TRUE)
+plotData(data_msm, col = NULL, addLabel = TRUE, addBorder = TRUE)
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+
+\item{col}{a vector containing color for each state}
 
 \item{addLabel}{If TRUE, add id labels}
 

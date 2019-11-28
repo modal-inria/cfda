@@ -4,12 +4,14 @@
 \alias{plot.fmca}
 \title{Plot the optimal encoding}
 \usage{
-\method{plot}{fmca}(x, harm = 1, ...)
+\method{plot}{fmca}(x, harm = 1, col = NULL, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
 
 \item{harm}{harmonic to use for the encoding}
+
+\item{col}{a vector containing color for each state}
 
 \item{...}{not used}
 }

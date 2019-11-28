@@ -4,10 +4,12 @@
 \alias{plot.pt}
 \title{Plot probabilities}
 \usage{
-\method{plot}{pt}(x, ribbon = FALSE, ...)
+\method{plot}{pt}(x, col = NULL, ribbon = FALSE, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{estimate_pt}}}
+
+\item{col}{a vector containing color for each state}
 
 \item{ribbon}{if TRUE, use ribbon to plot probabilities}
 
