@@ -12,7 +12,7 @@ install_github("modal-inria/cfda", build_vignettes = TRUE)
 
 ## Vignette
 
-Once the package is installed. A vignette describing the mathematical background and showing an example is available.
+Once the package is installed, a vignette describing the mathematical background and showing an example is available using the R command:
 
 ```
 RShowDoc("cfda", package = "cfda")
