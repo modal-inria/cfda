@@ -44,7 +44,7 @@
 #' plot(encoding)
 #' 
 #' # extract the encoding using the first harmonic
-#' getEncoding(encoding)
+#' get_encoding(encoding)
 #' 
 #' 
 #' @seealso \link{compute_optimal_encoding}

@@ -46,9 +46,9 @@
 #' plotComponent(encoding, comp = c(1, 2))
 #' 
 #' # extract the optimal encoding
-#' getEncoding(encoding, harm = 1)
+#' get_encoding(encoding, harm = 1)
 #'
-#' @seealso \link{plot.fmca} \link{plotComponent} \link{getEncoding}
+#' @seealso \link{plot.fmca} \link{plotComponent} \link{get_encoding}
 #'
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
@@ -372,7 +372,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @export
 plot.fmca <- function(x, harm = 1, col = NULL, ...)
 {
-  fdmat <- getEncoding(x, harm = harm, fdObject = FALSE)
+  fdmat <- get_encoding(x, harm = harm, fdObject = FALSE)
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
   
   p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
@@ -418,13 +418,13 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
 #' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 #' 
 #' # extract the encoding using 1 harmonic
-#' encodFd <- getEncoding(encoding, fdObject = TRUE)
-#' encodMat <- getEncoding(encoding, nx = 200)
+#' encodFd <- get_encoding(encoding, fdObject = TRUE)
+#' encodMat <- get_encoding(encoding, nx = 200)
 #' 
 #' @author Cristian Preda
 #'
 #' @export
-getEncoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
+get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 {
   ## check parameters
   if(class(x) != "fmca")

@@ -276,7 +276,7 @@ plot(fmca)
 ```
 or extracted as a \code{fd} object (or matrix):
 ```{r, echo=TRUE}
-encoding <- getEncoding(fmca, fdObject = TRUE)
+encoding <- get_encoding(fmca, fdObject = TRUE)
 ```
 
 

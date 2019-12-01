@@ -240,7 +240,7 @@ test_that("compute_optimal_encoding works verbose", {
 })
 
 
-test_that("getEncoding works", {
+test_that("get_encoding works", {
   n <- 50
   Tmax <- 1
   K <- 2
@@ -252,23 +252,23 @@ test_that("getEncoding works", {
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   fmca <- compute_optimal_encoding(dT, b, nCores = 1)
   
-  out <- getEncoding(fmca, fdObject = TRUE)
+  out <- get_encoding(fmca, fdObject = TRUE)
   expect_s3_class(out, "fd")
   
-  out <- getEncoding(fmca, harm = 3, fdObject = TRUE)
+  out <- get_encoding(fmca, harm = 3, fdObject = TRUE)
   expect_s3_class(out, "fd")
   
-  out <- getEncoding(fmca, fdObject = FALSE)
+  out <- get_encoding(fmca, fdObject = FALSE)
   expect_named(out, c("x", "y"))
   expect_equal(dim(out$y), c(501, 2))
   expect_length(out$x, 501)
   
-  out <- getEncoding(fmca, harm = 3, fdObject = FALSE)
+  out <- get_encoding(fmca, harm = 3, fdObject = FALSE)
   expect_named(out, c("x", "y"))
   expect_equal(dim(out$y), c(501, 2))
   expect_length(out$x, 501)
   
-  out <- getEncoding(fmca, fdObject = FALSE, nx = 100)
+  out <- get_encoding(fmca, fdObject = FALSE, nx = 100)
   expect_named(out, c("x", "y"))
   expect_equal(dim(out$y), c(100, 2))
   expect_length(out$x, 100)

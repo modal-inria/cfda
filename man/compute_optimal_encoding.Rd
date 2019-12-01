@@ -60,14 +60,14 @@ plot(encoding)
 plotComponent(encoding, comp = c(1, 2))
 
 # extract the optimal encoding
-getEncoding(encoding, harm = 1)
+get_encoding(encoding, harm = 1)
 
 }
 \references{
 Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 }
 \seealso{
-\link{plot.fmca} \link{plotComponent} \link{getEncoding}
+\link{plot.fmca} \link{plotComponent} \link{get_encoding}
 }
 \author{
 Cristian Preda, Quentin Grimonprez
