@@ -28,7 +28,8 @@
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
+#'                             labels = c("A", "C", "G", "T"))
 #' d_JK2 <- msm2msmTmax(d_JK, Tmax)
 #'
 #' # create basis object
@@ -45,7 +46,7 @@
 #' plotComponent(encoding, comp = c(1, 2))
 #' 
 #' # extract the optimal encoding
-#' getEncoding(encoding)
+#' getEncoding(encoding, harm = 1)
 #'
 #' @seealso \link{plot.fmca} \link{plotComponent} \link{getEncoding}
 #'
@@ -335,12 +336,12 @@ compute_Vxi <- function(x, phi, K, ...)
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param harm harmonic to use for the encoding
-#' @param col a vector containing color for each state
+#' @param col a vector containing color for each state.
 #' @param ... not used
 #'
 #'
 #' @details 
-#' The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
+#' The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m \alpha_{x,i}^{(h)}\phi_i}.
 #'
 #' @author Quentin Grimonprez
 #' 
@@ -360,8 +361,11 @@ compute_Vxi <- function(x, phi, K, ...)
 #' # compute encoding 
 #' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 #' 
-#' # plot the encoding using 1 harmonic
+#' # plot the encoding produced by the first harmonic
 #' plot(encoding)
+#' 
+#' # plot the encoding produced by the second harmonic with custom color
+#' plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 

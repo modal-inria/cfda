@@ -30,7 +30,7 @@ d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
 timeSpent <- compute_time_spent(d_JK2)
 
 # plot the result
-boxplot(timeSpent)
+boxplot(timeSpent, col = c("#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))
 
 }
 \author{

@@ -11,7 +11,7 @@
 
 \item{harm}{harmonic to use for the encoding}
 
-\item{col}{a vector containing color for each state}
+\item{col}{a vector containing color for each state.}
 
 \item{...}{not used}
 }
@@ -19,7 +19,7 @@
 Plot the optimal encoding
 }
 \details{
-The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
+The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m \alpha_{x,i}^{(h)}\phi_i}.
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -37,8 +37,11 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # compute encoding 
 encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 
-# plot the encoding using 1 harmonic
+# plot the encoding produced by the first harmonic
 plot(encoding)
+
+# plot the encoding produced by the second harmonic with custom color
+plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
 
 }
 \seealso{
