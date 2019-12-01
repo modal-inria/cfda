@@ -4,8 +4,14 @@
 \alias{plotComponent}
 \title{Plot Components}
 \usage{
-plotComponent(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1,
-  nudge_y = 0.1, size = 4)
+plotComponent(
+  x,
+  comp = c(1, 2),
+  addNames = TRUE,
+  nudge_x = 0.1,
+  nudge_y = 0.1,
+  size = 4
+)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}

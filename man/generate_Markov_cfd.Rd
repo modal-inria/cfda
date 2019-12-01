@@ -4,8 +4,15 @@
 \alias{generate_Markov_cfd}
 \title{Generate Markov Trajectories}
 \usage{
-generate_Markov_cfd(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1,
-  K), pi_0 = c(1, rep(0, K - 1)), Tmax = 1, labels = NULL)
+generate_Markov_cfd(
+  n = 5,
+  K = 2,
+  Q = 1 - diag(K),
+  lambda = rep(1, K),
+  pi_0 = c(1, rep(0, K - 1)),
+  Tmax = 1,
+  labels = NULL
+)
 }
 \arguments{
 \item{n}{number of trajectories to generate}
