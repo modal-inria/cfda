@@ -379,7 +379,7 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
   {
     return(length(x$state)-1)
   }else{
-    out <- rle(x$state[order(x$time)])$values
+    out <- rle(as.character(x$state[order(x$time)]))$values #rle does not manage factor, as.character allows it
     return(length(out)-1)
   }
 }

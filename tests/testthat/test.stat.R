@@ -165,6 +165,13 @@ test_that("compute_number_jumpsIntern works with countDuplicated = TRUE", {
   expectedOut <- 19
 
   expect_equivalent(out, expectedOut)
+  
+  
+  dat <- data.frame(id = 1:20, time = 1:20, state = rep(letters[1:10], each = 2))
+  out <- compute_number_jumpsIntern(dat, countDuplicated = TRUE) 
+  expectedOut <- 19
+  
+  expect_equivalent(out, expectedOut)
 })
 
 test_that("compute_number_jumpsIntern works with countDuplicated = FALSE", {
@@ -183,7 +190,7 @@ test_that("compute_number_jumpsIntern works with countDuplicated = FALSE", {
   expect_equivalent(out, expectedOut)
   
   # with unordered time
-  dat <- data.frame(id = 1:20, time = c(11:20, 1:10), state = rep(1:5, each = 4))
+  dat <- data.frame(id = 1:20, time = c(11:20, 1:10), state = as.factor(rep(letters[1:5], each = 4)))
   out <- compute_number_jumpsIntern(dat, countDuplicated = FALSE) 
   expectedOut <- 5
   
