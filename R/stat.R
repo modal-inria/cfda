@@ -114,6 +114,9 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 #' # compute duration of each individual
 #' duration <- compute_duration(d_JK)
 #' 
+#' hist(duration)
+#' 
+#' @seealso \link{hist.duration}
 #' 
 #' @author Cristian Preda, Quentin Grimonprez
 #'
@@ -125,9 +128,46 @@ compute_duration <- function(data_msm)
   ## end check
   
   out <- tapply(data_msm$time, as.factor(data_msm$id), function(x) diff(range(x)))
-
+  class(out) = "duration"
+  
   return(out)
 }
+
+#' Plot the duration
+#' 
+#' 
+#' @param x output of \code{\link{compute_duration}} function
+#' @param breaks number of breaks. If not given use the sturges rule
+#' @param ... not used
+#' 
+#' 
+#' @examples 
+#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#'
+#' # compute duration of each individual
+#' duration <- compute_duration(d_JK)
+#' 
+#' hist(duration)
+#' 
+#' @author Quentin Grimonprez
+#' 
+#' @export 
+hist.duration <- function(x, breaks = NULL, ...)
+{
+  # choose the number of breaks using sturges rule
+  if(is.null(breaks))
+    breaks <- floor(1 + log2(length(x)))
+  
+  ggplot(data.frame(duration = as.vector(x)), aes_string(x = "duration"))+
+    geom_histogram(fill = "lightblue", color = "black", bins = breaks) +
+    labs(x = "Duration", y = "Frequency")
+}
+
 
 #' Extract the state of each individual at a given time
 #' 

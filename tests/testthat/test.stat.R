@@ -52,8 +52,22 @@ test_that("compute_duration works", {
   
   out <- compute_duration(dat)
   expectedOut <- c("1" = 7, "2" = 6)
+  class(expectedOut) = "duration"
   
   expect_equivalent(out, expectedOut)
+})
+
+
+test_that("hist.duration does not produce warnings", {
+  # simulate the Jukes Cantor models of nucleotides replacement.
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  
+  duration <- compute_duration(d_JK)
+  
+  expect_warning(hist(duration), regexp = NA)
 })
 
 
