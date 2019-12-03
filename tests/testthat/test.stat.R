@@ -60,9 +60,17 @@ test_that("compute_duration works", {
 test_that("id_get_state returns the right state", {
   dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))
 
-  out <- id_get_state(dat, 3) 
-    
+  out <- id_get_state(dat, 3, NAafterTmax = FALSE) 
   expect_equal(out, 3)
+  
+  out <- id_get_state(dat, 7, NAafterTmax = TRUE) 
+  expect_equal(out, NA)
+  
+  out <- id_get_state(dat, 7, NAafterTmax = FALSE) 
+  expect_equal(out, 1)
+  
+  out <- id_get_state(dat, 6, NAafterTmax = TRUE) 
+  expect_equal(out, 1)
 })
 
 

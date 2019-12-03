@@ -132,7 +132,8 @@ compute_duration <- function(data_msm)
 #' Extract the state of each individual at a given time
 #' 
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param t real
+#' @param t time at which extract the state
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
 #' 
 #' @return a vector containing the state of each individual at time t 
 #' 
@@ -147,10 +148,16 @@ compute_duration <- function(data_msm)
 #' # get the state of each individuals at time t = 6
 #' get_state(d_JK, 6)
 #' 
+#' 
+#' # get the state of each individuals at time t = 12 (> Tmax)
+#' get_state(d_JK, 12)
+#' # if NAafterTmax = TRUE, it will return NA for t > Tmax
+#' get_state(d_JK, 12, NAafterTmax = TRUE)
+#' 
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-get_state <- function(data_msm, t) 
+get_state <- function(data_msm, t, NAafterTmax = FALSE) 
 {
   ## check parameters
   checkDataMsm(data_msm)
@@ -158,20 +165,26 @@ get_state <- function(data_msm, t)
     stop("t must be a real.")
   ## end check
   
-  out <- by(data_msm, data_msm$id, function(x){id_get_state(x, t)})
+  out <- by(data_msm, data_msm$id, function(x){id_get_state(x, t, NAafterTmax)})
   out2 <- as.vector(out)
   names(out2) = names(out)
   
   return(out2)
 }
 
-
+# return the state at time t
+#
 # x un individu de type msm et t un temps
-id_get_state <- function(x, t) 
+# NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+id_get_state <- function(x, t, NAafterTmax = FALSE) 
 {
+  if(NAafterTmax && (t > x$time[length(x$time)]))
+    return(NA)
+  
   aux <- which(x$time <= t)
   return(x$state[aux[length(aux)]])
 }
+
 
 
 #' Estimate probabilities to be in each state

@@ -4,12 +4,14 @@
 \alias{get_state}
 \title{Extract the state of each individual at a given time}
 \usage{
-get_state(data_msm, t)
+get_state(data_msm, t, NAafterTmax = FALSE)
 }
 \arguments{
 \item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
-\item{t}{real}
+\item{t}{time at which extract the state}
+
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax}
 }
 \value{
 a vector containing the state of each individual at time t
@@ -26,6 +28,12 @@ d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 
 
 # get the state of each individuals at time t = 6
 get_state(d_JK, 6)
+
+
+# get the state of each individuals at time t = 12 (> Tmax)
+get_state(d_JK, 12)
+# if NAafterTmax = TRUE, it will return NA for t > Tmax
+get_state(d_JK, 12, NAafterTmax = TRUE)
 
 }
 \author{
