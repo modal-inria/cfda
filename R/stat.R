@@ -133,7 +133,7 @@ compute_duration <- function(data_msm)
 #' 
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param t time at which extract the state
-#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
 #' 
 #' @return a vector containing the state of each individual at time t 
 #' 
@@ -190,6 +190,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' Estimate probabilities to be in each state
 #' 
 #' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
 #' 
 #' @return A list of two elements:
 #' \itemize{
@@ -215,7 +216,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export   
-estimate_pt <- function(data_msm)
+estimate_pt <- function(data_msm, NAafterTmax = FALSE)
 {
   ## check parameters
   checkDataMsm(data_msm)
@@ -232,13 +233,13 @@ estimate_pt <- function(data_msm)
     x <- data_msm[data_msm$id == id,]
     for(i in seq_along(t_jumps))
     {
-      aux <- id_get_state(x, t_jumps[i]) 
+      aux <- id_get_state(x, t_jumps[i], NAafterTmax) 
       
       res[match(aux, states), i] = res[match(aux, states), i] + 1
     }
   }
   
-  res = res/n
+  res = prop.table(res, margin = 2)
   
   out <- list(pt = res, t = t_jumps)
   class(out) = "pt"

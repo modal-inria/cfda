@@ -11,7 +11,7 @@ get_state(data_msm, t, NAafterTmax = FALSE)
 
 \item{t}{time at which extract the state}
 
-\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax}
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)}
 }
 \value{
 a vector containing the state of each individual at time t
