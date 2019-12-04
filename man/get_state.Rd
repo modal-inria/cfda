@@ -4,10 +4,10 @@
 \alias{get_state}
 \title{Extract the state of each individual at a given time}
 \usage{
-get_state(data_msm, t, NAafterTmax = FALSE)
+get_state(data, t, NAafterTmax = FALSE)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
 \item{t}{time at which extract the state}
 

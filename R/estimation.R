@@ -3,7 +3,7 @@
 #'
 #' Calculates crude initial values for transition intensities by assuming that the data represent the exact transition times of the Markov process.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
 #' @return list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state
 #'
@@ -25,27 +25,27 @@
 #' @author Cristian Preda
 #' 
 #' @export
-estimation_Markov <- function(data_msm)
+estimation_Markov <- function(data)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   ## end check
   
   # msm requires state as integer
-  out <- stateToInteger(data_msm$state)
-  data_msm$state = out$state
+  out <- stateToInteger(data$state)
+  data$state = out$state
   label <- out$label
   rm(out)
   
-  aux <- statetable.msm(data_msm$state, data_msm$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
+  aux <- statetable.msm(data$state, data$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
 
   # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
   # add row for the missing state
   aux1 <- completeStatetable(aux)
 
   
-  matA <- crudeinits.msm(data_msm$state ~ data_msm$time, subject = data_msm$id, 
-                         qmatrix = matrix(as.numeric(aux1 > 0), ncol = length(unique(data_msm$state))))
+  matA <- crudeinits.msm(data$state ~ data$time, subject = data$id, 
+                         qmatrix = matrix(as.numeric(aux1 > 0), ncol = length(unique(data$state))))
   
   # estimation of the time spent in each state
   lambda_est <- -diag(matA) 

@@ -2,7 +2,7 @@
 #'
 #' For each individual, compute the time spent in each state
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
 #' @return a matrix with \code{K} columns containing the total time spent in each state for each individuals
 #'
@@ -24,15 +24,15 @@
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
-compute_time_spent <- function(data_msm)
+compute_time_spent <- function(data)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   ## end check
   
-  labels <- sort(unique(data_msm$state))
+  labels <- sort(unique(data$state))
   
-  res <- by(data_msm, data_msm$id, function(x){compute_time_spent_intern(x, labels)})
+  res <- by(data, data$id, function(x){compute_time_spent_intern(x, labels)})
   out <- do.call(rbind, res)
   colnames(out) = labels
   class(out) = "timeSpent"
@@ -42,16 +42,16 @@ compute_time_spent <- function(data_msm)
 
 
 # combien de temps passe un id dans [0,T] dans chaque etat, x vient d'un msmT
-compute_time_spent_intern <- function(data_msm, labels)
+compute_time_spent_intern <- function(data, labels)
 {
   aux <- rep(0, length(labels))            
   for(i in seq_along(labels))
   {
-    idx <- which(data_msm$state == labels[i])
+    idx <- which(data$state == labels[i])
     for(u in idx)
     {
-      if(u < nrow(data_msm))
-        aux[i] = aux[i] + data_msm$time[u+1] - data_msm$time[u]
+      if(u < nrow(data))
+        aux[i] = aux[i] + data$time[u+1] - data$time[u]
     }  
   }
   return(aux)
@@ -99,7 +99,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 #'
 #' For each individual, compute the duration
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
 #' @return a vector containing the duration of each trajectories
 #'
@@ -121,13 +121,13 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
-compute_duration <- function(data_msm)
+compute_duration <- function(data)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   ## end check
   
-  out <- tapply(data_msm$time, as.factor(data_msm$id), function(x) diff(range(x)))
+  out <- tapply(data$time, as.factor(data$id), function(x) diff(range(x)))
   class(out) = "duration"
   
   return(out)
@@ -171,7 +171,7 @@ hist.duration <- function(x, breaks = NULL, ...)
 
 #' Extract the state of each individual at a given time
 #' 
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param t time at which extract the state
 #' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
 #' 
@@ -197,15 +197,15 @@ hist.duration <- function(x, breaks = NULL, ...)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-get_state <- function(data_msm, t, NAafterTmax = FALSE) 
+get_state <- function(data, t, NAafterTmax = FALSE) 
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   if(!is.numeric(t) || (length(t) != 1))
     stop("t must be a real.")
   ## end check
   
-  out <- by(data_msm, data_msm$id, function(x){id_get_state(x, t, NAafterTmax)})
+  out <- by(data, data$id, function(x){id_get_state(x, t, NAafterTmax)})
   out2 <- as.vector(out)
   names(out2) = names(out)
   
@@ -229,7 +229,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 
 #' Estimate probabilities to be in each state
 #' 
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
 #' 
 #' @return A list of two elements:
@@ -256,21 +256,21 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export   
-estimate_pt <- function(data_msm, NAafterTmax = FALSE)
+estimate_pt <- function(data, NAafterTmax = FALSE)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   ## end check
   
-  t_jumps <- sort(unique(data_msm$time)) 
-  uniqueId <- unique(data_msm$id)
+  t_jumps <- sort(unique(data$time)) 
+  uniqueId <- unique(data$id)
   n <- length(uniqueId)
-  states <- sort(unique(data_msm$state))
+  states <- sort(unique(data$state))
   res <- matrix(0, nrow = length(states), ncol = length(t_jumps), dimnames = list(states, round(t_jumps, 3)))
   
   for(id in uniqueId)
   {
-    x <- data_msm[data_msm$id == id,]
+    x <- data[data$id == id,]
     for(i in seq_along(t_jumps))
     {
       aux <- id_get_state(x, t_jumps[i], NAafterTmax) 
@@ -388,7 +388,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 #' 
 #' For each individual, compute the number of jumps performed
 #' 
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param countDuplicated if \code{TRUE}, jumps in the same state are counted as jump
 #' 
 #' @return A vector containing the number of jumps for each individual 
@@ -408,14 +408,14 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export  
-compute_number_jumps <- function(data_msm, countDuplicated = TRUE)
+compute_number_jumps <- function(data, countDuplicated = TRUE)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   checkLogical(countDuplicated, "countDuplicated")
   ## end check
   
-  out <- by(data_msm, data_msm$id, function(x){compute_number_jumpsIntern(x, countDuplicated)})
+  out <- by(data, data$id, function(x){compute_number_jumpsIntern(x, countDuplicated)})
   nom <- names(out)
   out <- as.vector(out)
   names(out) = nom
@@ -477,7 +477,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #'
 #' Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
 #' @return a vector of length \code{K} containing the total time spent in each state
 #'
@@ -493,15 +493,15 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' 
 #'
 #' @export
-statetable <- function(data_msm)
+statetable <- function(data)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   ## end check
   
-  newState = stateToInteger(data_msm$state)
+  newState = stateToInteger(data$state)
   
-  out <- statetable.msm(newState$state, data_msm$id)
+  out <- statetable.msm(newState$state, data$id)
   colnames(out) = newState$label$label[match(colnames(out), newState$label$code)]
   rownames(out) = newState$label$label[match(rownames(out), newState$label$code)]
   
@@ -511,7 +511,7 @@ statetable <- function(data_msm)
 
 #' Plot categorical functional data
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param col a vector containing color for each state
 #' @param addLabel If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
@@ -534,17 +534,17 @@ statetable <- function(data_msm)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data_msm, col = NULL, addLabel = TRUE, addBorder = TRUE)
+plotData <- function(data, col = NULL, addLabel = TRUE, addBorder = TRUE)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   checkLogical(addLabel, "addLabel")
   checkLogical(addBorder, "addBorder")
   ## end check
   
-  d_graph <- rep_large_ind(data_msm)
+  d_graph <- rep_large_ind(data)
 
-  d_graph$state = factor(d_graph$state, levels = sort(unique(data_msm$state)))
+  d_graph$state = factor(d_graph$state, levels = sort(unique(data$state)))
   
   nInd <- length(unique(d_graph$id))
   d_graph$id2 <- unclass(factor(d_graph$id))
@@ -568,11 +568,11 @@ plotData <- function(data_msm, col = NULL, addLabel = TRUE, addBorder = TRUE)
 }
 
 
-# transform the data_msm format to a new format with 4 columns: id, t_stast, t_end, state.
+# transform the data format to a new format with 4 columns: id, t_stast, t_end, state.
 # usefull for ggplot
-rep_large_ind <- function(data_msm)
+rep_large_ind <- function(data)
 {
-  out <- by(data_msm, data_msm$id, function(x){
+  out <- by(data, data$id, function(x){
     data.frame(id = x$id[1:(nrow(x)-1)] , 
                t_start = x$time[1:(nrow(x)-1)], 
                t_end = x$time[2:nrow(x)], 

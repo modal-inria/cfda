@@ -4,10 +4,10 @@
 \alias{statetable}
 \title{Table of transitions}
 \usage{
-statetable(data_msm)
+statetable(data)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
 a vector of length \code{K} containing the total time spent in each state

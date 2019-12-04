@@ -2,24 +2,24 @@
 
 context("Check functions")
 
-test_that("checkDataMsm works", {
+test_that("checkData works", {
   
-  expect_error(checkDataMsm(c()), "data_msm must be a data.frame.")
+  expect_error(checkData(c()), "data must be a data.frame.")
   
   df <- data.frame(id = 1)
-  expect_error(checkDataMsm(df), "Missing columns in data_msm: time, state.")
+  expect_error(checkData(df), "Missing columns in data: time, state.")
   
   df <- data.frame(id = 1, time = 1, state = "e")
-  expect_error(checkDataMsm(df), "There is only one row or less.")
+  expect_error(checkData(df), "There is only one row or less.")
   
   df <- data.frame(id = 1:2, time = c(1, NA), state = 1:2)
-  expect_error(checkDataMsm(df), "There is some missing values.")
+  expect_error(checkData(df), "There is some missing values.")
   
   df <- data.frame(id = 1:2, time = c(1, NA), state = letters[1:2])
-  expect_error(checkDataMsm(df), "There is some missing values.")
+  expect_error(checkData(df), "There is some missing values.")
   
   df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
-  expect_silent(checkDataMsm(df))
+  expect_silent(checkData(df))
   
 })
 

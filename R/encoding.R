@@ -2,7 +2,7 @@
 #'
 #' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param basisobj basis created using the \code{fda} package.
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
@@ -56,12 +56,12 @@
 #' Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
 #' 
 #' @export
-compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE,  ...)
+compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE,  ...)
 {
   t1 <- proc.time()
   ## check parameters
-  checkDataMsm(data_msm)
-  checkDataEndTmax(data_msm)
+  checkData(data)
+  checkDataEndTmax(data)
   if(!is.basis(basisobj))
     stop("basisobj is not a basis object.")
   if(!is.whole.number(nCores) || (nCores < 1))
@@ -73,20 +73,20 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   
   # change state as integer
-  out <- stateToInteger(data_msm$state)
-  data_msm$state = out$state
+  out <- stateToInteger(data$state)
+  data$state = out$state
   label <- out$label
   rm(out)
   
   # refactor labels as 1:nbId
-  uniqueId <- unique(data_msm$id)
+  uniqueId <- unique(data$id)
   nId <- length(uniqueId)
-  id2 <- refactorCategorical(data_msm$id, uniqueId, seq_along(uniqueId)) 
+  id2 <- refactorCategorical(data$id, uniqueId, seq_along(uniqueId)) 
   uniqueId2 <- unique(id2)
   
   nCores <- min(max(1, nCores), detectCores()-1)
   
-  Tmax <- max(data_msm$time)
+  Tmax <- max(data$time)
   K <- length(label$label)
   nBasis <- basisobj$nbasis  # nombre de fonctions de base
   
@@ -126,7 +126,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
   V <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Vxi(data_msm[id2 == i, ], phi, K, ...)
+    res <- compute_Vxi(data[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)
@@ -148,7 +148,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 
   
   Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Fxij(data_msm[id2 == i, ], phi, K, ...)
+    res <- compute_Fxij(data[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)

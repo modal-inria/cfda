@@ -4,10 +4,10 @@
 \alias{compute_time_spent}
 \title{Compute time spent in each state}
 \usage{
-compute_time_spent(data_msm)
+compute_time_spent(data)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
 a matrix with \code{K} columns containing the total time spent in each state for each individuals

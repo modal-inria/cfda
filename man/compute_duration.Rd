@@ -4,10 +4,10 @@
 \alias{compute_duration}
 \title{Compute duration of individuals}
 \usage{
-compute_duration(data_msm)
+compute_duration(data)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
 a vector containing the duration of each trajectories

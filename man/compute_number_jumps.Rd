@@ -4,10 +4,10 @@
 \alias{compute_number_jumps}
 \title{Compute the number of jumps}
 \usage{
-compute_number_jumps(data_msm, countDuplicated = TRUE)
+compute_number_jumps(data, countDuplicated = TRUE)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
 \item{countDuplicated}{if \code{TRUE}, jumps in the same state are counted as jump}
 }

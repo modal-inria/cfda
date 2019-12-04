@@ -5,7 +5,7 @@
 \title{Compute the optimal encodings for each state}
 \usage{
 compute_optimal_encoding(
-  data_msm,
+  data,
   basisobj,
   nCores = max(1, ceiling(detectCores()/2)),
   verbose = TRUE,
@@ -13,7 +13,7 @@ compute_optimal_encoding(
 )
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).}
 
 \item{basisobj}{basis created using the \code{fda} package.}
 

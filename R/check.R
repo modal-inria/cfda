@@ -1,19 +1,19 @@
 # Check if the data.frame has the required format
 # @author Quentin Grimonprez
-checkDataMsm <- function(data_msm)
+checkData <- function(data)
 {
-  if(!is.data.frame(data_msm))
-    stop("data_msm must be a data.frame.")
+  if(!is.data.frame(data))
+    stop("data must be a data.frame.")
     
   requiredColNames <- c("id", "time", "state")
-  missColNames <-  !(requiredColNames %in% colnames(data_msm))
+  missColNames <-  !(requiredColNames %in% colnames(data))
   if(any(missColNames))
-    stop(paste0("Missing columns in data_msm: ", paste(requiredColNames[missColNames], collapse = ", "), "."))
+    stop(paste0("Missing columns in data: ", paste(requiredColNames[missColNames], collapse = ", "), "."))
   
-  if(nrow(data_msm) <= 1)
+  if(nrow(data) <= 1)
     stop("There is only one row or less.")
   
-  if(any(is.na(data_msm)))
+  if(any(is.na(data)))
     stop("There is some missing values.")
   
   invisible(return(NULL))
@@ -22,9 +22,9 @@ checkDataMsm <- function(data_msm)
 
 # Check if each individual ends by the same time value
 # @author Quentin Grimonprez
-checkDataEndTmax <- function(data_msm)
+checkDataEndTmax <- function(data)
 {
-  lastTime <- tapply(data_msm$time, data_msm$id, function(x) x[length(x)])
+  lastTime <- tapply(data$time, data$id, function(x) x[length(x)])
   
   nLastTime <- length(unique(lastTime))
   

@@ -1,9 +1,9 @@
 #' Cut data to a maximal given time
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
 #' 
-#' @return a data.frame with the same format as \code{data_msm} where each individual has \code{Tmax} as last time entry.
+#' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -20,36 +20,36 @@
 #' @author Cristian Preda
 #' 
 #' @export
-cut_data <- function(data_msm, Tmax)
+cut_data <- function(data, Tmax)
 {
   ## check parameters
-  checkDataMsm(data_msm)
+  checkData(data)
   if(!is.numeric(Tmax) || (length(Tmax) != 1))
     stop("Tmax must be a real.")
   ## end check
   
-  do.call(rbind, by(data_msm, data_msm$id, function(x){cut_cfd(x, Tmax)}))
+  do.call(rbind, by(data, data$id, function(x){cut_cfd(x, Tmax)}))
 }
 
 
-cut_cfd <- function(data_msm, Tmax)
+cut_cfd <- function(data, Tmax)
 {
-  l <- nrow(data_msm)
-  currTmax <- max(data_msm$time)
+  l <- nrow(data)
+  currTmax <- max(data$time)
   if(Tmax > currTmax) 
   {
-    return(rbind(data_msm, data.frame(id = data_msm$id[1], state = data_msm$state[l], time = Tmax)))
+    return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
   }
   else
   {
     if(currTmax == Tmax)
     {
-     return(data_msm) 
+     return(data) 
     }
     else
     {
-      k <- max(which(data_msm$time <= Tmax))  
-      return(rbind(data_msm[1:k,], data.frame(state = data_msm$state[k], time = Tmax, id = data_msm$id[1])))  
+      k <- max(which(data$time <= Tmax))  
+      return(rbind(data[1:k,], data.frame(state = data$state[k], time = Tmax, id = data$id[1])))  
     }
     
   }

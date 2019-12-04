@@ -4,10 +4,10 @@
 \alias{estimation_Markov}
 \title{Estimate transition matrix and spent time}
 \usage{
-estimation_Markov(data_msm)
+estimation_Markov(data)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
 list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state

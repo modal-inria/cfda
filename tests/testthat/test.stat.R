@@ -1,6 +1,6 @@
 # Author: Quentin Grimonprez
 
-context("Statistics on data_msm object")
+context("Statistics on data object")
 
 test_that("compute_time_spent_intern works", {
   dat <- data.frame(id = rep(1, 5), time = c(0, 1.5, 4, 5, 6), state = c(1, 3, 2, 1, 1))

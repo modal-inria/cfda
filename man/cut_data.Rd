@@ -4,15 +4,15 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data_msm, Tmax)
+cut_data(data, Tmax)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
 \item{Tmax}{max time considered}
 }
 \value{
-a data.frame with the same format as \code{data_msm} where each individual has \code{Tmax} as last time entry.
+a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 }
 \description{
 Cut data to a maximal given time
