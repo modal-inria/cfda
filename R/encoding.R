@@ -148,7 +148,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 
   
   Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Uxij(data_msm[id2 == i, ], phi, K, ...)
+    res <- compute_Fxij(data_msm[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)
@@ -243,10 +243,10 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # I <- diag(rep(1, m))
 # phi <- fd(I, b)
-# compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
+# compute_Fxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Uxij <- function(x, phi, K, ...)
+compute_Fxij <- function(x, phi, K, ...)
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
