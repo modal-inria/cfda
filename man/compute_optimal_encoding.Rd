@@ -13,7 +13,7 @@ compute_optimal_encoding(
 )
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).}
 
 \item{basisobj}{basis created using the \code{fda} package.}
 
@@ -49,7 +49,7 @@ QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
                             labels = c("A", "C", "G", "T"))
-d_JK2 <- msm2msmTmax(d_JK, Tmax)
+d_JK2 <- cut_data(d_JK, Tmax)
 
 # create basis object
 m <- 10

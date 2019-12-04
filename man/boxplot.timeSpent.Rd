@@ -24,7 +24,7 @@ lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
 # cut at Tmax = 8
-d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
+d_JK2 <- cut_data(d_JK, Tmax = 8)
 
 # compute time spent by each id in each state
 timeSpent <- compute_time_spent(d_JK2)

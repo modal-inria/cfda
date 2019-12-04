@@ -2,7 +2,7 @@
 #'
 #' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 #'
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param basisobj basis created using the \code{fda} package.
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
@@ -30,7 +30,7 @@
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
 #'                             labels = c("A", "C", "G", "T"))
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
 #' m <- 10
@@ -237,7 +237,7 @@ compute_optimal_encoding <- function(data_msm, basisobj, nCores = max(1, ceiling
 # QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 # lambda_QJK <- c(1, 1, 1, 1)
 # d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-# d_JK2 <- msm2msmTmax(d_JK, Tmax)
+# d_JK2 <- cut_data(d_JK, Tmax)
 #
 # m <- 10
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
@@ -299,7 +299,7 @@ compute_Fxij <- function(x, phi, K, ...)
 # QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 # lambda_QJK <- c(1, 1, 1, 1)
 # d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-# d_JK2 <- msm2msmTmax(d_JK, Tmax)
+# d_JK2 <- cut_data(d_JK, Tmax)
 #
 # m <- 10
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
@@ -352,7 +352,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
 #' m <- 10
@@ -408,7 +408,7 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
 #' m <- 10
@@ -480,7 +480,7 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
 #' m <- 10
@@ -535,7 +535,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax)
+#' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
 #' m <- 10

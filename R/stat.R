@@ -14,7 +14,7 @@
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' # cut at Tmax = 8
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
+#' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
 #' timeSpent <- compute_time_spent(d_JK2)
@@ -71,7 +71,7 @@ compute_time_spent_intern <- function(data_msm, labels)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' # cut at Tmax = 8
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
+#' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #'
 #' # compute time spent by each id in each state
 #' timeSpent <- compute_time_spent(d_JK2)
@@ -229,7 +229,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 
 #' Estimate probabilities to be in each state
 #' 
-#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).
+#' @param data_msm data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
 #' 
 #' @return A list of two elements:
@@ -246,7 +246,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
-#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#' d_JK2 <- cut_data(d_JK, 10)
 #' 
 #' # estimate probabilities
 #' estimate_pt(d_JK2)
@@ -304,7 +304,7 @@ estimate_pt <- function(data_msm, NAafterTmax = FALSE)
 #' lambda_QJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
-#' d_JK2 <- msm2msmTmax(d_JK, 10)
+#' d_JK2 <- cut_data(d_JK, 10)
 #' 
 #' pt <- estimate_pt(d_JK2)
 #' 
@@ -527,7 +527,7 @@ statetable <- function(data_msm)
 #' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' # add a line with time Tmax at the end of each individuals
-#' d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
+#' d_JKT <- cut_data(d_JK, Tmax = 10)
 #' 
 #' plotData(d_JKT)
 #'   

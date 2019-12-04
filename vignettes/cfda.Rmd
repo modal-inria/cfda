@@ -69,7 +69,7 @@ head(duration)
 All individuals has a different length. Some methods require that the end time of each individual is the same ($T_{\max}$), this can be done with the following function:
 
 ```{r cutT, echo=TRUE}
-d_JKT <- msm2msmTmax(d_JK, Tmax = Tmax)
+d_JKT <- cut_data(d_JK, Tmax = Tmax)
 ```
 
 

@@ -7,7 +7,7 @@
 estimate_pt(data_msm, NAafterTmax = FALSE)
 }
 \arguments{
-\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individual must end at the same time Tmax (use \code{\link{msm2msmTmax}}).}
+\item{data_msm}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).}
 
 \item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)}
 }
@@ -28,7 +28,7 @@ QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
-d_JK2 <- msm2msmTmax(d_JK, 10)
+d_JK2 <- cut_data(d_JK, 10)
 
 # estimate probabilities
 estimate_pt(d_JK2)

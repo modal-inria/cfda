@@ -140,7 +140,7 @@ test_that("plot_pt_classic does not produce warnings", {
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   
-  d_JK2 <- msm2msmTmax(d_JK, 10)
+  d_JK2 <- cut_data(d_JK, 10)
   
   pt <- estimate_pt(d_JK2)
   
@@ -155,7 +155,7 @@ test_that("plot_pt_ribbon does not produce warnings", {
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   
-  d_JK2 <- msm2msmTmax(d_JK, 10)
+  d_JK2 <- cut_data(d_JK, 10)
   
   pt <- estimate_pt(d_JK2)
   
@@ -169,7 +169,7 @@ test_that("plot_pt does not produce warnings", {
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
-  d_JK2 <- msm2msmTmax(d_JK, 10)
+  d_JK2 <- cut_data(d_JK, 10)
 
   pt <- estimate_pt(d_JK2)
 
@@ -280,7 +280,7 @@ test_that("plotData does not produce warnings", {
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
-  d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
+  d_JKT <- cut_data(d_JK, Tmax = 10)
 
   expect_warning(plotData(d_JK, addLabel = TRUE, addBorder = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, addLabel = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)

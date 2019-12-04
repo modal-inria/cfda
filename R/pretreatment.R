@@ -14,13 +14,13 @@
 #' tail(d_JK)
 #' 
 #' # cut at Tmax = 8
-#' d_JK2 <- msm2msmTmax(d_JK, Tmax = 8)
+#' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #' tail(d_JK2)
 #' 
 #' @author Cristian Preda
 #' 
 #' @export
-msm2msmTmax <- function(data_msm, Tmax)
+cut_data <- function(data_msm, Tmax)
 {
   ## check parameters
   checkDataMsm(data_msm)

@@ -29,7 +29,7 @@ lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
 # add a line with time Tmax at the end of each individuals
-d_JKT <- msm2msmTmax(d_JK, Tmax = 10)
+d_JKT <- cut_data(d_JK, Tmax = 10)
 
 plotData(d_JKT)
   
