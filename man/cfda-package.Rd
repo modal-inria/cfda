@@ -16,7 +16,7 @@ a basis function created using the \code{fda} package (cf. \code{\link{create.ba
 the time spent in each state (\code{\link{compute_time_spent}}), the probability to be in each state at any given time (\code{\link{estimate_pt}}),
 the transition table (\code{\link{statetable}}).
 
-The parameters of a Markov process can be estimated using \code{\link{estimation_Markov}} function.
+The parameters of a Markov process can be estimated using \code{\link{estimate_Markov}} function.
 
 In order to test the different functions, a real dataset is provided (\code{\link{biofam2}}) as well as two functions for generating data 
 (\code{\link{generate_Markov}} and \code{\link{generate_2State}}).

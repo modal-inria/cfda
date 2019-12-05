@@ -7,7 +7,7 @@
 \method{plot}{Markov}(x, ...)
 }
 \arguments{
-\item{x}{output of \code{\link{estimation_Markov}} function}
+\item{x}{output of \code{\link{estimate_Markov}} function}
 
 \item{...}{parameters of \code{plotmat} function from \code{diagram} package (see details).}
 }
@@ -32,7 +32,7 @@ lambda_QJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 
 # estimation  
-mark <- estimation_Markov(d_JK)
+mark <- estimate_Markov(d_JK)
 
 # transition graph
 plot(mark)

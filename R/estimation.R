@@ -16,7 +16,7 @@
 #' d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' # estimation  
-#' mark <- estimation_Markov(d_JK)
+#' mark <- estimate_Markov(d_JK)
 #' mark$Q
 #' mark$lambda
 #'
@@ -25,7 +25,7 @@
 #' @author Cristian Preda
 #' 
 #' @export
-estimation_Markov <- function(data)
+estimate_Markov <- function(data)
 {
   ## check parameters
   checkData(data)
@@ -95,7 +95,7 @@ completeStatetable <- function(aux)
 #' Plot the transition graph between the different states. A node corresponds to a state with the mean 
 #' time spent in this state. Each arrow represents the probability of transtion between states.
 #'
-#' @param x output of \code{\link{estimation_Markov}} function
+#' @param x output of \code{\link{estimate_Markov}} function
 #' @param ... parameters of \code{plotmat} function from \code{diagram} package (see details). 
 #' 
 #' @details 
@@ -115,7 +115,7 @@ completeStatetable <- function(aux)
 #' d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 #' 
 #' # estimation  
-#' mark <- estimation_Markov(d_JK)
+#' mark <- estimate_Markov(d_JK)
 #' 
 #' # transition graph
 #' plot(mark)

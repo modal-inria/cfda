@@ -139,7 +139,7 @@ The transitions between states can been studied by computing a frequency table c
 
 Assuming that the data follows a Markov process, parameters $Q$ and $\lambda$ of the processus can be estimated.
 ```{r, echo=TRUE}  
-mark <- estimation_Markov(d_JK)
+mark <- estimate_Markov(d_JK)
 mark
 ```
 
