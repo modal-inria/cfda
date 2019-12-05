@@ -1,8 +1,8 @@
 Package: cfda
 Type: Package
 Title: Categorical Functional Data Analysis
-Version: 0.6
-Date: 2019-12-02
+Version: 0.7
+Date: 2019-12-03
 Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@inria.fr"),
              person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"))
 Copyright: Inria - Université de Lille
@@ -12,7 +12,7 @@ Description: Package for the analysis of categorical functional data.
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
 Imports: msm, diagram, ggplot2, mgcv, doSNOW, snow, foreach
-Depends: fda
+Depends: fda, R (>= 3.5.0)
 Suggests: testthat, covr, knitr
 Encoding: UTF-8
 VignetteBuilder: knitr
