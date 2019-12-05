@@ -10,7 +10,7 @@ test_that("compute_Fxij works with a simple basis of 1 function", {
   Tmax <- 10
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 1
@@ -39,7 +39,7 @@ test_that("compute_Fxij works with a simple basis of 2 functions", {
   Tmax <- 10
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 2
@@ -102,7 +102,7 @@ test_that("refactor of compute_Fxij keeps the same results", {
   Tmax <- 10
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   d_JK2 <- cut_data(d_JK, 10)
   
   
@@ -125,7 +125,7 @@ test_that("compute_Vxi works with a simple basis of 1 function", {
   Tmax <- 10
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 1
@@ -156,7 +156,7 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   Tmax <- 10
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 2

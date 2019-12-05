@@ -28,7 +28,7 @@
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
 #'                             labels = c("A", "C", "G", "T"))
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
@@ -236,7 +236,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 # Tmax <- 6
 # QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 # lambda_QJK <- c(1, 1, 1, 1)
-# d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+# d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 # d_JK2 <- cut_data(d_JK, Tmax)
 #
 # m <- 10
@@ -298,7 +298,7 @@ compute_Fxij <- function(x, phi, K, ...)
 # Tmax <- 6
 # QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 # lambda_QJK <- c(1, 1, 1, 1)
-# d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+# d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 # d_JK2 <- cut_data(d_JK, Tmax)
 #
 # m <- 10
@@ -351,7 +351,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
@@ -407,7 +407,7 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
@@ -479,7 +479,7 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
@@ -534,7 +534,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object

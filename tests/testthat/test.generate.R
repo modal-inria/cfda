@@ -3,14 +3,14 @@
 context("Data generation")
 
 
-test_that("generate_Markov_cfd output has the right format", {
+test_that("generate_Markov output has the right format", {
   n <- 10
   K <- 4
   Tmax <- 10
   lambda_QJK <- c(1, 1, 1, 1)
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   
-  d_JK <- generate_Markov_cfd(n = n, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+  d_JK <- generate_Markov(n = n, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
   
   ## format
   expect_s3_class(d_JK, "data.frame")
@@ -36,14 +36,14 @@ test_that("generate_Markov_cfd output has the right format", {
   expect_true(all(tapply(d_JK$time, d_JK$id, function(x) {all(order(x) == seq_along(x))})))
 })
 
-test_that("generate_Markov_cfd output has the right format with labels", {
+test_that("generate_Markov output has the right format with labels", {
   n <- 10
   K <- 4
   Tmax <- 10
   lambda_QJK <- c(1, 1, 1, 1)
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   
-  d_JK <- generate_Markov_cfd(n = n, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax, labels = LETTERS[1:4])
+  d_JK <- generate_Markov(n = n, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax, labels = LETTERS[1:4])
   
   ## format
   expect_s3_class(d_JK, "data.frame")

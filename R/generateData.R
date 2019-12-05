@@ -18,7 +18,7 @@
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov_cfd(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, 
+#' d_JK <- generate_Markov(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, 
 #'                             labels = c("A", "C", "G", "T"))
 #' 
 #' head(d_JK)
@@ -26,7 +26,7 @@
 #' 
 #' @author Cristian Preda
 #' @export
-generate_Markov_cfd <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
+generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
   ## check parameters
   if((length(n) != 1) || !is.whole.number(n))
