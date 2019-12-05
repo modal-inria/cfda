@@ -3,7 +3,7 @@
 #' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
-#' @param basisobj basis created using the \code{fda} package.
+#' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
 #' @param ... parameters for \code{\link{integrate}} function.

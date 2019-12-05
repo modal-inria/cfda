@@ -5,7 +5,21 @@
 \alias{cfda-package}
 \title{Categorical Functional Data Analysis}
 \description{
-Categorical Functional Data Analysis
+cfda provides functions for the analysis of categorical functional data. 
+
+The main contribution est the computation of an optimal encoding (real variable) of each state of the categoical data.
+This can be done using the \code{\link{compute_optimal_encoding}} function that takes in arguments the data in a specific format and
+a basis function created using the \code{fda} package (cf. \code{\link{create.basis}}). The output can be analyzed with \code{\link{plot.fmca}}, 
+\code{\link{get_encoding}}, \code{\link{plotEigenvalues}} and \code{\link{plotComponent}}.
+
+\code{\link{plotData}} shows a graphical representation of the dataset. Basic statistics can be computed: the number of jumps (\code{\link{compute_number_jumps}}), the duration (\code{\link{compute_duration}}), 
+the time spent in each state (\code{\link{compute_time_spent}}), the probability to be in each state at any given time (\code{\link{estimate_pt}}),
+the transition table (\code{\link{statetable}}).
+
+The parameters of a Markov process can be estimated using \code{\link{estimation_Markov}} function.
+
+In order to test the different functions, a real dataset is provided (\code{\link{biofam2}}) as well as two functions for generating data 
+(\code{\link{generate_Markov}} and \code{\link{generate_2State}}).
 }
 \details{
 See the vignette for a detailled example and mathematical background:

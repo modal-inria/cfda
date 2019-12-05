@@ -5,7 +5,7 @@
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
-#' @return list of two elements: \code{Q}, the estimated transition matrix, adn \code{lambda}, the estimated time spent in each state
+#' @return list of two elements: \code{Q}, the estimated transition matrix, and \code{lambda}, the estimated time spent in each state
 #'
 #'
 #' @examples
