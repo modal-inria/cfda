@@ -6,7 +6,7 @@
 #' @param K number of states
 #' @param Q matrix which indicates the allowed transitions in the continuous-time Markov chain, and optionally also the initial values of those transitions
 #' @param lambda time spent in each state
-#' @param pi_0 initial distribution of states
+#' @param pi0 initial distribution of states
 #' @param Tmax maximal duration of trajectories
 #' @param labels state names. If \code{NULL}, integers are used
 #' 
@@ -26,7 +26,7 @@
 #' 
 #' @author Cristian Preda
 #' @export
-generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi_0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
+generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
   ## check parameters
   if((length(n) != 1) || !is.whole.number(n))
@@ -39,8 +39,8 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
     stop("Q must be a matrix of size K x K of positive real.")
   if(!is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
      stop("lambda must be a vector of length K of positive real.")
-  if(!is.vector(pi_0) || (length(pi_0) != K) || any(pi_0 < 0))
-    stop("pi_0 must be a vector of length K of positive real.")
+  if(!is.vector(pi0) || (length(pi0) != K) || any(pi0 < 0))
+    stop("pi0 must be a vector of length K of positive real.")
   if(!is.null(labels))
   {
     if(!is.vector(labels) || (length(labels) != K))
@@ -53,7 +53,7 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
   
   for(i in 1:n)
   {
-    e <- sample(K, 1, prob = pi_0) 
+    e <- sample(K, 1, prob = pi0) 
     t <- 0
     while(t <= Tmax)
     {

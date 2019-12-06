@@ -9,7 +9,7 @@ generate_Markov(
   K = 2,
   Q = 1 - diag(K),
   lambda = rep(1, K),
-  pi_0 = c(1, rep(0, K - 1)),
+  pi0 = c(1, rep(0, K - 1)),
   Tmax = 1,
   labels = NULL
 )
@@ -23,7 +23,7 @@ generate_Markov(
 
 \item{lambda}{time spent in each state}
 
-\item{pi_0}{initial distribution of states}
+\item{pi0}{initial distribution of states}
 
 \item{Tmax}{maximal duration of trajectories}
 
