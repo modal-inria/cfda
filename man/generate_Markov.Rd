@@ -19,7 +19,7 @@ generate_Markov(
 
 \item{K}{number of states}
 
-\item{Q}{matrix which indicates the allowed transitions in the continuous-time Markov chain, and optionally also the initial values of those transitions}
+\item{Q}{matrix containing the transition probailities from one state to another. Each row contains positive real summing to 1.}
 
 \item{lambda}{time spent in each state}
 
@@ -34,6 +34,14 @@ a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time 
 }
 \description{
 Simulate individuals from a Markov process defined by a transition matrix, time spent in each time and initial probabilities.
+}
+\details{
+For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j}, the next state and time is simulated as follows:
+\enumerate{
+\item generate one sample, \eqn{d}, of an exponential law of parameter \code{lambda[s_j]}
+\item define the next time values as: \eqn{t_{j+1} = t_j + d}
+\item generate the new state \eqn{s_{j+1}} using a multinomial law with probabilities \code{Q[s_j,]}
+}
 }
 \examples{
 # simulate the Jukes Cantor models of nucleotides replacement. 

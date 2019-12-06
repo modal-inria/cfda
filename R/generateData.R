@@ -4,7 +4,7 @@
 #' 
 #' @param n number of trajectories to generate
 #' @param K number of states
-#' @param Q matrix which indicates the allowed transitions in the continuous-time Markov chain, and optionally also the initial values of those transitions
+#' @param Q matrix containing the transition probailities from one state to another. Each row contains positive real summing to 1.
 #' @param lambda time spent in each state
 #' @param pi0 initial distribution of states
 #' @param Tmax maximal duration of trajectories
@@ -12,6 +12,15 @@
 #' 
 #' @return 
 #' a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
+#' 
+#' @details 
+#' For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j}, the next state and time is simulated as follows:
+#' \enumerate{
+#' \item generate one sample, \eqn{d}, of an exponential law of parameter \code{lambda[s_j]}
+#' \item define the next time values as: \eqn{t_{j+1} = t_j + d}
+#' \item generate the new state \eqn{s_{j+1}} using a multinomial law with probabilities \code{Q[s_j,]}
+#' }
+#'  
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -72,15 +81,12 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
 
 #' Generate data following a 2 states model
 #'
+#' Generate indiviuals such that each individual starts at time 0 with state 0 and then an unique change to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
+#'
 #' @param n number of individuals
 #'
 #' @return 
 #' a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
-#'
-#' @details 
-#' Let \eqn{\theta\sim \mathcal{U}[0, 1]}
-#'
-#' The state at time t is defined by \eqn{X_t(w) = 1} if \eqn{t < \theta(w)}, 2 otherwise.
 #'
 #' @author Cristian Preda, Quentin Grimonprez
 #'
@@ -93,7 +99,7 @@ generate_2State <- function(n)
   ## end check
   
   temps <- rep(0, 2*n)
-  temps[(1:n*2)] = runif(n)
+  temps[(1:n)*2] = runif(n)
   d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(1:2, n))
   
   return(d)

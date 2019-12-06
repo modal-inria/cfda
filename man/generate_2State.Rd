@@ -13,12 +13,7 @@ generate_2State(n)
 a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
 }
 \description{
-Generate data following a 2 states model
-}
-\details{
-Let \eqn{\theta\sim \mathcal{U}[0, 1]}
-
-The state at time t is defined by \eqn{X_t(w) = 1} if \eqn{t < \theta(w)}, 2 otherwise.
+Generate indiviuals such that each individual starts at time 0 with state 0 and then an unique change to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
 }
 \author{
 Cristian Preda, Quentin Grimonprez
