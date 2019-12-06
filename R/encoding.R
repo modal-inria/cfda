@@ -1,6 +1,6 @@
-#' Compute the optimal encodings for each state
+#' Compute the optimal encoding for each state
 #'
-#' Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
+#' Compute the optimal encoding for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
@@ -11,7 +11,7 @@
 #' @return A list containing:
 #' \itemize{
 #'   \item \code{eigenvalues} eigenvalues
-#'   \item \code{alpha} optimal encoding coefficients
+#'   \item \code{alpha} optimal encoding coefficients associated with each eigenvectors
 #'   \item \code{pc} principal components
 #'   \item \code{F} matrix containing the \eqn{F_{(x,i)(y,j)}}
 #'   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
@@ -53,7 +53,12 @@
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @references 
-#' Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+#' \itemize{
+#'   \item Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+#'   \item Deville J.C. et  Saporta G. (1980) Analyse harmonique qualitative, DIDAY et al. (editors), Data Analysis and Informatics, North Holland, p. 375-389.
+#'   \item Saporta G. (1981) Méthodes exploratoires d'analyse de données temporelles, Cahiers du B.U.R.O, Université Pierre et Marie Curie, 37-38, Paris.
+#' }
+#' 
 #' 
 #' @export
 compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE,  ...)

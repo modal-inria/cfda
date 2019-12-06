@@ -2,7 +2,7 @@
 % Please edit documentation in R/encoding.R
 \name{compute_optimal_encoding}
 \alias{compute_optimal_encoding}
-\title{Compute the optimal encodings for each state}
+\title{Compute the optimal encoding for each state}
 \usage{
 compute_optimal_encoding(
   data,
@@ -27,7 +27,7 @@ compute_optimal_encoding(
 A list containing:
 \itemize{
   \item \code{eigenvalues} eigenvalues
-  \item \code{alpha} optimal encoding coefficients
+  \item \code{alpha} optimal encoding coefficients associated with each eigenvectors
   \item \code{pc} principal components
   \item \code{F} matrix containing the \eqn{F_{(x,i)(y,j)}}
   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
@@ -36,7 +36,7 @@ A list containing:
 }
 }
 \description{
-Compute the optimal encodings for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
+Compute the optimal encoding for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
 }
 \details{
 See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
@@ -69,7 +69,11 @@ get_encoding(encoding, harm = 1)
 
 }
 \references{
-Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+\itemize{
+  \item Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
+  \item Deville J.C. et  Saporta G. (1980) Analyse harmonique qualitative, DIDAY et al. (editors), Data Analysis and Informatics, North Holland, p. 375-389.
+  \item Saporta G. (1981) Méthodes exploratoires d'analyse de données temporelles, Cahiers du B.U.R.O, Université Pierre et Marie Curie, 37-38, Paris.
+}
 }
 \seealso{
 \link{plot.fmca} \link{plotComponent} \link{get_encoding}
