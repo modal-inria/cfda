@@ -513,7 +513,7 @@ statetable <- function(data)
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param col a vector containing color for each state
-#' @param addLabel If TRUE, add id labels
+#' @param addId If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
 #' 
 #' @return
@@ -534,11 +534,11 @@ statetable <- function(data)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data, col = NULL, addLabel = TRUE, addBorder = TRUE)
+plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE)
 {
   ## check parameters
   checkData(data)
-  checkLogical(addLabel, "addLabel")
+  checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   ## end check
   
@@ -554,7 +554,7 @@ plotData <- function(data, col = NULL, addLabel = TRUE, addBorder = TRUE)
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "id2 - 0.5", ymax = "id2 + 0.5", fill = "state"), 
               color = ifelse(addBorder, "black", NA), alpha = 0.7)
   
-  if(addLabel)
+  if(addId)
   {
     p = p + scale_y_continuous(name = "id", breaks = 1:nInd)
   }else{
