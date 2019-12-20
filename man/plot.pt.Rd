@@ -15,6 +15,9 @@
 
 \item{...}{only if \code{ribbon = TRUE}, parameter \code{addBorder}, if TRUE, add black border to the ribbons.}
 }
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
+}
 \description{
 Plot the probabilities of each state at each given time
 }

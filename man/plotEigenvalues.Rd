@@ -4,7 +4,7 @@
 \alias{plotEigenvalues}
 \title{Plot Eigenvalues}
 \usage{
-plotEigenvalues(x, cumulative = FALSE, normalize = FALSE)
+plotEigenvalues(x, cumulative = FALSE, normalize = FALSE, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
@@ -12,6 +12,11 @@ plotEigenvalues(x, cumulative = FALSE, normalize = FALSE)
 \item{cumulative}{if TRUE, plot the cumualtive eigenvalues}
 
 \item{normalize}{if TRUE eigenvalues are normalized for summing to 1}
+
+\item{...}{\code{geom_point} parameters}
+}
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
 }
 \description{
 Plot Eigenvalues
@@ -34,6 +39,11 @@ encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 
 # plot eigenvalues
 plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
+
+# modify the plot using ggplot2
+library(ggplot2)
+plotEigenvalues(encoding, shape = 23) +
+   labs(caption = "Jukes Cantor models of nucleotides replacement")
 
 }
 \seealso{

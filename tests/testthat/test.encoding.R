@@ -316,7 +316,9 @@ test_that("plotComponent does not produce warnings", {
   fmca <- compute_optimal_encoding(dT, b, nCores = 1)
   
   expect_warning(plotComponent(fmca, addNames = TRUE), regexp = NA)
-  expect_warning(plotComponent(fmca, addNames = FALSE), regexp = NA)
+  expect_warning(plotComponent(fmca, comp = c(2, 3), addNames = FALSE), regexp = NA)
+  expect_warning(plotComponent(fmca, shape = 23), regexp = NA)
+  
 })
 
 
@@ -335,5 +337,5 @@ test_that("plotEigenvalues does not produce warnings", {
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = FALSE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = FALSE), regexp = NA)
-  expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE), regexp = NA)
+  expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE, shape = 23), regexp = NA)
 })

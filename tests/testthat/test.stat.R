@@ -42,7 +42,7 @@ test_that("boxplot.timeSpent does not produce warnings", {
   out <- compute_time_spent(dat)
 
   expect_warning(boxplot(out), regexp = NA)
-  expect_warning(boxplot(out, col = c("red", "blue", "green")), regexp = NA)
+  expect_warning(boxplot(out, col = c("red", "blue", "green"), outlier.colour = "black"), regexp = NA)
   
 })
 
@@ -68,6 +68,7 @@ test_that("hist.duration does not produce warnings", {
   duration <- compute_duration(d_JK)
   
   expect_warning(hist(duration), regexp = NA)
+  expect_warning(hist(duration, color = "red"), regexp = NA)
 })
 
 
@@ -240,6 +241,7 @@ test_that("hist.njump does not produce warnings", {
   njump <- compute_number_jumps(d_JK)
   
   expect_warning(hist(njump), regexp = NA)
+  expect_warning(hist(njump, color = "red"), regexp = NA)
 })
 
 

@@ -61,7 +61,9 @@ compute_time_spent_intern <- function(data, labels)
 #'
 #' @param x output of \code{\link{compute_time_spent}} function
 #' @param col a vector containing color for each state
-#' @param ... not used
+#' @param ... extra parameters for \code{geom_boxplot}
+#'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #'
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -79,6 +81,12 @@ compute_time_spent_intern <- function(data, labels)
 #' # plot the result
 #' boxplot(timeSpent, col = c("#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))
 #' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' boxplot(timeSpent, notch = TRUE, outlier.colour = "black") + 
+#'    coord_flip() + 
+#'    labs(title = "Time spent in each state")
+#' 
 #' @author Quentin Grimonprez
 #'
 #' @export
@@ -86,7 +94,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 {
   p <- ggplot(data.frame(timeSpent = as.vector(x), state = rep(colnames(x), each = nrow(x))), 
               aes_string(x = "state", y = "timeSpent", fill = "state")) + 
-    geom_boxplot() + labs(x = "State", y = "Time Spent", fill = "State")
+    geom_boxplot(...) + labs(x = "State", y = "Time Spent", fill = "State")
   
   if(!is.null(col))
     p = p + scale_fill_manual(values = col)
@@ -137,9 +145,10 @@ compute_duration <- function(data)
 #' 
 #' 
 #' @param x output of \code{\link{compute_duration}} function
-#' @param breaks number of breaks. If not given use the sturges rule
-#' @param ... not used
+#' @param breaks number of breaks. If not given, use the sturges rule
+#' @param ... parameters for \code{geom_histogram}
 #' 
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -154,6 +163,11 @@ compute_duration <- function(data)
 #' 
 #' hist(duration)
 #' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' hist(duration) + 
+#'    labs(title = "Distribution of the duration")
+#' 
 #' @author Quentin Grimonprez
 #' 
 #' @export 
@@ -163,8 +177,12 @@ hist.duration <- function(x, breaks = NULL, ...)
   if(is.null(breaks))
     breaks <- floor(1 + log2(length(x)))
   
-  ggplot(data.frame(duration = as.vector(x)), aes_string(x = "duration"))+
-    geom_histogram(fill = "lightblue", color = "black", bins = breaks) +
+  extraParam <- list(...)
+  defaultParam <- list(fill = "lightblue", color = "black", bins = breaks)
+  param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
+  
+  ggplot(data.frame(duration = as.vector(x)), aes_string(x = "duration")) +
+    do.call(geom_histogram, param) +
     labs(x = "Duration", y = "Frequency")
 }
 
@@ -296,6 +314,8 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
 #' @param col a vector containing color for each state
 #' @param ribbon if TRUE, use ribbon to plot probabilities 
 #' @param ... only if \code{ribbon = TRUE}, parameter \code{addBorder}, if TRUE, add black border to the ribbons.
+#' 
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -443,9 +463,10 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
 #' 
 #' 
 #' @param x output of \code{\link{compute_number_jumps}} function
-#' @param breaks number of breaks. If not given use the sturges rule
-#' @param ... not used
+#' @param breaks number of breaks. If not given, use the sturges rule
+#' @param ... parameters for \code{geom_histogram}
 #' 
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -458,6 +479,11 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
 #' 
 #' hist(nJump)
 #' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' hist(nJump, fill = "#984EA3") +
+#'    labs(title = "Distribution of the number of jumps")
+#'    
 #' @author Quentin Grimonprez
 #' 
 #' @export  
@@ -467,8 +493,12 @@ hist.njump <- function(x, breaks = NULL, ...)
   if(is.null(breaks))
     breaks <- floor(1 + log2(length(x)))
   
-  ggplot(data.frame(njump = as.vector(x)), aes_string(x = "njump"))+
-    geom_histogram(fill = "lightblue", color = "black", bins = breaks) +
+  extraParam <- list(...)
+  defaultParam <- list(fill = "lightblue", color = "black", bins = breaks)
+  param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
+  
+  ggplot(data.frame(njump = as.vector(x)), aes_string(x = "njump")) +
+    do.call(geom_histogram, param) +
     labs(x = "Number of jumps", y = "Frequency")
 }
 
@@ -515,9 +545,10 @@ statetable <- function(data)
 #' @param col a vector containing color for each state
 #' @param addId If TRUE, add id labels
 #' @param addBorder If TRUE add black border to each individuals
-#' 
-#' @return
-#' each row represent an individual over [0:Tmax]. The color at a given time gives the state of the individual. 
+#'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
+#' On the plot, each row represents an individual over [0:Tmax]. 
+#' The color at a given time gives the state of the individual. 
 #' 
 #' @examples 
 #' # simulate the Jukes Cantor models of nucleotides replacement. 
@@ -530,6 +561,11 @@ statetable <- function(data)
 #' d_JKT <- cut_data(d_JK, Tmax = 10)
 #' 
 #' plotData(d_JKT)
+#' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' plotData(d_JKT) +
+#'    labs(title = "Trajectories of a Markov process")
 #'   
 #' @author Cristian Preda, Quentin Grimonprez
 #' 

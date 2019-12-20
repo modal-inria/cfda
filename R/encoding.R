@@ -344,7 +344,8 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @param col a vector containing color for each state.
 #' @param ... not used
 #'
-#'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
+#' 
 #' @details 
 #' The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m \alpha_{x,i}^{(h)}\phi_i}.
 #'
@@ -371,6 +372,11 @@ compute_Vxi <- function(x, phi, K, ...)
 #' 
 #' # plot the encoding produced by the second harmonic with custom color
 #' plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
+#' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' plot(encoding) +
+#'    labs(title = "Optimal encoding")
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
@@ -475,6 +481,9 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' @param addNames if TRUE, add the id labels on the plot
 #' @param nudge_x,nudge_y horizontal and vertical adjustment to nudge labels by
 #' @param size size of labels
+#' @param ... \code{geom_point} parameters
+#'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package. 
 #'
 #' @author Quentin Grimonprez
 #' 
@@ -496,10 +505,15 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' 
 #' plotComponent(encoding, comp = c(1, 2))
 #' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' plotComponent(encoding, comp = c(1, 2), shape = 23) +
+#'    labs(title = "Two first components")
+#' 
 #' @seealso \link{plot.fmca} \link{plotEigenvalues}
 #' 
 #' @export
-plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4)
+plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4, ...)
 {
   ## check parameters
   if(class(x) != "fmca")
@@ -515,7 +529,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
   df$name = rownames(x$pc)
   
   p <- ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
-    geom_point() + 
+    geom_point(...) + 
     labs(x = paste0("Comp ", comp[1]), y = paste0("Comp ", comp[2]))
   
   if(addNames)
@@ -530,7 +544,10 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param cumulative if TRUE, plot the cumualtive eigenvalues
 #' @param normalize if TRUE eigenvalues are normalized for summing to 1
+#' @param ... \code{geom_point} parameters
 #'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package. 
+#' 
 #' @author Quentin Grimonprez
 #' 
 #' @examples 
@@ -552,10 +569,15 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' # plot eigenvalues
 #' plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
 #' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' plotEigenvalues(encoding, shape = 23) +
+#'    labs(caption = "Jukes Cantor models of nucleotides replacement")
+#' 
 #' @seealso \link{plot.fmca} \link{plotComponent}
 #' 
 #' @export
-plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE)
+plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...)
 {
   ## check parameters
   if(class(x) != "fmca")
@@ -576,7 +598,7 @@ plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE)
   df <- data.frame(eigenvalues = eigenv, component = seq_along(eigenv))
 
   p <- ggplot(df, aes_string(x = "component", y = "eigenvalues")) +
-    geom_point() + geom_step() +
+    geom_point(...) + geom_step() +
     labs(title = ifelse(cumulative, "Cumulative eigenvalues", "Eigenvalues"))
   
   p

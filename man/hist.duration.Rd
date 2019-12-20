@@ -9,9 +9,12 @@
 \arguments{
 \item{x}{output of \code{\link{compute_duration}} function}
 
-\item{breaks}{number of breaks. If not given use the sturges rule}
+\item{breaks}{number of breaks. If not given, use the sturges rule}
 
-\item{...}{not used}
+\item{...}{parameters for \code{geom_histogram}}
+}
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
 }
 \description{
 Plot the duration
@@ -28,6 +31,11 @@ d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 duration <- compute_duration(d_JK)
 
 hist(duration)
+
+# modify the plot using ggplot2
+library(ggplot2)
+hist(duration) + 
+   labs(title = "Distribution of the duration")
 
 }
 \author{

@@ -15,6 +15,9 @@
 
 \item{...}{not used}
 }
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
+}
 \description{
 Plot the optimal encoding
 }
@@ -42,6 +45,11 @@ plot(encoding)
 
 # plot the encoding produced by the second harmonic with custom color
 plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
+
+# modify the plot using ggplot2
+library(ggplot2)
+plot(encoding) +
+   labs(title = "Optimal encoding")
 
 }
 \seealso{

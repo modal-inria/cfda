@@ -10,7 +10,8 @@ plotComponent(
   addNames = TRUE,
   nudge_x = 0.1,
   nudge_y = 0.1,
-  size = 4
+  size = 4,
+  ...
 )
 }
 \arguments{
@@ -23,6 +24,11 @@ plotComponent(
 \item{nudge_x, nudge_y}{horizontal and vertical adjustment to nudge labels by}
 
 \item{size}{size of labels}
+
+\item{...}{\code{geom_point} parameters}
+}
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
 }
 \description{
 Plot Components
@@ -44,6 +50,11 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 
 plotComponent(encoding, comp = c(1, 2))
+
+# modify the plot using ggplot2
+library(ggplot2)
+plotComponent(encoding, comp = c(1, 2), shape = 23) +
+   labs(title = "Two first components")
 
 }
 \seealso{

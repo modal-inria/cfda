@@ -9,9 +9,12 @@
 \arguments{
 \item{x}{output of \code{\link{compute_number_jumps}} function}
 
-\item{breaks}{number of breaks. If not given use the sturges rule}
+\item{breaks}{number of breaks. If not given, use the sturges rule}
 
-\item{...}{not used}
+\item{...}{parameters for \code{geom_histogram}}
+}
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
 }
 \description{
 Plot the number of jumps
@@ -27,6 +30,11 @@ nJump <- compute_number_jumps(d_JK)
 
 hist(nJump)
 
+# modify the plot using ggplot2
+library(ggplot2)
+hist(nJump, fill = "#984EA3") +
+   labs(title = "Distribution of the number of jumps")
+   
 }
 \author{
 Quentin Grimonprez

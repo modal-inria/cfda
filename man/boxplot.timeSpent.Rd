@@ -11,7 +11,10 @@
 
 \item{col}{a vector containing color for each state}
 
-\item{...}{not used}
+\item{...}{extra parameters for \code{geom_boxplot}}
+}
+\value{
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
 }
 \description{
 Boxplot of time spent in each state
@@ -31,6 +34,12 @@ timeSpent <- compute_time_spent(d_JK2)
 
 # plot the result
 boxplot(timeSpent, col = c("#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))
+
+# modify the plot using ggplot2
+library(ggplot2)
+boxplot(timeSpent, notch = TRUE, outlier.colour = "black") + 
+   coord_flip() + 
+   labs(title = "Time spent in each state")
 
 }
 \author{

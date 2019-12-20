@@ -16,7 +16,9 @@ plotData(data, col = NULL, addId = TRUE, addBorder = TRUE)
 \item{addBorder}{If TRUE add black border to each individuals}
 }
 \value{
-each row represent an individual over [0:Tmax]. The color at a given time gives the state of the individual.
+a \code{ggplot} object that can be modified using \code{ggplot2} package.
+On the plot, each row represents an individual over [0:Tmax]. 
+The color at a given time gives the state of the individual.
 }
 \description{
 Plot categorical functional data
@@ -32,6 +34,11 @@ d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 d_JKT <- cut_data(d_JK, Tmax = 10)
 
 plotData(d_JKT)
+
+# modify the plot using ggplot2
+library(ggplot2)
+plotData(d_JKT) +
+   labs(title = "Trajectories of a Markov process")
   
 }
 \author{
