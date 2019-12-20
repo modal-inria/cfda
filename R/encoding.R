@@ -33,7 +33,7 @@
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
@@ -244,7 +244,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 # d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 # d_JK2 <- cut_data(d_JK, Tmax)
 #
-# m <- 10
+# m <- 6
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # I <- diag(rep(1, m))
 # phi <- fd(I, b)
@@ -306,7 +306,7 @@ compute_Fxij <- function(x, phi, K, ...)
 # d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
 # d_JK2 <- cut_data(d_JK, Tmax)
 #
-# m <- 10
+# m <- 6
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # I <- diag(rep(1, m))
 # phi <- fd(I, b)
@@ -361,7 +361,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding 
@@ -370,12 +370,10 @@ compute_Vxi <- function(x, phi, K, ...)
 #' # plot the encoding produced by the first harmonic
 #' plot(encoding)
 #' 
-#' # plot the encoding produced by the second harmonic with custom color
-#' plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
 #' 
 #' # modify the plot using ggplot2
 #' library(ggplot2)
-#' plot(encoding) +
+#' plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow")) +
 #'    labs(title = "Optimal encoding")
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
@@ -422,7 +420,7 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
@@ -497,7 +495,7 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
@@ -560,7 +558,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding

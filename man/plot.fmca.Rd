@@ -34,7 +34,7 @@ d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax
 d_JK2 <- cut_data(d_JK, Tmax)
 
 # create basis object
-m <- 10
+m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
 # compute encoding 
@@ -43,12 +43,10 @@ encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
 # plot the encoding produced by the first harmonic
 plot(encoding)
 
-# plot the encoding produced by the second harmonic with custom color
-plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow"))
 
 # modify the plot using ggplot2
 library(ggplot2)
-plot(encoding) +
+plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow")) +
    labs(title = "Optimal encoding")
 
 }

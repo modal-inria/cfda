@@ -50,7 +50,7 @@
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
-#' m <- 10
+#' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
