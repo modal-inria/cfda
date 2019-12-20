@@ -22,7 +22,7 @@ RShowDoc("cfda", package = "cfda")
 
 cfda is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
 
-Copyrigth Inria - Université de Lille - CNRS
+Copyrigth Inria - Université de Lille
 
 ## Licence
 
