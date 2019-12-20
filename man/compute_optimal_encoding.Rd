@@ -42,7 +42,7 @@ Compute the optimal encoding for categorical functional data using an extension 
 See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 Tmax <- 6
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

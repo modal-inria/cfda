@@ -22,7 +22,7 @@ library(cfda)
 set.seed(42)
 ```
 
-We simulate the Jukes Cantor models of nucleotides replacement. 
+We simulate the Jukes Cantor model of nucleotide replacement. 
 
 Denote the set of nucleotides: $E = \{A, T, G, C\}$. A DNA sequence is seen as a string of nucleotides: ATGCATTAC.
 
@@ -57,7 +57,7 @@ d_JK <- generate_Markov(n = n, K = 4, Q = QJK, lambda = lambda_QJK, Tmax = Tmax,
 head(d_JK, 10)
 ```
 
-The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different indiviuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
+The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different individuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
 
 
 We can compute the duration of each trajectory.

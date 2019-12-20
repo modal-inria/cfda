@@ -25,7 +25,7 @@ Extract the encoding as an \code{fd} object or as a matrix
 The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 Tmax <- 6
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

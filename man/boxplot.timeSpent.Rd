@@ -20,7 +20,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Boxplot of time spent in each state
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement  
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)

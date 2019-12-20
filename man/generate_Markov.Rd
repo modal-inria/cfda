@@ -19,7 +19,7 @@ generate_Markov(
 
 \item{K}{number of states}
 
-\item{Q}{matrix containing the transition probailities from one state to another. Each row contains positive real summing to 1.}
+\item{Q}{matrix containing the transition probabilities from one state to another. Each row contains positive reals summing to 1.}
 
 \item{lambda}{time spent in each state}
 
@@ -44,7 +44,7 @@ For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j}, t
 }
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)

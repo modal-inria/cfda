@@ -59,7 +59,6 @@ test_that("compute_duration works", {
 
 
 test_that("hist.duration does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
@@ -135,7 +134,6 @@ test_that("estimate_pt works with different t", {
 
 
 test_that("plot_pt_classic does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
@@ -150,7 +148,6 @@ test_that("plot_pt_classic does not produce warnings", {
 
 
 test_that("plot_pt_ribbon does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
@@ -164,7 +161,6 @@ test_that("plot_pt_ribbon does not produce warnings", {
 })
 
 test_that("plot_pt does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
@@ -232,7 +228,6 @@ test_that("compute_number_jumpsIntern works with countDuplicated = FALSE", {
 
 
 test_that("hist.njump does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
@@ -277,7 +272,6 @@ test_that("rep_large_ind works", {
 
 
 test_that("plotData does not produce warnings", {
-  # simulate the Jukes Cantor models of nucleotides replacement.
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)

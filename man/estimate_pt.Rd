@@ -9,7 +9,7 @@ estimate_pt(data, NAafterTmax = FALSE)
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).}
 
-\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)}
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)}
 }
 \value{
 A list of two elements:
@@ -22,7 +22,7 @@ A list of two elements:
 Estimate probabilities to be in each state
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)

@@ -23,7 +23,7 @@
 #' See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
 #'
 #' @examples
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -189,7 +189,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
   res <- eigen(t(invF05) %*% G %*% invF05)
 
-  # les vecteurs propres (qui donneent les coeffs des m=nBasis codages, pour chaque val propre)
+  # les vecteurs propres (qui donnent les coeffs des m=nBasis codages, pour chaque val propre)
   # je les mets sous la forme d'une liste de matrices de taille m x K. La premiere matrice
   # correspond au premier vecteur propre. ce vecteur (1ere colonne dans res$vectors) contient
   # les coefs du codage pour l'état 1 sur les premières m (=nBasis) positions, ensuite pour l'état 2 sur
@@ -352,7 +352,7 @@ compute_Vxi <- function(x, phi, K, ...)
 #' @author Quentin Grimonprez
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -411,7 +411,7 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
 #' 
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -486,7 +486,7 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #' @author Quentin Grimonprez
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -549,7 +549,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' @author Quentin Grimonprez
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement  
 #' K <- 4
 #' Tmax <- 6
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -570,7 +570,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' # modify the plot using ggplot2
 #' library(ggplot2)
 #' plotEigenvalues(encoding, shape = 23) +
-#'    labs(caption = "Jukes Cantor models of nucleotides replacement")
+#'    labs(caption = "Jukes-Cantor model of nucleotide replacement")
 #' 
 #' @seealso \link{plot.fmca} \link{plotComponent}
 #' 

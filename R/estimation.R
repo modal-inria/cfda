@@ -9,7 +9,7 @@
 #'
 #'
 #' @examples
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -93,22 +93,22 @@ completeStatetable <- function(aux)
 #' Plot the transition graph
 #' 
 #' Plot the transition graph between the different states. A node corresponds to a state with the mean 
-#' time spent in this state. Each arrow represents the probability of transtion between states.
+#' time spent in this state. Each arrow represents the probability of transition between states.
 #'
 #' @param x output of \code{\link{estimate_Markov}} function
 #' @param ... parameters of \code{plotmat} function from \code{diagram} package (see details). 
 #' 
 #' @details 
-#' Some usefull extra parameters:
+#' Some useful extra parameters:
 #' \itemize{
 #'   \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
 #'   \item \code{relsize}	scaling factor for size of the graph (default = 1).
-#'   \item \code{box.size}	size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
+#'   \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
 #'   \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
 #' }
 #' 
 #' @examples
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)

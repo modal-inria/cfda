@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{output of \code{\link{compute_number_jumps}} function}
 
-\item{breaks}{number of breaks. If not given, use the sturges rule}
+\item{breaks}{number of breaks. If not given, use the Sturges rule}
 
 \item{...}{parameters for \code{geom_histogram}}
 }
@@ -20,7 +20,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Plot the number of jumps
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)

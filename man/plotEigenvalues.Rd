@@ -22,7 +22,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Plot Eigenvalues
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement  
 K <- 4
 Tmax <- 6
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
@@ -43,7 +43,7 @@ plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
 # modify the plot using ggplot2
 library(ggplot2)
 plotEigenvalues(encoding, shape = 23) +
-   labs(caption = "Jukes Cantor models of nucleotides replacement")
+   labs(caption = "Jukes-Cantor model of nucleotide replacement")
 
 }
 \seealso{

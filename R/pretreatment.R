@@ -6,7 +6,7 @@
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -59,7 +59,7 @@ cut_cfd <- function(data, Tmax)
 # change the labels into integer
 #
 # @param state vector with labels
-# @return a lsit with state containing the new formatted state and label, 
+# @return a list with state containing the new formatted state and label, 
 # a data.frame containing the labels and corresponding integers
 # 
 # @author Quentin Grimonprez

@@ -11,7 +11,7 @@ get_state(data, t, NAafterTmax = FALSE)
 
 \item{t}{time at which extract the state}
 
-\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)}
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)}
 }
 \value{
 a vector containing the state of each individual at time t
@@ -20,7 +20,7 @@ a vector containing the state of each individual at time t
 Extract the state of each individual at a given time
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_QJK <- c(1, 1, 1, 1)

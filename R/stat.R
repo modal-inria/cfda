@@ -7,7 +7,7 @@
 #' @return a matrix with \code{K} columns containing the total time spent in each state for each individuals
 #'
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -66,7 +66,7 @@ compute_time_spent_intern <- function(data, labels)
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #'
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement  
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -112,7 +112,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 #' @return a vector containing the duration of each trajectories
 #'
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -145,13 +145,13 @@ compute_duration <- function(data)
 #' 
 #' 
 #' @param x output of \code{\link{compute_duration}} function
-#' @param breaks number of breaks. If not given, use the sturges rule
+#' @param breaks number of breaks. If not given, use the Sturges rule
 #' @param ... parameters for \code{geom_histogram}
 #' 
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -173,7 +173,7 @@ compute_duration <- function(data)
 #' @export 
 hist.duration <- function(x, breaks = NULL, ...)
 {
-  # choose the number of breaks using sturges rule
+  # choose the number of breaks using Sturges rule
   if(is.null(breaks))
     breaks <- floor(1 + log2(length(x)))
   
@@ -191,13 +191,13 @@ hist.duration <- function(x, breaks = NULL, ...)
 #' 
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param t time at which extract the state
-#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)
 #' 
 #' @return a vector containing the state of each individual at time t 
 #' 
 #' 
 #' @examples
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -248,7 +248,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' Estimate probabilities to be in each state
 #' 
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
-#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (usefull when individuals has different lengths)
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)
 #' 
 #' @return A list of two elements:
 #' \itemize{
@@ -258,7 +258,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' 
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -318,7 +318,7 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -414,7 +414,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 #' @return A vector containing the number of jumps for each individual 
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -463,13 +463,13 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
 #' 
 #' 
 #' @param x output of \code{\link{compute_number_jumps}} function
-#' @param breaks number of breaks. If not given, use the sturges rule
+#' @param breaks number of breaks. If not given, use the Sturges rule
 #' @param ... parameters for \code{geom_histogram}
 #' 
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -489,7 +489,7 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
 #' @export  
 hist.njump <- function(x, breaks = NULL, ...)
 {
-  # choose the number of breaks using sturges rule
+  # choose the number of breaks using Sturges rule
   if(is.null(breaks))
     breaks <- floor(1 + log2(length(x)))
   
@@ -512,7 +512,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' @return a vector of length \code{K} containing the total time spent in each state
 #'
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -551,7 +551,7 @@ statetable <- function(data)
 #' The color at a given time gives the state of the individual. 
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)

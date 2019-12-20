@@ -25,7 +25,7 @@ Plot the optimal encoding
 The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m \alpha_{x,i}^{(h)}\phi_i}.
 }
 \examples{
-# simulate the Jukes Cantor models of nucleotides replacement. 
+# Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
 Tmax <- 6
 QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

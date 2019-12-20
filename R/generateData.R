@@ -4,7 +4,7 @@
 #' 
 #' @param n number of trajectories to generate
 #' @param K number of states
-#' @param Q matrix containing the transition probailities from one state to another. Each row contains positive real summing to 1.
+#' @param Q matrix containing the transition probabilities from one state to another. Each row contains positive reals summing to 1.
 #' @param lambda time spent in each state
 #' @param pi0 initial distribution of states
 #' @param Tmax maximal duration of trajectories
@@ -23,7 +23,7 @@
 #'  
 #' 
 #' @examples 
-#' # simulate the Jukes Cantor models of nucleotides replacement. 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
 #' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_QJK <- c(1, 1, 1, 1)
@@ -81,7 +81,7 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
 
 #' Generate data following a 2 states model
 #'
-#' Generate indiviuals such that each individual starts at time 0 with state 0 and then an unique change to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
+#' Generate individuals such that each individual starts at time 0 with state 0 and then an unique change to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
 #'
 #' @param n number of individuals
 #'
