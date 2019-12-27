@@ -129,3 +129,23 @@ test_that("stateToInteger works", {
   
   expect_equal(out, expectedOut)
 })
+
+
+test_that("remove_duplicated_states.intern works", {
+  data <- data.frame(id = rep(1, 10), time = 1:10, state = rep(1:5, each = 2))
+  
+  out <- remove_duplicated_states.intern(data)
+  expectedOut <- data.frame(id = rep(1, 5), time = 1:5*2-1, state = 1:5)
+  
+  expect_equivalent(out, expectedOut)
+})
+
+
+test_that("remove_duplicated_states works", {
+  data <- data.frame(id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8), state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1))))
+  
+  out <- remove_duplicated_states(data)
+  expectedOut <- data.frame(id = rep(1:3, c(5, 3, 3)), time = c(1:5*2-1, 1:3, 1, 2, 8), state = c(1:5, 1:3, 1:3))
+  
+  expect_equivalent(out, expectedOut)
+})

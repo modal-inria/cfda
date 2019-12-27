@@ -97,3 +97,35 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 }
 
 
+#' Remove duplicated states
+#'
+#' Remove duplicated consecutive states from data. If for an individual there is two or more consecutive states that are identical, 
+#' only the first is kept. Only time when the state changes are kept.
+#'
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' 
+#' @return \code{data} without duplicated cnsecutive states
+#'
+#' @examples 
+#' data <- data.frame(id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8), 
+#'                    state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1))))
+#' out <- remove_duplicated_states(data)
+#'
+#' @author Quentin Grimonprez
+#'
+#' @export
+remove_duplicated_states <- function(data)
+{
+  do.call(rbind, by(data, data$id, remove_duplicated_states.intern))
+}
+
+
+remove_duplicated_states.intern <- function(data)
+{
+  data = data[order(data$time), ]
+  
+  outRle <- rle(data$state)
+  indToKeep <- 1 + c(0, cumsum(outRle$lengths[-length(outRle$lengths)]))
+
+  return(data[indToKeep, ])
+}
