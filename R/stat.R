@@ -428,7 +428,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export  
-compute_number_jumps <- function(data, countDuplicated = TRUE)
+compute_number_jumps <- function(data, countDuplicated = FALSE)
 {
   ## check parameters
   checkData(data)
