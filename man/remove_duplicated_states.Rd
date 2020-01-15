@@ -10,7 +10,7 @@ remove_duplicated_states(data)
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
-\code{data} without duplicated cnsecutive states
+\code{data} without duplicated consecutive states
 }
 \description{
 Remove duplicated consecutive states from data. If for an individual there is two or more consecutive states that are identical, 

@@ -104,7 +104,7 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' 
-#' @return \code{data} without duplicated cnsecutive states
+#' @return \code{data} without duplicated consecutive states
 #'
 #' @examples 
 #' data <- data.frame(id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8), 
