@@ -99,6 +99,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   {
     cat(paste0("Number of individuals: ", nId, "\n"))
     cat(paste0("Number of states: ", K, "\n"))
+    cat(paste0("Basis type: ", basisobj$type, "\n"))
     cat(paste0("Number of basis functions: ", nBasis, "\n"))
     cat(paste0("Number of cores: ", nCores, "\n"))
   }
