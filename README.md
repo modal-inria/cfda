@@ -2,9 +2,9 @@
 
 [![Build Status](https://travis-ci.com/modal-inria/cfda.svg)](https://travis-ci.com/modal-inria/cfda) [![Build status](https://ci.appveyor.com/api/projects/status/902s96okh97clt5q?svg=true)](https://ci.appveyor.com/project/Quentin62/cfda) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
 
-cfda provides functions for the analysis of categorical functional data. 
+**cfda** provides functions for the analysis of categorical functional data. 
 
-The main contribution is the computation of an optimal encoding (real variable) of each state of the categorical functional data.
+The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 
 
 ## Installation
@@ -67,7 +67,7 @@ encod <- get_encoding(encoding)
 
 ## Credits
 
-cfda is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
+**cfda** is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
 
 Copyrigth Inria - Université de Lille
 
