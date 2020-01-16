@@ -600,7 +600,7 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE)
   
   if(addId)
   {
-    p = p + scale_y_continuous(name = "id", breaks = 1:nInd)
+    p = p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id))
   }else{
     p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
@@ -620,7 +620,7 @@ rep_large_ind <- function(data)
     data.frame(id = x$id[1:(nrow(x)-1)] , 
                t_start = x$time[1:(nrow(x)-1)], 
                t_end = x$time[2:nrow(x)], 
-               state = x$state[1:(nrow(x)-1)])
+               state = x$state[1:(nrow(x)-1)], stringsAsFactors = FALSE)
   })
   
   return(do.call(rbind, out))
