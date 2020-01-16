@@ -4,7 +4,7 @@
 \alias{plotData}
 \title{Plot categorical functional data}
 \usage{
-plotData(data, col = NULL, addId = TRUE, addBorder = TRUE)
+plotData(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = TRUE)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
@@ -13,7 +13,9 @@ plotData(data, col = NULL, addId = TRUE, addBorder = TRUE)
 
 \item{addId}{If TRUE, add id labels}
 
-\item{addBorder}{If TRUE add black border to each individuals}
+\item{addBorder}{If TRUE, add black border to each individuals}
+
+\item{sort}{If TRUE, id are sorted according to the duration in their first state}
 }
 \value{
 a \code{ggplot} object that can be modified using \code{ggplot2} package.

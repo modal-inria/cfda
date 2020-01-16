@@ -552,7 +552,8 @@ statetable <- function(data, removeDiagonal = FALSE)
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param col a vector containing color for each state
 #' @param addId If TRUE, add id labels
-#' @param addBorder If TRUE add black border to each individuals
+#' @param addBorder If TRUE, add black border to each individuals
+#' @param sort If TRUE, id are sorted according to the duration in their first state
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' On the plot, each row represents an individual over [0:Tmax]. 
@@ -578,12 +579,13 @@ statetable <- function(data, removeDiagonal = FALSE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE)
+plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = TRUE)
 {
   ## check parameters
   checkData(data)
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
+  checkLogical(sort, "sort")
   ## end check
   
   d_graph <- rep_large_ind(data)
@@ -591,16 +593,27 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE)
   d_graph$state = factor(d_graph$state, levels = sort(unique(data$state)))
   
   nInd <- length(unique(d_graph$id))
-  d_graph$id2 <- unclass(factor(d_graph$id))
+  
+  if(sort)
+  {
+    # order according to first state duration
+    b <- orderFirstState(data)
+    
+    ord = match(d_graph$id, b$id)
+    d_graph$position = ord # position of id on the y-axis
+  }else{
+    d_graph$position <- unclass(factor(d_graph$id)) # return integers associated with the different ids (labels from a factor)
+  }
+
   
   p <- ggplot() + 
     scale_x_continuous(name = "time") + 
-    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "id2 - 0.5", ymax = "id2 + 0.5", fill = "state"), 
+    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
               color = ifelse(addBorder, "black", NA), alpha = 0.7)
   
   if(addId)
   {
-    p = p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id))
+    p = p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id)[unique(d_graph$position)])
   }else{
     p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
@@ -624,5 +637,13 @@ rep_large_ind <- function(data)
   })
   
   return(do.call(rbind, out))
+}
+
+# compute the duration of the first state per individual
+# and return an ordered data.frame per first state and duration
+orderFirstState <- function(data)
+{
+  firstState <- do.call(rbind, by(data, data$id, function(x) {data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]), state = x$state[1], stringsAsFactors = FALSE)}))
+  firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {x[order(x$time), ]}))
 }
 

@@ -280,6 +280,15 @@ test_that("rep_large_ind works", {
 })
 
 
+test_that("orderFirstState works", {
+  dat <- data.frame(id = rep(1:5, c(2, 1, 2, 2, 1)), time = c(0:1, 0, 0, 2, 0, 3, 0), state = c(1:2, 1, 1:2, 2:1, 2))
+  expectedOut <- data.frame(id = c(1, 3, 2, 4, 5), time = c(1, 2, Inf, 3, Inf), state = c(1, 1, 1, 2, 2))
+  
+  out <- orderFirstState(dat)
+
+  expect_equivalent(out, expectedOut)
+})
+
 
 test_that("plotData does not produce warnings", {
   K <- 4
@@ -290,5 +299,5 @@ test_that("plotData does not produce warnings", {
 
   expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
-  
+  expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
 })
