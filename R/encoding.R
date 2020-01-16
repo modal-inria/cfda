@@ -76,7 +76,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   checkDataEndTmax(data)
   if(!is.basis(basisobj))
     stop("basisobj is not a basis object.")
-  if(!is.whole.number(nCores) || (nCores < 1))
+  if(any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1))
     stop("nCores must be an integer > 0.")
   ## end check
   
@@ -449,10 +449,10 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
   checkLogical(fdObject, "fdObject")
   if(!is.null(nx))
   {
-    if((length(nx) > 1) || !is.whole.number(nx) || (nx < 0))
+    if(any(is.na(nx)) || (length(nx) > 1) || !is.whole.number(nx) || (nx <= 0))
       stop("nx must be a positive integer.")
   }
-  if((length(harm) > 1) || !is.whole.number(harm) || (harm < 1) || (harm > length(x$alpha)))
+  if(any(is.na(harm)) || (length(harm) > 1) || !is.whole.number(harm) || (harm < 1) || (harm > length(x$alpha)))
     stop("harm must be an integer between 1 and the number of components.")
   ##
   
@@ -527,7 +527,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
   checkLogical(addNames, "addNames")
   if(length(comp) != 2)
     stop("comp must be a vector of positive integers of length 2.")
-  if(any(!is.whole.number(comp)) || any(comp < 0))
+  if(any(is.na(comp)) || any(!is.whole.number(comp)) || any(comp < 0) || any(comp > ncol(x$pc)))
     stop("comp must be a vector of positive integers of length 2.")
   ##
   

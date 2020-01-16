@@ -181,6 +181,25 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
 
+test_that("compute_optimal_encoding throws error", {
+  set.seed(42)
+  K <- 2
+  d_JK <- generate_2State(n = 10)
+  d_JK2 <- cut_data(d_JK, 1)
+  
+  # create basis object
+  m <- 10
+  b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
+  
+  expect_error(compute_optimal_encoding(d_JK2, 3, nCores = 1, verbose = TRUE), regexp = "basisobj is not a basis object.")
+  
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = 0, verbose = TRUE), regexp = "nCores must be an integer > 0.")
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = 2.5, verbose = TRUE), regexp = "nCores must be an integer > 0.")
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = NA, verbose = TRUE), regexp = "nCores must be an integer > 0.")
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = NaN, verbose = TRUE), regexp = "nCores must be an integer > 0.")
+
+})
+
 
 test_that("compute_optimal_encoding works", {
   set.seed(42)
@@ -237,6 +256,35 @@ test_that("compute_optimal_encoding works verbose", {
   # compute encoding
   expect_output(encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = TRUE))
   
+})
+
+test_that("get_encoding works", {
+  n <- 50
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- cut_data(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- list(alpha = rep(1, 5))
+  class(fmca) = "fmca"
+  
+  expect_error(get_encoding(3), regexp = "x must be a fmca object.")
+  
+  expect_error(get_encoding(fmca, harm = c(1, 2)), regexp = "harm must be an integer between 1 and the number of components.")
+  expect_error(get_encoding(fmca, harm = 2.5), regexp = "harm must be an integer between 1 and the number of components.")
+  expect_error(get_encoding(fmca, harm = 0), regexp = "harm must be an integer between 1 and the number of components.")
+  expect_error(get_encoding(fmca, harm = NA), regexp = "harm must be an integer between 1 and the number of components.")
+  expect_error(get_encoding(fmca, harm = NaN), regexp = "harm must be an integer between 1 and the number of components.")
+  expect_error(get_encoding(fmca, harm = 10), regexp = "harm must be an integer between 1 and the number of components.")
+  
+  
+  expect_error(get_encoding(fmca, harm = 1, nx = 0), regexp = "nx must be a positive integer.")
+  expect_error(get_encoding(fmca, harm = 1, nx = c(3, 2)), regexp = "nx must be a positive integer.")
+  expect_error(get_encoding(fmca, harm = 1, nx = NA), regexp = "nx must be a positive integer.")
+  expect_error(get_encoding(fmca, harm = 1, nx = NaN), regexp = "nx must be a positive integer.")
 })
 
 
@@ -303,6 +351,20 @@ test_that("plot.fmca does not produce warnings", {
 })
 
 
+test_that("plotComponent throws error", {
+  fmca <- list(pc = matrix(nrow = 3, ncol = 5))
+  class(fmca) = "fmca"
+  
+  expect_error(plotComponent(3), regexp = "x must be a fmca object.")
+
+  expect_error(plotComponent(fmca, comp = 1), regexp = "comp must be a vector of positive integers of length 2.")
+  expect_error(plotComponent(fmca, comp = c(1, NA)), regexp = "comp must be a vector of positive integers of length 2.")
+  expect_error(plotComponent(fmca, comp = c(1, NaN)), regexp = "comp must be a vector of positive integers of length 2.")
+  expect_error(plotComponent(fmca, comp = c(1, 1.5)), regexp = "comp must be a vector of positive integers of length 2.")
+  expect_error(plotComponent(fmca, comp = c(1, 6)), regexp = "comp must be a vector of positive integers of length 2.")
+})
+
+
 test_that("plotComponent does not produce warnings", {
   n <- 50
   Tmax <- 1
@@ -321,6 +383,9 @@ test_that("plotComponent does not produce warnings", {
   
 })
 
+test_that("plotEigenvalues throws error", {
+  expect_error(plotEigenvalues(2), regexp = "x must be a fmca object.")
+})
 
 test_that("plotEigenvalues does not produce warnings", {
   n <- 50
