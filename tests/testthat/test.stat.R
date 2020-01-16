@@ -297,7 +297,7 @@ test_that("plotData does not produce warnings", {
   d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
-  expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE), regexp = NA)
+  expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
 })

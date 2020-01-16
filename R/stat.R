@@ -579,7 +579,7 @@ statetable <- function(data, removeDiagonal = FALSE)
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = TRUE)
+plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
 {
   ## check parameters
   checkData(data)

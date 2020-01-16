@@ -4,7 +4,7 @@
 \alias{plotData}
 \title{Plot categorical functional data}
 \usage{
-plotData(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = TRUE)
+plotData(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
