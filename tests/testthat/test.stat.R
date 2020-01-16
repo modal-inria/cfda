@@ -91,6 +91,10 @@ test_that("id_get_state returns the right state", {
 test_that("get_state returns the right state", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
+  expect_error(get_state(dat, c(3, 2)), regexp = "t must be a real.")
+  expect_error(get_state(dat, NA), regexp = "t must be a real.")
+  expect_error(get_state(dat, NaN), regexp = "t must be a real.")
+  
   out <- get_state(dat, 3) 
   
   expect_equivalent(out, c(3, 2))

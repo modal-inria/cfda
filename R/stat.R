@@ -219,7 +219,7 @@ get_state <- function(data, t, NAafterTmax = FALSE)
 {
   ## check parameters
   checkData(data)
-  if(!is.numeric(t) || (length(t) != 1))
+  if(any(is.na(t)) || !is.numeric(t) || (length(t) != 1))
     stop("t must be a real.")
   ## end check
   
