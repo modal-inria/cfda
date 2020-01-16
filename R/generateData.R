@@ -38,21 +38,21 @@
 generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
   ## check parameters
-  if((length(n) != 1) || !is.whole.number(n))
+  if(any(is.na(n)) || (length(n) != 1) || !is.whole.number(n))
     stop("n must be a positive integer.")
-  if((length(K) != 1) || !is.whole.number(K) || (K <= 1))
+  if(any(is.na(K)) || (length(K) != 1) || !is.whole.number(K) || (K <= 1))
     stop("K must be an integer > 1.")
-  if(!is.numeric(Tmax) || (length(Tmax) != 1))
-    stop("Tmax must be a real.")
-  if(!is.matrix(Q) || (nrow(Q) != K) || (nrow(Q) != K) || any(Q < 0))
+  if(any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1) || (Tmax <= 0))
+    stop("Tmax must be a positive real.")
+  if(any(is.na(Q)) || !is.matrix(Q) || (nrow(Q) != K) || (nrow(Q) != K) || any(Q < 0))
     stop("Q must be a matrix of size K x K of positive real.")
-  if(!is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
+  if(any(is.na(lambda)) || !is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
      stop("lambda must be a vector of length K of positive real.")
-  if(!is.vector(pi0) || (length(pi0) != K) || any(pi0 < 0))
+  if(any(is.na(pi0)) || !is.vector(pi0) || (length(pi0) != K) || any(pi0 < 0))
     stop("pi0 must be a vector of length K of positive real.")
   if(!is.null(labels))
   {
-    if(!is.vector(labels) || (length(labels) != K))
+    if(!is.vector(labels) || (length(unique(labels)) != K))
       stop("labels must be NULL or a vector of length K.")  
   }
   ## end check
@@ -94,7 +94,7 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
 generate_2State <- function(n)
 {
   ## check parameters
-  if((length(n) != 1) || !is.whole.number(n))
+  if(any(is.na(n)) || (length(n) != 1) || !is.whole.number(n))
     stop("n must be a positive integer.")
   ## end check
   
