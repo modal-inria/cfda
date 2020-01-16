@@ -37,6 +37,9 @@ estimate_Markov <- function(data)
   label <- out$label
   rm(out)
   
+  # l'estimation par crude.inits est basée sur du comptage notamment, il faut supprimer les sauts dans les mêmes états
+  data = remove_duplicated_states(data)
+  
   aux <- statetable.msm(data$state, data$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
 
   # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
