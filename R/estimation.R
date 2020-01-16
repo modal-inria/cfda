@@ -101,10 +101,12 @@ completeStatetable <- function(aux)
 #' @details 
 #' Some useful extra parameters:
 #' \itemize{
+#'   \item \code{main} main title.
 #'   \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
 #'   \item \code{relsize}	scaling factor for size of the graph (default = 1).
 #'   \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
 #'   \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
+#'   \item \code{arr.pos} relative position of arrowhead on arrow segment/curve.
 #' }
 #' 
 #' @examples
@@ -127,7 +129,7 @@ plot.Markov <- function(x, ...)
 { 
   extraParam <- list(...)
   defaultParam <- list(A = t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
-                       box.col = "yellow", arr.length = 0.2,
+                       box.col = "yellow", arr.length = 0.2, shadow.size = 0,
                        name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
                                     rep(")", ncol(x$Q)), sep = ""))
   
