@@ -1,8 +1,8 @@
 Package: cfda
 Type: Package
 Title: Categorical Functional Data Analysis
-Version: 0.7.3
-Date: 2020-01-08
+Version: 0.7.4
+Date: 2020-01-16
 Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@inria.fr"),
              person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"))
 Copyright: Inria - Université de Lille
