@@ -6,7 +6,7 @@
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
-#' @param ... parameters for \code{\link{integrate}} function.
+#' @param ... parameters for \code{\link{integrate}} function (see details).
 #'
 #' @return A list containing:
 #' \itemize{
@@ -21,6 +21,13 @@
 #'
 #' @details 
 #' See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
+#'
+#' Extra parameters (\emph{...}) for the \code{\link{integrate}} function can be:
+#' \itemize{
+#'  \item \emph{subdivisions} the maximum number of subintervals.
+#'  \item \emph{rel.tol} relative accuracy requested.
+#'  \item \emph{abs.tol} absolute accuracy requested.
+#' }	
 #'
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 

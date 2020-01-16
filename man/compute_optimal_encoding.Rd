@@ -21,7 +21,7 @@ compute_optimal_encoding(
 
 \item{verbose}{if TRUE print some information}
 
-\item{...}{parameters for \code{\link{integrate}} function.}
+\item{...}{parameters for \code{\link{integrate}} function (see details).}
 }
 \value{
 A list containing:
@@ -40,6 +40,13 @@ Compute the optimal encoding for categorical functional data using an extension 
 }
 \details{
 See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
+
+Extra parameters (\emph{...}) for the \code{\link{integrate}} function can be:
+\itemize{
+ \item \emph{subdivisions} the maximum number of subintervals.
+ \item \emph{rel.tol} relative accuracy requested.
+ \item \emph{abs.tol} absolute accuracy requested.
+}
 }
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement 
