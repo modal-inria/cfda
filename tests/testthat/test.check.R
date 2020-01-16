@@ -46,4 +46,6 @@ test_that("checkLogical works", {
   expect_silent(checkLogical(TRUE, "aa"))
   expect_error(checkLogical(c(TRUE, TRUE), "aa"), "aa must be either TRUE or FALSE.")
   expect_error(checkLogical(3, "aa"), "aa must be either TRUE or FALSE.")
+  expect_error(checkLogical(NA, "aa"), "aa must be either TRUE or FALSE.")
+  expect_error(checkLogical(NaN, "aa"), "aa must be either TRUE or FALSE.")
 })

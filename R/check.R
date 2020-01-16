@@ -41,6 +41,9 @@ checkLogical <- function(x, paramName)
   if(length(x) != 1)
     stop(paste0(paramName, " must be either TRUE or FALSE."))
   
+  if(is.na(x))
+    stop(paste0(paramName, " must be either TRUE or FALSE."))
+  
   if(!is.logical(x))
     stop(paste0(paramName, " must be either TRUE or FALSE."))
   
