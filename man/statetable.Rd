@@ -4,10 +4,12 @@
 \alias{statetable}
 \title{Table of transitions}
 \usage{
-statetable(data)
+statetable(data, removeDiagonal = FALSE)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+
+\item{removeDiagonal}{if TRUE, does not count transition from a state i to i}
 }
 \value{
 a vector of length \code{K} containing the total time spent in each state

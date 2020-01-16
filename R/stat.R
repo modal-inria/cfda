@@ -508,6 +508,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param removeDiagonal if TRUE, does not count transition from a state i to i
 #'
 #' @return a vector of length \code{K} containing the total time spent in each state
 #'
@@ -523,7 +524,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' 
 #'
 #' @export
-statetable <- function(data)
+statetable <- function(data, removeDiagonal = FALSE)
 {
   ## check parameters
   checkData(data)
@@ -532,8 +533,15 @@ statetable <- function(data)
   newState = stateToInteger(data$state)
   
   out <- statetable.msm(newState$state, data$id)
+  
+  # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
+  out = completeStatetable(out)
+  
   colnames(out) = newState$label$label[match(colnames(out), newState$label$code)]
   rownames(out) = newState$label$label[match(rownames(out), newState$label$code)]
+  
+  if(removeDiagonal)
+    diag(out) = 0
   
   return(out)
 }
