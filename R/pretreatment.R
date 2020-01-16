@@ -24,7 +24,7 @@ cut_data <- function(data, Tmax)
 {
   ## check parameters
   checkData(data)
-  if(!is.numeric(Tmax) || (length(Tmax) != 1))
+  if(any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1))
     stop("Tmax must be a real.")
   ## end check
   

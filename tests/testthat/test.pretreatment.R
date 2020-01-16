@@ -34,6 +34,10 @@ test_that("cut_cfd with greater Tmax", {
 test_that("cut_data works", {
   dat <- data.frame(id = rep(1:3, each = 3), time = c(0, 2, 4, 0, 1.5, 5, 0, 2.5, 3), state = c(1, 3, 2, 1, 2, 3, 1, 3, 1))
   
+  expect_error(cut_data(dat, Tmax = c(4, 5)), regexp = "Tmax must be a real.")
+  expect_error(cut_data(dat, Tmax = NA), regexp = "Tmax must be a real.")
+  expect_error(cut_data(dat, Tmax = NaN), regexp = "Tmax must be a real.")
+  
   out <- cut_data(dat, Tmax = 4)
   expectedOut <- dat
   expectedOut[6, 1:3] = c(2, 4, 2)
