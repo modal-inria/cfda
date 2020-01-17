@@ -329,7 +329,7 @@ test_that("compute_optimal_encoding throws an error when the basis is not well s
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   
   expect_error({fmca <- compute_optimal_encoding(data_msm, b, nCores = 1)}, 
-               regexp = "In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support).", 
+               regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
                fixed = TRUE)
 })
 

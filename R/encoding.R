@@ -189,9 +189,15 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
-  
+
   if(any(dim(F05) != rep(K*nBasis, 2)))
-    stop("In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support).")
+  {
+    cat("\n")
+    if(any(colSums(Fmat) == 0))
+      stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+    
+    stop("F matrix is not invertible. You can try to change the basis.")
+  }
   
   invF05 <- solve(F05)
   #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
