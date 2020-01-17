@@ -550,7 +550,7 @@ statetable <- function(data, removeDiagonal = FALSE)
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param col a vector containing color for each state
+#' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
 #' @param addBorder If TRUE, add black border to each individuals
 #' @param sort If TRUE, id are sorted according to the duration in their first state
@@ -609,7 +609,7 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
   p <- ggplot() + 
     scale_x_continuous(name = "time") + 
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
-              color = ifelse(addBorder, "black", NA), alpha = 0.7)
+              color = ifelse(addBorder, "black", NA))
   
   if(addId)
   {
