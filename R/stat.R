@@ -590,7 +590,10 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
   
   d_graph <- rep_large_ind(data)
 
-  d_graph$state = factor(d_graph$state, levels = sort(unique(data$state)))
+  # to be sure that state are considered a qualitative
+  # if already a factor, we do not execute this in order to not drop unused levels
+  if(!is.factor(d_graph$state))
+    d_graph$state = factor(d_graph$state)
   
   nInd <- length(unique(d_graph$id))
   
@@ -605,11 +608,11 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
     d_graph$position <- unclass(factor(d_graph$id)) # return integers associated with the different ids (labels from a factor)
   }
 
-  
   p <- ggplot() + 
     scale_x_continuous(name = "time") + 
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
-              color = ifelse(addBorder, "black", NA))
+              color = ifelse(addBorder, "black", NA)) + 
+    scale_fill_hue(drop = FALSE)
   
   if(addId)
   {
