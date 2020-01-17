@@ -42,6 +42,14 @@ test_that("checkDataEndTmax works", {
   expect_silent(checkDataEndTmax(df))
 })
 
+test_that("checkDataBeginTimeworks", {
+  df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
+  expect_error(checkDataBeginTime(df), "Each individual must begin with the same time value.")
+  
+  df <- data.frame(id = 1:2, time = rep(1, 1), state = 1:2)
+  expect_silent(checkDataBeginTime(df))
+})
+
 test_that("checkLogical works", {
   expect_silent(checkLogical(TRUE, "aa"))
   expect_error(checkLogical(c(TRUE, TRUE), "aa"), "aa must be either TRUE or FALSE.")

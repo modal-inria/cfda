@@ -249,7 +249,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 
 #' Estimate probabilities to be in each state
 #' 
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must end at the same time Tmax (use \code{\link{cut_data}}).
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)
 #' 
 #' @return A list of two elements:

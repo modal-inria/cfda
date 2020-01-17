@@ -20,7 +20,7 @@ checkData <- function(data)
 }
 
 
-# Check if each individual ends by the same time value
+# Check if all individuals end with the same time value
 # @author Quentin Grimonprez
 checkDataEndTmax <- function(data)
 {
@@ -30,6 +30,21 @@ checkDataEndTmax <- function(data)
   
   if(nLastTime != 1)
     stop("Each individual must end with the same time value.")
+  
+  invisible(return(NULL))
+}
+
+
+# Check if all individuals start with the same time value
+# @author Quentin Grimonprez
+checkDataBeginTime <- function(data)
+{
+  firstTime <- tapply(data$time, data$id, function(x) x[1])
+  
+  nFirstTime <- length(unique(firstTime))
+  
+  if(nFirstTime != 1)
+    stop("Each individual must begin with the same time value.")
   
   invisible(return(NULL))
 }
