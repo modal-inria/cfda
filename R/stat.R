@@ -42,6 +42,7 @@ compute_time_spent <- function(data)
 
 
 # combien de temps passe un id dans [0,T] dans chaque etat, x vient d'un msmT
+# @author Cristian Preda
 compute_time_spent_intern <- function(data, labels)
 {
   aux <- rep(0, length(labels))            
@@ -234,6 +235,7 @@ get_state <- function(data, t, NAafterTmax = FALSE)
 #
 # x un individu de type msm et t un temps
 # NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+# @author Cristian Preda, Quentin Grimonprez
 id_get_state <- function(x, t, NAafterTmax = FALSE) 
 {
   if(NAafterTmax && (t > x$time[length(x$time)]))
@@ -522,6 +524,7 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' # table of transitions
 #' statetable(d_JK)
 #' 
+#' @author Quentin Grimonprez
 #'
 #' @export
 statetable <- function(data, removeDiagonal = FALSE)
@@ -630,6 +633,7 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
 
 # transform the data format to a new format with 4 columns: id, t_stast, t_end, state.
 # usefull for ggplot
+# @author Cristian Preda
 rep_large_ind <- function(data)
 {
   out <- by(data, data$id, function(x){
@@ -644,6 +648,7 @@ rep_large_ind <- function(data)
 
 # compute the duration of the first state per individual
 # and return an ordered data.frame per first state and duration
+# @author Quentin Grimonprez
 orderFirstState <- function(data)
 {
   firstState <- do.call(rbind, by(data, data$id, function(x) {data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]), state = x$state[1], stringsAsFactors = FALSE)}))

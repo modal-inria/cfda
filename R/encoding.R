@@ -362,8 +362,6 @@ compute_Vxi <- function(x, phi, K, ...)
 #' 
 #' @details 
 #' The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m \alpha_{x,i}^{(h)}\phi_i}.
-#'
-#' @author Quentin Grimonprez
 #' 
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
@@ -391,6 +389,8 @@ compute_Vxi <- function(x, phi, K, ...)
 #'    labs(title = "Optimal encoding")
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
+#' 
+#' @author Quentin Grimonprez
 #' 
 #' @export
 plot.fmca <- function(x, harm = 1, col = NULL, ...)
@@ -497,8 +497,6 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package. 
 #'
-#' @author Quentin Grimonprez
-#' 
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
@@ -523,6 +521,8 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 #'    labs(title = "Two first components")
 #' 
 #' @seealso \link{plot.fmca} \link{plotEigenvalues}
+#' 
+#' @author Quentin Grimonprez
 #' 
 #' @export
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4, ...)
@@ -560,8 +560,6 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package. 
 #' 
-#' @author Quentin Grimonprez
-#' 
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement  
 #' K <- 4
@@ -587,6 +585,8 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #'    labs(caption = "Jukes-Cantor model of nucleotide replacement")
 #' 
 #' @seealso \link{plot.fmca} \link{plotComponent}
+#' 
+#' @author Quentin Grimonprez
 #' 
 #' @export
 plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...)

@@ -27,5 +27,7 @@ d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
 # table of transitions
 statetable(d_JK)
 
-
+}
+\author{
+Quentin Grimonprez
 }

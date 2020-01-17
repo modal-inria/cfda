@@ -31,7 +31,7 @@ cut_data <- function(data, Tmax)
   do.call(rbind, by(data, data$id, function(x){cut_cfd(x, Tmax)}))
 }
 
-
+# @author Cristian Preda
 cut_cfd <- function(data, Tmax)
 {
   l <- nrow(data)
@@ -119,7 +119,7 @@ remove_duplicated_states <- function(data)
   do.call(rbind, by(data, data$id, remove_duplicated_states.intern))
 }
 
-
+# @author Quentin Grimonprez
 remove_duplicated_states.intern <- function(data)
 {
   data = data[order(data$time), ]

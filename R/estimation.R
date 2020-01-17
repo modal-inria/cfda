@@ -68,6 +68,7 @@ estimate_Markov <- function(data)
 # add row (containing 0s) for the missing state
 #
 # @param aux output of statetable.msm
+# @author Cristian Preda
 completeStatetable <- function(aux)
 {
   aux1 <- aux

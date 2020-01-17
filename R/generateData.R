@@ -34,6 +34,7 @@
 #' 
 #' 
 #' @author Cristian Preda
+#' 
 #' @export
 generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
