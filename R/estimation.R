@@ -134,8 +134,8 @@ plot.Markov <- function(x, ...)
   extraParam <- list(...)
   defaultParam <- list(A = t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
                        box.col = "yellow", arr.length = 0.2, shadow.size = 0,
-                       name = paste(colnames(x$Q), rep("(", ncol(x$Q)), round(1/x$lambda, 2),
-                                    rep(")", ncol(x$Q)), sep = ""))
+                       name = paste0(colnames(x$Q), rep(" (", ncol(x$Q)), round(1/x$lambda, 2),
+                                    rep(")", ncol(x$Q))))
   
   param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
   
