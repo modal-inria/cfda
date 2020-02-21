@@ -36,6 +36,20 @@ test_that("compute_time_spent works", {
   expect_equal(out, expectedOut)
 })
 
+test_that("compute_time_spent keeps unused levels", {
+  dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
+  dat$state = factor(dat$state, levels = 1:4)
+  
+  out <- compute_time_spent(dat)
+  expectedOut <- rbind(c(1.5 + 1, 1, 2.5, 0),
+                       c(3, 3, 0, 0))
+  colnames(expectedOut) = 1:4
+  rownames(expectedOut) = 1:2
+  class(expectedOut) = "timeSpent"
+  
+  expect_equal(out, expectedOut)
+})
+
 test_that("boxplot.timeSpent does not produce warnings", {
   dat <- data.frame(id = rep(1:2, c(5, 3)), time = c(0, 1.5, 4, 5, 6, 0, 3, 6), state = c(1, 3, 2, 1, 1, 1, 2, 3))
   
@@ -112,6 +126,21 @@ test_that("estimate_pt works with same t", {
   expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
   expect_equal(out$pt, matrix(c(1/2, 1/2, 0, 0, 0, 1, 1/2, 1/2, 0, 1/2, 1/2, 0, 1/2, 0, 1/2, 1, 0, 0), nrow = 3, dimnames = list(1:3, 0:5)))
 })
+
+
+test_that("estimate_pt keeps unused levels", {
+  dat <- data.frame(id = rep(1:2, each = 6), time = rep(0:5, 2), state = c(1, 3, 2, 1, 1, 1, 
+                                                                           2, 3, 1, 2, 3, 1))
+  dat$state = factor(dat$state, levels = 1:4)
+  out <- estimate_pt(dat) 
+  
+  expect_length(out, 2)
+  expect_equal(names(out), c("pt", "t"))
+  expect_equal(out$t, 0:5)
+  expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
+  expect_equal(out$pt, matrix(c(1/2, 1/2, 0, 0, 0, 0, 1, 0, 1/2, 1/2, 0, 0, 1/2, 1/2, 0, 0, 1/2, 0, 1/2, 0, 1, 0, 0, 0), nrow = 4, dimnames = list(1:4, 0:5)))
+})
+
 
 
 test_that("estimate_pt works with different t", {

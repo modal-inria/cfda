@@ -30,8 +30,11 @@ compute_time_spent <- function(data)
   checkData(data)
   ## end check
   
-  labels <- sort(unique(data$state))
-  
+  if(is.factor(data$state))
+    labels <- levels(data$state)
+  else
+    labels <- sort(unique(data$state))
+
   res <- by(data, data$id, function(x){compute_time_spent_intern(x, labels)})
   out <- do.call(rbind, res)
   colnames(out) = labels
@@ -285,7 +288,12 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
   t_jumps <- sort(unique(data$time)) 
   uniqueId <- unique(data$id)
   n <- length(uniqueId)
-  states <- sort(unique(data$state))
+  
+  if(is.factor(data$state))
+    states <- levels(data$state)
+  else
+    states <- sort(unique(data$state))
+  
   res <- matrix(0, nrow = length(states), ncol = length(t_jumps), dimnames = list(states, round(t_jumps, 3)))
   
   for(id in uniqueId)
