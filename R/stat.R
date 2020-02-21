@@ -367,7 +367,7 @@ plot.pt <- function(x, col = NULL, ribbon = FALSE, ...)
 # @author Quentin Grimonprez
 plot_pt_classic <- function(pt, col = NULL)
 {
-  plot_data <- data.frame(State = as.factor(rep(rownames(pt$pt), each = ncol(pt$pt))), 
+  plot_data <- data.frame(State = factor(rep(rownames(pt$pt), each = ncol(pt$pt)), levels = rownames(pt$pt)), 
                           proba = as.vector(t(pt$pt)), 
                           time = rep(pt$t, nrow(pt$pt)))
   
