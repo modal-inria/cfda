@@ -96,12 +96,15 @@ compute_time_spent_intern <- function(data, labels)
 #' @export
 boxplot.timeSpent <- function(x, col = NULL, ...)
 {
-  p <- ggplot(data.frame(timeSpent = as.vector(x), state = rep(colnames(x), each = nrow(x))), 
+  df <- data.frame(timeSpent = as.vector(x), state = factor(rep(colnames(x), each = nrow(x)), levels = colnames(x)))
+  p <- ggplot(df, 
               aes_string(x = "state", y = "timeSpent", fill = "state")) + 
     geom_boxplot(...) + labs(x = "State", y = "Time Spent", fill = "State")
   
   if(!is.null(col))
     p = p + scale_fill_manual(values = col)
+  else
+    p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
   return(p)
 }
@@ -364,16 +367,18 @@ plot.pt <- function(x, col = NULL, ribbon = FALSE, ...)
 # @author Quentin Grimonprez
 plot_pt_classic <- function(pt, col = NULL)
 {
-  plot_data <- data.frame(state = as.factor(rep(rownames(pt$pt), each = ncol(pt$pt))), 
+  plot_data <- data.frame(State = as.factor(rep(rownames(pt$pt), each = ncol(pt$pt))), 
                           proba = as.vector(t(pt$pt)), 
                           time = rep(pt$t, nrow(pt$pt)))
   
-  p <- ggplot(plot_data, aes_string(x = "time", y = "proba", group = "state", colour = "state")) +
+  p <- ggplot(plot_data, aes_string(x = "time", y = "proba", group = "State", colour = "State")) +
     geom_line() + ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
   
   if(!is.null(col))
     p = p + scale_colour_manual(values = col)
+  else
+    p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
   return(p)
 }
@@ -391,7 +396,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
   plot_data <- as.data.frame(t(apply(pt$pt, 2, cumsum)))
   nState <- ncol(plot_data)
   labels <- paste0("state", names(plot_data))
-  shortLabels <- names(plot_data)
+  shortLabels <- factor(names(plot_data), levels = names(plot_data))
   names(plot_data) = labels
   plot_data$time = pt$t
   plot_data$state0 = rep(0, nrow(plot_data))
@@ -401,14 +406,16 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
   for(i in 1:nState)
     p = p + geom_ribbon(aes_string(ymin = paste0("`", labels[i], "`"), 
                                    ymax = paste0("`", labels[i+1], "`"), x = "time", 
-                                   fill = factor(shortLabels[i], levels = shortLabels)), 
+                                   fill = shortLabels[i]), 
                         colour = ifelse(addBorder, "black", NA), alpha = 0.8)
   
   if(!is.null(col))
     p = p + scale_fill_manual(values = col)
+  else
+    p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
   p = p  + ylim(0, 1) +
-    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)", fill = "state")
+    labs(x = "Time", y = "p(t)", title = "P(X(t) = x)", fill = "State")
   
   return(p)
 }
@@ -620,10 +627,11 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
   }
 
   p <- ggplot() + 
-    scale_x_continuous(name = "time") + 
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
               color = ifelse(addBorder, "black", NA)) + 
-    scale_fill_hue(drop = FALSE)
+    scale_x_continuous(name = "Time") + 
+    labs(fill = "State") +
+    scale_fill_hue(drop = FALSE) # do not remove unused labels
   
   if(addId)
   {
