@@ -69,7 +69,7 @@ encod <- get_encoding(encoding)
 
 **cfda** is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
 
-Copyrigth Inria - Université de Lille
+Copyright Inria - Université de Lille
 
 ## Licence
 
