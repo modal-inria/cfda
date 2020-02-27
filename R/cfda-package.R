@@ -4,7 +4,7 @@
 #' @importFrom foreach foreach %dopar% registerDoSEQ
 #' @importFrom stats cov integrate rexp runif
 #' @importFrom graphics boxplot
-#' @importFrom utils setTxtProgressBar txtProgressBar
+#' @importFrom utils head setTxtProgressBar txtProgressBar
 #' 
 #' @title Categorical Functional Data Analysis
 #' @docType package

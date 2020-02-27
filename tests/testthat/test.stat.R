@@ -330,3 +330,17 @@ test_that("plotData does not produce warnings", {
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
 })
+
+
+
+test_that("summary_cfd words", {
+  dat <- data.frame(id = rep(1:5, c(2, 1, 2, 2, 1)), time = c(0:1, 0, 0, 2, 0, 3, 0), state = c(1:2, 1, 1:2, 2:1, 2))
+  
+  expect_output(out <- summary_cfd(dat))
+  
+  expectedOut <- list(nRow = 8, nInd = 5, timeRange = c(0, 3), uniqueStart = TRUE, uniqueEnd = FALSE,
+                 states = c("1", "2"), visit = array(c(4, 4), dimnames = list(c("1", "2"))))
+  
+  expect_equal(out, expectedOut)
+
+})

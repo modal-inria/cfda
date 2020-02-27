@@ -671,3 +671,63 @@ orderFirstState <- function(data)
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {x[order(x$time), ]}))
 }
 
+
+
+#' @title Summary
+#'
+#' @description Get a summary of the data.frame containin categorical functional data
+#'
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param max.print maximal number of states to display
+#' 
+#' @return a list containing:
+#' \itemize{
+#'   \item \code{nRow} number of rows
+#'   \item \code{nInd} number of individuals
+#'   \item \code{timeRange} minimal and maximal time value
+#'   \item \code{uniqueStart} TRUE, if all individuals have the same time start value
+#'   \item \code{uniqueEnd} TRUE, if all individuals have the same time start value
+#'   \item \code{states} vector containing the different states
+#'   \item \code{visit} number of individuals visiting each state
+#' }
+#' 
+#' @examples 
+#' data(biofam2)
+#' summary_cfd(biofam2)
+#' 
+#' @author Quentin Grimonprez
+#' 
+#' @export
+summary_cfd <- function(data, max.print = 10)
+{
+  checkData(data)
+    
+  nIndiv <- length(unique(data$id))
+  states <- as.character(unique(data$state))
+  nState <- length(states)
+  
+  timeRange <- range(data$time)
+  
+  timeRangeInd <- do.call(rbind, tapply(data$time, data$id, range))
+  sameStart <- (length(unique(timeRangeInd[, 1])) == 1)
+  sameEnd <- (length(unique(timeRangeInd[, 2])) == 1)
+  
+  nRow <- nrow(data)
+  
+  nIndVisitingState <- tapply(data$id, data$state, function(x) length(unique(x)))
+  
+  cat("Number of rows:", nRow, "\n")
+  cat("Number of individuals:", nIndiv, "\n")
+  cat("Time Range:", timeRange[1], "-", timeRange[2], "\n")
+  cat("Same time start value for all ids:", sameStart, "\n")
+  cat("Same time end value for all ids:", sameEnd, "\n")
+  cat("Number of states:", nState, "\n")
+  cat("States:\n\t")
+  cat(paste(head(states, n = 10), collapse = ", "))
+  cat("\n")
+  cat("Number of individuals visiting each state:\n")
+  print(head(nIndVisitingState, n = 10))
+  
+  invisible(list(nRow = nRow, nInd = nIndiv, timeRange = timeRange, uniqueStart = sameStart, uniqueEnd = sameEnd,
+                 states = states, visit = nIndVisitingState))
+}
