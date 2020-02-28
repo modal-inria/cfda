@@ -319,18 +319,63 @@ test_that("orderFirstState works", {
 })
 
 
+test_that("computePosition works", {
+  dat <- data.frame(id = rep(1:5, each = 2), time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)), state = c(1:2, 2:1, 2:1, 2:1, 1:2))
+  d <- rep_large_ind(dat)
+  
+  out <- computePosition(dat, d$id, sort = FALSE)
+  
+  expect_equivalent(out, d$id)
+  
+  
+  out <- computePosition(dat, d$id, sort = TRUE)
+  
+  expect_equivalent(out, order(c(1, 5, 3, 2, 4)))
+})
+
+
+test_that("computePosition works with group", {
+  dat <- data.frame(id = rep(1:5, each = 2), time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)), 
+                    state = c(1:2, 2:1, 2:1, 2:1, 1:2), group = rep(1:2, c(6, 4)))
+  d <- rep_large_ind(dat)
+  
+  out <- computePositionPerGroup(dat, d$id, d$group, sort = FALSE)
+  
+  expect_equivalent(out, d$id)
+  
+  
+  out <- computePositionPerGroup(dat, d$id, d$group, sort = TRUE)
+  
+  expect_equivalent(out, c(1, 3, 2, 5, 4))
+  
+})
+
 test_that("plotData does not produce warnings", {
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   d_JKT <- cut_data(d_JK, Tmax = 10)
-
+  group <- rep(1:2, c(sum(d_JK$id < 4), nrow(d_JK) - sum(d_JK$id < 4)))
+  
   expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
+  expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = NA)
+  expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
 })
 
+test_that("plotData produces an error when group is bad", {
+  K <- 4
+  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_QJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  d_JKT <- cut_data(d_JK, Tmax = 10)
+
+
+  expect_error(plotData(d_JK, group = 2, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of rows of data.")
+  expect_error(plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of rows of data.")
+})
 
 
 test_that("summary_cfd words", {

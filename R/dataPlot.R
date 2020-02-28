@@ -2,6 +2,7 @@
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param group vector of the same length as the number of row of \code{data} containing group index. Groups are displayed on separate plots.
 #' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
 #' @param addBorder If TRUE, add black border to each individuals
@@ -25,22 +26,35 @@
 #' 
 #' # modify the plot using ggplot2
 #' library(ggplot2)
-#' plotData(d_JKT) +
+#' plotData(d_JKT, col = c("red", "blue", "green", "brown")) +
 #'    labs(title = "Trajectories of a Markov process")
+#'   
+#'   
+#' # use the group variable: create a group with the 3 first variables and one with the others
+#' group <- rep(1:2, c(sum(d_JKT$id < 4), nrow(d_JKT) - sum(d_JKT$id < 4)))
+#' plotData(d_JKT, group = group)
 #'   
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
+plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
 {
   ## check parameters
   checkData(data)
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   checkLogical(sort, "sort")
+  if(!is.null(group) && (!is.vector(group) || (length(group) != nrow(data))))
+    stop("group must be a vector with the same length than the number of rows of data.")
   ## end check
   
+  if(!is.null(group))
+    data$group = group
+  
   d_graph <- rep_large_ind(data)
+  
+  if(!is.null(group))
+    d_graph = d_graph[order(d_graph$group), ]
   
   # to be sure that state are considered a qualitative
   # if already a factor, we do not execute this in order to not drop unused levels
@@ -49,7 +63,10 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
   
   nInd <- length(unique(d_graph$id))
   
-  d_graph$position <- computePosition(data, d_graph$id, sort)
+  if(is.null(group))
+    d_graph$position <- computePosition(data, d_graph$id, sort)
+  else
+    d_graph$position <- computePositionPerGroup(data, d_graph$id, d_graph$group, sort)
 
   p <- ggplot() + 
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
@@ -57,6 +74,10 @@ plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FA
     scale_x_continuous(name = "Time") + 
     labs(fill = "State") +
     scale_fill_hue(drop = FALSE) # do not remove unused labels
+  
+  if(!is.null(group))
+    p = p + facet_wrap("group", scales = "free_y") 
+  
   
   if(addId)
   {
@@ -83,6 +104,9 @@ rep_large_ind <- function(data)
                     t_end = x$time[2:nrow(x)], 
                     state = x$state[1:(nrow(x)-1)], stringsAsFactors = FALSE)
     
+    if("group" %in% names(data))
+      d$group = x$group[1:(nrow(x)-1)]
+    
     return(d)
   })
   
@@ -106,6 +130,18 @@ computePosition <- function(data, id, sort = FALSE)
   return(position)
 }
 
+
+computePositionPerGroup <- function(data, id, group, sort = FALSE)
+{
+  pos <- list()
+  for(i in unique(group))
+    pos[[i]] = computePosition(data[data$group == i, ], id[group == i], sort = sort)
+      
+  for(i in 2:length(pos))
+    pos[[i]] = pos[[i]] + max(pos[[i-1]])
+  
+  unlist(pos)
+}
 
 
 # compute the duration of the first state per individual
