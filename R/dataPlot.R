@@ -1,0 +1,179 @@
+
+#' Plot categorical functional data
+#'
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param col a vector containing color for each state (can be named)
+#' @param addId If TRUE, add id labels
+#' @param addBorder If TRUE, add black border to each individuals
+#' @param sort If TRUE, id are sorted according to the duration in their first state
+#'
+#' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
+#' On the plot, each row represents an individual over [0:Tmax]. 
+#' The color at a given time gives the state of the individual. 
+#' 
+#' @examples 
+#' # Simulate the Jukes-Cantor model of nucleotide replacement 
+#' K <- 4
+#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_QJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' 
+#' # add a line with time Tmax at the end of each individuals
+#' d_JKT <- cut_data(d_JK, Tmax = 10)
+#' 
+#' plotData(d_JKT)
+#' 
+#' # modify the plot using ggplot2
+#' library(ggplot2)
+#' plotData(d_JKT) +
+#'    labs(title = "Trajectories of a Markov process")
+#'   
+#' @author Cristian Preda, Quentin Grimonprez
+#' 
+#' @export
+plotData <- function(data, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
+{
+  ## check parameters
+  checkData(data)
+  checkLogical(addId, "addId")
+  checkLogical(addBorder, "addBorder")
+  checkLogical(sort, "sort")
+  ## end check
+  
+  d_graph <- rep_large_ind(data)
+  
+  # to be sure that state are considered a qualitative
+  # if already a factor, we do not execute this in order to not drop unused levels
+  if(!is.factor(d_graph$state))
+    d_graph$state = factor(d_graph$state)
+  
+  nInd <- length(unique(d_graph$id))
+  
+  d_graph$position <- computePosition(data, d_graph$id, sort)
+
+  p <- ggplot() + 
+    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
+              color = ifelse(addBorder, "black", NA)) + 
+    scale_x_continuous(name = "Time") + 
+    labs(fill = "State") +
+    scale_fill_hue(drop = FALSE) # do not remove unused labels
+  
+  if(addId)
+  {
+    p = p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id)[order(unique(d_graph$position))])
+  }else{
+    p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
+  }
+  
+  if(!is.null(col))
+    p = p + scale_fill_manual(values = col)
+  
+  return(p)
+}
+
+
+# transform the data format to a new format with 4 columns: id, t_stast, t_end, state.
+# usefull for ggplot
+# @author Cristian Preda
+rep_large_ind <- function(data)
+{
+  out <- by(data, data$id, function(x){
+    d <- data.frame(id = x$id[1:(nrow(x)-1)] , 
+                    t_start = x$time[1:(nrow(x)-1)], 
+                    t_end = x$time[2:nrow(x)], 
+                    state = x$state[1:(nrow(x)-1)], stringsAsFactors = FALSE)
+    
+    return(d)
+  })
+  
+  return(do.call(rbind, out))
+}
+
+
+computePosition <- function(data, id, sort = FALSE)
+{
+  if(sort)
+  {
+    # order according to first state duration
+    b <- orderFirstState(data)
+    
+    ord = match(id, b$id)
+    position <- ord # position of id on the y-axis
+  }else{
+    position <- unclass(factor(id)) # return integers associated with the different ids (labels from a factor)
+  }
+  
+  return(position)
+}
+
+
+
+# compute the duration of the first state per individual
+# and return an ordered data.frame per first state and duration
+# @author Quentin Grimonprez
+orderFirstState <- function(data)
+{
+  firstState <- do.call(rbind, by(data, data$id, function(x) {data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]), state = x$state[1], stringsAsFactors = FALSE)}))
+  firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {x[order(x$time), ]}))
+}
+
+
+
+#' @title Summary
+#'
+#' @description Get a summary of the data.frame containin categorical functional data
+#'
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param max.print maximal number of states to display
+#' 
+#' @return a list containing:
+#' \itemize{
+#'   \item \code{nRow} number of rows
+#'   \item \code{nInd} number of individuals
+#'   \item \code{timeRange} minimal and maximal time value
+#'   \item \code{uniqueStart} TRUE, if all individuals have the same time start value
+#'   \item \code{uniqueEnd} TRUE, if all individuals have the same time start value
+#'   \item \code{states} vector containing the different states
+#'   \item \code{visit} number of individuals visiting each state
+#' }
+#' 
+#' @examples 
+#' data(biofam2)
+#' summary_cfd(biofam2)
+#' 
+#' @author Quentin Grimonprez
+#' 
+#' @export
+summary_cfd <- function(data, max.print = 10)
+{
+  checkData(data)
+  
+  nIndiv <- length(unique(data$id))
+  states <- as.character(unique(data$state))
+  nState <- length(states)
+  
+  timeRange <- range(data$time)
+  
+  timeRangeInd <- do.call(rbind, tapply(data$time, data$id, range))
+  sameStart <- (length(unique(timeRangeInd[, 1])) == 1)
+  sameEnd <- (length(unique(timeRangeInd[, 2])) == 1)
+  
+  nRow <- nrow(data)
+  
+  nIndVisitingState <- tapply(data$id, data$state, function(x) length(unique(x)))
+  
+  cat("Number of rows:", nRow, "\n")
+  cat("Number of individuals:", nIndiv, "\n")
+  cat("Time Range:", timeRange[1], "-", timeRange[2], "\n")
+  cat("Same time start value for all ids:", sameStart, "\n")
+  cat("Same time end value for all ids:", sameEnd, "\n")
+  cat("Number of states:", nState, "\n")
+  cat("States:\n\t")
+  cat(paste(head(states, n = 10), collapse = ", "))
+  cat("\n")
+  cat("Number of individuals visiting each state:\n")
+  print(head(nIndVisitingState, n = 10))
+  
+  invisible(list(nRow = nRow, nInd = nIndiv, timeRange = timeRange, uniqueStart = sameStart, uniqueEnd = sameEnd,
+                 states = states, visit = nIndVisitingState))
+}
