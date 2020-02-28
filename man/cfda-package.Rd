@@ -13,6 +13,7 @@ a basis of functions created using the \code{fda} package (cf. \code{\link{creat
 \code{\link{get_encoding}}, \code{\link{plotEigenvalues}} and \code{\link{plotComponent}}.
 
 Moreover, \code{cfda} contains functions to visualize and compute some statistics about categorical functional data. 
+A summary of the dataset is available with \code{\link{summary_cfd}}.
 \code{\link{plotData}} shows a graphical representation of the dataset. 
 Basic statistics can be computed: the number of jumps (\code{\link{compute_number_jumps}}), the duration (\code{\link{compute_duration}}), 
 the time spent in each state (\code{\link{compute_time_spent}}), the probability to be in each state at any given time (\code{\link{estimate_pt}}),

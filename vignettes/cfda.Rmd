@@ -59,6 +59,9 @@ head(d_JK, 10)
 
 The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different individuals (usually integers). `time` contains the time values where a change occurs, note that for each individuals, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
 
+```{r suumary, echo=TRUE}
+summary_cfd(d_JK)
+```
 
 We can compute the duration of each trajectory.
 ```{r, echo=TRUE}
