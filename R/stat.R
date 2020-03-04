@@ -102,7 +102,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
     geom_boxplot(...) + labs(x = "State", y = "Time Spent", fill = "State")
   
   if(!is.null(col))
-    p = p + scale_fill_manual(values = col)
+    p = p + scale_fill_manual(values = col, drop = FALSE)
   else
     p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
@@ -376,7 +376,7 @@ plot_pt_classic <- function(pt, col = NULL)
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
   
   if(!is.null(col))
-    p = p + scale_colour_manual(values = col)
+    p = p + scale_colour_manual(values = col, drop = FALSE)
   else
     p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
@@ -410,7 +410,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
                         colour = ifelse(addBorder, "black", NA), alpha = 0.8)
   
   if(!is.null(col))
-    p = p + scale_fill_manual(values = col)
+    p = p + scale_fill_manual(values = col, drop = FALSE)
   else
     p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   

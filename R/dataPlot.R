@@ -72,8 +72,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
               color = ifelse(addBorder, "black", NA)) + 
     scale_x_continuous(name = "Time") + 
-    labs(fill = "State") +
-    scale_fill_hue(drop = FALSE) # do not remove unused labels
+    labs(fill = "State")
   
   if(!is.null(group))
     p = p + facet_wrap("group", scales = "free_y") 
@@ -87,7 +86,9 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   }
   
   if(!is.null(col))
-    p = p + scale_fill_manual(values = col)
+    p = p + scale_fill_manual(values = col, drop = FALSE)
+  else
+    p = p + scale_fill_hue(drop = FALSE) # do not remove unused labels
   
   return(p)
 }
