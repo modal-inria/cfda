@@ -52,7 +52,9 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
     labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
   
   if(!is.null(col))
-    p = p + scale_colour_manual(values = col)
+    p = p + scale_colour_manual(values = col, drop = FALSE)
+  else
+    p = p + scale_colour_hue(drop = FALSE) # keep the same color order as plotData
   
   return(p)
 }
