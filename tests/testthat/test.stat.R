@@ -358,7 +358,7 @@ test_that("plotData does not produce warnings", {
   lambda_QJK <- c(1, 1, 1, 1)
   d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
   d_JKT <- cut_data(d_JK, Tmax = 10)
-  group <- rep(1:2, c(sum(d_JK$id < 4), nrow(d_JK) - sum(d_JK$id < 4)))
+  group <- rep(1:2, c(3, 7))
   
   expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
@@ -376,8 +376,8 @@ test_that("plotData produces an error when group is bad", {
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
 
-  expect_error(plotData(d_JK, group = 2, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of rows of data.")
-  expect_error(plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of rows of data.")
+  expect_error(plotData(d_JK, group = 2, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of ids of data.")
+  expect_error(plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of ids of data.")
 })
 
 

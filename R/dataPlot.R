@@ -2,7 +2,8 @@
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param group vector of the same length as the number of row of \code{data} containing group index. Groups are displayed on separate plots. If \code{group = NA}, the corresponding row in \code{data} is ignored.
+#' @param group vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots. 
+#' If \code{group = NA}, the corresponding individuals in \code{data} is ignored.
 #' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
 #' @param addBorder If TRUE, add black border to each individuals
@@ -31,12 +32,12 @@
 #'   
 #'   
 #' # use the group variable: create a group with the 3 first variables and one with the others
-#' group <- rep(1:2, c(sum(d_JKT$id < 4), nrow(d_JKT) - sum(d_JKT$id < 4)))
+#' group <- rep(1:2, c(3, 7))
 #' plotData(d_JKT, group = group)
 #' 
 #' 
 #' # use the group variable: remove the id number 5 and 6
-#' group[d_JKT$id %in% c(5, 6)] = NA
+#' group[c(5, 6)] = NA
 #' plotData(d_JKT, group = group)
 #'   
 #' @author Cristian Preda, Quentin Grimonprez
@@ -49,13 +50,17 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   checkLogical(sort, "sort")
-  if(!is.null(group) && (!is.vector(group) || (length(group) != nrow(data))))
-    stop("group must be a vector with the same length than the number of rows of data.")
+  if(!is.null(group) && (!is.vector(group) || (length(group) != length(unique(data$id)))))
+    stop("group must be a vector with the same length than the number of ids of data.")
   ## end check
   
   if(!is.null(group))
   {
-    data$group = group
+    data$group = rep(NA, nrow(data))
+    for(i in unique(data$id))
+    {
+      data$group[data$id == i] = group[i]
+    }
     data = data[!is.na(data$group),]
   }
   
