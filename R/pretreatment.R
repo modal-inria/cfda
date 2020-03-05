@@ -123,8 +123,8 @@ remove_duplicated_states <- function(data)
 remove_duplicated_states.intern <- function(data)
 {
   data = data[order(data$time), ]
-  
-  outRle <- rle(data$state)
+
+  outRle <- rle(as.character(data$state))
   indToKeep <- 1 + c(0, cumsum(outRle$lengths[-length(outRle$lengths)]))
 
   return(data[indToKeep, ])
