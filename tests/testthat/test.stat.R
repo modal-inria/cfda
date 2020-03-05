@@ -57,7 +57,7 @@ test_that("boxplot.timeSpent does not produce warnings", {
 
   expect_warning(boxplot(out), regexp = NA)
   expect_warning(boxplot(out, col = c("red", "blue", "green"), outlier.colour = "black"), regexp = NA)
-  
+  expect_silent(boxplot(out, col = c("red", "blue", "green"), outlier.colour = "black"))
 })
 
 
@@ -205,6 +205,8 @@ test_that("plot_pt does not produce warnings", {
 
   expect_warning(plot(pt, ribbon = FALSE), regexp = NA)
   expect_warning(plot(pt, ribbon = FALSE, col = c("red", "blue", "green", "black")), regexp = NA)
+  expect_silent(plot(pt, ribbon = FALSE, col = c("red", "blue", "green", "black")))
+  expect_silent(plot(pt, ribbon = TRUE, col = c("red", "blue", "green", "black")))
   expect_warning(plot(pt, ribbon = TRUE, addBorder = TRUE), regexp = NA)
   expect_warning(plot(pt, ribbon = TRUE, addBorder = FALSE), regexp = NA)
   expect_warning(plot(pt, ribbon = TRUE, addBorder = FALSE, col = c("red", "blue", "green", "black")), regexp = NA)
@@ -360,6 +362,7 @@ test_that("plotData does not produce warnings", {
   
   expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
+  expect_silent(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")))
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
