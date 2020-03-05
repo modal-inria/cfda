@@ -103,6 +103,7 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 #' only the first is kept. Only time when the state changes are kept.
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param keep.last if TRUE, keep the last state for every individual even if it is a duplicated state.
 #' 
 #' @return \code{data} without duplicated consecutive states
 #'
@@ -114,18 +115,22 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 #' @author Quentin Grimonprez
 #'
 #' @export
-remove_duplicated_states <- function(data)
+remove_duplicated_states <- function(data, keep.last = TRUE)
 {
-  do.call(rbind, by(data, data$id, remove_duplicated_states.intern))
+  do.call(rbind, by(data, data$id, remove_duplicated_states.intern, keep.last))
 }
 
 # @author Quentin Grimonprez
-remove_duplicated_states.intern <- function(data)
+remove_duplicated_states.intern <- function(data, keep.last = TRUE)
 {
   data = data[order(data$time), ]
 
   outRle <- rle(as.character(data$state))
   indToKeep <- 1 + c(0, cumsum(outRle$lengths[-length(outRle$lengths)]))
 
+  if(keep.last && indToKeep[length(indToKeep)] != nrow(data))
+    indToKeep = c(indToKeep, nrow(data))
+    
+  
   return(data[indToKeep, ])
 }

@@ -4,10 +4,12 @@
 \alias{remove_duplicated_states}
 \title{Remove duplicated states}
 \usage{
-remove_duplicated_states(data)
+remove_duplicated_states(data, keep.last = TRUE)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+
+\item{keep.last}{if TRUE, keep the last state for every individual even if it is a duplicated state.}
 }
 \value{
 \code{data} without duplicated consecutive states
