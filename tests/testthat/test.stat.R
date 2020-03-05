@@ -352,6 +352,17 @@ test_that("computePosition works with group", {
   
 })
 
+test_that("createLabeller works", {
+  group <- rep(1:3, 6:4)
+  f <- createLabeller(group)
+  
+  expect_is(f, "function")
+  expect_equal(f(value = "1"), list("1" = "1: n=6"))
+  expect_equal(f(value = "2"), list("2" = "2: n=5"))
+  expect_equal(f(value = "3"), list("3" = "3: n=4"))
+})
+
+
 test_that("plotData does not produce warnings", {
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

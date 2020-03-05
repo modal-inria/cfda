@@ -80,7 +80,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
     d_graph$position <- computePosition(data, d_graph$id, sort)
   else
     d_graph$position <- computePositionPerGroup(data, d_graph$id, d_graph$group, sort)
-
+  
   p <- ggplot() + 
     geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
               color = ifelse(addBorder, "black", NA)) + 
@@ -88,8 +88,8 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
     labs(fill = "State")
   
   if(!is.null(group))
-    p = p + facet_wrap("group", scales = "free_y") 
-  
+    p = p + facet_wrap("group", scales = "free_y", labeller = labeller(.default = createLabeller(group)))
+
   
   if(addId)
   {
@@ -150,7 +150,7 @@ computePositionPerGroup <- function(data, id, group, sort = FALSE)
   pos <- list()
   for(i in unique(group))
     pos[[i]] = computePosition(data[data$group == i, ], id[group == i], sort = sort)
-      
+  
   for(i in 2:length(pos))
     pos[[i]] = pos[[i]] + max(pos[[i-1]])
   
@@ -167,6 +167,21 @@ orderFirstState <- function(data)
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {x[order(x$time), ]}))
 }
 
+
+# function to label group in facet_wrap
+# group name: n=effectif
+createLabeller <- function(group)
+{
+  part <- table(group)
+  labelGroup <- as.list(paste0(names(part), ": n=", part))
+  names(labelGroup) = names(part)
+  
+  group_labeller <- function(variable, value){
+    return(labelGroup[value])
+  }
+  
+  return(group_labeller)
+}
 
 
 #' @title Summary
