@@ -56,7 +56,8 @@ estimate_Markov <- function(data)
   # estimation of the transition matrix 
   Q_est <- diag(1/lambda_est)%*%(matA + diag(lambda_est))
   colnames(Q_est) = rownames(Q_est) = label$label[match(colnames(aux1), label$code)]
-
+  names(lambda_est) = colnames(Q_est)
+  
   out <- list(Q = Q_est, lambda = lambda_est)
   class(out) = "Markov"
   
