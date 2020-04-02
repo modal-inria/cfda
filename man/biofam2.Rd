@@ -4,12 +4,14 @@
 \name{biofam2}
 \alias{biofam2}
 \title{Family life states from the Swiss Household Panel biographical survey}
-\format{A data.frame containing three columns: 
+\format{
+A data.frame containing three columns: 
 \itemize{
   \item \emph{id} id of individuals (2000 different ids)
   \item \emph{time} age in years where a change occurs
   \item \emph{state} new state.
-}}
+}
+}
 \source{
 Swiss Household Panel https://forscenter.ch/projects/swiss-household-panel/
 }
