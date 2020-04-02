@@ -20,6 +20,15 @@ test_that("cut_cfd with lower Tmax", {
   expect_equal(out, expectedOut)
 })
 
+test_that("cut_cfd with lower Tmax and a time value equal to the desired Tmax", {
+  dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
+  
+  out <- cut_cfd(dat, Tmax = 2)
+  expectedOut <- dat[1:2, ]
+  
+  expect_equal(out, expectedOut)
+})
+
 test_that("cut_cfd with greater Tmax", {
   dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
   

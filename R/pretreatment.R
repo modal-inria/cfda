@@ -28,7 +28,10 @@ cut_data <- function(data, Tmax)
     stop("Tmax must be a real.")
   ## end check
   
-  do.call(rbind, by(data, data$id, function(x){cut_cfd(x, Tmax)}))
+  d <- do.call(rbind, by(data, data$id, function(x){cut_cfd(x, Tmax)}))
+  rownames(d) = NULL
+  
+  return(d)
 }
 
 # @author Cristian Preda
@@ -48,8 +51,15 @@ cut_cfd <- function(data, Tmax)
     }
     else
     {
-      k <- max(which(data$time <= Tmax))  
-      return(rbind(data[1:k,], data.frame(state = data$state[k], time = Tmax, id = data$id[1])))  
+      if(Tmax %in% data$time)
+      {
+        k <- which(data$time == Tmax)
+        return(data[1:k,])
+      }else{
+        k <- max(which(data$time <= Tmax))  
+        return(rbind(data[1:k,], data.frame(state = data$state[k], time = Tmax, id = data$id[1])))  
+      }
+
     }
     
   }
