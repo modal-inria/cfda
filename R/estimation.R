@@ -31,38 +31,42 @@ estimate_Markov <- function(data)
   checkData(data)
   ## end check
   
-  # msm requires state as integer
-  out <- stateToInteger(data$state)
-  data$state = out$state
-  label <- out$label
-  rm(out)
+  # il faut supprimer les sauts dans les mêmes états
+  data = remove_duplicated_states(data, keep.last = TRUE)
   
-  # l'estimation par crude.inits est basée sur du comptage notamment, il faut supprimer les sauts dans les mêmes états
-  data = remove_duplicated_states(data, keep.last = FALSE)
-  
-  aux <- statetable.msm(data$state, data$id) # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
-
-  # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
-  # add row for the missing state
-  aux1 <- completeStatetable(aux)
-
-  
-  matA <- crudeinits.msm(data$state ~ data$time, subject = data$id, 
-                         qmatrix = matrix(as.numeric(aux1 > 0), ncol = length(unique(data$state))))
+  Q_est <- prop.table(statetable(data, removeDiagonal = TRUE), margin = 1)
   
   # estimation of the time spent in each state
-  lambda_est <- -diag(matA) 
-  
-  # estimation of the transition matrix 
-  Q_est <- diag(1/lambda_est)%*%(matA + diag(lambda_est))
-  colnames(Q_est) = rownames(Q_est) = label$label[match(colnames(aux1), label$code)]
-  names(lambda_est) = colnames(Q_est)
+  T_est <- estimateT(data)
+  lambda_est <- 1/T_est
   
   out <- list(Q = Q_est, lambda = lambda_est)
   class(out) = "Markov"
   
   return(out)  
 }
+
+
+# estimate the mean time spent in each state 
+#
+# @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#
+estimateT <- function(data)
+{
+  tSpentInState <- by(data, data$id, 
+                      function(x)
+                      {
+                        t = diff(x$time)
+                        s = x$state[seq_along(t)]
+                        data.frame(duration = t, state = s)
+                      })
+  tSpentInState = do.call(rbind, tSpentInState)
+  
+  t <- tapply(tSpentInState$duration, tSpentInState$state, mean)
+  
+  t
+}
+
 
 
 # identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
@@ -136,7 +140,7 @@ plot.Markov <- function(x, ...)
   defaultParam <- list(A = t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
                        box.col = "yellow", arr.length = 0.2, shadow.size = 0,
                        name = paste0(colnames(x$Q), rep(" (", ncol(x$Q)), round(1/x$lambda, 2),
-                                    rep(")", ncol(x$Q))))
+                                     rep(")", ncol(x$Q))))
   
   param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
   

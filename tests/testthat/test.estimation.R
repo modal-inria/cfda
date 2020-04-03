@@ -65,6 +65,19 @@ test_that("completeStatetable completes several missing rows", {
 })
 
 
+test_that("estimateT estimates well", {
+  data <- data.frame(id = rep(c(1, 2), each = 5), 
+                     time = c(1, 3, 7, 9, 10, 1, 2, 5, 6 , 10), 
+                     state = c(1, 2, 1, 3, 1, 1, 3, 2, 1, 3)) 
+  
+  out <- estimateT(data)
+  
+  expectedOut <- c(2.25, 2.5, 2)
+  
+  expect_equivalent(out, expectedOut)
+})
+
+
 test_that("estimate_Markov estimates well", {
   K <- 4
   QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
