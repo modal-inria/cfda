@@ -77,6 +77,8 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
   if(!is.null(labels))
     d$state = labels[d$state]
   
+  row.names(d) = NULL
+  
   return(d)
 }
 
@@ -102,6 +104,8 @@ generate_2State <- function(n)
   temps <- rep(0, 2*n)
   temps[(1:n)*2] = runif(n)
   d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(1:2, n))
+  
+  row.names(d) = NULL
   
   return(d)
 }

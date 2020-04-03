@@ -127,7 +127,10 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 #' @export
 remove_duplicated_states <- function(data, keep.last = TRUE)
 {
-  do.call(rbind, by(data, data$id, remove_duplicated_states.intern, keep.last))
+  out <- do.call(rbind, by(data, data$id, remove_duplicated_states.intern, keep.last))
+  row.names(out) = NULL
+  
+  out
 }
 
 # @author Quentin Grimonprez
