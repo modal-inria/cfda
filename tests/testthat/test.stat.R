@@ -345,7 +345,9 @@ test_that("computePosition works with group", {
   
   expect_equivalent(out, d$id)
   
-  
+  # non consecutive group number
+  d$group[d$group == 2] = 3
+  dat$group[dat$group == 2] = 3
   out <- computePositionPerGroup(dat, d$id, d$group, sort = TRUE)
   
   expect_equivalent(out, c(1, 3, 2, 5, 4))

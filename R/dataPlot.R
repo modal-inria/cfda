@@ -148,9 +148,11 @@ computePosition <- function(data, id, sort = FALSE)
 computePositionPerGroup <- function(data, id, group, sort = FALSE)
 {
   pos <- list()
-  for(i in unique(group))
-    pos[[i]] = computePosition(data[data$group == i, ], id[group == i], sort = sort)
-  
+  groupName <- unique(group)
+  print(groupName)
+  for(i in seq_along(groupName))
+    pos[[i]] = computePosition(data[data$group == groupName[i], ], id[group == groupName[i]], sort = sort)
+
   for(i in 2:length(pos))
     pos[[i]] = pos[[i]] + max(pos[[i-1]])
   

@@ -68,7 +68,7 @@
 #' 
 #' 
 #' @export
-compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE,  ...)
+compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
 {
   t1 <- proc.time()
   ## check parameters
