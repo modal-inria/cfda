@@ -149,7 +149,6 @@ computePositionPerGroup <- function(data, id, group, sort = FALSE)
 {
   pos <- list()
   groupName <- unique(group)
-  print(groupName)
   for(i in seq_along(groupName))
     pos[[i]] = computePosition(data[data$group == groupName[i], ], id[group == groupName[i]], sort = sort)
 
