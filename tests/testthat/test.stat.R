@@ -336,7 +336,7 @@ test_that("computePosition works", {
 })
 
 
-test_that("computePosition works with group", {
+test_that("computePositionPerGroup works", {
   dat <- data.frame(id = rep(1:5, each = 2), time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)), 
                     state = c(1:2, 2:1, 2:1, 2:1, 1:2), group = rep(1:2, c(6, 4)))
   d <- rep_large_ind(dat)
@@ -353,6 +353,17 @@ test_that("computePosition works with group", {
   expect_equivalent(out, c(1, 3, 2, 5, 4))
   
 })
+
+test_that("computePositionPerGroup works when there is only 1 group", {
+  dat <- data.frame(id = rep(1:5, each = 2), time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)), 
+                    state = c(1:2, 2:1, 2:1, 2:1, 1:2), group = rep(1, 10))
+  d <- rep_large_ind(dat)
+  
+  out <- computePositionPerGroup(dat, d$id, d$group, sort = FALSE)
+  
+  expect_equivalent(out, d$id)
+})
+
 
 test_that("createLabeller works", {
   group <- rep(1:3, 6:4)
