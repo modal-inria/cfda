@@ -25,9 +25,9 @@ Plot Eigenvalues
 # Simulate the Jukes-Cantor model of nucleotide replacement  
 K <- 4
 Tmax <- 6
-QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-lambda_QJK <- c(1, 1, 1, 1)
-d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = Tmax)
+PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+lambda_PJK <- c(1, 1, 1, 1)
+d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
 d_JK2 <- cut_data(d_JK, Tmax)
 
 # create basis object

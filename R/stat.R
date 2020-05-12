@@ -9,9 +9,9 @@
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # cut at Tmax = 8
 #' d_JK2 <- cut_data(d_JK, Tmax = 8)
@@ -72,9 +72,9 @@ compute_time_spent_intern <- function(data, labels)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement  
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # cut at Tmax = 8
 #' d_JK2 <- cut_data(d_JK, Tmax = 8)
@@ -121,9 +121,9 @@ boxplot.timeSpent <- function(x, col = NULL, ...)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #'
 #' # compute duration of each individual
@@ -160,9 +160,9 @@ compute_duration <- function(data)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #'
 #' # compute duration of each individual
@@ -206,9 +206,9 @@ hist.duration <- function(x, breaks = NULL, ...)
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # get the state of each individuals at time t = 6
 #' get_state(d_JK, 6)
@@ -268,9 +268,9 @@ id_get_state <- function(x, t, NAafterTmax = FALSE)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' d_JK2 <- cut_data(d_JK, 10)
 #' 
@@ -333,9 +333,9 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' d_JK2 <- cut_data(d_JK, 10)
 #' 
@@ -433,9 +433,9 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # compute the number of jumps
 #' nJump <- compute_number_jumps(d_JK)
@@ -488,9 +488,9 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' nJump <- compute_number_jumps(d_JK)
 #' 
@@ -532,9 +532,9 @@ hist.njump <- function(x, breaks = NULL, ...)
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # table of transitions
 #' statetable(d_JK)

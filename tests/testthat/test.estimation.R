@@ -80,23 +80,23 @@ test_that("estimateT estimates well", {
 
 test_that("estimate_Markov estimates well", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK = generate_Markov(n = 500, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 30)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK = generate_Markov(n = 500, K = K, P = PJK, lambda = lambda_PJK, Tmax = 30)
   
   mark <- estimate_Markov(d_JK)
   
-  expect_lte(sqrt(mean((mark$lambda-lambda_QJK)^2)), 0.06)
-  expect_lte(sqrt(mean((mark$Q-QJK)^2)), 0.02)
+  expect_lte(sqrt(mean((mark$lambda-lambda_PJK)^2)), 0.06)
+  expect_lte(sqrt(mean((mark$P-PJK)^2)), 0.02)
 })
 
 
 test_that("plot_Markov does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K, dimnames = list(1:4, 1:4)) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
+  PJK <- matrix(1/3, nrow = K, ncol = K, dimnames = list(1:4, 1:4)) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
 
-  dat <- list(Q = QJK, lambda = lambda_QJK)
+  dat <- list(P = PJK, lambda = lambda_PJK)
   class(dat) = "Markov"
   
   expect_warning(plot(dat), regexp = NA)

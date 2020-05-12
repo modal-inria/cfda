@@ -22,9 +22,9 @@ Extract the state of each individual at a given time
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
-QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-lambda_QJK <- c(1, 1, 1, 1)
-d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+lambda_PJK <- c(1, 1, 1, 1)
+d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
 # get the state of each individuals at time t = 6
 get_state(d_JK, 6)

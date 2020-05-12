@@ -4,7 +4,7 @@
 #' 
 #' @param n number of trajectories to generate
 #' @param K number of states
-#' @param Q matrix containing the transition probabilities from one state to another. Each row contains positive reals summing to 1.
+#' @param P matrix containing the transition probabilities from one state to another. Each row contains positive reals summing to 1.
 #' @param lambda time spent in each state
 #' @param pi0 initial distribution of states
 #' @param Tmax maximal duration of trajectories
@@ -25,9 +25,9 @@
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, 
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10, 
 #'                             labels = c("A", "C", "G", "T"))
 #' 
 #' head(d_JK)
@@ -36,7 +36,7 @@
 #' @author Cristian Preda
 #' 
 #' @export
-generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), pi0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
+generate_Markov <- function(n = 5, K = 2, P = 1 - diag(K), lambda = rep(1, K), pi0 = c(1, rep(0, K-1)), Tmax = 1, labels = NULL)
 {
   ## check parameters
   if(any(is.na(n)) || (length(n) != 1) || !is.whole.number(n))
@@ -45,8 +45,8 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
     stop("K must be an integer > 1.")
   if(any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1) || (Tmax <= 0))
     stop("Tmax must be a positive real.")
-  if(any(is.na(Q)) || !is.matrix(Q) || (nrow(Q) != K) || (nrow(Q) != K) || any(Q < 0))
-    stop("Q must be a matrix of size K x K of positive real.")
+  if(any(is.na(P)) || !is.matrix(P) || (nrow(P) != K) || (nrow(P) != K) || any(P < 0))
+    stop("P must be a matrix of size K x K of positive real.")
   if(any(is.na(lambda)) || !is.vector(lambda) || (length(lambda) != K) || any(lambda < 0))
      stop("lambda must be a vector of length K of positive real.")
   if(any(is.na(pi0)) || !is.vector(pi0) || (length(pi0) != K) || any(pi0 < 0))
@@ -70,7 +70,7 @@ generate_Markov <- function(n = 5, K = 2, Q = 1 - diag(K), lambda = rep(1, K), p
       d = rbind(d, data.frame(id = i, time = t, state = e))
       sej = rexp(1, lambda[e]) 
       t = t + sej
-      e = sample(K, 1, prob = Q[e,])
+      e = sample(K, 1, prob = P[e,])
     }
   }
   

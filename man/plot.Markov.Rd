@@ -21,17 +21,17 @@ Some useful extra parameters:
   \item \code{main} main title.
   \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
   \item \code{relsize}	scaling factor for size of the graph (default = 1).
-  \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
-  \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
+  \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$P}.
+  \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$P}.
   \item \code{arr.pos} relative position of arrowhead on arrow segment/curve.
 }
 }
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
-QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-lambda_QJK <- c(1, 1, 1, 1)
-d_JK <- generate_Markov(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+lambda_PJK <- c(1, 1, 1, 1)
+d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
 # estimation  
 mark <- estimate_Markov(d_JK)

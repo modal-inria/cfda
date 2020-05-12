@@ -11,13 +11,13 @@
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # estimation  
 #' mark <- estimate_Markov(d_JK)
-#' mark$Q
+#' mark$P
 #' mark$lambda
 #'
 #' @seealso \link{plot.Markov}
@@ -34,13 +34,13 @@ estimate_Markov <- function(data)
   # il faut supprimer les sauts dans les mêmes états
   data = remove_duplicated_states(data, keep.last = TRUE)
   
-  Q_est <- prop.table(statetable(data, removeDiagonal = TRUE), margin = 1)
+  P_est <- prop.table(statetable(data, removeDiagonal = TRUE), margin = 1)
   
   # estimation of the time spent in each state
   T_est <- estimateT(data)
   lambda_est <- 1/T_est
   
-  out <- list(Q = Q_est, lambda = lambda_est)
+  out <- list(P = P_est, lambda = lambda_est)
   class(out) = "Markov"
   
   return(out)  
@@ -113,17 +113,17 @@ completeStatetable <- function(aux)
 #'   \item \code{main} main title.
 #'   \item \code{dtext} controls the position of arrow text relative to arrowhead (default = 0.3).
 #'   \item \code{relsize}	scaling factor for size of the graph (default = 1).
-#'   \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$Q}.
-#'   \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$Q}.
+#'   \item \code{box.size} size of label box, one value or a vector with dimension = number of rows of \code{x$P}.
+#'   \item \code{box.cex}	relative size of text in boxes, one value or a vector with dimension=number of rows of \code{x$P}.
 #'   \item \code{arr.pos} relative position of arrowhead on arrow segment/curve.
 #' }
 #' 
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
 #' K <- 4
-#' QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-#' lambda_QJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 100, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' lambda_PJK <- c(1, 1, 1, 1)
+#' d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
 #' # estimation  
 #' mark <- estimate_Markov(d_JK)
@@ -137,10 +137,10 @@ completeStatetable <- function(aux)
 plot.Markov <- function(x, ...)
 { 
   extraParam <- list(...)
-  defaultParam <- list(A = t(round(x$Q, 2)), main = "The transition graph", box.prop = 0.3, 
+  defaultParam <- list(A = t(round(x$P, 2)), main = "The transition graph", box.prop = 0.3, 
                        box.col = "yellow", arr.length = 0.2, shadow.size = 0,
-                       name = paste0(colnames(x$Q), rep(" (", ncol(x$Q)), round(1/x$lambda, 2),
-                                     rep(")", ncol(x$Q))))
+                       name = paste0(colnames(x$P), rep(" (", ncol(x$P)), round(1/x$lambda, 2),
+                                     rep(")", ncol(x$P))))
   
   param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
   

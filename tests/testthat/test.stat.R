@@ -74,9 +74,9 @@ test_that("compute_duration works", {
 
 test_that("hist.duration does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   
   duration <- compute_duration(d_JK)
   
@@ -168,9 +168,9 @@ test_that("estimate_pt works with different t", {
 
 test_that("plot_pt_classic does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   
   d_JK2 <- cut_data(d_JK, 10)
   
@@ -182,9 +182,9 @@ test_that("plot_pt_classic does not produce warnings", {
 
 test_that("plot_pt_ribbon does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   
   d_JK2 <- cut_data(d_JK, 10)
   
@@ -195,9 +195,9 @@ test_that("plot_pt_ribbon does not produce warnings", {
 
 test_that("plot_pt does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
   d_JK2 <- cut_data(d_JK, 10)
 
@@ -264,9 +264,9 @@ test_that("compute_number_jumpsIntern works with countDuplicated = FALSE", {
 
 test_that("hist.njump does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   
   njump <- compute_number_jumps(d_JK)
   
@@ -378,9 +378,9 @@ test_that("createLabeller works", {
 
 test_that("plotData does not produce warnings", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   d_JKT <- cut_data(d_JK, Tmax = 10)
   group <- rep(1:2, c(3, 7))
   
@@ -394,9 +394,9 @@ test_that("plotData does not produce warnings", {
 
 test_that("plotData produces an error when group is bad", {
   K <- 4
-  QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_QJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10)
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
 
