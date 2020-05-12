@@ -9,7 +9,7 @@ The main contribution is the computation of an optimal encoding (real functional
 
 ## Installation
 
-```
+``` r
 library(devtools)
 install_github("modal-inria/cfda", build_vignettes = TRUE)
 ```
@@ -18,13 +18,13 @@ install_github("modal-inria/cfda", build_vignettes = TRUE)
 
 Once the package is installed, a vignette describing the mathematical background and showing an example is available using the R command:
 
-```
+``` r
 RShowDoc("cfda", package = "cfda")
 ```
 
 ## Examples
 
-``` 
+``` r
 library(cfda)
 
 ## generate dataset
@@ -45,7 +45,7 @@ plotData(d_JK2)
 ```
 ![data](misc/data.png)
 
-```
+``` r
 ## compute optimal encoding
 # create basis object
 m <- 8
