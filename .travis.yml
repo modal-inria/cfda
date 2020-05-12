@@ -1,7 +1,7 @@
 language: r
-sudo: true
 cache: packages
 cran: http://cran.rstudio.com
+dist: bionic
 
 os:
   - linux
@@ -12,12 +12,11 @@ r:
   - release
   - devel
 
-matrix:
+jobs:
   exclude:
   - r: devel
     os: osx
    
-
 r_packages:
   - devtools
   - covr
