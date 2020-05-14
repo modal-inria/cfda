@@ -6,8 +6,9 @@
 #' If \code{group = NA}, the corresponding individuals in \code{data} is ignored.
 #' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
-#' @param addBorder If TRUE, add black border to each individuals
+#' @param addBorder If TRUE, add black border to each individual
 #' @param sort If TRUE, id are sorted according to the duration in their first state
+#' @param nCol number of columns when \code{group} is given
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' On the plot, each row represents an individual over [0:Tmax]. 
@@ -20,7 +21,7 @@
 #' lambda_PJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
-#' # add a line with time Tmax at the end of each individuals
+#' # add a line with time Tmax at the end of each individual
 #' d_JKT <- cut_data(d_JK, Tmax = 10)
 #' 
 #' plotData(d_JKT)
@@ -43,7 +44,7 @@
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
 #' @export
-plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE)
+plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL)
 {
   ## check parameters
   checkData(data)
@@ -52,6 +53,8 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   checkLogical(sort, "sort")
   if(!is.null(group) && (!is.vector(group) || (length(group) != length(unique(data$id)))))
     stop("group must be a vector with the same length than the number of ids of data.")
+  if(!is.null(nCol) && (!is.whole.number(nCol) || (nCol < 1)))
+    stop("nCol must be an integer > 0.")
   ## end check
   
   if(!is.null(group))
@@ -88,7 +91,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
     labs(fill = "State")
   
   if(!is.null(group))
-    p = p + facet_wrap("group", scales = "free_y", labeller = labeller(.default = createLabeller(group)))
+    p = p + facet_wrap("group", scales = "free_y", labeller = labeller(.default = createLabeller(group)), ncol = nCol)
 
   
   if(addId)

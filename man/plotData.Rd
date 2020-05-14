@@ -10,7 +10,8 @@ plotData(
   col = NULL,
   addId = TRUE,
   addBorder = TRUE,
-  sort = FALSE
+  sort = FALSE,
+  nCol = NULL
 )
 }
 \arguments{
@@ -23,9 +24,11 @@ If \code{group = NA}, the corresponding individuals in \code{data} is ignored.}
 
 \item{addId}{If TRUE, add id labels}
 
-\item{addBorder}{If TRUE, add black border to each individuals}
+\item{addBorder}{If TRUE, add black border to each individual}
 
 \item{sort}{If TRUE, id are sorted according to the duration in their first state}
+
+\item{nCol}{number of columns when \code{group} is given}
 }
 \value{
 a \code{ggplot} object that can be modified using \code{ggplot2} package.
@@ -42,7 +45,7 @@ PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
-# add a line with time Tmax at the end of each individuals
+# add a line with time Tmax at the end of each individual
 d_JKT <- cut_data(d_JK, Tmax = 10)
 
 plotData(d_JKT)

@@ -390,6 +390,7 @@ test_that("plotData does not produce warnings", {
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
+  expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE, nCol = 2), regexp = NA)
 })
 
 test_that("plotData produces an error when group is bad", {
