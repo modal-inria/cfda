@@ -10,7 +10,7 @@ compute_time_spent(data)
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 }
 \value{
-a matrix with \code{K} columns containing the total time spent in each state for each individuals
+a matrix with \code{K} columns containing the total time spent in each state for each individual
 }
 \description{
 For each individual, compute the time spent in each state

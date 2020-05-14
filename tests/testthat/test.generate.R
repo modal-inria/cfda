@@ -152,6 +152,6 @@ test_that("generate_2State output has the right format", {
   # check state values are ordered per trajectory
   expect_true(all(tapply(d$state, d$id, function(x) {all(order(x) == seq_along(x))})))
   
-  # each individuals must have records
+  # each individual must have records
   expect_equivalent(as.numeric(table(d$id)), rep(2, n))
 })

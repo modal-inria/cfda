@@ -4,7 +4,7 @@
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #'
-#' @return a matrix with \code{K} columns containing the total time spent in each state for each individuals
+#' @return a matrix with \code{K} columns containing the total time spent in each state for each individual
 #'
 #' @examples 
 #' # Simulate the Jukes-Cantor model of nucleotide replacement 
@@ -210,11 +210,11 @@ hist.duration <- function(x, breaks = NULL, ...)
 #' lambda_PJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #' 
-#' # get the state of each individuals at time t = 6
+#' # get the state of each individual at time t = 6
 #' get_state(d_JK, 6)
 #' 
 #' 
-#' # get the state of each individuals at time t = 12 (> Tmax)
+#' # get the state of each individual at time t = 12 (> Tmax)
 #' get_state(d_JK, 12)
 #' # if NAafterTmax = TRUE, it will return NA for t > Tmax
 #' get_state(d_JK, 12, NAafterTmax = TRUE)

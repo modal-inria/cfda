@@ -26,11 +26,11 @@ PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
-# get the state of each individuals at time t = 6
+# get the state of each individual at time t = 6
 get_state(d_JK, 6)
 
 
-# get the state of each individuals at time t = 12 (> Tmax)
+# get the state of each individual at time t = 12 (> Tmax)
 get_state(d_JK, 12)
 # if NAafterTmax = TRUE, it will return NA for t > Tmax
 get_state(d_JK, 12, NAafterTmax = TRUE)
