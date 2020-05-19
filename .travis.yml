@@ -27,6 +27,10 @@ script:
   - R CMD check *.tar.gz --as-cran
   
 after_success:
-  - Rscript -e 'devtools::install();devtools::test()'
-  - Rscript -e 'covr::codecov()'
-
+  - >-
+    if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$TRAVIS_R_VERSION_STRING" = "release" ]; then
+      echo Code coverage...
+      Rscript -e 'covr::codecov()'
+    else
+      echo Skip code coverage
+    fi 
