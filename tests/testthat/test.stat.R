@@ -405,6 +405,18 @@ test_that("plotData produces an error when group is bad", {
   expect_error(plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of ids of data.")
 })
 
+test_that("plotData produces an error when nCol is bad", {
+  K <- 4
+  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+  lambda_PJK <- c(1, 1, 1, 1)
+  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
+  d_JKT <- cut_data(d_JK, Tmax = 10)
+  
+  
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = -1), regexp = "nCol must be an integer > 0.")
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = "aaa"), regexp = "nCol must be an integer > 0.")
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = 1:3), regexp = "nCol must be an integer > 0.")
+})
 
 test_that("summary_cfd words", {
   dat <- data.frame(id = rep(1:5, c(2, 1, 2, 2, 1)), time = c(0:1, 0, 0, 2, 0, 3, 0), state = c(1:2, 1, 1:2, 2:1, 2))

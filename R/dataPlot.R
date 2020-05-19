@@ -53,7 +53,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   checkLogical(sort, "sort")
   if(!is.null(group) && (!is.vector(group) || (length(group) != length(unique(data$id)))))
     stop("group must be a vector with the same length than the number of ids of data.")
-  if(!is.null(nCol) && (!is.whole.number(nCol) || (nCol < 1)))
+  if(!is.null(nCol) && (!is.numeric(nCol) || (length(nCol)  != 1) || !is.whole.number(nCol) || (nCol < 1)))
     stop("nCol must be an integer > 0.")
   ## end check
   
