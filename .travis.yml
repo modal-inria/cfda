@@ -2,6 +2,7 @@ language: r
 cache: packages
 cran: http://cran.rstudio.com
 dist: bionic
+warnings_are_errors: true
 
 os:
   - linux
@@ -22,10 +23,7 @@ r_packages:
   - covr
   - testthat
 
-script:
-  - R CMD build .
-  - R CMD check *.tar.gz --as-cran
-  
+
 after_success:
   - >-
     if [ "$TRAVIS_OS_NAME" = "linux" ] && [ "$TRAVIS_R_VERSION_STRING" = "release" ]; then
