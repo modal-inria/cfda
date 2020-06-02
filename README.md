@@ -31,14 +31,16 @@ library(cfda)
 set.seed(42)
 # Simulate the Jukes-Cantor model of nucleotide replacement 
 K <- 4
-QJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-lambda_QJK <- c(1, 1, 1, 1)
-d_JK <- generate_Markov(n = 30, K = K, Q = QJK, lambda = lambda_QJK, Tmax = 10, labels = c("A", "C", "G", "T"))
+# matrix with probability transtion
+PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+# 1/lambda_PJK = mean sojourn time
+lambda_PJK <- c(1, 1, 1, 1)
+
+d_JK <- generate_Markov(n = 30, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10, labels = c("A", "C", "G", "T"))
 
 # work on [0:8]
 Tmax <- 8
 d_JK2 <- cut_data(d_JK, Tmax = Tmax)
-
 
 ## visualization of the dataset
 plotData(d_JK2)
