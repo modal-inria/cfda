@@ -42,7 +42,7 @@ head(care)
 # Individuals has not the same length. In order to compute the encoding, 
 # we keep individuals with at least 18 months of history and work
 # with the 18 first months.
-duration <- compute_duration(dat)
+duration <- compute_duration(care)
 idToKeep <- as.numeric(names(duration[duration >= 18]))
 care2 <- cut_data(care[care$id \%in\% idToKeep, ], 18)
 
