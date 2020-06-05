@@ -5,4 +5,4 @@ README.md
 .gitignore
 ^appveyor\.yml$
 ^codecov\.yml$
-misc
+^\.github$
