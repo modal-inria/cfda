@@ -60,9 +60,10 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   if(!is.null(group))
   {
     data$group = rep(NA, nrow(data))
-    for(i in unique(data$id))
+    idNames <- unique(data$id) 
+    for(i in seq_along(idNames))
     {
-      data$group[data$id == i] = group[i]
+      data$group[data$id == idNames[i]] = group[i]
     }
     data = data[!is.na(data$group),]
   }
