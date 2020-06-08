@@ -45,7 +45,7 @@ head(care)
 duration <- compute_duration(care)
 idToKeep <- as.numeric(names(duration[duration >= 18]))
 care2 <- cut_data(care[care$id \%in\% idToKeep, ], 18)
-
+head(care2)
 
 }
 \keyword{data}

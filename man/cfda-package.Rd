@@ -54,7 +54,7 @@ plotComponent(encoding, comp = c(1, 2))
 plot(encoding)
 
 # extract the encoding using the first harmonic
-get_encoding(encoding)
+encod <- get_encoding(encoding)
 
 
 }

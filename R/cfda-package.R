@@ -69,7 +69,7 @@
 #' plot(encoding)
 #' 
 #' # extract the encoding using the first harmonic
-#' get_encoding(encoding)
+#' encod <- get_encoding(encoding)
 #' 
 #' 
 #' @seealso \link{compute_optimal_encoding}

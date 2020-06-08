@@ -22,10 +22,6 @@ Once the package is installed, a vignette describing the mathematical background
 RShowDoc("cfda", package = "cfda")
 ```
 
-## Examples
-
-See https://modal-inria.github.io/cfda/
-
 ## Credits
 
 **cfda** is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
