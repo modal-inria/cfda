@@ -162,7 +162,15 @@ Trajectories have different lengths.</p>
 <span class='co'># with the 18 first months.</span>
 <span class='no'>duration</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='compute_duration.html'>compute_duration</a></span>(<span class='no'>care</span>)
 <span class='no'>idToKeep</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>duration</span>[<span class='no'>duration</span> <span class='kw'>&gt;=</span> <span class='fl'>18</span>]))
-<span class='no'>care2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='no'>care</span>[<span class='no'>care</span>$<span class='no'>id</span> <span class='kw'>%in%</span> <span class='no'>idToKeep</span>, ], <span class='fl'>18</span>)</div></pre>
+<span class='no'>care2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='no'>care</span>[<span class='no'>care</span>$<span class='no'>id</span> <span class='kw'>%in%</span> <span class='no'>idToKeep</span>, ], <span class='fl'>18</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>care2</span>)</div><div class='output co'>#&gt;   id time state
+#&gt; 1 15    0     D
+#&gt; 2 15    4     T
+#&gt; 3 15    7     C
+#&gt; 4 15    8     D
+#&gt; 5 15   15     C
+#&gt; 6 15   18     C</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
