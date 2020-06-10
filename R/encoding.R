@@ -115,73 +115,16 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
   V <- computeVmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  
   Fval <- computeFmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  
-  t4 <- proc.time()
-  if(verbose)
-    cat(paste0("---- Compute encoding: "))
-  
-  G <- cov(V)
-  
-  
-  # create F matrix
-  Fval = colMeans(Fval)
-  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
-  for(i in 1:K)
-  {
-    Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
-      matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
-  }
-  
-
-
-  #res = eigen(solve(F)%*%G)
-  F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
-
-  if(any(dim(F05) != rep(K*nBasis, 2)))
-  {
-    cat("\n")
-    if(any(colSums(Fmat) == 0))
-      stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+  outEnc <- computeEncoding(Fval, V, K, nBasis, uniqueId, label, verbose)
     
-    stop("F matrix is not invertible. You can try to change the basis.")
-  }
-  
-  invF05 <- solve(F05)
-  #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
-  res <- eigen(t(invF05) %*% G %*% invF05)
-
-  # les vecteurs propres (qui donnent les coeffs des m=nBasis codages, pour chaque val propre)
-  # je les mets sous la forme d'une liste de matrices de taille m x K. La premiere matrice
-  # correspond au premier vecteur propre. ce vecteur (1ere colonne dans res$vectors) contient
-  # les coefs du codage pour l'état 1 sur les premières m (=nBasis) positions, ensuite pour l'état 2 sur
-  # m positions et enfin pour le k-eme état. Je mets cette première colonne sous forme de
-  # matrice et les coefs sont sous forme de colonnes de taille m
-
-  # met la matrice de vecteurs propres comme une liste
-
-  # aux1 = split(res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
-  aux1 = split(invF05 %*% res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
-
-  # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
-  # 2eme col les coefs pour état 2, etc
-
-  aux2 <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
-
-  pc <- V %*% (invF05 %*% res$vectors)
-  rownames(pc) = uniqueId
-  
-  if(verbose)
-    cat("DONE\n")
-  
-  out <- list(eigenvalues = res$values, alpha = aux2, pc = pc, F = Fmat, G = G, V = V, basisobj = basisobj)
+  out <- c(outEnc, list(V = V, basisobj = basisobj))
   class(out) = "fmca"
-  t6 <- proc.time()
+  t2 <- proc.time()
 
   if(verbose)
-    cat(paste0("Run Time: ", round((t6-t1)[3], 2), "s\n"))
+    cat(paste0("Run Time: ", round((t2-t1)[3], 2), "s\n"))
     
   return(out)
 }
@@ -403,5 +346,70 @@ compute_Fxij <- function(x, phi, K, ...)
   }
   
   return(aux)     
+}
+
+
+
+
+computeEncoding <- function(Fval, V, K, nBasis, uniqueId, label, verbose)
+{
+  t4 <- proc.time()
+  if(verbose)
+    cat(paste0("---- Compute encoding: "))
+  
+  G <- cov(V)
+  
+  # create F matrix
+  Fval = colMeans(Fval)
+  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
+  for(i in 1:K)
+  {
+    Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
+      matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
+  }
+  
+  
+  #res = eigen(solve(F)%*%G)
+  F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
+  
+  if(any(dim(F05) != rep(K*nBasis, 2)))
+  {
+    cat("\n")
+    if(any(colSums(Fmat) == 0))
+      stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+    
+    stop("F matrix is not invertible. You can try to change the basis.")
+  }
+  
+  invF05 <- solve(F05)
+  #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
+  res <- eigen(t(invF05) %*% G %*% invF05)
+  
+  # les vecteurs propres (qui donnent les coeffs des m=nBasis codages, pour chaque val propre)
+  # je les mets sous la forme d'une liste de matrices de taille m x K. La premiere matrice
+  # correspond au premier vecteur propre. ce vecteur (1ere colonne dans res$vectors) contient
+  # les coefs du codage pour l'état 1 sur les premières m (=nBasis) positions, ensuite pour l'état 2 sur
+  # m positions et enfin pour le k-eme état. Je mets cette première colonne sous forme de
+  # matrice et les coefs sont sous forme de colonnes de taille m
+  
+  # met la matrice de vecteurs propres comme une liste
+  
+  # aux1 = split(res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
+  aux1 = split(invF05 %*% res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
+  
+  # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
+  # 2eme col les coefs pour état 2, etc
+  
+  alpha <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
+  
+  pc <- V %*% (invF05 %*% res$vectors)
+  rownames(pc) = uniqueId
+  
+  t5 <- proc.time()
+  
+  if(verbose)
+    cat(paste0("\nDONE in ", round((t5-t4)[3], 2), "s\n"))
+
+  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = Fmat, G = G))
 }
 
