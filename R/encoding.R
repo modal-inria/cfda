@@ -101,7 +101,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   
   Tmax <- max(data$time)
   K <- length(label$label)
-  nBasis <- basisobj$nbasis  # nombre de fonctions de base
+  nBasis <- basisobj$nbasis
   
   if(verbose)
   {
@@ -113,64 +113,29 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   }
   
 
-  I <- diag(rep(1, nBasis))
-  phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
-  
-  
-  
   V <- computeVmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
+  
+  
+  Fval <- computeFmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
+  
+  
+  t4 <- proc.time()
+  if(verbose)
+    cat(paste0("---- Compute encoding: "))
   
   G <- cov(V)
   
   
-  
-  
-  # declare parallelization
-  if(nCores > 1)
-  {
-    cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
-  }else{
-    registerDoSEQ()
-  }
-
-  t3 <- proc.time()
-  if(verbose)
-  {
-    cat(paste0("---- Compute F matrix:\n"))
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
-  }
-  
-  Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Fxij(data[id2 == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  } 
-    
-  if(verbose)
-    close(pb)
-  
-  # stop parallelization
-  if(nCores > 1)
-    stopCluster(cl)
-  
   # create F matrix
   Fval = colMeans(Fval)
-  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K blocs de taille nBasis*nBasis sur la diagonale
+  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
   for(i in 1:K)
   {
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
   
-  t4 <- proc.time()
-  if(verbose)
-    cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n---- Compute encoding: "))
+
 
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
@@ -223,78 +188,13 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
 
 
-# compute Uxij
-#
-# compute int_0^T phi_i(t) phi_j(t) 1_{X_{t}=x}  
-#
-# @param x one individual (id, time, state) 
-# @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
-# @param K number of state
-# @param ... parameters for integrate function
-#
-# @return vector of size K*nBasis*nBasis: U[(x=1,i=1),(x=1,j=1)], 
-# U[(x=1,i=1), (x=1,j=2)],..., U[(x=1,i=1), (x=1,j=nBasis)], U[(x=2,i=1), (x=2,j=1)], U[(x=2,i=1), (x=2,j=2)], ...
-# 
-# @examples
-# K <- 4
-# Tmax <- 6
-# PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-# lambda_PJK <- c(1, 1, 1, 1)
-# d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-# d_JK2 <- cut_data(d_JK, Tmax)
-#
-# m <- 6
-# b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-# I <- diag(rep(1, m))
-# phi <- fd(I, b)
-# compute_Fxij(d_JK2[d_JK2$id == 1, ], phi, K)
-#
-# @author Cristian Preda, Quentin Grimonprez
-compute_Fxij <- function(x, phi, K, ...)
-{
-  nBasis <- phi$basis$nbasis
-  aux <- rep(0, K * nBasis * nBasis)
-  
-  for(u in 1:(nrow(x)-1))
-  {
-    state <- x$state[u]
-    for(i in 1:nBasis) 
-    {
-      for(j in i:nBasis) # symmetry between i and j  
-      {
-        
-        integral <- integrate(function(t) { 
-          eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-        }, lower = x$time[u], upper = x$time[u+1], 
-        stop.on.error = FALSE, ...)$value
-        
-        aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
-        
-        
-        # when i == j, we are on the diagonal of the matrix, no symmetry to apply
-        if(i != j)
-        {
-          aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
-        }
-        
-      }
-      
-    }
-    
-  }
-
-  return(aux)     
-}
-
-
 
 computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
 {
   nId <- length(uniqueId)
   nBasis <- basisobj$nbasis
   
-  I <- diag(rep(1, nBasis))
-  phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
+  phi <- fd(diag(nBasis), basisobj) #les fonctions de base comme données fonctionnelles
   
   # declare parallelization
   if(nCores > 1)
@@ -389,4 +289,119 @@ compute_Vxi <- function(x, phi, K, ...)
   return(aux)
 }
 
+
+computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
+{
+  nId <- length(uniqueId)
+  nBasis <- basisobj$nbasis
+  
+  phi <- fd(diag(nBasis), basisobj) #les fonctions de base comme données fonctionnelles
+  
+  # declare parallelization
+  if(nCores > 1)
+  {
+    cl <- makeCluster(nCores)
+    registerDoSNOW(cl)
+  }else{
+    registerDoSEQ()
+  }
+  
+  t3 <- proc.time()
+  if(verbose)
+  {
+    cat(paste0("---- Compute F matrix:\n"))
+    pb <- txtProgressBar(0, nId, style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  }else{
+    opts <- list()
+  }
+  
+  Fval <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Fxij(data[id == i, ], phi, K, ...)
+    if((nCores == 1) && verbose)
+      setTxtProgressBar(pb, i)
+    return(res)
+  } 
+  
+  if(verbose)
+    close(pb)
+  
+  # stop parallelization
+  if(nCores > 1)
+    stopCluster(cl)
+  
+  
+  t4 <- proc.time()
+  if(verbose)
+    cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n"))
+  
+  
+  return(Fval)
+}
+
+
+
+# compute Fxij
+#
+# compute int_0^T phi_i(t) phi_j(t) 1_{X_{t}=x}  
+#
+# @param x one individual (id, time, state) 
+# @param phi basis functions (e.g. output of \code{\link{fd}} on a \code{\link{create.bspline.basis}} output)
+# @param K number of state
+# @param ... parameters for integrate function
+#
+# @return vector of size K*nBasis*nBasis: F[(x=1,i=1),(x=1,j=1)], 
+# F[(x=1,i=1), (x=1,j=2)],..., F[(x=1,i=1), (x=1,j=nBasis)], F[(x=2,i=1), (x=2,j=1)], F[(x=2,i=1), (x=2,j=2)], ...
+# 
+# @examples
+# K <- 4
+# Tmax <- 6
+# PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+# lambda_PJK <- c(1, 1, 1, 1)
+# d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
+# d_JK2 <- cut_data(d_JK, Tmax)
+#
+# m <- 6
+# b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+# I <- diag(rep(1, m))
+# phi <- fd(I, b)
+# compute_Fxij(d_JK2[d_JK2$id == 1, ], phi, K)
+#
+# @author Cristian Preda, Quentin Grimonprez
+compute_Fxij <- function(x, phi, K, ...)
+{
+  nBasis <- phi$basis$nbasis
+  aux <- rep(0, K * nBasis * nBasis)
+  
+  for(u in 1:(nrow(x)-1))
+  {
+    state <- x$state[u]
+    for(i in 1:nBasis) 
+    {
+      for(j in i:nBasis) # symmetry between i and j  
+      {
+        
+        integral <- integrate(function(t) { 
+          eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+        }, lower = x$time[u], upper = x$time[u+1], 
+        stop.on.error = FALSE, ...)$value
+        
+        aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
+        
+        
+        # when i == j, we are on the diagonal of the matrix, no symmetry to apply
+        if(i != j)
+        {
+          aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
+        }
+        
+      }
+      
+    }
+    
+  }
+  
+  return(aux)     
+}
 
