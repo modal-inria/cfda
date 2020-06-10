@@ -116,6 +116,15 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   I <- diag(rep(1, nBasis))
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
+  
+  
+  V <- computeVmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
+  
+  G <- cov(V)
+  
+  
+  
+  
   # declare parallelization
   if(nCores > 1)
   {
@@ -125,41 +134,16 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
     registerDoSEQ()
   }
 
-  
-  if(verbose)
-  {
-    cat("---- Compute V matrix:\n")
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
-  }
-  t2 <- proc.time()
-  
-  
-  # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Vxi(data[id2 == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  }
-  rownames(V) = NULL
-  G = cov(V)
   t3 <- proc.time()
-  
   if(verbose)
   {
-    close(pb)
-    cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
+    cat(paste0("---- Compute F matrix:\n"))
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
   }else{
     opts <- list()
   }
-
   
   Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
     res <- compute_Fxij(data[id2 == i, ], phi, K, ...)
@@ -303,6 +287,60 @@ compute_Fxij <- function(x, phi, K, ...)
 }
 
 
+
+computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
+{
+  nId <- length(uniqueId)
+  nBasis <- basisobj$nbasis
+  
+  I <- diag(rep(1, nBasis))
+  phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
+  
+  # declare parallelization
+  if(nCores > 1)
+  {
+    cl <- makeCluster(nCores)
+    registerDoSNOW(cl)
+  }else{
+    registerDoSEQ()
+  }
+  
+  if(verbose)
+  {
+    cat("---- Compute V matrix:\n")
+    pb <- txtProgressBar(0, nId, style = 3)
+    progress <- function(n) setTxtProgressBar(pb, n)
+    opts <- list(progress = progress)
+  }else{
+    opts <- list()
+  }
+  t2 <- proc.time()
+  
+  
+  # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
+  V <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Vxi(data[id == i, ], phi, K, ...)
+    if((nCores == 1) && verbose)
+      setTxtProgressBar(pb, i)
+    return(res)
+  }
+  rownames(V) = NULL
+  t3 <- proc.time()
+  
+  if(verbose)
+  {
+    close(pb)
+    cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n"))
+  }
+  
+  # stop parallelization
+  if(nCores > 1)
+    stopCluster(cl)
+  
+  return(V)
+}
+
+
 # compute_Vxi  (plutot Vxj = \int_0^Tphi_j(t)X_t=x dt
 #
 # @param x one individual (id, time, state) 
@@ -350,3 +388,5 @@ compute_Vxi <- function(x, phi, K, ...)
 
   return(aux)
 }
+
+
