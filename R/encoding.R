@@ -134,6 +134,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
 computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
 {
+  i <- 1 # unused: definition to avoid a note during R CMD check
   nId <- length(uniqueId)
   nBasis <- basisobj$nbasis
   
@@ -235,6 +236,7 @@ compute_Vxi <- function(x, phi, K, ...)
 
 computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
 {
+  i <- 1 # unused: definition to avoid a note during R CMD check
   nId <- length(uniqueId)
   nBasis <- basisobj$nbasis
   
