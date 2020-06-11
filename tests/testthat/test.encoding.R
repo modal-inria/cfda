@@ -3,7 +3,7 @@
 context("Encoding functions")
 
 
-test_that("compute_Fxij works with a simple basis of 1 function", {
+test_that("compute_Uxij works with a simple basis of 1 function", {
   set.seed(42)
   
   K <- 4
@@ -19,7 +19,7 @@ test_that("compute_Fxij works with a simple basis of 1 function", {
   phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
   
   x <- d_JK2[d_JK2$id == 1, ]
-  out <- compute_Fxij(x, phi, K)
+  out <- compute_Uxij(x, phi, K)
   expectedOut <- rep(0, K)
   for(i in 1:K)
   {
@@ -32,7 +32,7 @@ test_that("compute_Fxij works with a simple basis of 1 function", {
 })
 
 
-test_that("compute_Fxij works with a simple basis of 2 functions", {
+test_that("compute_Uxij works with a simple basis of 2 functions", {
   set.seed(42)
   
   K <- 4
@@ -48,7 +48,7 @@ test_that("compute_Fxij works with a simple basis of 2 functions", {
   phi <- fd(I, b) 
   
   x <- d_JK2[d_JK2$id == 1, ]
-  out <- compute_Fxij(x, phi, K)
+  out <- compute_Uxij(x, phi, K)
   expectedOut <- rep(0, K*m*m)
   for(i in 1:K)
   {
@@ -64,7 +64,7 @@ test_that("compute_Fxij works with a simple basis of 2 functions", {
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
 
-oldcompute_Fxij <- function(x, phi, K)
+oldcompute_Uxij <- function(x, phi, K)
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
@@ -95,7 +95,7 @@ oldcompute_Fxij <- function(x, phi, K)
   return(aux)     
 }
 
-test_that("refactor of compute_Fxij keeps the same results", {
+test_that("refactor of compute_Uxij keeps the same results", {
   set.seed(42)
   
   K <- 4
@@ -111,8 +111,8 @@ test_that("refactor of compute_Fxij keeps the same results", {
   I <- diag(rep(1, m))
   phi <- fd(I, b) 
   
-  expectedOut <- by(d_JK2, d_JK2$id, function(x){oldcompute_Fxij(x, phi, K)})
-  out <- by(d_JK2, d_JK2$id, function(x){compute_Fxij(x, phi, K)})
+  expectedOut <- by(d_JK2, d_JK2$id, function(x){oldcompute_Uxij(x, phi, K)})
+  out <- by(d_JK2, d_JK2$id, function(x){compute_Uxij(x, phi, K)})
   
   expect_equal(out[[1]], expectedOut[[1]])
 })

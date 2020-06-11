@@ -115,9 +115,9 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
   V <- computeVmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  Fval <- computeFmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
+  Uval <- computeUmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  outEnc <- computeEncoding(Fval, V, K, nBasis, uniqueId, label, verbose)
+  outEnc <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose)
     
   out <- c(outEnc, list(V = V, basisobj = basisobj))
   class(out) = "fmca"
@@ -131,7 +131,7 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
 
 
 
-
+# return a matrix with nId rows and nBasis * nState columns
 computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
 {
   i <- 1 # unused: definition to avoid a note during R CMD check
@@ -233,8 +233,8 @@ compute_Vxi <- function(x, phi, K, ...)
   return(aux)
 }
 
-
-computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
+# return a matrix with nId rows and nBasis * nState columns
+computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...)
 {
   i <- 1 # unused: definition to avoid a note during R CMD check
   nId <- length(uniqueId)
@@ -254,7 +254,7 @@ computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   t3 <- proc.time()
   if(verbose)
   {
-    cat(paste0("---- Compute F matrix:\n"))
+    cat(paste0("---- Compute U matrix:\n"))
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
     opts <- list(progress = progress)
@@ -262,8 +262,8 @@ computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
     opts <- list()
   }
   
-  Fval <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Fxij(data[id == i, ], phi, K, ...)
+  Uval <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
+    res <- compute_Uxij(data[id == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
     return(res)
@@ -282,12 +282,12 @@ computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
     cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n"))
   
   
-  return(Fval)
+  return(Uval)
 }
 
 
 
-# compute Fxij
+# compute Uxij
 #
 # compute int_0^T phi_i(t) phi_j(t) 1_{X_{t}=x}  
 #
@@ -296,8 +296,8 @@ computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
 # @param K number of state
 # @param ... parameters for integrate function
 #
-# @return vector of size K*nBasis*nBasis: F[(x=1,i=1),(x=1,j=1)], 
-# F[(x=1,i=1), (x=1,j=2)],..., F[(x=1,i=1), (x=1,j=nBasis)], F[(x=2,i=1), (x=2,j=1)], F[(x=2,i=1), (x=2,j=2)], ...
+# @return vector of size K*nBasis*nBasis: U[(x=1,i=1),(x=1,j=1)], 
+# U[(x=1,i=1), (x=1,j=2)],..., U[(x=1,i=1), (x=1,j=nBasis)], U[(x=2,i=1), (x=2,j=1)], U[(x=2,i=1), (x=2,j=2)], ...
 # 
 # @examples
 # K <- 4
@@ -311,10 +311,10 @@ computeFmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
 # b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 # I <- diag(rep(1, m))
 # phi <- fd(I, b)
-# compute_Fxij(d_JK2[d_JK2$id == 1, ], phi, K)
+# compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Fxij <- function(x, phi, K, ...)
+compute_Uxij <- function(x, phi, K, ...)
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
@@ -353,7 +353,7 @@ compute_Fxij <- function(x, phi, K, ...)
 
 
 
-computeEncoding <- function(Fval, V, K, nBasis, uniqueId, label, verbose)
+computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
 {
   t4 <- proc.time()
   if(verbose)
@@ -362,7 +362,7 @@ computeEncoding <- function(Fval, V, K, nBasis, uniqueId, label, verbose)
   G <- cov(V)
   
   # create F matrix
-  Fval = colMeans(Fval)
+  Fval = colMeans(Uval)
   Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
   for(i in 1:K)
   {
