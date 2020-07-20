@@ -508,15 +508,16 @@ hist.njump <- function(x, breaks = NULL, ...)
 {
   # choose the number of breaks using Sturges rule
   if(is.null(breaks))
-    breaks <- floor(1 + log2(length(x)))
+    breaks <- min(floor(1 + log2(length(x))), max(x) + 1)
   
   extraParam <- list(...)
-  defaultParam <- list(fill = "lightblue", color = "black", bins = breaks)
+  defaultParam <- list(fill = "lightblue", color = "black", bins = breaks, center = 0)
   param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
   
   ggplot(data.frame(njump = as.vector(x)), aes_string(x = "njump")) +
     do.call(geom_histogram, param) +
-    labs(x = "Number of jumps", y = "Frequency")
+    labs(x = "Number of jumps", y = "Frequency") +
+    scale_x_continuous(breaks = function(x) pretty(seq(ceiling(x[1]), floor(x[2]), by = 1)))
 }
 
 
