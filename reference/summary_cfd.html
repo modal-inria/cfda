@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>Get a summary of the data.frame containin categorical functional data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summary_cfd</span>(<span class='no'>data</span>, <span class='kw'>max.print</span> <span class='kw'>=</span> <span class='fl'>10</span>)</pre>
+    <pre class="usage"><span class='fu'>summary_cfd</span>(<span class='kw'>data</span>, max.print = <span class='fl'>10</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -152,8 +152,8 @@
     <p>Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>biofam2</span>)
-<span class='fu'>summary_cfd</span>(<span class='no'>biofam2</span>)</div><div class='output co'>#&gt; Number of rows: 6965 
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>biofam2</span>)
+<span class='fu'>summary_cfd</span>(<span class='kw'>biofam2</span>)</div><div class='output co'>#&gt; Number of rows: 6965 
 #&gt; Number of individuals: 2000 
 #&gt; Time Range: 15 - 30 
 #&gt; Same time start value for all ids: TRUE 
@@ -165,8 +165,7 @@
 #&gt;          Parent       Left+Marr Left+Marr+Child            Left         Married 
 #&gt;            1972             987             907             896             246 
 #&gt;        Divorced      Left+Child           Child 
-#&gt;              76              40               6 </div><div class='input'>
-</div></pre>
+#&gt;              76              40               6 </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

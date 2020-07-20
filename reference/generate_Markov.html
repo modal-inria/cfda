@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -121,13 +121,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>generate_Markov</span>(
-  <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>K</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>P</span> <span class='kw'>=</span> <span class='fl'>1</span> - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='no'>K</span>),
-  <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='no'>K</span>),
-  <span class='kw'>pi0</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='no'>K</span> - <span class='fl'>1</span>)),
-  <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  n = <span class='fl'>5</span>,
+  K = <span class='fl'>2</span>,
+  P = <span class='fl'>1</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='kw'>K</span>),
+  lambda = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='kw'>K</span>),
+  pi0 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='kw'>K</span> <span class='op'>-</span> <span class='fl'>1</span>)),
+  Tmax = <span class='fl'>1</span>,
+  labels = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -180,20 +180,19 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>K</span>) - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='no'>K</span>))
-<span class='no'>lambda_PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='no'>d_JK</span> <span class='kw'>&lt;-</span> <span class='fu'>generate_Markov</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>P</span> <span class='kw'>=</span> <span class='no'>PJK</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>lambda_PJK</span>, <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                            <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"C"</span>, <span class='st'>"G"</span>, <span class='st'>"T"</span>))
+<span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
+<span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'>generate_Markov</span>(n = <span class='fl'>100</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='fl'>10</span>, 
+                            labels = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"C"</span>, <span class='st'>"G"</span>, <span class='st'>"T"</span>))
 
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='no'>d_JK</span>)</div><div class='output co'>#&gt;   id     time state
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='kw'>d_JK</span>)</div><div class='output co'>#&gt;   id     time state
 #&gt; 1  1 0.000000     A
 #&gt; 2  1 1.854304     C
 #&gt; 3  1 2.543021     A
 #&gt; 4  1 2.684796     C
 #&gt; 5  1 5.309527     T
 #&gt; 6  1 6.259386     G</div><div class='input'>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

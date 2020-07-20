@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>Estimate probabilities to be in each state</p>
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_pt</span>(<span class='no'>data</span>, <span class='kw'>NAafterTmax</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_pt</span>(<span class='kw'>data</span>, NAafterTmax = <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,15 +151,15 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>K</span>) - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='no'>K</span>))
-<span class='no'>lambda_PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='no'>d_JK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>P</span> <span class='kw'>=</span> <span class='no'>PJK</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>lambda_PJK</span>, <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
+<span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='fl'>10</span>)
 
-<span class='no'>d_JK2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='no'>d_JK</span>, <span class='fl'>10</span>)
+<span class='kw'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, <span class='fl'>10</span>)
 
 <span class='co'># estimate probabilities</span>
-<span class='fu'>estimate_pt</span>(<span class='no'>d_JK2</span>)</div><div class='output co'>#&gt; $pt
+<span class='fu'>estimate_pt</span>(<span class='kw'>d_JK2</span>)</div><div class='output co'>#&gt; $pt
 #&gt;   0 0.068 0.094 0.213 0.232 0.379 0.398 0.493 0.506 0.516 0.536 0.722 1.137
 #&gt; 1 1   0.9   0.8   0.9   0.8   0.7   0.6   0.6   0.5   0.4   0.4   0.4   0.3
 #&gt; 2 0   0.0   0.0   0.0   0.0   0.0   0.1   0.1   0.1   0.1   0.0   0.1   0.1
@@ -228,8 +228,7 @@
 #&gt; [109]  9.89625250  9.93224730 10.00000000
 #&gt; 
 #&gt; attr(,"class")
-#&gt; [1] "pt"</div><div class='input'>
-</div></pre>
+#&gt; [1] "pt"</div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -121,13 +121,13 @@
     </div>
 
     <pre class="usage"><span class='fu'>plotComponent</span>(
-  <span class='no'>x</span>,
-  <span class='kw'>comp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
-  <span class='kw'>addNames</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>nudge_x</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>nudge_y</span> <span class='kw'>=</span> <span class='fl'>0.1</span>,
-  <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='no'>...</span>
+  <span class='kw'>x</span>,
+  comp = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>),
+  addNames = <span class='fl'>TRUE</span>,
+  nudge_x = <span class='fl'>0.1</span>,
+  nudge_y = <span class='fl'>0.1</span>,
+  size = <span class='fl'>4</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -171,19 +171,19 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>Tmax</span> <span class='kw'>&lt;-</span> <span class='fl'>6</span>
-<span class='no'>PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>K</span>) - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='no'>K</span>))
-<span class='no'>lambda_PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='no'>d_JK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>P</span> <span class='kw'>=</span> <span class='no'>PJK</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>lambda_PJK</span>, <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='no'>Tmax</span>)
-<span class='no'>d_JK2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='no'>d_JK</span>, <span class='no'>Tmax</span>)
+<span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='kw'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
+<span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
+<span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='kw'>Tmax</span>)
+<span class='kw'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, <span class='kw'>Tmax</span>)
 
 <span class='co'># create basis object</span>
-<span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fl'>6</span>
-<span class='no'>b</span> <span class='kw'>&lt;-</span> <span class='fu'>create.bspline.basis</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='no'>Tmax</span>), <span class='kw'>nbasis</span> <span class='kw'>=</span> <span class='no'>m</span>, <span class='kw'>norder</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='kw'>m</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
+<span class='kw'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='kw'>Tmax</span>), nbasis = <span class='kw'>m</span>, norder = <span class='fl'>4</span>)
 
 <span class='co'># compute encoding</span>
-<span class='no'>encoding</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span>(<span class='no'>d_JK2</span>, <span class='no'>b</span>, <span class='kw'>nCores</span> <span class='kw'>=</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; ######### Compute encoding #########
+<span class='kw'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span>(<span class='kw'>d_JK2</span>, <span class='kw'>b</span>, nCores = <span class='fl'>1</span>)</div><div class='output co'>#&gt; ######### Compute encoding #########
 #&gt; Number of individuals: 10
 #&gt; Number of states: 4
 #&gt; Basis type: bspline
@@ -192,19 +192,18 @@
 #&gt; ---- Compute V matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 0.59s
+#&gt; DONE in 0.69s
 #&gt; ---- Compute F matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 3.75s
+#&gt; DONE in 4.22s
 #&gt; ---- Compute encoding: DONE
-#&gt; Run Time: 4.35s</div><div class='input'>
-<span class='fu'>plotComponent</span>(<span class='no'>encoding</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='plotComponent-1.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; Run Time: 4.91s</div><div class='input'>
+<span class='fu'>plotComponent</span>(<span class='kw'>encoding</span>, comp = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))</div><div class='img'><img src='plotComponent-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># modify the plot using ggplot2</span>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>ggplot2</span>)
-<span class='fu'>plotComponent</span>(<span class='no'>encoding</span>, <span class='kw'>comp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>shape</span> <span class='kw'>=</span> <span class='fl'>23</span>) +
-   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='st'>"Two first components"</span>)</div><div class='img'><img src='plotComponent-2.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
+<span class='fu'>plotComponent</span>(<span class='kw'>encoding</span>, comp = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), shape = <span class='fl'>23</span>) <span class='op'>+</span>
+   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='st'>"Two first components"</span>)</div><div class='img'><img src='plotComponent-2.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

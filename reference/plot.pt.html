@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -121,7 +121,7 @@
     </div>
 
     <pre class="usage"><span class='co'># S3 method for pt</span>
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ribbon</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>x</span>, col = <span class='kw'>NULL</span>, ribbon = <span class='fl'>FALSE</span>, <span class='kw'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,17 +153,16 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>K</span>) - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='no'>K</span>))
-<span class='no'>lambda_PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='no'>d_JK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>P</span> <span class='kw'>=</span> <span class='no'>PJK</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>lambda_PJK</span>, <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
+<span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='fl'>10</span>)
 
-<span class='no'>d_JK2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='no'>d_JK</span>, <span class='fl'>10</span>)
+<span class='kw'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, <span class='fl'>10</span>)
 
-<span class='no'>pt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='estimate_pt.html'>estimate_pt</a></span>(<span class='no'>d_JK2</span>)
+<span class='kw'>pt</span> <span class='op'>&lt;-</span> <span class='fu'><a href='estimate_pt.html'>estimate_pt</a></span>(<span class='kw'>d_JK2</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>pt</span>, <span class='kw'>ribbon</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot.pt-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>pt</span>, ribbon = <span class='fl'>TRUE</span>)</div><div class='img'><img src='plot.pt-1.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

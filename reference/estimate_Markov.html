@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
       </span>
     </div>
 
@@ -120,7 +120,7 @@
     <p>Calculates crude initial values for transition intensities by assuming that the data represent the exact transition times of the Markov process.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>estimate_Markov</span>(<span class='no'>data</span>)</pre>
+    <pre class="usage"><span class='fu'>estimate_Markov</span>(<span class='kw'>data</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,21 +143,20 @@
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='no'>K</span> <span class='kw'>&lt;-</span> <span class='fl'>4</span>
-<span class='no'>PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='no'>K</span>) - <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fl'>3</span>, <span class='no'>K</span>))
-<span class='no'>lambda_PJK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='no'>d_JK</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>K</span> <span class='kw'>=</span> <span class='no'>K</span>, <span class='kw'>P</span> <span class='kw'>=</span> <span class='no'>PJK</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='no'>lambda_PJK</span>, <span class='kw'>Tmax</span> <span class='kw'>=</span> <span class='fl'>10</span>)
+<span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
+<span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>100</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='fl'>10</span>)
 
 <span class='co'># estimation  </span>
-<span class='no'>mark</span> <span class='kw'>&lt;-</span> <span class='fu'>estimate_Markov</span>(<span class='no'>d_JK</span>)
-<span class='no'>mark</span>$<span class='no'>P</span></div><div class='output co'>#&gt;     to
+<span class='kw'>mark</span> <span class='op'>&lt;-</span> <span class='fu'>estimate_Markov</span>(<span class='kw'>d_JK</span>)
+<span class='kw'>mark</span><span class='op'>$</span><span class='kw'>P</span></div><div class='output co'>#&gt;     to
 #&gt; from         1         2         3         4
 #&gt;    1 0.0000000 0.3323077 0.2892308 0.3784615
 #&gt;    2 0.3041667 0.0000000 0.3875000 0.3083333
 #&gt;    3 0.3562753 0.3238866 0.0000000 0.3198381
-#&gt;    4 0.3536585 0.2926829 0.3536585 0.0000000</div><div class='input'><span class='no'>mark</span>$<span class='no'>lambda</span></div><div class='output co'>#&gt;        1        2        3        4 
-#&gt; 1.199399 1.174419 1.210189 1.058760 </div><div class='input'>
-</div></pre>
+#&gt;    4 0.3536585 0.2926829 0.3536585 0.0000000</div><div class='input'><span class='kw'>mark</span><span class='op'>$</span><span class='kw'>lambda</span></div><div class='output co'>#&gt;        1        2        3        4 
+#&gt; 1.199399 1.174419 1.210189 1.058760 </div><div class='input'></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
