@@ -397,14 +397,15 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
   # met la matrice de vecteurs propres comme une liste
   
   # aux1 = split(res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
-  aux1 = split(invF05 %*% res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
+  invF05vec <- invF05 %*% res$vectors
+  aux1 <- split(invF05vec, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
   
   # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
   # 2eme col les coefs pour état 2, etc
   
-  alpha <- lapply(aux1, function(w){return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
+  alpha <- lapply(aux1, function(w) {return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
   
-  pc <- V %*% (invF05 %*% res$vectors)
+  pc <- V %*% invF05vec
   rownames(pc) = uniqueId
   
   t5 <- proc.time()
@@ -412,6 +413,6 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
   if(verbose)
     cat(paste0("\nDONE in ", round((t5-t4)[3], 2), "s\n"))
 
-  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = Fmat, G = G))
+  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = Fmat, G = G, invF05vec = invF05vec))
 }
 
