@@ -17,6 +17,7 @@
 #'   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
 #'   \item \code{G} covariance matrix of \code{V}
 #'   \item \code{basisobj} \code{basisobj} input parameter
+#'   \item \code{invF05vec} elements used to compute scoers
 #' }
 #'
 #' @details 
