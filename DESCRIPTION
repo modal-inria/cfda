@@ -2,7 +2,7 @@ Package: cfda
 Type: Package
 Title: Categorical Functional Data Analysis
 Version: 0.8.3
-Date: 2020-07-20
+Date: 2020-08-28
 Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@inria.fr"),
              person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"))
 Copyright: Inria - Université de Lille
@@ -16,4 +16,4 @@ Depends: fda, R (>= 3.5.0)
 Suggests: testthat, covr, knitr
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
