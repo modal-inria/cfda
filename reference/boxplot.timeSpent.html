@@ -161,12 +161,15 @@
 <span class='kw'>timeSpent</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_time_spent.html'>compute_time_spent</a></span>(<span class='kw'>d_JK2</span>)
 
 <span class='co'># plot the result</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span>(<span class='kw'>timeSpent</span>, col = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#8DA0CB"</span>, <span class='st'>"#E78AC3"</span>, <span class='st'>"#A6D854"</span>, <span class='st'>"#FFD92F"</span>))</div><div class='img'><img src='boxplot.timeSpent-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span>(<span class='kw'>timeSpent</span>, col = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"#8DA0CB"</span>, <span class='st'>"#E78AC3"</span>, <span class='st'>"#A6D854"</span>, <span class='st'>"#FFD92F"</span>))
+</div><div class='img'><img src='boxplot.timeSpent-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># modify the plot using ggplot2</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/boxplot.html'>boxplot</a></span>(<span class='kw'>timeSpent</span>, notch = <span class='fl'>TRUE</span>, outlier.colour = <span class='st'>"black"</span>) <span class='op'>+</span> 
    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/coord_flip.html'>coord_flip</a></span>() <span class='op'>+</span> 
-   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='st'>"Time spent in each state"</span>)</div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='img'><img src='boxplot.timeSpent-2.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
+   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='st'>"Time spent in each state"</span>)
+</div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='output co'>#&gt; <span class='message'>notch went outside hinges. Try setting notch=FALSE.</span></div><div class='img'><img src='boxplot.timeSpent-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

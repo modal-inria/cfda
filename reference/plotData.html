@@ -183,19 +183,24 @@ The color at a given time gives the state of the individual.</p>
 <span class='co'># add a line with time Tmax at the end of each individual</span>
 <span class='kw'>d_JKT</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, Tmax = <span class='fl'>10</span>)
 
-<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>)</div><div class='img'><img src='plotData-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>)
+</div><div class='img'><img src='plotData-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># modify the plot using ggplot2</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
 <span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>, col = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"red"</span>, <span class='st'>"blue"</span>, <span class='st'>"green"</span>, <span class='st'>"brown"</span>)) <span class='op'>+</span>
-   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='st'>"Trajectories of a Markov process"</span>)</div><div class='img'><img src='plotData-2.png' alt='' width='700' height='433' /></div><div class='input'>  
+   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='st'>"Trajectories of a Markov process"</span>)
+</div><div class='img'><img src='plotData-2.png' alt='' width='700' height='433' /></div><div class='input'>  
   
 <span class='co'># use the group variable: create a group with the 3 first variables and one with the others</span>
 <span class='kw'>group</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>2</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>7</span>))
-<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>, group = <span class='kw'>group</span>)</div><div class='img'><img src='plotData-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>, group = <span class='kw'>group</span>)
+</div><div class='img'><img src='plotData-3.png' alt='' width='700' height='433' /></div><div class='input'>
 
 <span class='co'># use the group variable: remove the id number 5 and 6</span>
 <span class='kw'>group</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>)] <span class='op'>=</span> <span class='fl'>NA</span>
-<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>, group = <span class='kw'>group</span>)</div><div class='img'><img src='plotData-4.png' alt='' width='700' height='433' /></div><div class='input'>  </div></pre>
+<span class='fu'>plotData</span>(<span class='kw'>d_JKT</span>, group = <span class='kw'>group</span>)
+</div><div class='img'><img src='plotData-4.png' alt='' width='700' height='433' /></div><div class='input'>  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

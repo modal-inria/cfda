@@ -154,14 +154,18 @@
 <span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='fl'>10</span>)
 
 <span class='co'># get the state of each individual at time t = 6</span>
-<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>6</span>)</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
+<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>6</span>)
+</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
 #&gt;  2  3  4  3  2  2  1  4  2  2 </div><div class='input'>
 
 <span class='co'># get the state of each individual at time t = 12 (&gt; Tmax)</span>
-<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>12</span>)</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
+<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>12</span>)
+</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
 #&gt;  3  3  4  2  2  1  4  3  2  1 </div><div class='input'><span class='co'># if NAafterTmax = TRUE, it will return NA for t &gt; Tmax</span>
-<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>12</span>, NAafterTmax = <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
-#&gt; NA NA NA NA NA NA NA NA NA NA </div><div class='input'></div></pre>
+<span class='fu'>get_state</span>(<span class='kw'>d_JK</span>, <span class='fl'>12</span>, NAafterTmax = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt;  1  2  3  4  5  6  7  8  9 10 
+#&gt; NA NA NA NA NA NA NA NA NA NA </div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
