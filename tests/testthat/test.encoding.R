@@ -14,7 +14,7 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 1
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
   I <- diag(rep(1, m))
   phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
   
@@ -43,7 +43,7 @@ test_that("compute_Uxij works with a simple basis of 2 functions", {
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 2
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
   phi <- fd(I, b) 
   
@@ -198,6 +198,7 @@ test_that("compute_optimal_encoding throws error", {
   expect_error(compute_optimal_encoding(d_JK2, b, nCores = NA, verbose = TRUE), regexp = "nCores must be an integer > 0.")
   expect_error(compute_optimal_encoding(d_JK2, b, nCores = NaN, verbose = TRUE), regexp = "nCores must be an integer > 0.")
 
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = 2), regexp = "verbose must be either TRUE or FALSE.")
 })
 
 
@@ -231,16 +232,19 @@ test_that("compute_optimal_encoding works", {
   expect_equal(dim(fmca$pc), c(n, m * K))
   
   # F
-  expect_equal(dim(fmca$F), c(2*m, 2*m))
+  expect_equal(dim(fmca$F), c(m * K, m * K))
   
   # G
-  expect_equal(dim(fmca$G), c(2*m, 2*m))
+  expect_equal(dim(fmca$G), c(m * K, m * K))
   
   # V
-  expect_equal(dim(fmca$V), c(n, 2*m))
+  expect_equal(dim(fmca$V), c(n, m * K))
   
   # basisobj
   expect_equal(fmca$basisobj, b)
+  
+  # invF05vec
+  expect_equal(dim(fmca$invF05vec), c(m * K, m * K))
 })
 
 test_that("compute_optimal_encoding works verbose", {
