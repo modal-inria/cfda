@@ -16,4 +16,4 @@ Depends: fda, R (>= 3.5.0)
 Suggests: testthat, covr, knitr
 Encoding: UTF-8
 VignetteBuilder: knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

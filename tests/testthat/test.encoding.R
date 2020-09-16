@@ -213,7 +213,7 @@ test_that("compute_optimal_encoding works", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmca <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
+  expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
   expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj"))
@@ -258,7 +258,7 @@ test_that("compute_optimal_encoding works verbose", {
   b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
   
   # compute encoding
-  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = TRUE))
+  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1, verbose = TRUE))
   
 })
 
@@ -302,7 +302,7 @@ test_that("get_encoding works", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   out <- get_encoding(fmca, fdObject = TRUE)
   expect_s3_class(out, "fd")
@@ -332,7 +332,7 @@ test_that("compute_optimal_encoding throws an error when the basis is not well s
   data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   
-  expect_error({fmca <- compute_optimal_encoding(data_msm, b, nCores = 1)}, 
+  expect_error({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
                regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
                fixed = TRUE)
 })
@@ -348,7 +348,7 @@ test_that("plot.fmca does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plot(fmca), regexp = NA)
   expect_warning(plot(fmca, harm = 3, col = c("red", "blue")), regexp = NA)
@@ -379,7 +379,7 @@ test_that("plotComponent does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plotComponent(fmca, addNames = TRUE), regexp = NA)
   expect_warning(plotComponent(fmca, comp = c(2, 3), addNames = FALSE), regexp = NA)
@@ -401,7 +401,7 @@ test_that("plotEigenvalues does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = FALSE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)

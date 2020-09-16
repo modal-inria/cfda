@@ -4,6 +4,9 @@
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}}).
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
+#' @param computeCI if TRUE, perform a bootstrap to estimate the variance of encoding's coefficients
+#' @param nBootstrap number of bootstrap samples
+#' @param propBootstrap size of bootstrap samples
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
 #' @param ... parameters for \code{\link{integrate}} function (see details).
@@ -69,7 +72,7 @@
 #' 
 #' 
 #' @export
-compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
+compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
 {
   t1 <- proc.time()
   ## check parameters
@@ -80,6 +83,15 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
     stop("basisobj is not a basis object.")
   if(any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1))
     stop("nCores must be an integer > 0.")
+  checkLogical(verbose, "verbose")
+  checkLogical(computeCI, "computeCI")
+  if(computeCI)
+  {
+    if(any(is.na(nBootstrap)) || (length(nBootstrap) != 1) || !is.whole.number(nBootstrap) || (nBootstrap < 1))
+      stop("nBootstrap must be an integer > 0.")
+    if(any(is.na(propBootstrap)) || !is.numeric(propBootstrap) || (length(propBootstrap) != 1) || (propBootstrap > 1) || (propBootstrap <= 0))
+      stop("propBootstrap must be a real between 0 and 1.")
+  }
   ## end check
   
   if(verbose)
@@ -118,9 +130,21 @@ compute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(det
   
   Uval <- computeUmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  outEnc <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose)
+  fullEncoding <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose)
     
-  out <- c(outEnc, list(V = V, basisobj = basisobj))
+  
+  if(computeCI)
+  {
+    signRef <- getSignReference(fullEncoding$alpha)
+      
+    bootEncoding <- computeBootStrapEncoding(Uval, V, K, nBasis, label, nId, propBootstrap, nBootstrap, signRef, verbose)
+    varAlpha <- computeVarianceAlpha(bootEncoding)
+    
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj, bootstrap = bootEncoding))
+  }else{
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj))
+  }
+  
   class(out) = "fmca"
   t2 <- proc.time()
 
@@ -139,7 +163,7 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   nId <- length(uniqueId)
   nBasis <- basisobj$nbasis
   
-  phi <- fd(diag(nBasis), basisobj) #les fonctions de base comme données fonctionnelles
+  phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
   if(nCores > 1)
@@ -241,7 +265,7 @@ computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   nId <- length(uniqueId)
   nBasis <- basisobj$nbasis
   
-  phi <- fd(diag(nBasis), basisobj) #les fonctions de base comme données fonctionnelles
+  phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
   if(nCores > 1)
@@ -353,7 +377,7 @@ compute_Uxij <- function(x, phi, K, ...)
 
 
 
-
+# @author Cristian Preda, Quentin Grimonprez
 computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
 {
   t4 <- proc.time()
