@@ -105,7 +105,7 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj", "bootstrap"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj", "bootstrap", "varAlpha"))
   
   ## bootstrap
   expect_length(fmca$bootstrap, 50)
