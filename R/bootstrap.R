@@ -142,3 +142,35 @@ computeVarianceAlpha <- function(bootEncoding)
   return(varAlpha)
 }
 
+
+# compute the variance of encoding
+#
+# a_x(t) = sum_i alpha_ix * phi_i(t) 
+# Var(a_x(t)) = sum_i var(alpha_ix) * phi_i^2(t) + sum_{i<j}  2 * phi_i(t) * phi_j(t) * cov(alpha_ix, alpha_jx)
+#
+# @author Quentin Grimonprez
+computeVarianceEncoding <- function(varAlpha, basisobj, harm = 1, nx = 200)
+{
+  nBasis <- basisobj$nbasis
+  phi <- fd(diag(nBasis), basisobj)
+  nState <- length(varAlpha[[harm]])
+  
+  timeVal <- seq(basisobj$rangeval[1], basisobj$rangeval[2], length = nx)
+  
+  Phi <- matrix(nrow = length(timeVal), ncol = nBasis)
+  for(i in 1:nBasis)
+    Phi[, i] = eval.fd(timeVal, phi[i])
+  
+  funcVar <- list()
+  for(iState in 1:nState)
+  {
+    funcVar[[iState]] = rep(NA, nx)
+    for(j in seq_along(timeVal))
+    {
+      funcVar[[iState]][j] <- Phi[j, , drop = FALSE] %*% varAlpha[[harm]][[iState]] %*% t(Phi[j, , drop = FALSE])
+    }
+  }
+  
+  return(funcVar)
+}
+

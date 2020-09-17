@@ -4,7 +4,7 @@
 \alias{plot.fmca}
 \title{Plot the optimal encoding}
 \usage{
-\method{plot}{fmca}(x, harm = 1, col = NULL, ...)
+\method{plot}{fmca}(x, harm = 1, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}

@@ -42,13 +42,19 @@
 #' @author Quentin Grimonprez
 #' 
 #' @export
-plot.fmca <- function(x, harm = 1, col = NULL, ...)
+plot.fmca <- function(x, harm = 1, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
 {
-  fdmat <- get_encoding(x, harm = harm, fdObject = FALSE)
-  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  fdmat <- get_encoding(x, harm = harm, fdObject = FALSE, nx = nx)
   
-  p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
-    geom_line() +
+  if(addCI && ("bootstrap" %in% names(x)))
+  {
+    variance <- computeVarianceEncoding(x$varAlpha, x$basisobj, harm = harm, nx = nx)
+    p <- plotEncodingCI(fdmat, variance, coeff)
+  }else{
+    p <- plotEncoding(fdmat)
+  }
+  
+  p = p +
     labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
   
   if(!is.null(col))
@@ -58,6 +64,40 @@ plot.fmca <- function(x, harm = 1, col = NULL, ...)
   
   return(p)
 }
+
+# plot the encoding and the associated confidence interval for each state
+# @author Quentin Grimonprez
+plotEncodingCI <- function(fdmat, variance, coeff)
+{
+  p <- ggplot() 
+  for(i in 1:ncol(fdmat$y))
+  {
+    df <- data.frame(time = fdmat$x, 
+                     ymin = fdmat$y[,i] - sqrt(variance[[harm]][[i]]) * coeff, 
+                     ymax = fdmat$y[,i] + sqrt(variance[[harm]][[i]]) * coeff,
+                     State = factor(rep(colnames(fdmat$y)[i], each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+    p = p + geom_ribbon(data = df, aes_string(ymin = "ymin", ymax = "ymax", x = "time", fill = "State"), 
+                        colour = NA, alpha = 0.8)
+  }
+  
+  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  
+  p <- p + 
+    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State"), colour = "black")
+  
+  return(p)
+}
+
+# plot the encoding for each state
+# @author Quentin Grimonprez
+plotEncoding <- function(fdmat)
+{
+  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  
+  ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
+    geom_line()
+}
+
 
 
 #' Extract the computed encoding
