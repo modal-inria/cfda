@@ -138,7 +138,7 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
     signRef <- getSignReference(fullEncoding$alpha)
       
     bootEncoding <- computeBootStrapEncoding(Uval, V, K, nBasis, label, nId, propBootstrap, nBootstrap, signRef, verbose)
-    varAlpha <- computeVarianceAlpha(bootEncoding)
+    varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
     
     out <- c(fullEncoding, list(V = V, basisobj = basisobj, bootstrap = bootEncoding, varAlpha = varAlpha))
   }else{

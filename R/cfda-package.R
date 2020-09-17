@@ -2,7 +2,7 @@
 #' @importFrom parallel detectCores
 #' @importFrom snow makeCluster stopCluster
 #' @importFrom foreach foreach %dopar% registerDoSEQ
-#' @importFrom stats cov integrate rexp runif
+#' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot
 #' @importFrom utils head setTxtProgressBar txtProgressBar
 #' 

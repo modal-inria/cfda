@@ -58,7 +58,7 @@ getSignReference <- function(alpha)
   for(i in seq_along(alpha))
   {
     pos[i] = which.max(abs(alpha[[i]]))
-    isNeg[i] = alpha[[i]][pos[i]] < 0
+    isNeg[i] = Re(alpha[[i]][pos[i]]) < 0
   }
   
   return(list(position = pos, isNegative = isNeg))
@@ -81,7 +81,7 @@ unifySign <- function(out, signReference)
       # we look if the element at the given position is negative
       for(j in seq_along(out[[i]]$alpha))
       {
-        signNeg[j, i] <- out[[i]]$alpha[[j]][signReference$position[j]] < 0
+        signNeg[j, i] <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
         
         if(signNeg[j, i] != signReference$isNegative[j])
         {
@@ -120,22 +120,23 @@ computeMeanInvF05vec <- function(bootEncoding)
 # Compute the variance of alpha
 #
 # @param bootEncoding output of computeBootStrapEncoding function
+# @param nState number of states
+# @param nBasis number of basis functions
 #
 # @return a list (length number of harmonics) of list (length number of states) of variance matrix
 #
 # @author Quentin Grimonprez
-computeVarianceAlpha <- function(bootEncoding)
+computeVarianceAlpha <- function(bootEncoding, nState, nBasis)
 {
-  nHarm <- min(sapply(bootEncoding, function(x) length(x$alpha)))
+  nHarm <- nState * nBasis
   
   varAlpha <- list()
   for(harm in 1:nHarm)
   {
-    nState <- ncol(bootEncoding[[1]]$alpha[[harm]])
     varAlpha[[harm]] <- list()
     for(iState in 1:nState)
     {
-      varAlpha[[harm]][[iState]] <- cov(t(sapply(bootEncoding, function(x) x$alpha[[harm]][, iState])))
+      varAlpha[[harm]][[iState]] <- var(do.call(rbind, lapply(bootEncoding, function(x) x$alpha[[harm]][, iState])))
     }
   }
   
