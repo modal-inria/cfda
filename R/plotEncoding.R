@@ -64,13 +64,13 @@ plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 2, col 
   }else{
     p <- plotEncoding(fdmat, states, harm, col)
   }
-
+  
   return(p)
 }
 
 # plot the encoding and the associated confidence interval for each state
 # @author Quentin Grimonprez
-plotEncodingCI <- function(fdmat, variance, coeff, states, harm, col)
+plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, col = NULL)
 {
   p <- ggplot() 
   for(i in match(states, colnames(fdmat$y)))
@@ -102,14 +102,14 @@ plotEncodingCI <- function(fdmat, variance, coeff, states, harm, col)
 
 # plot the encoding for each state
 # @author Quentin Grimonprez
-plotEncoding <- function(fdmat, states, harm, col)
+plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 {
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
 
   df = df[df$State %in% states, ]
-  ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
+  p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line()
-  
+   
   p = p +
     labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
   
