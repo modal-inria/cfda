@@ -73,8 +73,8 @@ plotEncodingCI <- function(fdmat, variance, coeff)
   for(i in 1:ncol(fdmat$y))
   {
     df <- data.frame(time = fdmat$x, 
-                     ymin = fdmat$y[,i] - sqrt(variance[[harm]][[i]]) * coeff, 
-                     ymax = fdmat$y[,i] + sqrt(variance[[harm]][[i]]) * coeff,
+                     ymin = fdmat$y[,i] - sqrt(variance[[i]]) * coeff, 
+                     ymax = fdmat$y[,i] + sqrt(variance[[i]]) * coeff,
                      State = factor(rep(colnames(fdmat$y)[i], each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
     p = p + geom_ribbon(data = df, aes_string(ymin = "ymin", ymax = "ymax", x = "time", fill = "State"), 
                         colour = NA, alpha = 0.8)
