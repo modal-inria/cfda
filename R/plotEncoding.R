@@ -4,7 +4,11 @@
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
 #' @param harm harmonic to use for the encoding
-#' @param col a vector containing color for each state.
+#' @param states states to plot (default = NULL, it plots all states)
+#' @param addCI if TRUE, plot confidence interval (only when \code{computeCI = TRUE} in \link{compute_optimal_encoding})
+#' @param coeff the confidence interval is computed with +- coeff * the standard deviation
+#' @param col a vector containing color for each state
+#' @param nx number of time points used to plot
 #' @param ... not used
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
@@ -42,35 +46,34 @@
 #' @author Quentin Grimonprez
 #' 
 #' @export
-plot.fmca <- function(x, harm = 1, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
+plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
 {
   fdmat <- get_encoding(x, harm = harm, fdObject = FALSE, nx = nx)
+ 
+  if(is.null(states))
+    states = colnames(fdmat$y)
+  
+  states = intersect(states, colnames(fdmat$y))
+  if(length(states) == 0)
+    stop("No correct states given.")
   
   if(addCI && ("bootstrap" %in% names(x)))
   {
     variance <- computeVarianceEncoding(x$varAlpha, x$basisobj, harm = harm, nx = nx)
-    p <- plotEncodingCI(fdmat, variance, coeff)
+    p <- plotEncodingCI(fdmat, variance, coeff, states, harm, col)
   }else{
-    p <- plotEncoding(fdmat)
+    p <- plotEncoding(fdmat, states, harm, col)
   }
-  
-  p = p +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
-  
-  if(!is.null(col))
-    p = p + scale_colour_manual(values = col, drop = FALSE)
-  else
-    p = p + scale_colour_hue(drop = FALSE) # keep the same color order as plotData
-  
+
   return(p)
 }
 
 # plot the encoding and the associated confidence interval for each state
 # @author Quentin Grimonprez
-plotEncodingCI <- function(fdmat, variance, coeff)
+plotEncodingCI <- function(fdmat, variance, coeff, states, harm, col)
 {
   p <- ggplot() 
-  for(i in 1:ncol(fdmat$y))
+  for(i in match(states, colnames(fdmat$y)))
   {
     df <- data.frame(time = fdmat$x, 
                      ymin = fdmat$y[,i] - sqrt(variance[[i]]) * coeff, 
@@ -81,21 +84,41 @@ plotEncodingCI <- function(fdmat, variance, coeff)
   }
   
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  df = df[df$State %in% states, ]
   
   p <- p + 
     geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State"), colour = "black")
+  
+  p = p +
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+  
+  if(!is.null(col))
+    p = p + scale_fill_manual(values = col, drop = FALSE)
+  else
+    p = p + scale_fill_hue(drop = FALSE) # keep the same color order as plotData
   
   return(p)
 }
 
 # plot the encoding for each state
 # @author Quentin Grimonprez
-plotEncoding <- function(fdmat)
+plotEncoding <- function(fdmat, states, harm, col)
 {
   df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
-  
+
+  df = df[df$State %in% states, ]
   ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
     geom_line()
+  
+  p = p +
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+  
+  if(!is.null(col))
+    p = p + scale_colour_manual(values = col, drop = FALSE)
+  else
+    p = p + scale_colour_hue(drop = FALSE) # keep the same color order as plotData
+  
+  return(p)
 }
 
 
