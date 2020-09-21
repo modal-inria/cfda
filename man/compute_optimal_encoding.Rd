@@ -9,7 +9,7 @@ compute_optimal_encoding(
   basisobj,
   computeCI = TRUE,
   nBootstrap = 50,
-  propBootstrap = 0.5,
+  propBootstrap = 1,
   nCores = max(1, ceiling(detectCores()/2)),
   verbose = TRUE,
   ...
@@ -24,7 +24,7 @@ compute_optimal_encoding(
 
 \item{nBootstrap}{number of bootstrap samples}
 
-\item{propBootstrap}{size of bootstrap samples}
+\item{propBootstrap}{size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals}
 
 \item{nCores}{number of cores used for parallelization. Default is the half of cores.}
 

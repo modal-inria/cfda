@@ -6,7 +6,7 @@
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
 #' @param computeCI if TRUE, perform a bootstrap to estimate the variance of encoding's coefficients
 #' @param nBootstrap number of bootstrap samples
-#' @param propBootstrap size of bootstrap samples
+#' @param propBootstrap size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals 
 #' @param nCores number of cores used for parallelization. Default is the half of cores.
 #' @param verbose if TRUE print some information
 #' @param ... parameters for \code{\link{integrate}} function (see details).
@@ -72,7 +72,7 @@
 #' 
 #' 
 #' @export
-compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
+compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
 {
   t1 <- proc.time()
   ## check parameters
