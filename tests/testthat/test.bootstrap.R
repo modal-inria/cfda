@@ -133,3 +133,23 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   # invF05vec
   expect_equal(dim(fmca$bootstrap[[1]]$invF05vec), c(m * K, m * K))
 })
+
+
+test_that("plot.fmca works with addCI = TRUE", {
+  set.seed(42)
+  n <- 200
+  Tmax <- 1
+  K <- 2
+  m <- 10
+  d <- generate_2State(n)
+  dT <- cut_data(d, Tmax)
+  row.names(dT) = NULL
+  
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE)
+  
+  expect_warning(plot(fmca, addCI = TRUE), regexp = NA)
+  expect_warning(plot(fmca, addCI = TRUE, states = 1), regexp = NA)
+  expect_warning(plot(fmca, addCI = TRUE, coeff = 5), regexp = NA)
+  expect_warning(plot(fmca, addCI = TRUE, col = c("red", "blue")), regexp = NA)
+})
