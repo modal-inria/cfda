@@ -2,7 +2,7 @@
 #' @importFrom parallel detectCores
 #' @importFrom snow makeCluster stopCluster
 #' @importFrom foreach foreach %dopar% registerDoSEQ
-#' @importFrom stats cov integrate rexp runif
+#' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot
 #' @importFrom utils head setTxtProgressBar txtProgressBar
 #' 
@@ -57,7 +57,7 @@
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
 #' # compute encoding
-#' encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
+#' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
 #' # plot eigenvalues
 #' plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)

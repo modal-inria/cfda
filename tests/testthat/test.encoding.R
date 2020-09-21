@@ -3,7 +3,7 @@
 context("Encoding functions")
 
 
-test_that("compute_Fxij works with a simple basis of 1 function", {
+test_that("compute_Uxij works with a simple basis of 1 function", {
   set.seed(42)
   
   K <- 4
@@ -14,12 +14,12 @@ test_that("compute_Fxij works with a simple basis of 1 function", {
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 1
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
   I <- diag(rep(1, m))
   phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
   
   x <- d_JK2[d_JK2$id == 1, ]
-  out <- compute_Fxij(x, phi, K)
+  out <- compute_Uxij(x, phi, K)
   expectedOut <- rep(0, K)
   for(i in 1:K)
   {
@@ -32,7 +32,7 @@ test_that("compute_Fxij works with a simple basis of 1 function", {
 })
 
 
-test_that("compute_Fxij works with a simple basis of 2 functions", {
+test_that("compute_Uxij works with a simple basis of 2 functions", {
   set.seed(42)
   
   K <- 4
@@ -43,12 +43,12 @@ test_that("compute_Fxij works with a simple basis of 2 functions", {
   d_JK2 <- cut_data(d_JK, 10)
   
   m <- 2
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
   phi <- fd(I, b) 
   
   x <- d_JK2[d_JK2$id == 1, ]
-  out <- compute_Fxij(x, phi, K)
+  out <- compute_Uxij(x, phi, K)
   expectedOut <- rep(0, K*m*m)
   for(i in 1:K)
   {
@@ -64,7 +64,7 @@ test_that("compute_Fxij works with a simple basis of 2 functions", {
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
 
-oldcompute_Fxij <- function(x, phi, K)
+oldcompute_Uxij <- function(x, phi, K)
 {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
@@ -95,7 +95,7 @@ oldcompute_Fxij <- function(x, phi, K)
   return(aux)     
 }
 
-test_that("refactor of compute_Fxij keeps the same results", {
+test_that("refactor of compute_Uxij keeps the same results", {
   set.seed(42)
   
   K <- 4
@@ -111,8 +111,8 @@ test_that("refactor of compute_Fxij keeps the same results", {
   I <- diag(rep(1, m))
   phi <- fd(I, b) 
   
-  expectedOut <- by(d_JK2, d_JK2$id, function(x){oldcompute_Fxij(x, phi, K)})
-  out <- by(d_JK2, d_JK2$id, function(x){compute_Fxij(x, phi, K)})
+  expectedOut <- by(d_JK2, d_JK2$id, function(x){oldcompute_Uxij(x, phi, K)})
+  out <- by(d_JK2, d_JK2$id, function(x){compute_Uxij(x, phi, K)})
   
   expect_equal(out[[1]], expectedOut[[1]])
 })
@@ -198,6 +198,7 @@ test_that("compute_optimal_encoding throws error", {
   expect_error(compute_optimal_encoding(d_JK2, b, nCores = NA, verbose = TRUE), regexp = "nCores must be an integer > 0.")
   expect_error(compute_optimal_encoding(d_JK2, b, nCores = NaN, verbose = TRUE), regexp = "nCores must be an integer > 0.")
 
+  expect_error(compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = 2), regexp = "verbose must be either TRUE or FALSE.")
 })
 
 
@@ -212,10 +213,10 @@ test_that("compute_optimal_encoding works", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmca <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
+  expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj"))
   
   # eigenvalues
   expect_length(fmca$eigenvalues, K*m)
@@ -231,16 +232,19 @@ test_that("compute_optimal_encoding works", {
   expect_equal(dim(fmca$pc), c(n, m * K))
   
   # F
-  expect_equal(dim(fmca$F), c(2*m, 2*m))
+  expect_equal(dim(fmca$F), c(m * K, m * K))
   
   # G
-  expect_equal(dim(fmca$G), c(2*m, 2*m))
+  expect_equal(dim(fmca$G), c(m * K, m * K))
   
   # V
-  expect_equal(dim(fmca$V), c(n, 2*m))
+  expect_equal(dim(fmca$V), c(n, m * K))
   
   # basisobj
   expect_equal(fmca$basisobj, b)
+  
+  # invF05vec
+  expect_equal(dim(fmca$invF05vec), c(m * K, m * K))
 })
 
 test_that("compute_optimal_encoding works verbose", {
@@ -254,7 +258,7 @@ test_that("compute_optimal_encoding works verbose", {
   b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
   
   # compute encoding
-  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1, verbose = TRUE))
+  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1, verbose = TRUE))
   
 })
 
@@ -298,7 +302,7 @@ test_that("get_encoding works", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   out <- get_encoding(fmca, fdObject = TRUE)
   expect_s3_class(out, "fd")
@@ -328,7 +332,7 @@ test_that("compute_optimal_encoding throws an error when the basis is not well s
   data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   
-  expect_error({fmca <- compute_optimal_encoding(data_msm, b, nCores = 1)}, 
+  expect_error({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
                regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
                fixed = TRUE)
 })
@@ -344,7 +348,7 @@ test_that("plot.fmca does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plot(fmca), regexp = NA)
   expect_warning(plot(fmca, harm = 3, col = c("red", "blue")), regexp = NA)
@@ -375,7 +379,7 @@ test_that("plotComponent does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plotComponent(fmca, addNames = TRUE), regexp = NA)
   expect_warning(plotComponent(fmca, comp = c(2, 3), addNames = FALSE), regexp = NA)
@@ -397,7 +401,7 @@ test_that("plotEigenvalues does not produce warnings", {
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, nCores = 1)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
   
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = FALSE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)

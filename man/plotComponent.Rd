@@ -47,7 +47,7 @@ m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
 # compute encoding
-encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
+encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 
 plotComponent(encoding, comp = c(1, 2))
 

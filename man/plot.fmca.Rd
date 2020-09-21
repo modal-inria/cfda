@@ -4,14 +4,31 @@
 \alias{plot.fmca}
 \title{Plot the optimal encoding}
 \usage{
-\method{plot}{fmca}(x, harm = 1, col = NULL, ...)
+\method{plot}{fmca}(
+  x,
+  harm = 1,
+  states = NULL,
+  addCI = FALSE,
+  coeff = 2,
+  col = NULL,
+  nx = 128,
+  ...
+)
 }
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
 
 \item{harm}{harmonic to use for the encoding}
 
-\item{col}{a vector containing color for each state.}
+\item{states}{states to plot (default = NULL, it plots all states)}
+
+\item{addCI}{if TRUE, plot confidence interval (only when \code{computeCI = TRUE} in \link{compute_optimal_encoding})}
+
+\item{coeff}{the confidence interval is computed with +- coeff * the standard deviation}
+
+\item{col}{a vector containing color for each state}
+
+\item{nx}{number of time points used to plot}
 
 \item{...}{not used}
 }
@@ -38,7 +55,7 @@ m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
 # compute encoding 
-encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
+encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 
 # plot the encoding produced by the first harmonic
 plot(encoding)

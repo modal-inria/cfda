@@ -1,10 +1,11 @@
 Package: cfda
 Type: Package
 Title: Categorical Functional Data Analysis
-Version: 0.8.3
-Date: 2020-08-28
+Version: 0.9
+Date: 2020-09-21
 Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@inria.fr"),
-             person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"))
+             person("Quentin", "Grimonprez", role = c("aut", "cre"), email = "quentin.grimonprez@inria.fr"),
+             person("Vincent", "Vandewalle", role = "ctb", email = "vincent.vandewalle@inria.fr"))
 Copyright: Inria - Université de Lille
 Description: Package for the analysis of categorical functional data. 
   The main purpose is to compute an encoding (real functional variable) for each state. 

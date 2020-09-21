@@ -10,7 +10,7 @@ The main contribution is the computation of an optimal encoding (real functional
 ## Installation
 
 ``` r
-library(devtools)
+library(remotes)
 install_github("modal-inria/cfda", build_vignettes = TRUE)
 ```
 
@@ -24,7 +24,7 @@ RShowDoc("cfda", package = "cfda")
 
 ## Credits
 
-**cfda** is developed by Cristian Preda (Inria Lille, Université de Lille) and Quentin Grimonprez (Inria Lille).
+**cfda** is developed by Cristian Preda (Inria Lille, Université de Lille), Quentin Grimonprez (Inria Lille) and Vincent Vandewalle (Inria Lille, Université de Lille).
 
 Copyright Inria - Université de Lille
 

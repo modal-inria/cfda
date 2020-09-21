@@ -7,6 +7,9 @@
 compute_optimal_encoding(
   data,
   basisobj,
+  computeCI = TRUE,
+  nBootstrap = 50,
+  propBootstrap = 1,
   nCores = max(1, ceiling(detectCores()/2)),
   verbose = TRUE,
   ...
@@ -16,6 +19,12 @@ compute_optimal_encoding(
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}}).}
 
 \item{basisobj}{basis created using the \code{fda} package (cf. \code{\link{create.basis}}).}
+
+\item{computeCI}{if TRUE, perform a bootstrap to estimate the variance of encoding's coefficients}
+
+\item{nBootstrap}{number of bootstrap samples}
+
+\item{propBootstrap}{size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals}
 
 \item{nCores}{number of cores used for parallelization. Default is the half of cores.}
 
@@ -33,6 +42,7 @@ A list containing:
   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
   \item \code{G} covariance matrix of \code{V}
   \item \code{basisobj} \code{basisobj} input parameter
+  \item \code{invF05vec} elements used to compute scoers
 }
 }
 \description{
@@ -63,7 +73,7 @@ m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
 # compute encoding
-encoding <- compute_optimal_encoding(d_JK2, b, nCores = 1)
+encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 
 # plot the optimal encoding
 plot(encoding)
