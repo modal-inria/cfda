@@ -72,19 +72,13 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/cfda.html">Get started</a>
 </li>
 <li>
@@ -123,6 +117,9 @@
     <pre class="usage"><span class='fu'>compute_optimal_encoding</span>(
   <span class='kw'>data</span>,
   <span class='kw'>basisobj</span>,
+  computeCI = <span class='fl'>TRUE</span>,
+  nBootstrap = <span class='fl'>50</span>,
+  propBootstrap = <span class='fl'>1</span>,
   nCores = <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='fu'>detectCores</span>()<span class='op'>/</span><span class='fl'>2</span>)),
   verbose = <span class='fl'>TRUE</span>,
   <span class='kw'>...</span>
@@ -138,6 +135,18 @@
     <tr>
       <th>basisobj</th>
       <td><p>basis created using the <code>fda</code> package (cf. <code>create.basis</code>).</p></td>
+    </tr>
+    <tr>
+      <th>computeCI</th>
+      <td><p>if TRUE, perform a bootstrap to estimate the variance of encoding's coefficients</p></td>
+    </tr>
+    <tr>
+      <th>nBootstrap</th>
+      <td><p>number of bootstrap samples</p></td>
+    </tr>
+    <tr>
+      <th>propBootstrap</th>
+      <td><p>size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals</p></td>
     </tr>
     <tr>
       <th>nCores</th>
@@ -163,6 +172,7 @@
 <li><p><code>V</code> matrix containing the \(V_{(x,i)}\)</p></li>
 <li><p><code>G</code> covariance matrix of <code>V</code></p></li>
 <li><p><code>basisobj</code> <code>basisobj</code> input parameter</p></li>
+<li><p><code>invF05vec</code> elements used to compute scoers</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -205,7 +215,7 @@
 <span class='kw'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='kw'>Tmax</span>), nbasis = <span class='kw'>m</span>, norder = <span class='fl'>4</span>)
 
 <span class='co'># compute encoding</span>
-<span class='kw'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'>compute_optimal_encoding</span>(<span class='kw'>d_JK2</span>, <span class='kw'>b</span>, nCores = <span class='fl'>1</span>)
+<span class='kw'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'>compute_optimal_encoding</span>(<span class='kw'>d_JK2</span>, <span class='kw'>b</span>, computeCI = <span class='fl'>FALSE</span>, nCores = <span class='fl'>1</span>)
 </div><div class='output co'>#&gt; ######### Compute encoding #########
 #&gt; Number of individuals: 10
 #&gt; Number of states: 4
@@ -215,13 +225,14 @@
 #&gt; ---- Compute V matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 0.62s
-#&gt; ---- Compute F matrix:
+#&gt; DONE in 0.73s
+#&gt; ---- Compute U matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 4.96s
-#&gt; ---- Compute encoding: DONE
-#&gt; Run Time: 5.59s</div><div class='input'>
+#&gt; DONE in 4.82s
+#&gt; ---- Compute encoding: 
+#&gt; DONE in 0s
+#&gt; Run Time: 5.56s</div><div class='input'>
 <span class='co'># plot the optimal encoding</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>encoding</span>)
 </div><div class='img'><img src='compute_optimal_encoding-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -794,7 +805,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

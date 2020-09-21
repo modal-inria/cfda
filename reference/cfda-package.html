@@ -85,19 +85,13 @@ In order to test the different functions, a real dataset is provided (biofam2) a
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../articles/cfda.html">Get started</a>
 </li>
 <li>
@@ -179,7 +173,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 <span class='kw'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='kw'>Tmax</span>), nbasis = <span class='kw'>m</span>, norder = <span class='fl'>4</span>)
 
 <span class='co'># compute encoding</span>
-<span class='kw'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span>(<span class='kw'>d_JK2</span>, <span class='kw'>b</span>, nCores = <span class='fl'>1</span>)
+<span class='kw'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span>(<span class='kw'>d_JK2</span>, <span class='kw'>b</span>, computeCI = <span class='fl'>FALSE</span>, nCores = <span class='fl'>1</span>)
 </div><div class='output co'>#&gt; ######### Compute encoding #########
 #&gt; Number of individuals: 10
 #&gt; Number of states: 4
@@ -189,13 +183,14 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; ---- Compute V matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 0.89s
-#&gt; ---- Compute F matrix:
+#&gt; DONE in 0.86s
+#&gt; ---- Compute U matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 4.89s
-#&gt; ---- Compute encoding: DONE
-#&gt; Run Time: 5.85s</div><div class='input'>
+#&gt; DONE in 4.56s
+#&gt; ---- Compute encoding: 
+#&gt; DONE in 0.03s
+#&gt; Run Time: 5.47s</div><div class='input'>
 <span class='co'># plot eigenvalues</span>
 <span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span>(<span class='kw'>encoding</span>, cumulative = <span class='fl'>TRUE</span>, normalize = <span class='fl'>TRUE</span>)
 </div><div class='img'><img src='cfda-package-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -225,7 +220,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
