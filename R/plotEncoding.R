@@ -48,7 +48,12 @@
 #' @export
 plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
 {
-  fdmat <- get_encoding(x, harm = harm, fdObject = FALSE, nx = nx)
+  checkLogical(addCI, "addCI")
+  
+  if(any(is.na(coeff)) || (length(coeff) > 1) || !is.numeric(coeff) || (coeff < 0))
+    stop("coeff must be a positive real.")
+  
+  fdmat <- get_encoding(x, harm = harm, fdObject = FALSE, nx = nx) # harm and nx are checked in this function
  
   if(is.null(states))
     states = colnames(fdmat$y)

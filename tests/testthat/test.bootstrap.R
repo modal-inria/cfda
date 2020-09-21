@@ -150,6 +150,12 @@ test_that("plot.fmca works with addCI = TRUE", {
   
   expect_warning(plot(fmca, addCI = TRUE), regexp = NA)
   expect_warning(plot(fmca, addCI = TRUE, states = 1), regexp = NA)
+  expect_warning(plot(fmca, addCI = TRUE, states = 1:3), regexp = NA) # only use correct states
   expect_warning(plot(fmca, addCI = TRUE, coeff = 5), regexp = NA)
   expect_warning(plot(fmca, addCI = TRUE, col = c("red", "blue")), regexp = NA)
+  
+  # bad parameters
+  expect_error(plot(fmca, addCI = 6), regexp = "addCI must be either TRUE or FALSE.")
+  expect_error(plot(fmca, addCI = TRUE, states = c("a", "b")), regexp = "No correct states given.")
+  expect_error(plot(fmca, addCI = TRUE, coeff = -5), regexp ="coeff must be a positive real.")
 })
