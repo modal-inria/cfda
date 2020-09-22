@@ -94,6 +94,9 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   }
   ## end check
   
+  # used to determine the moments where the probability is 0 in plot.fmca
+  pt <- estimate_pt(data)
+  
   if(verbose)
     cat("######### Compute encoding #########\n")
   
@@ -140,9 +143,9 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
     bootEncoding <- computeBootStrapEncoding(Uval, V, K, nBasis, label, nId, propBootstrap, nBootstrap, signRef, verbose)
     varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
     
-    out <- c(fullEncoding, list(V = V, basisobj = basisobj, bootstrap = bootEncoding, varAlpha = varAlpha))
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt, bootstrap = bootEncoding, varAlpha = varAlpha))
   }else{
-    out <- c(fullEncoding, list(V = V, basisobj = basisobj))
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt))
   }
   
   class(out) = "fmca"
@@ -394,7 +397,6 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
-  
   
   #res = eigen(solve(F)%*%G)
   F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05

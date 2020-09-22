@@ -198,11 +198,24 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
     
     fdmat <- eval.fd(timeVal, fdObj)
     
+    fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
+    
     return(list(x = timeVal, y = fdmat))
   }
   
 }
 
+
+# when the probability at a given time is 0, the encoding at this time is returned as NA
+removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
+{
+  p <- t(sapply(timeVal, get_proba, pt = pt))
+  p = p[, match(colnames(fdmat), colnames(p))]
+  p[p != 0] = 1
+  p[p == 0] = NA
+  
+  return(p * fdmat)
+}
 
 
 #' Plot Components
