@@ -232,12 +232,12 @@ dT <- cut_data(d, Tmax)
 row.names(dT) = NULL
 
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-fmca <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE)
+fmca <- compute_optimal_encoding(dT, b,  nCores = 1, computeCI = FALSE, verbose = FALSE)
 ##
 
 
 test_that("compute_optimal_encoding works verbose", {
-  expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, nCores = 1, verbose = TRUE))
+  expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, computeCI = FALSE, nCores = 1, verbose = TRUE))
 })
 
 
