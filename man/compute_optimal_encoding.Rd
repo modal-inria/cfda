@@ -42,7 +42,9 @@ A list containing:
   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
   \item \code{G} covariance matrix of \code{V}
   \item \code{basisobj} \code{basisobj} input parameter
-  \item \code{invF05vec} elements used to compute scoers
+  \item \code{invF05vec} elements used to compute principal component scores
+  \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run 
+  \item \code{varAlpha} Only if \code{computeCI = TRUE}. Variance of alpha parameters
 }
 }
 \description{
