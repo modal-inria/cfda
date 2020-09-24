@@ -2,16 +2,19 @@
 
 context("Encoding functions")
 
+## common dataset
+set.seed(42)
+
+K <- 4
+Tmax <- 10
+PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+lambda_PJK <- c(1, 1, 1, 1)
+d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
+d_JK2 <- cut_data(d_JK, 10)
+##
 
 test_that("compute_Uxij works with a simple basis of 1 function", {
   set.seed(42)
-  
-  K <- 4
-  Tmax <- 10
-  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_PJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-  d_JK2 <- cut_data(d_JK, 10)
   
   m <- 1
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
@@ -33,15 +36,6 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
 
 
 test_that("compute_Uxij works with a simple basis of 2 functions", {
-  set.seed(42)
-  
-  K <- 4
-  Tmax <- 10
-  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_PJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-  d_JK2 <- cut_data(d_JK, 10)
-  
   m <- 2
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
@@ -96,16 +90,6 @@ oldcompute_Uxij <- function(x, phi, K)
 }
 
 test_that("refactor of compute_Uxij keeps the same results", {
-  set.seed(42)
-  
-  K <- 4
-  Tmax <- 10
-  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_PJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-  d_JK2 <- cut_data(d_JK, 10)
-  
-  
   m <- 10
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   I <- diag(rep(1, m))
@@ -119,15 +103,6 @@ test_that("refactor of compute_Uxij keeps the same results", {
 
 
 test_that("compute_Vxi works with a simple basis of 1 function", {
-  set.seed(42)
-  
-  K <- 4
-  Tmax <- 10
-  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_PJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-  d_JK2 <- cut_data(d_JK, 10)
-  
   m <- 1
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
   I <- diag(rep(1, m))
@@ -150,15 +125,6 @@ test_that("compute_Vxi works with a simple basis of 1 function", {
 
 
 test_that("compute_Vxi works with a simple basis of 2 functions", {
-  set.seed(42)
-  
-  K <- 4
-  Tmax <- 10
-  PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
-  lambda_PJK <- c(1, 1, 1, 1)
-  d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
-  d_JK2 <- cut_data(d_JK, 10)
-  
   m <- 2
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
@@ -183,10 +149,7 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
 
 test_that("compute_optimal_encoding throws error", {
   set.seed(42)
-  K <- 2
-  d_JK <- generate_2State(n = 10)
-  d_JK2 <- cut_data(d_JK, 1)
-  
+
   # create basis object
   m <- 10
   b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
@@ -247,31 +210,38 @@ test_that("compute_optimal_encoding works", {
   expect_equal(dim(fmca$invF05vec), c(m * K, m * K))
 })
 
-test_that("compute_optimal_encoding works verbose", {
-  set.seed(42)
-  K <- 2
-  d_JK <- generate_2State(n = 10)
-  d_JK2 <- cut_data(d_JK, 1)
+
+test_that("compute_optimal_encoding throws an error when the basis is not well suited", {
+  data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
+  b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   
-  # create basis object
-  m <- 10
-  b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
-  
-  # compute encoding
-  expect_output(encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1, verbose = TRUE))
-  
+  expect_error({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
+               regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
+               fixed = TRUE)
 })
 
-test_that("get_encoding works", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- cut_data(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+
+## data and results used in the next tests
+set.seed(42)
+n <- 50
+Tmax <- 1
+K <- 2
+m <- 10
+d <- generate_2State(n)
+dT <- cut_data(d, Tmax)
+row.names(dT) = NULL
+
+b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+fmca <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE)
+##
+
+
+test_that("compute_optimal_encoding works verbose", {
+  expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, nCores = 1, verbose = TRUE))
+})
+
+
+test_that("get_encoding throws error", {
   fmca <- list(alpha = rep(1, 5))
   class(fmca) = "fmca"
   
@@ -293,17 +263,6 @@ test_that("get_encoding works", {
 
 
 test_that("get_encoding works", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- cut_data(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
-  
   out <- get_encoding(fmca, fdObject = TRUE)
   expect_s3_class(out, "fd")
   
@@ -327,29 +286,8 @@ test_that("get_encoding works", {
   
 })
 
-test_that("compute_optimal_encoding throws an error when the basis is not well suited", {
-  
-  data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
-  b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
-  
-  expect_error({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
-               regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
-               fixed = TRUE)
-})
-
 
 test_that("plot.fmca does not produce warnings", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- cut_data(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
-  
   expect_warning(plot(fmca), regexp = NA)
   expect_warning(plot(fmca, harm = 3, col = c("red", "blue")), regexp = NA)
 })
@@ -370,17 +308,6 @@ test_that("plotComponent throws error", {
 
 
 test_that("plotComponent does not produce warnings", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- cut_data(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
-  
   expect_warning(plotComponent(fmca, addNames = TRUE), regexp = NA)
   expect_warning(plotComponent(fmca, comp = c(2, 3), addNames = FALSE), regexp = NA)
   expect_warning(plotComponent(fmca, shape = 23), regexp = NA)
@@ -392,17 +319,6 @@ test_that("plotEigenvalues throws error", {
 })
 
 test_that("plotEigenvalues does not produce warnings", {
-  n <- 50
-  Tmax <- 1
-  K <- 2
-  m <- 10
-  d <- generate_2State(n)
-  dT <- cut_data(d, Tmax)
-  row.names(dT) = NULL
-  
-  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1)
-  
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = FALSE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = FALSE, normalize = TRUE), regexp = NA)
   expect_warning(plotEigenvalues(fmca, cumulative = TRUE, normalize = FALSE), regexp = NA)
