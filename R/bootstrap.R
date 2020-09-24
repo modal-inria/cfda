@@ -136,7 +136,7 @@ computeVarianceAlpha <- function(bootEncoding, nState, nBasis)
     varAlpha[[harm]] <- list()
     for(iState in 1:nState)
     {
-      varAlpha[[harm]][[iState]] <- var(do.call(rbind, lapply(bootEncoding, function(x) x$alpha[[harm]][, iState])))
+      varAlpha[[harm]][[iState]] <- var(do.call(rbind, lapply(bootEncoding, function(x) Re(x$alpha[[harm]][, iState]))))
     }
   }
   
