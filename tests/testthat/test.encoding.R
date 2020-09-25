@@ -327,13 +327,13 @@ test_that("get_encoding works", {
   
 })
 
-test_that("compute_optimal_encoding throws an error when the basis is not well suited", {
+test_that("compute_optimal_encoding throws a warning when the basis is not well suited", {
   
   data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   
-  expect_error({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
-               regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.", 
+  expect_warning({fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)}, 
+               regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.", 
                fixed = TRUE)
 })
 
@@ -352,6 +352,7 @@ test_that("plot.fmca does not produce warnings", {
   
   expect_warning(plot(fmca), regexp = NA)
   expect_warning(plot(fmca, harm = 3, col = c("red", "blue")), regexp = NA)
+  expect_warning(plot(fmca, addCI = TRUE), regexp = NA)
 })
 
 

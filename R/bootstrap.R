@@ -28,8 +28,7 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
       cat("*")
     idToKeep <- sample(nId, floor(propBootstrap * nId), replace = TRUE)
     
-    try({outEnc[[i]] = computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep, label, verbose = FALSE)})
-    
+    try({outEnc[[i]] = computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep, label, verbose = FALSE, manage0 = FALSE)})
     
     # outEnc[[i]] = c(outEnc[[i]] , list(basisobj = basisobj))
     # class(outEnc[[i]]) = "fmca"
