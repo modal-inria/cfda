@@ -185,7 +185,7 @@ test_that("compute_optimal_encodings has the same results as before when there i
   row.names(dT) = NULL
   
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmcaNew <- compute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
+  expect_silent(fmcaNew <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
   
   expect_silent(fmcaOld <- oldcompute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
   
@@ -203,7 +203,7 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
   skip_on_cran()
   
   data(biofam2)
-  d <- biofam2[biofam2$id <= 200, ]
+  d <- biofam2[biofam2$id <= 100, ]
   nState <- length(unique(d$state))
   nbasis <- 8 
   b <- create.bspline.basis(c(15, 30), nbasis = nbasis, norder = 4)
