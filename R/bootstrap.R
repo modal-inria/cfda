@@ -28,7 +28,7 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
       cat("*")
     idToKeep <- sample(nId, floor(propBootstrap * nId), replace = TRUE)
     
-    try({outEnc[[i]] = computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep, label, verbose = FALSE, manage0 = FALSE)})
+    try({outEnc[[i]] = computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep, label, verbose = FALSE, manage0 = TRUE)})
     
     # outEnc[[i]] = c(outEnc[[i]] , list(basisobj = basisobj))
     # class(outEnc[[i]]) = "fmca"
@@ -38,8 +38,8 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
   outEnc = unifySign(outEnc, signReference)
   
   # bootstrap estimate of alpha and invF05
-  alpha <- lapply(1:(K * nBasis), function(harm) Reduce("+", lapply(outEnc, function(x) x$alpha[[harm]]))/nBootstrap)
-  invF05vec <- computeMeanInvF05vec(outEnc)
+  # alpha <- lapply(1:(K * nBasis), function(harm) Reduce("+", lapply(outEnc, function(x) x$alpha[[harm]]))/nBootstrap)
+  # invF05vec <- computeMeanInvF05vec(outEnc)
   
   t4 <- proc.time()
   if(verbose)
@@ -60,7 +60,7 @@ getSignReference <- function(alpha)
     isNeg[i] = Re(alpha[[i]][pos[i]]) < 0
   }
   
-  return(list(position = pos, isNegative = isNeg))
+  return(list(position = pos, isNegative = isNeg, allNegative = lapply(alpha, function(x) Re(x) < 0)))
 }
 
 
@@ -72,7 +72,6 @@ getSignReference <- function(alpha)
 # @author Quentin Grimonprez
 unifySign <- function(out, signReference)
 {
-  signNeg <- matrix(nrow = length(signReference$pos), ncol = length(out))
   for(i in seq_along(out))
   {
     if(!is.null(out[[i]])) # an output can be NULL due to inversion problem 
@@ -80,14 +79,29 @@ unifySign <- function(out, signReference)
       # we look if the element at the given position is negative
       for(j in seq_along(out[[i]]$alpha))
       {
-        signNeg[j, i] <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
+        signNeg <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
         
-        if(signNeg[j, i] != signReference$isNegative[j])
+        # if there is a NA at he given position, we try an other position
+        if(!is.na(signNeg))
         {
-          out[[i]]$alpha[[j]] = out[[i]]$alpha[[j]] * -1
-          out[[i]]$pc[, j] = out[[i]]$pc[, j] * -1
-          out[[i]]$invF05vec[, j] = out[[i]]$invF05vec[, j] * -1      
-        }  
+          if(signNeg != signReference$isNegative[j])
+          {
+            out[[i]]$alpha[[j]] = out[[i]]$alpha[[j]] * -1
+            out[[i]]$pc[, j] = out[[i]]$pc[, j] * -1
+            out[[i]]$invF05vec[, j] = out[[i]]$invF05vec[, j] * -1      
+          } 
+        }else{
+          newPos <- which.max(out[[i]]$alpha[[j]])
+          signNeg <- Re(out[[i]]$alpha[[j]][newPos]) < 0
+          
+          if(signNeg != signReference$allNegative[[j]][newPos])
+          {
+            out[[i]]$alpha[[j]] = out[[i]]$alpha[[j]] * -1
+            out[[i]]$pc[, j] = out[[i]]$pc[, j] * -1
+            out[[i]]$invF05vec[, j] = out[[i]]$invF05vec[, j] * -1      
+          } 
+        }
+ 
       }
     }
   }
@@ -135,7 +149,8 @@ computeVarianceAlpha <- function(bootEncoding, nState, nBasis)
     varAlpha[[harm]] <- list()
     for(iState in 1:nState)
     {
-      varAlpha[[harm]][[iState]] <- var(do.call(rbind, lapply(bootEncoding, function(x) x$alpha[[harm]][, iState])))
+      tryCatch({varAlpha[[harm]][[iState]] <- var(do.call(rbind, lapply(bootEncoding, function(x) x$alpha[[harm]][, iState])), use = "pairwise.complete.obs")}, 
+               error = function(e) e)
     }
   }
   

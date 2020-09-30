@@ -4,7 +4,10 @@ context("Bootstrap functions")
 
 test_that("getSignReference works", {
   alpha <- list(matrix(1:9, nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix(c(1:5, 4:1), nrow = 3))
-  expectedOut <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE))
+  expectedOut <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE), 
+                      allNegative = list(matrix(1:9, nrow = 3) < 0, 
+                                         matrix(-1 * (9:1), nrow = 3) < 0, 
+                                         matrix(c(1:5, 4:1), nrow = 3) < 0))
   
   out <- getSignReference(alpha)
   

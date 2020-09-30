@@ -228,8 +228,8 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
                  regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.",
                  fixed = TRUE)
   
-  expect_false("bootstrap" %in% names(fmcaNewBootstrap))
-  expect_false("varAlpha" %in% names(fmcaNewBootstrap))
+  expect_true("bootstrap" %in% names(fmcaNewBootstrap))
+  expect_true("varAlpha" %in% names(fmcaNewBootstrap))
 })
 
 
