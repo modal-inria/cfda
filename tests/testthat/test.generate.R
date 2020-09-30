@@ -136,8 +136,8 @@ test_that("generate_2State output has the right format", {
   # id are between 1 and n
   expect_equal(sort(unique(d$id)), 1:n)
   
-  # state are betwwen 1 and 2
-  expect_equal(sort(unique(d$state)), 1:2)
+  # state are either 0 and 1
+  expect_equal(sort(unique(d$state)), 0:1)
   
   # all time are between 0 and 1
   expect_true(all(d$time <= 1))
