@@ -181,13 +181,18 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
     stop("harm must be an integer between 1 and the number of components.")
   ##
   
-  fdObj <- fd(x$alpha[[harm]], x$basisobj)
   
+  alpha <- x$alpha[[harm]]
   
   if(fdObject)
   {
+    fdObj <- fd(x$alpha[[harm]], x$basisobj)
+    
     return(fdObj)
   }else{
+    alpha[is.na(alpha)] = 0
+    fdObj <- fd(alpha, x$basisobj)
+    
     rangex <- fdObj$basis$rangeval
     nBasis <- fdObj$basis$nbasis
     
