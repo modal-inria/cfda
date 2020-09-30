@@ -95,7 +95,7 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
     geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State"), colour = "black")
   
   p = p +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding function for harmonic number ", harm))
   
   if(!is.null(col))
     p = p + scale_fill_manual(values = col, drop = FALSE)
@@ -116,7 +116,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
     geom_line()
    
   p = p +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding function for harmonic number ", harm))
   
   if(!is.null(col))
     p = p + scale_colour_manual(values = col, drop = FALSE)
