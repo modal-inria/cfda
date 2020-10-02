@@ -182,6 +182,7 @@ computeVarianceEncoding <- function(varAlpha, basisobj, harm = 1, nx = 200)
     funcVar[[iState]] = rep(NA, nx)
     for(j in seq_along(timeVal))
     {
+      varAlpha[[harm]][[iState]][is.na(varAlpha[[harm]][[iState]])] = 0
       funcVar[[iState]][j] <- Phi[j, , drop = FALSE] %*% varAlpha[[harm]][[iState]] %*% t(Phi[j, , drop = FALSE])
     }
   }
