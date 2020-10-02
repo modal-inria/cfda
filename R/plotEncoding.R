@@ -92,7 +92,8 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
   df = df[df$State %in% states, ]
   
   p <- p + 
-    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State"), colour = "black")
+    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State", colour = "State"), alpha = 1) + 
+    scale_colour_hue(l = 30, drop = FALSE)
   
   p = p +
     labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding function for harmonic number ", harm))
