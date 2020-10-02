@@ -17,6 +17,9 @@ jobs:
   exclude:
   - r: devel
     os: osx
+    
+  - r: oldrel
+    os: osx
    
 r_packages:
   - devtools
