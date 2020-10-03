@@ -4,7 +4,10 @@ context("Bootstrap functions")
 
 test_that("getSignReference works", {
   alpha <- list(matrix(1:9, nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix(c(1:5, 4:1), nrow = 3))
-  expectedOut <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE))
+  expectedOut <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE), 
+                      allNegative = list(matrix(1:9, nrow = 3) < 0, 
+                                         matrix(-1 * (9:1), nrow = 3) < 0, 
+                                         matrix(c(1:5, 4:1), nrow = 3) < 0))
   
   out <- getSignReference(alpha)
   
@@ -105,7 +108,7 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj", "bootstrap", "varAlpha"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj", "pt", "bootstrap", "varAlpha"))
   
   ## bootstrap
   expect_length(fmca$bootstrap, 50)

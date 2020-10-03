@@ -96,6 +96,9 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   }
   ## end check
   
+  # used to determine the moments where the probability is 0 in plot.fmca
+  pt <- estimate_pt(data)
+  
   if(verbose)
     cat("######### Compute encoding #########\n")
   
@@ -132,7 +135,7 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   
   Uval <- computeUmatrix(data, uniqueId2, id2, basisobj, K, nCores, verbose, ...)
   
-  fullEncoding <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose)
+  fullEncoding <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = TRUE)
     
   
   if(computeCI)
@@ -140,11 +143,19 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
     signRef <- getSignReference(fullEncoding$alpha)
       
     bootEncoding <- computeBootStrapEncoding(Uval, V, K, nBasis, label, nId, propBootstrap, nBootstrap, signRef, verbose)
-    varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
+    if(length(bootEncoding) == 0)
+    {
+      warning("All bootstrap samples return an error. Try to change the basis.")
+      out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt))
+    }
+    else
+    {
+      varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
+      out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt, bootstrap = bootEncoding, varAlpha = varAlpha))
+    }
     
-    out <- c(fullEncoding, list(V = V, basisobj = basisobj, bootstrap = bootEncoding, varAlpha = varAlpha))
   }else{
-    out <- c(fullEncoding, list(V = V, basisobj = basisobj))
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt))
   }
   
   class(out) = "fmca"
@@ -380,7 +391,7 @@ compute_Uxij <- function(x, phi, K, ...)
 
 
 # @author Cristian Preda, Quentin Grimonprez
-computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
+computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = FALSE)
 {
   t4 <- proc.time()
   if(verbose)
@@ -397,21 +408,43 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
   }
   
+  # save matrices before modifying them
+  outMat <- list(F = Fmat, G = G)
   
-  #res = eigen(solve(F)%*%G)
-  F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
   
-  if(any(dim(F05) != rep(K*nBasis, 2)))
+  # manage the case where there is a column full of 0 (non invertible matrix)
+  # if TRUE, we remove the 0-columns (and rows) and throw a warning
+  # otherwise we throw an error and the process stops
+  if(manage0)
   {
-    cat("\n")
-    if(any(colSums(Fmat) == 0))
-      stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+    # column full of 0
+    ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
+    if(sum(ind0) > 0)
+      warning("The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.")
     
-    stop("F matrix is not invertible. You can try to change the basis.")
+    F05 <- t(mroot(Fmat[!ind0, !ind0]))#F  = t(F05)%*%F05
+    G = G[!ind0, !ind0]
+    V = V[, !ind0]
+    
+  }else{
+    ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
+    
+    # res = eigen(solve(F)%*%G)
+    F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
+    
+    if(any(dim(F05) != rep(K*nBasis, 2)))
+    {
+      cat("\n")
+      if(any(colSums(Fmat) == 0))
+        stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+      
+      stop("F matrix is not invertible. You can try to change the basis.")
+    }
   }
+
   
   invF05 <- solve(F05)
-  #res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
+  # res = eigen(F05%*%solve(F)%*%G%*%solve(F05))
   res <- eigen(t(invF05) %*% G %*% invF05)
   
   # les vecteurs propres (qui donnent les coeffs des m=nBasis codages, pour chaque val propre)
@@ -430,7 +463,12 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
   # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
   # 2eme col les coefs pour état 2, etc
   
-  alpha <- lapply(aux1, function(w) {return(matrix(w, ncol = K, dimnames = list(NULL, label$label)))})
+  alpha <- lapply(aux1, function(w) {
+    wb = rep(NA, nBasis * K)
+    wb[!ind0] = w
+    
+    return(matrix(wb, ncol = K, dimnames = list(NULL, label$label)))
+  })
   
   pc <- V %*% invF05vec
   rownames(pc) = uniqueId
@@ -440,6 +478,6 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose)
   if(verbose)
     cat(paste0("\nDONE in ", round((t5-t4)[3], 2), "s\n"))
 
-  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = Fmat, G = G, invF05vec = invF05vec))
+  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = outMat$F, G = outMat$G, invF05vec = invF05vec))
 }
 

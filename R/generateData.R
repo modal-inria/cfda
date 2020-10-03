@@ -103,7 +103,7 @@ generate_2State <- function(n)
   
   temps <- rep(0, 2*n)
   temps[(1:n)*2] = runif(n)
-  d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(1:2, n))
+  d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(0:1, n))
   
   row.names(d) = NULL
   

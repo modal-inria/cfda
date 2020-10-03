@@ -318,6 +318,62 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
   return(out)
 }
 
+# Extract probability to be in each state at a given time
+# 
+# @param pt output of \link{estimate_pt} function
+# @param t time value at which the probability is required
+# 
+# @return  probability to be in each state at time t
+# 
+# 
+# @examples 
+# # Simulate the Jukes-Cantor model of nucleotide replacement 
+# K <- 4
+# PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+# lambda_PJK <- c(1, 1, 1, 1)
+# d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
+# 
+# d_JK2 <- cut_data(d_JK, 10)
+# 
+# # estimate probabilities
+# pt <- estimate_pt(d_JK2)
+#
+# get_proba(pt, 1.5)
+#
+# 
+# @seealso \link{estimate_pt}
+# 
+# @author Quentin Grimonprez
+# 
+# @export   
+get_proba <- function(pt, t)
+{
+  # if we do not export this function, there is no need to do theses checks
+  # if(class(pt) != "pt")
+  #   stop("pt must be an object of class pt.")
+  # if(any(is.na(t)) || !is.numeric(t) || length(t) != 1)
+  #   stop("t must be a real.")
+  
+  # find the index containing the first time value greater than the given time t
+  i <- 1
+  nT <- length(pt$t)
+  while((i <= nT) & (t >= pt$t[i]))
+  {
+    i = i + 1
+  }
+  
+  # if i == 1, the given time is lower than any time in pt, we can't estimate probabilities, we return NA
+  if(i == 1)
+  {
+    p <- rep(NA, nrow(pt$pt))
+    names(p) = rownames(pt$pt)
+    
+    return(p)
+  }
+  
+  return(pt$pt[, i-1])
+}
+
 
 #' Plot probabilities
 #'

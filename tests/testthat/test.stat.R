@@ -165,6 +165,21 @@ test_that("estimate_pt works with different t", {
 })
 
 
+test_that("get_proba returns the right probabilities", {
+  pt <- list(t = 1:10, pt = matrix(1:30, nrow = 3, ncol = 10, byrow = TRUE, dimnames = list(letters[1:3], 1:10)))
+  class(pt) = "pt"
+  
+  
+  expect_equal(get_proba(pt, 1.5), c("a" = 1, "b" = 11, "c" = 21))
+  expect_equal(get_proba(pt, 1), c("a" = 1, "b" = 11, "c" = 21))
+  expect_equal(get_proba(pt, 5), c("a" = 5, "b" = 15, "c" = 25))
+  expect_equal(get_proba(pt, 5.5), c("a" = 5, "b" = 15, "c" = 25))
+  expect_equal(get_proba(pt, 6), c("a" = 6, "b" = 16, "c" = 26))
+  expect_equal(get_proba(pt, 10), c("a" = 10, "b" = 20, "c" = 30))
+  expect_equal(get_proba(pt, 11), c("a" = 10, "b" = 20, "c" = 30))
+  expect_equal(get_proba(pt, 0), c("a" = NA, "b" = NA, "c" = NA))
+})
+
 
 test_that("plot_pt_classic does not produce warnings", {
   K <- 4

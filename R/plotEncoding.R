@@ -92,10 +92,11 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
   df = df[df$State %in% states, ]
   
   p <- p + 
-    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State"), colour = "black")
+    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State", colour = "State"), alpha = 1) + 
+    scale_colour_hue(l = 30, drop = FALSE)
   
   p = p +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding function for harmonic number ", harm))
   
   if(!is.null(col))
     p = p + scale_fill_manual(values = col, drop = FALSE)
@@ -116,7 +117,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
     geom_line()
    
   p = p +
-    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding with harmonic number ", harm))
+    labs(x = "Time", y = expression(paste("a"["x"], "(t)")), title = paste0("Encoding function for harmonic number ", harm))
   
   if(!is.null(col))
     p = p + scale_colour_manual(values = col, drop = FALSE)
@@ -181,13 +182,18 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
     stop("harm must be an integer between 1 and the number of components.")
   ##
   
-  fdObj <- fd(x$alpha[[harm]], x$basisobj)
   
+  alpha <- x$alpha[[harm]]
   
   if(fdObject)
   {
+    fdObj <- fd(x$alpha[[harm]], x$basisobj)
+    
     return(fdObj)
   }else{
+    alpha[is.na(alpha)] = 0
+    fdObj <- fd(alpha, x$basisobj)
+    
     rangex <- fdObj$basis$rangeval
     nBasis <- fdObj$basis$nbasis
     
@@ -198,11 +204,24 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
     
     fdmat <- eval.fd(timeVal, fdObj)
     
+    fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
+    
     return(list(x = timeVal, y = fdmat))
   }
   
 }
 
+
+# when the probability at a given time is 0, the encoding at this time is returned as NA
+removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
+{
+  p <- t(sapply(timeVal, get_proba, pt = pt))
+  p = p[, match(colnames(fdmat), colnames(p))]
+  p[p != 0] = 1
+  p[p == 0] = NA
+  
+  return(p * fdmat)
+}
 
 
 #' Plot Components
