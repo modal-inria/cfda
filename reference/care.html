@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.5</span>
       </span>
     </div>
 
@@ -166,6 +166,17 @@ Trajectories have different lengths.</p>
 #&gt; 4 15    8     D
 #&gt; 5 15   15     C
 #&gt; 6 15   18     C</div><div class='input'>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>42</span>)
+<span class='kw'>basis</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>18</span>), nbasis = <span class='fl'>10</span>, norder = <span class='fl'>4</span>)
+<span class='kw'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span>(<span class='kw'>care2</span>, <span class='kw'>basis</span>, nCores = <span class='fl'>7</span>)
+
+<span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span>(<span class='kw'>fmca</span>, cumulative = <span class='fl'>TRUE</span>, normalize = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>fmca</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>fmca</span>, addCI = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='plotComponent.html'>plotComponent</a></span>(<span class='kw'>fmca</span>, addNames = <span class='fl'>FALSE</span>)
+}
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
