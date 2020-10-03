@@ -67,7 +67,10 @@ predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectC
   
   V <- computeVmatrix(newdata, uniqueId2, id2, object$basisobj, K, nCores, verbose, ...)
   
-  pc <- V %*% object$invF05vec
+  invF05vec <- sapply(object$alpha, as.vector)
+  invF05vec[is.na(invF05vec)] = 0
+  
+  pc <- V %*% invF05vec
   
   return(pc)
 }
