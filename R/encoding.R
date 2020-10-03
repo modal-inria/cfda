@@ -146,16 +146,16 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
     if(length(bootEncoding) == 0)
     {
       warning("All bootstrap samples return an error. Try to change the basis.")
-      out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt))
+      out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
     }
     else
     {
       varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
-      out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt, bootstrap = bootEncoding, varAlpha = varAlpha))
+      out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt, bootstrap = bootEncoding, varAlpha = varAlpha))
     }
     
   }else{
-    out <- c(fullEncoding, list(V = V, basisobj = basisobj, pt = pt))
+    out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
   }
   
   class(out) = "fmca"
