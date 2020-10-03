@@ -19,18 +19,14 @@ test_that("unifySign works when all are present", {
   ref <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE))
   
   encod <- list(list(alpha = list(matrix(1:9, nrow = 3), matrix(1:9, nrow = 3), matrix(1:9, nrow = 3)), 
-                     pc = matrix(1:9, nrow = 3), 
-                     invF05vec = matrix(1:9, nrow = 3)),
+                     pc = matrix(1:9, nrow = 3)),
                 list(alpha = list(matrix(-1 * (9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3)), 
-                     pc = matrix(-1 * (9:1), nrow = 3), 
-                     invF05vec = matrix(-1 * (9:1), nrow = 3)))
+                     pc = matrix(-1 * (9:1), nrow = 3)))
   
   expectedOut <- list(list(alpha = list(matrix(1:9, nrow = 3), matrix(-1*(1:9), nrow = 3), matrix(1:9, nrow = 3)), 
-                           pc = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3), 
-                           invF05vec = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3)),
+                           pc = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3)),
                       list(alpha = list(matrix((9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix((9:1), nrow = 3)), 
-                           pc = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3), 
-                           invF05vec = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3)))
+                           pc = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3)))
   
   out <- unifySign(encod, ref)
   
@@ -42,20 +38,16 @@ test_that("unifySign works when there are some NULL elements", {
   ref <- list(position = c(9, 1, 5), isNegative = c(FALSE, TRUE, FALSE))
   
   encod <- list(list(alpha = list(matrix(1:9, nrow = 3), matrix(1:9, nrow = 3), matrix(1:9, nrow = 3)), 
-                     pc = matrix(1:9, nrow = 3), 
-                     invF05vec = matrix(1:9, nrow = 3)),
+                     pc = matrix(1:9, nrow = 3)),
                 NULL,
                 list(alpha = list(matrix(-1 * (9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3)), 
-                     pc = matrix(-1 * (9:1), nrow = 3), 
-                     invF05vec = matrix(-1 * (9:1), nrow = 3)))
+                     pc = matrix(-1 * (9:1), nrow = 3)))
   
   expectedOut <- list(list(alpha = list(matrix(1:9, nrow = 3), matrix(-1*(1:9), nrow = 3), matrix(1:9, nrow = 3)), 
-                           pc = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3), 
-                           invF05vec = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3)),
+                           pc = matrix(c(1:3, -4, -5, -6, 7:9), nrow = 3)),
                       NULL,
                       list(alpha = list(matrix((9:1), nrow = 3), matrix(-1 * (9:1), nrow = 3), matrix((9:1), nrow = 3)), 
-                           pc = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3), 
-                           invF05vec = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3)))
+                           pc = matrix(c(9:7, -6, -5, -4, 3:1), nrow = 3)))
   
   out <- unifySign(encod, ref)
   
@@ -108,11 +100,11 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec", "V", "basisobj", "label", "pt", "bootstrap", "varAlpha"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt", "bootstrap", "varAlpha"))
   
   ## bootstrap
   expect_length(fmca$bootstrap, 50)
-  expect_named(fmca$bootstrap[[1]], c("eigenvalues", "alpha", "pc", "F", "G", "invF05vec"))
+  expect_named(fmca$bootstrap[[1]], c("eigenvalues", "alpha", "pc", "F", "G"))
   
   # eigenvalues
   expect_length(fmca$bootstrap[[1]]$eigenvalues, K*m)
@@ -132,9 +124,6 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   
   # G
   expect_equal(dim(fmca$bootstrap[[1]]$G), c(2*m, 2*m))
-  
-  # invF05vec
-  expect_equal(dim(fmca$bootstrap[[1]]$invF05vec), c(m * K, m * K))
   
   # label
   expect_equal(fmca$label, data.frame(label = 0:1, code = 1:2))

@@ -37,10 +37,7 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
   # reorder alpha, pc such that representation have the same sign for each bootstrap sample
   outEnc = unifySign(outEnc, signReference)
   
-  # bootstrap estimate of alpha and invF05
-  # alpha <- lapply(1:(K * nBasis), function(harm) Reduce("+", lapply(outEnc, function(x) x$alpha[[harm]]))/nBootstrap)
-  # invF05vec <- computeMeanInvF05vec(outEnc)
-  
+
   t4 <- proc.time()
   if(verbose)
     cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n"))
@@ -88,7 +85,6 @@ unifySign <- function(out, signReference)
           {
             out[[i]]$alpha[[j]] = out[[i]]$alpha[[j]] * -1
             out[[i]]$pc[, j] = out[[i]]$pc[, j] * -1
-            out[[i]]$invF05vec[, j] = out[[i]]$invF05vec[, j] * -1      
           } 
         }else{
           newPos <- which.max(out[[i]]$alpha[[j]])
@@ -98,7 +94,6 @@ unifySign <- function(out, signReference)
           {
             out[[i]]$alpha[[j]] = out[[i]]$alpha[[j]] * -1
             out[[i]]$pc[, j] = out[[i]]$pc[, j] * -1
-            out[[i]]$invF05vec[, j] = out[[i]]$invF05vec[, j] * -1      
           } 
         }
  
@@ -108,25 +103,6 @@ unifySign <- function(out, signReference)
   
   
   return(out)
-}
-
-
-# compute the mean pc scores
-#
-# compute pc scores for each bootstrap sample then compute the mean
-#
-# @param bootEncoding output of computeBootStrapEncoding function
-#
-# @author Quentin Grimonprez
-computeMeanInvF05vec <- function(bootEncoding)
-{
-  vec <- list()
-  for(i in seq_along(bootEncoding))
-  {
-    vec[[i]] = bootEncoding[[i]]$invF05vec 
-  }
-  
-  return(Reduce("+", vec)/length(bootEncoding))
 }
 
 

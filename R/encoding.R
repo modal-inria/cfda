@@ -20,7 +20,6 @@
 #'   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
 #'   \item \code{G} covariance matrix of \code{V}
 #'   \item \code{basisobj} \code{basisobj} input parameter
-#'   \item \code{invF05vec} elements used to compute principal component scores
 #'   \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run 
 #'   \item \code{varAlpha} Only if \code{computeCI = TRUE}. Variance of alpha parameters
 #' }
@@ -478,6 +477,6 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   if(verbose)
     cat(paste0("\nDONE in ", round((t5-t4)[3], 2), "s\n"))
 
-  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = outMat$F, G = outMat$G, invF05vec = invF05vec))
+  return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = outMat$F, G = outMat$G))
 }
 

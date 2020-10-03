@@ -208,10 +208,10 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
   nbasis <- 8 
   b <- create.bspline.basis(c(15, 30), nbasis = nbasis, norder = 4)
   
-  expect_warning({fmcaNew <- compute_optimal_encoding(d, b, computeCI = FALSE, nCores = 1, verbose = TRUE)}, 
+  expect_warning({fmcaNew <- compute_optimal_encoding(d, b, computeCI = FALSE, nCores = 1, verbose = FALSE)}, 
                  regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.",
                  fixed = TRUE)
-  expect_error({fmcaOld <- oldcompute_optimal_encoding(d, b, nCores = 1, verbose = TRUE)}, 
+  expect_error({fmcaOld <- oldcompute_optimal_encoding(d, b, nCores = 1, verbose = FALSE)}, 
                regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.",
                fixed = TRUE)
   
@@ -223,8 +223,7 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
   out <- get_encoding(fmcaNew, fdObject = FALSE)
   expect_true(any(is.na(out$y)))
   
-  # no 0 column management in bootstrap
-  expect_warning({fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, nCores = 1, verbose = TRUE)}, 
+  expect_warning({fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, nCores = 1, verbose = FALSE)}, 
                  regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.",
                  fixed = TRUE)
   
@@ -263,3 +262,22 @@ test_that("removeTimeAssociatedWithNACoeff works", {
   expect_true(all(is.na(out[18:20, 2])))
   expect_true(all(is.na(out[16:20, 4])))
 })
+
+
+
+test_that("predict works when there is some 0-column", {
+  skip_on_cran()
+  
+  data(biofam2)
+  d <- biofam2[biofam2$id <= 100, ]
+  nState <- length(unique(d$state))
+  nbasis <- 8 
+  b <- create.bspline.basis(c(15, 30), nbasis = nbasis, norder = 4)
+
+  fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, nCores = 1, verbose = FALSE)
+  
+  out <- predict(fmcaNewBootstrap, d, nCores = 1, verbose = FALSE)
+
+  expect_equivalent(out, fmcaNewBootstrap$pc)
+})
+
