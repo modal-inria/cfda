@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Categorical Functional Data Analysis — cfda-package • cfda</title>
+<title>Predict using RMixtComp — predict.fmca • cfda</title>
 
 
 <!-- jquery -->
@@ -39,21 +39,8 @@
 
 
 
-<meta property="og:title" content="Categorical Functional Data Analysis — cfda-package" />
-<meta property="og:description" content="cfda provides functions for the analysis of categorical functional data.
-The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
-This can be done using the compute_optimal_encoding function that takes in arguments the data in a specific format and
-a basis of functions created using the fda package (cf. create.basis). The output can be analyzed with plot.fmca, 
-get_encoding, plotEigenvalues and plotComponent.
-Moreover, cfda contains functions to visualize and compute some statistics about categorical functional data. 
-A summary of the dataset is available with summary_cfd.
-plotData shows a graphical representation of the dataset. 
-Basic statistics can be computed: the number of jumps (compute_number_jumps), the duration (compute_duration), 
-the time spent in each state (compute_time_spent), the probability to be in each state at any given time (estimate_pt),
-the transition table (statetable).
-The parameters of a Markov process can be estimated using estimate_Markov function.
-In order to test the different functions, a real dataset is provided (biofam2) as well as two functions for generating data: 
-(generate_Markov and generate_2State)." />
+<meta property="og:title" content="Predict using RMixtComp — predict.fmca" />
+<meta property="og:description" content="Predict the cluster of new samples." />
 
 
 
@@ -118,54 +105,67 @@ In order to test the different functions, a real dataset is provided (biofam2) a
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Categorical Functional Data Analysis</h1>
-    <small class="dont-index">Source: <a href='https://github.com/modal-inria/cfda/blob/master/R/cfda-package.R'><code>R/cfda-package.R</code></a></small>
-    <div class="hidden name"><code>cfda-package.Rd</code></div>
+    <h1>Predict using RMixtComp</h1>
+    <small class="dont-index">Source: <a href='https://github.com/modal-inria/cfda/blob/master/R/predict.R'><code>R/predict.R</code></a></small>
+    <div class="hidden name"><code>predict.fmca.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>cfda provides functions for the analysis of categorical functional data.</p>
-<p>The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
-This can be done using the <code><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></code> function that takes in arguments the data in a specific format and
-a basis of functions created using the <code>fda</code> package (cf. <code>create.basis</code>). The output can be analyzed with <code><a href='plot.fmca.html'>plot.fmca</a></code>, 
-<code><a href='get_encoding.html'>get_encoding</a></code>, <code><a href='plotEigenvalues.html'>plotEigenvalues</a></code> and <code><a href='plotComponent.html'>plotComponent</a></code>.</p>
-<p>Moreover, <code>cfda</code> contains functions to visualize and compute some statistics about categorical functional data. 
-A summary of the dataset is available with <code><a href='summary_cfd.html'>summary_cfd</a></code>.
-<code><a href='plotData.html'>plotData</a></code> shows a graphical representation of the dataset. 
-Basic statistics can be computed: the number of jumps (<code><a href='compute_number_jumps.html'>compute_number_jumps</a></code>), the duration (<code><a href='compute_duration.html'>compute_duration</a></code>), 
-the time spent in each state (<code><a href='compute_time_spent.html'>compute_time_spent</a></code>), the probability to be in each state at any given time (<code><a href='estimate_pt.html'>estimate_pt</a></code>),
-the transition table (<code><a href='statetable.html'>statetable</a></code>).</p>
-<p>The parameters of a Markov process can be estimated using <code><a href='estimate_Markov.html'>estimate_Markov</a></code> function.</p>
-<p>In order to test the different functions, a real dataset is provided (<code><a href='biofam2.html'>biofam2</a></code>) as well as two functions for generating data: 
-(<code><a href='generate_Markov.html'>generate_Markov</a></code> and <code><a href='generate_2State.html'>generate_2State</a></code>).</p>
+    <p>Predict the cluster of new samples.</p>
     </div>
 
+    <pre class="usage"><span class='co'># S3 method for fmca</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(
+  <span class='kw'>object</span>,
+  newdata = <span class='kw'>NULL</span>,
+  nCores = <span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>ceiling</a></span>(<span class='fu'>detectCores</span>()<span class='op'>/</span><span class='fl'>2</span>)),
+  verbose = <span class='fl'>TRUE</span>,
+  <span class='kw'>...</span>
+)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>output of <a href='compute_optimal_encoding.html'>compute_optimal_encoding</a> function.</p></td>
+    </tr>
+    <tr>
+      <th>newdata</th>
+      <td><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and <code>state</code>, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use <code><a href='cut_data.html'>cut_data</a></code>)..</p></td>
+    </tr>
+    <tr>
+      <th>nCores</th>
+      <td><p>number of cores used for parallelization. Default is the half of cores.</p></td>
+    </tr>
+    <tr>
+      <th>verbose</th>
+      <td><p>if TRUE print some information</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>parameters for <code><a href='https://rdrr.io/r/stats/integrate.html'>integrate</a></code> function (see details).</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>See the vignette for a detailled example and mathematical background:
-<code><a href='https://rdrr.io/r/utils/RShowDoc.html'>RShowDoc("cfda", package = "cfda")</a></code></p>
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    
-<ul>
-<li><p>Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.</p></li>
-<li><p>Deville J.C. et  Saporta G. (1980) Analyse harmonique qualitative, DIDAY et al. (editors), Data Analysis and Informatics, North Holland, p. 375-389.</p></li>
-<li><p>Saporta G. (1981) Méthodes exploratoires d'analyse de données temporelles, Cahiers du B.U.R.O, Université Pierre et Marie Curie, 37-38, Paris.</p></li>
-</ul>
-
+    <p>principal components for the individuals</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement  </span>
+    <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
 <span class='kw'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
 <span class='kw'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
 <span class='kw'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow = <span class='kw'>K</span>, ncol = <span class='kw'>K</span>) <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='kw'>K</span>))
 <span class='kw'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>)
-<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='kw'>Tmax</span>)
+<span class='kw'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>10</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='kw'>Tmax</span>,
+                            labels = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"C"</span>, <span class='st'>"G"</span>, <span class='st'>"T"</span>))
 <span class='kw'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, <span class='kw'>Tmax</span>)
 
 <span class='co'># create basis object</span>
@@ -183,27 +183,26 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; ---- Compute V matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 0.6s
+#&gt; DONE in 0.51s
 #&gt; ---- Compute U matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 3.48s
+#&gt; DONE in 3.13s
 #&gt; ---- Compute encoding: 
-#&gt; DONE in 0.06s
-#&gt; Run Time: 4.16s</div><div class='input'>
-<span class='co'># plot eigenvalues</span>
-<span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span>(<span class='kw'>encoding</span>, cumulative = <span class='fl'>TRUE</span>, normalize = <span class='fl'>TRUE</span>)
-</div><div class='img'><img src='cfda-package-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># plot the two first components</span>
-<span class='fu'><a href='plotComponent.html'>plotComponent</a></span>(<span class='kw'>encoding</span>, comp = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>))
-</div><div class='img'><img src='cfda-package-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># plot the encoding using the first harmonic</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='kw'>encoding</span>)
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='cfda-package-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># extract the encoding using the first harmonic</span>
-<span class='kw'>encod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_encoding.html'>get_encoding</a></span>(<span class='kw'>encoding</span>)
+#&gt; DONE in 0s
+#&gt; Run Time: 3.65s</div><div class='input'>
 
+<span class='co'># predict principal components</span>
+<span class='kw'>d_JK_predict</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span>(n = <span class='fl'>5</span>, K = <span class='kw'>K</span>, P = <span class='kw'>PJK</span>, lambda = <span class='kw'>lambda_PJK</span>, Tmax = <span class='kw'>Tmax</span>,
+                            labels = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"A"</span>, <span class='st'>"C"</span>, <span class='st'>"G"</span>, <span class='st'>"T"</span>))
+<span class='kw'>d_JK_predict2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span>(<span class='kw'>d_JK</span>, <span class='kw'>Tmax</span>)
 
+<span class='kw'>pc</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span>(<span class='kw'>encoding</span>, <span class='kw'>d_JK_predict2</span>, nCores = <span class='fl'>1</span>)
+</div><div class='output co'>#&gt; ######### Predict Principal Components #########
+#&gt; ---- Compute V matrix:
+#&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
+#&gt; 
+#&gt; DONE in 0.51s</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
