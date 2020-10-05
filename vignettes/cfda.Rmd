@@ -24,7 +24,7 @@ set.seed(42)
 
 We simulate the Jukes Cantor model of nucleotide replacement. 
 
-Denote the set of nucleotides: $E = \{A, T, G, C\}$. A DNA sequence is seen as a string of nucleotides: ATGCATTAC.
+Denote the set of nucleotides: $E = \{A, T, G, C\}$. A DNA sequence is seen as a string of nucleotides: `ATGCATTAC`.
 
 Each \textbf{site} in the sequence is subject to mutation over time.
 
@@ -57,7 +57,7 @@ d_JK <- generate_Markov(n = n, K = 4, P = PJK, lambda = lambda_PJK, Tmax = Tmax,
 head(d_JK, 10)
 ```
 
-The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different individuals (usually integers). `time` contains the time values where a change occurs, note that for each individual, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be a positive integer.
+The dataset is a data.frame with 3 columns: `id`, `time`, `state`. `id` contains the id of the different individuals (usually integers). `time` contains the time values at which a change occurs, note that for each individual, time values are ordered and start at 0. `state` contains the state that appears at the given time, state must be characters, factors, integers. This data format is used by the most part of cfda's functions.
 
 ```{r suumary, echo=TRUE}
 summary_cfd(d_JK)
@@ -69,7 +69,7 @@ duration <- compute_duration(d_JK)
 head(duration)
 ```
 
-All individuals has a different length. Some methods require that the end time of each individual is the same ($T_{\max}$), this can be done with the following function:
+All individuals has a different length. The computation of an optimal encoding requires that the end time of each individual is the same ($T_{\max}$), this can be done with the following function:
 
 ```{r cutT, echo=TRUE}
 d_JKT <- cut_data(d_JK, Tmax = Tmax)
@@ -103,7 +103,7 @@ boxplot(timeSpent)
 
 ### Number of jumps in $[0,T_{\max}]$:
  
-For each individual, the number of jumps occuring in $[0,T_{\max}]$ is computed.
+For each individual, the number of jumps occurring in $[0,T_{\max}]$ is computed.
 ```{r, echo=TRUE}  
 nJump <- compute_number_jumps(d_JK)
 head(nJump)
@@ -140,7 +140,7 @@ The transitions between states can been studied by computing a frequency table c
 ``` 
 
 
-Assuming that the data follows a Markov process, parameters $P$ and $\lambda$ of the processus can be estimated.
+Assuming that the data follows a Markov process, parameters $P$ (transition probability matrix) and $\lambda$ of the process can be estimated.
 ```{r, echo=TRUE}  
 mark <- estimate_Markov(d_JK)
 mark
@@ -160,13 +160,6 @@ plot(mark)
 ### Concept
 
 $X$ is a continuous stochastic process with jumps. We define categorical functional data as a set of sample paths of $X$.
-
-The pioneer work of J.-C. Deville and G. Saporta (1980-1982) on cfda.
-
-Deville J.C. (1982) \textit{Analyse de donn\'ees chronologiques
-qualitatives: comment analyser des calendriers ?}, Annales de
-l'INSEE, No 45, p. 45-104.
-
 
 **cfda** is seen as an extension of the multiple correspondence analysis to a stochastic process.
 
@@ -206,7 +199,7 @@ with $a_x(t) =\mathbb{E}(z|X_t= x), \ \ \forall x \in S$.
 
 For each $x\in S$, the functions $a_x: [0,T_{\max}|\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$. 
 
-The eigen-value problem becomes in terms of encodings:
+The eigenvalue problem becomes in terms of encodings:
 
 $$\lambda a_x(t) = \sum_{y\in S}\displaystyle\int_{0}^{T_{\max}}\frac{p_{x,y}(t,s)}{p_x(t)}a_y(s)ds, \ \ \ \ \ \forall x \in S, \forall t\in [0,T_{\max}], $$
 where$p_{x,y}(t,s) = \mathbb{P}(X_t=x, X_s=y)$ and $p_x(t)= \mathbb{P}(X_t=x)$.
@@ -262,13 +255,16 @@ The optimal encoding is computed using:
 fmca <- compute_optimal_encoding(d_JKT, b, nCores = 2, verbose = FALSE)
 ```
 
-The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`.
+By default this function computes bootstrap estimates of the encoding functions in order to have a confidence interval. This is controlled by the `computeCI` arguments.
+The output is a list containing the different elements computed during the process: `eigenvalues`, `pc`, `alpha`, `F`, `G`, `V` and `basisobj`. Note that `alpha`contains the coefficients of the different encoding functions and `pc`the principal components. These components can be used with classical statistic methods (k-means, regression...).
 
+
+The eigenvalues can be computed using:
 ```{r, echo=TRUE}
 plotEigenvalues(fmca, cumulative = TRUE)
 ```
 
-The optimal encoding coefficients $\alpha$'s:
+The first encoding function coefficients $\alpha$'s:
 ```{r, echo=TRUE}
 print(fmca$alpha[[1]])
 ```
@@ -277,14 +273,20 @@ The resulting encoding can be plotted:
 ```{r, echo=TRUE}
 plot(fmca)
 ```
-or extracted as a \code{fd} object (or matrix):
+or extracted as a *fd* object (or matrix):
 ```{r, echo=TRUE}
 encoding <- get_encoding(fmca, fdObject = TRUE)
 ```
 
+By default, it plots (and returns) the first encoding functions. Other encoding can be accessed with the `harm` argument.
 
-
-Plot the two first components.
+A confidence interval can be plotted using the `addCI` argument:
 ```{r, echo=TRUE}
-plotComponent(fmca, comp = c(1, 2))
+plot(fmca, addCI = TRUE, coeff = 2, states = "A")
+```
+
+
+Plot the two first components:
+```{r, echo=TRUE}
+plotComponent(fmca, comp = c(1, 2), addNames = FALSE)
 ```
