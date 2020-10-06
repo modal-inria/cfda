@@ -14,7 +14,7 @@ BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
 Imports: msm, diagram, ggplot2, mgcv, doSNOW, snow, foreach
 Depends: fda, R (>= 3.5.0)
-Suggests: testthat, covr, knitr, markdown
+Suggests: testthat, covr, knitr, rmarkdown
 Encoding: UTF-8
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
