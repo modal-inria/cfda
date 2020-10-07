@@ -275,7 +275,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
     stop("comp must be a vector of positive integers of length 2.")
   ##
   
-  df <- as.data.frame(x$pc)
+  df <- as.data.frame(Re(x$pc))
   df$name = rownames(x$pc)
   
   p <- ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
