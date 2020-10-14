@@ -46,7 +46,7 @@
 #' @author Quentin Grimonprez
 #' 
 #' @export
-plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 2, col = NULL, nx = 128, ...)
+plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 1.96, col = NULL, nx = 128, ...)
 {
   checkLogical(addCI, "addCI")
   
@@ -167,12 +167,13 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 #' @author Cristian Preda
 #'
 #' @export
-get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
+get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL, removeProba0 = TRUE)
 {
   ## check parameters
   if(class(x) != "fmca")
     stop("x must be a fmca object.")
   checkLogical(fdObject, "fdObject")
+  checkLogical(removeProba0, "removeProba0")
   if(!is.null(nx))
   {
     if(any(is.na(nx)) || (length(nx) > 1) || !is.whole.number(nx) || (nx <= 0))
@@ -198,13 +199,14 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
     nBasis <- fdObj$basis$nbasis
     
     if(is.null(nx))
-      nx = max(501, 10 * nBasis + 1)
+      nx = max(length(x$pt$t), 128, 10 * nBasis + 1)
     
     timeVal <- seq(rangex[1], rangex[2], length = nx)
     
     fdmat <- eval.fd(timeVal, fdObj)
     
-    fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
+    if(removeProba0)
+      fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
     
     return(list(x = timeVal, y = fdmat))
   }
