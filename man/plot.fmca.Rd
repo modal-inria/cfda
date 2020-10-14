@@ -9,7 +9,7 @@
   harm = 1,
   states = NULL,
   addCI = FALSE,
-  coeff = 2,
+  coeff = 1.96,
   col = NULL,
   nx = 128,
   ...
