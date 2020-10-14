@@ -167,13 +167,12 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 #' @author Cristian Preda
 #'
 #' @export
-get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL, removeProba0 = TRUE)
+get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 {
   ## check parameters
   if(class(x) != "fmca")
     stop("x must be a fmca object.")
   checkLogical(fdObject, "fdObject")
-  checkLogical(removeProba0, "removeProba0")
   if(!is.null(nx))
   {
     if(any(is.na(nx)) || (length(nx) > 1) || !is.whole.number(nx) || (nx <= 0))
@@ -205,8 +204,7 @@ get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL, removeProba0 
     
     fdmat <- eval.fd(timeVal, fdObj)
     
-    if(removeProba0)
-      fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
+    fdmat = removeTimeAssociatedWithNACoeff(fdmat, timeVal, x$pt)
     
     return(list(x = timeVal, y = fdmat))
   }
