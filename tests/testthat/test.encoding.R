@@ -269,13 +269,13 @@ test_that("get_encoding works", {
   
   out <- get_encoding(fmca, fdObject = FALSE)
   expect_named(out, c("x", "y"))
-  expect_equal(dim(out$y), c(501, 2))
-  expect_length(out$x, 501)
+  expect_equal(dim(out$y), c(128, 2))
+  expect_length(out$x, 128)
   
   out <- get_encoding(fmca, harm = 3, fdObject = FALSE)
   expect_named(out, c("x", "y"))
-  expect_equal(dim(out$y), c(501, 2))
-  expect_length(out$x, 501)
+  expect_equal(dim(out$y), c(128, 2))
+  expect_length(out$x, 128)
   
   out <- get_encoding(fmca, fdObject = FALSE, nx = 100)
   expect_named(out, c("x", "y"))
