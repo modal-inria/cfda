@@ -355,12 +355,7 @@ get_proba <- function(pt, t)
   #   stop("t must be a real.")
   
   # find the index containing the first time value greater than the given time t
-  i <- 1
-  nT <- length(pt$t)
-  while((i <= nT) & (t >= pt$t[i]))
-  {
-    i = i + 1
-  }
+  i <- min(sum(t >= pt$t) + 1, length(pt$t))
   
   # if i == 1, the given time is lower than any time in pt, we can't estimate probabilities, we return NA
   if(i == 1)
