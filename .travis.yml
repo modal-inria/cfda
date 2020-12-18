@@ -17,7 +17,12 @@ jobs:
   exclude:
   - r: devel
     os: osx
-    
+
+addons:
+  apt:
+    packages:
+      - libgit2-dev
+  
 r_packages:
   - devtools
   - covr
