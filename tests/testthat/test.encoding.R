@@ -224,6 +224,15 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 fmca <- compute_optimal_encoding(dT, b,  nCores = 1, computeCI = FALSE, verbose = FALSE)
 ##
 
+test_that("summary.cfda does not produce warnings/errors", {
+  expect_warning(summary(fmca), regexp = NA)
+  expect_error(summary(fmca), regexp = NA)
+})
+
+test_that("print.cfda does not produce warnings/errors", {
+  expect_warning(print(fmca), regexp = NA)
+  expect_error(print(fmca), regexp = NA)
+})
 
 test_that("compute_optimal_encoding works verbose", {
   expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, computeCI = FALSE, nCores = 1, verbose = TRUE))

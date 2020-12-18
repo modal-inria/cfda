@@ -26,7 +26,7 @@ print.fmca <- function(x, n = 6, ...) {
   print(head(x$alpha[[1]], n))
   cat("\n$pc:", nrow(x$pc), "rows", ncol(x$pc), "columns", "\n")
   print(head(x$pc[, 1:n], n))
-  cat("\nOther elements: \"F\", \"G\", \"V\", \"pt\"")
+  cat("\nOther elements: \"F\", \"G\", \"V\", \"pt\"\n")
 }
 
 
