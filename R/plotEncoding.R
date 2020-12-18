@@ -170,7 +170,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL)
 {
   ## check parameters
-  if(class(x) != "fmca")
+  if(!inherits(x, "fmca"))
     stop("x must be a fmca object.")
   checkLogical(fdObject, "fdObject")
   if(!is.null(nx))
@@ -266,7 +266,7 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4, ...)
 {
   ## check parameters
-  if(class(x) != "fmca")
+  if(!inherits(x, "fmca"))
     stop("x must be a fmca object.")
   checkLogical(addNames, "addNames")
   if(length(comp) != 2)
@@ -330,7 +330,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...)
 {
   ## check parameters
-  if(class(x) != "fmca")
+  if(!inherits(x, "fmca"))
     stop("x must be a fmca object.")
   checkLogical(cumulative, "cumulative")
   checkLogical(normalize, "normalize")

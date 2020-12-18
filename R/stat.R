@@ -349,7 +349,7 @@ estimate_pt <- function(data, NAafterTmax = FALSE)
 get_proba <- function(pt, t)
 {
   # if we do not export this function, there is no need to do theses checks
-  # if(class(pt) != "pt")
+  # if(!inherits(x, "pt"))
   #   stop("pt must be an object of class pt.")
   # if(any(is.na(t)) || !is.numeric(t) || length(t) != 1)
   #   stop("t must be a real.")
