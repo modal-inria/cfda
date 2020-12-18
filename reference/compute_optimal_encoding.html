@@ -196,7 +196,7 @@
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='plot.fmca.html'>plot.fmca</a> <a href='plotComponent.html'>plotComponent</a> <a href='get_encoding.html'>get_encoding</a></p></div>
+    <div class='dont-index'><p><a href='plot.fmca.html'>plot.fmca</a> <a href='print.fmca.html'>print.fmca</a> <a href='summary.fmca.html'>summary.fmca</a> <a href='plotComponent.html'>plotComponent</a> <a href='get_encoding.html'>get_encoding</a></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Cristian Preda, Quentin Grimonprez</p>
@@ -226,14 +226,52 @@
 #&gt; ---- Compute V matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 0.93s
+#&gt; DONE in 0.58s
 #&gt; ---- Compute U matrix:
 #&gt;   |                                                                              |                                                                      |   0%  |                                                                              |=======                                                               |  10%  |                                                                              |==============                                                        |  20%  |                                                                              |=====================                                                 |  30%  |                                                                              |============================                                          |  40%  |                                                                              |===================================                                   |  50%  |                                                                              |==========================================                            |  60%  |                                                                              |=================================================                     |  70%  |                                                                              |========================================================              |  80%  |                                                                              |===============================================================       |  90%  |                                                                              |======================================================================| 100%
 #&gt; 
-#&gt; DONE in 4.16s
+#&gt; DONE in 3.73s
 #&gt; ---- Compute encoding: 
 #&gt; DONE in 0s
-#&gt; Run Time: 5.11s</div><div class='input'>
+#&gt; Run Time: 4.34s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; #### FMCA
+#&gt; 
+#&gt; ## Data 
+#&gt; Number of individuals: 10 
+#&gt; Number of states: 4 
+#&gt; Time Range: 0 to 6 
+#&gt; States:  A C G T 
+#&gt; 
+#&gt; ## Basis 
+#&gt; Type: bspline 
+#&gt; Number of basis functions: 6 
+#&gt; 
+#&gt; ## Outputs
+#&gt; Eigenvalues:
+#&gt;   3.355617 2.61548 2.217016 1.567153 1.316513 1.069003 
+#&gt; 
+#&gt; Explained variance:
+#&gt;   0.252 0.448 0.614 0.732 0.83 0.911 
+#&gt; 
+#&gt; Optimal encoding:
+#&gt;                A           C          G           T
+#&gt; [1,] -0.19798351  1.53004508 -0.2960029 -0.30273088
+#&gt; [2,]  0.67517921 -1.31286686  0.1115205 -1.02979138
+#&gt; [3,]  0.01784241  1.31824449 -0.6328117  0.01015712
+#&gt; [4,]  0.88680461 -0.15178082 -0.9048515 -0.10004212
+#&gt; [5,] -0.45993937  0.99337620  0.4101173 -0.72857138
+#&gt; [6,]  0.30779899 -0.02515077 -0.1645764 -1.24377416
+#&gt; 
+#&gt; Principal components:
+#&gt;         [,1]       [,2]       [,3]        [,4]       [,5]        [,6]
+#&gt; 1  1.5106241  1.1309276  1.4853925  2.85630684 -0.3846712 -0.07088045
+#&gt; 2 -3.4808544  0.8031094 -1.8504471  0.94562101 -0.2676681  0.10572659
+#&gt; 3 -1.3956956  0.3959963  0.7070612 -0.77260754  1.0467556  2.07585706
+#&gt; 4 -0.7961365  0.8642820 -1.1868245  0.05111098  1.0865713 -1.65784422
+#&gt; 5 -1.2916457 -0.5284067  1.1787916 -0.89102797 -2.7307101 -0.25190257
+#&gt; 6  0.7201834  1.0720933  0.9577455 -1.23705217  0.4621997 -0.63389204
+#&gt; 
+#&gt; Total elapsed time: 4.335 s</div><div class='input'>
 <span class='co'># plot the optimal encoding</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 18 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='compute_optimal_encoding-1.png' alt='' width='700' height='433' /></div><div class='input'>
