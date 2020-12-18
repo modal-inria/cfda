@@ -21,5 +21,5 @@ Print \code{fmca} object
 Print a \code{fmca} object
 }
 \seealso{
-\link{compute_optimal_encoding}
+\link{compute_optimal_encoding} \link{summary.fmca}
 }

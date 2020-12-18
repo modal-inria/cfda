@@ -9,7 +9,7 @@
 #'
 #' @method print fmca
 #'
-#' @seealso \link{compute_optimal_encoding}
+#' @seealso \link{compute_optimal_encoding} \link{summary.fmca}
 #'
 #' @export
 print.fmca <- function(x, n = 6, ...) {
@@ -27,4 +27,46 @@ print.fmca <- function(x, n = 6, ...) {
   cat("\n$pc:", nrow(x$pc), "rows", ncol(x$pc), "columns", "\n")
   print(head(x$pc[, 1:n], n))
   cat("\nOther elements: \"F\", \"G\", \"V\", \"pt\"")
+}
+
+
+#' @title Object Summaries
+#'
+#' Summary of a \code{fmca} object
+#'
+#'
+#' @param object \code{fmca} object (see \link{compute_optimal_encoding} function)
+#' @param n maximal number of rows and cols to print
+#' @param ... Not used.
+#'
+#'
+#' @method summary fmca
+#'
+#' @seealso \link{compute_optimal_encoding} \link{print.fmca}
+#'
+#' @export
+summary.fmca <- function(object, n = 6, ...) {
+  cat("#### FMCA\n\n")
+  cat("## Data \n")
+  cat("Number of individuals:", nrow(object$pc), "\n")
+  cat("Number of states:", nrow(object$label), "\n")
+  cat("Time Range:", object$basisobj$rangeval[1], "to", object$basisobj$rangeval[2], "\n")
+  cat("States:  ")
+  cat(head(object$label$label, n), "\n")
+  cat("\n")
+  cat("## Basis \n")
+  cat("Type:", object$basisobj$type, "\n")
+  cat("Number of basis functions:", object$basisobj$nbasis, "\n")
+  cat("\n")
+  cat("## Outputs\n")
+  cat("Eigenvalues:\n  ")
+  cat(head(object$eigenvalues, n), "\n")
+  cat("\nExplained variance:\n  ")
+  cat(round(head(cumsum(object$eigenvalues)/sum(object$eigenvalues), n), 3), "\n")
+  cat("\nOptimal encoding:\n")
+  print(head(object$alpha[[1]], n))
+  cat("\nPrincipal components:\n")
+  print(head(object$pc[, 1:n]))
+  cat("\n")
+  cat("Total elapsed time:", round(object$runTime, 3), "s\n")
 }

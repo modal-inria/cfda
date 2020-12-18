@@ -179,7 +179,7 @@ test_that("compute_optimal_encoding works", {
   expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
   
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt"))
+  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt", "runTime"))
   
   # eigenvalues
   expect_length(fmca$eigenvalues, K*m)

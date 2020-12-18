@@ -75,6 +75,7 @@ b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
+summary(encoding)
 
 # plot the optimal encoding
 plot(encoding)
@@ -94,7 +95,7 @@ get_encoding(encoding, harm = 1)
 }
 }
 \seealso{
-\link{plot.fmca} \link{plotComponent} \link{get_encoding}
+\link{plot.fmca} \link{print.fmca} \link{summary.fmca} \link{plotComponent} \link{get_encoding}
 }
 \author{
 Cristian Preda, Quentin Grimonprez

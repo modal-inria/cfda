@@ -20,8 +20,10 @@
 #'   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
 #'   \item \code{G} covariance matrix of \code{V}
 #'   \item \code{basisobj} \code{basisobj} input parameter
+#'   \item \code{pt} output of \link{estimate_pt} function
 #'   \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run 
 #'   \item \code{varAlpha} Only if \code{computeCI = TRUE}. Variance of alpha parameters
+#'   \item \code{runTime} Total elapsed time
 #' }
 #'
 #' @details 
@@ -50,6 +52,7 @@
 #' 
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
+#' summary(encoding)
 #' 
 #' # plot the optimal encoding
 #' plot(encoding)
@@ -60,7 +63,7 @@
 #' # extract the optimal encoding
 #' get_encoding(encoding, harm = 1)
 #'
-#' @seealso \link{plot.fmca} \link{plotComponent} \link{get_encoding}
+#' @seealso \link{plot.fmca} \link{print.fmca} \link{summary.fmca} \link{plotComponent} \link{get_encoding}
 #'
 #' @author Cristian Preda, Quentin Grimonprez
 #' 
@@ -160,8 +163,9 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   class(out) = "fmca"
   t2 <- proc.time()
 
+  out$runTime = as.numeric((t2-t1)[3])
   if(verbose)
-    cat(paste0("Run Time: ", round((t2-t1)[3], 2), "s\n"))
+    cat(paste0("Run Time: ", round(out$runTime, 2), "s\n"))
     
   return(out)
 }
