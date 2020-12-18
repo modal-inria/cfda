@@ -31,7 +31,7 @@ checkDataEndTmax <- function(data)
   if(nLastTime != 1)
     stop("Each individual must end with the same time value.")
   
-  invisible(return(NULL))
+  invisible(NULL)
 }
 
 
@@ -46,7 +46,7 @@ checkDataBeginTime <- function(data)
   if(nFirstTime != 1)
     stop("Each individual must begin with the same time value.")
   
-  invisible(return(NULL))
+  invisible(NULL)
 }
 
 # Check if the given parameter is a single boolean
@@ -62,7 +62,7 @@ checkLogical <- function(x, paramName)
   if(!is.logical(x))
     stop(paste0(paramName, " must be either TRUE or FALSE."))
   
-  invisible(return(NULL))
+  invisible(NULL)
 }
 
 # Check if it is an integer (or vector of integer)
