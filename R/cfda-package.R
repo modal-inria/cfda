@@ -1,6 +1,5 @@
-#' @import diagram doSNOW fda ggplot2 msm mgcv
-#' @importFrom parallel detectCores
-#' @importFrom snow makeCluster stopCluster
+#' @import diagram doParallel fda ggplot2 msm mgcv
+#' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom foreach foreach %dopar% registerDoSEQ
 #' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot

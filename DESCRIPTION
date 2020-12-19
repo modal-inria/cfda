@@ -12,7 +12,7 @@ Description: Package for the analysis of categorical functional data.
   It also provides functions to perform basic statistical analysis on categorical functional data. 
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
-Imports: msm, diagram, ggplot2, mgcv, doSNOW, snow, foreach
+Imports: msm, diagram, ggplot2, mgcv, doParallel, parallel, foreach
 Depends: fda, R (>= 3.5.0)
 Suggests: testthat, covr, knitr, rmarkdown
 Encoding: UTF-8
