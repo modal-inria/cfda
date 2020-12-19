@@ -54,7 +54,7 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
   if(nCores > 1)
   {
     cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
+    registerDoParallel(cl)
   }else{
     registerDoSEQ()
   }
@@ -65,15 +65,12 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
     cat("---- Compute V matrix:\n")
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   t2 <- proc.time()
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
+  V <- foreach(i = uniqueId2, .combine = rbind)%dopar%{
     res <- cfda:::compute_Vxi(data[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)
@@ -89,13 +86,10 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
     cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   
   
-  Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
+  Fval <- foreach(i = uniqueId2, .combine = rbind)%dopar%{
     res <- cfda:::compute_Uxij(data[id2 == i, ], phi, K, ...)
     if((nCores == 1) && verbose)
       setTxtProgressBar(pb, i)

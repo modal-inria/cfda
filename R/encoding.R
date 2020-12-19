@@ -185,7 +185,7 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   if(nCores > 1)
   {
     cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
+    registerDoParallel(cl)
   }else{
     registerDoSEQ()
   }
@@ -195,17 +195,14 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
     cat("---- Compute V matrix:\n")
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   t2 <- proc.time()
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
+  V <- foreach(i = uniqueId, .combine = rbind)%dopar%{
     res <- compute_Vxi(data[id == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
+    if(verbose)
       setTxtProgressBar(pb, i)
     return(res)
   }
@@ -287,7 +284,7 @@ computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   if(nCores > 1)
   {
     cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
+    registerDoParallel(cl)
   }else{
     registerDoSEQ()
   }
@@ -298,14 +295,11 @@ computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
     cat(paste0("---- Compute U matrix:\n"))
     pb <- txtProgressBar(0, nId, style = 3)
     progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   
-  Uval <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
+  Uval <- foreach(i = uniqueId, .combine = rbind)%dopar%{
     res <- compute_Uxij(data[id == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
+    if(verbose)
       setTxtProgressBar(pb, i)
     return(res)
   } 
