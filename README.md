@@ -1,6 +1,6 @@
 # cfda: Categorical Functional Data Analysis
 
-[![Build Status](https://travis-ci.com/modal-inria/cfda.svg?branch=master)](https://travis-ci.com/modal-inria/cfda) [![Build status](https://ci.appveyor.com/api/projects/status/902s96okh97clt5q/branch/master?svg=true)](https://ci.appveyor.com/project/Quentin62/cfda/branch/master) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
+[![R-CMD-check](https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg)](https://github.com/modal-inria/cfda/actions) [![Build status](https://ci.appveyor.com/api/projects/status/902s96okh97clt5q/branch/master?svg=true)](https://ci.appveyor.com/project/Quentin62/cfda/branch/master)  [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
 
 **cfda** provides functions for the analysis of categorical functional data. 
 
