@@ -1,7 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 README.md
-.travis.yml
 .gitignore
 ^appveyor\.yml$
 ^codecov\.yml$
