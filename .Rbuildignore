@@ -2,6 +2,5 @@
 ^\.Rproj\.user$
 README.md
 .gitignore
-^appveyor\.yml$
 ^codecov\.yml$
 ^\.github$
