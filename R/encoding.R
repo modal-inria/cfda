@@ -182,7 +182,12 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  cl <- makeCluster(nCores)
+  if(nCores > 1) {
+    cl <- makeCluster(nCores)
+  } else {
+    cl <- NULL
+  }
+  
 
   if(verbose)
   {
@@ -206,7 +211,8 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   }
   
   # stop parallelization
-  stopCluster(cl)
+  if (nCores > 1)
+    stopCluster(cl)
   
   return(V)
 }
@@ -270,7 +276,11 @@ computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  cl <- makeCluster(nCores)
+  if(nCores > 1) {
+    cl <- makeCluster(nCores)
+  } else {
+    cl <- NULL
+  }
 
   t3 <- proc.time()
   if(verbose)
