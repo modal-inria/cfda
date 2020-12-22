@@ -25,7 +25,7 @@ print.fmca <- function(x, n = 6, ...) {
   cat("$alpha[[1]]:", nrow(x$alpha[[1]]), "rows", ncol(x$alpha[[1]]), "columns", "\n")
   print(head(x$alpha[[1]], n))
   cat("\n$pc:", nrow(x$pc), "rows", ncol(x$pc), "columns", "\n")
-  print(head(x$pc[, 1:n], n))
+  print(head(x$pc[, seq_len(min(n, ncol(x$pc)))], n))
   cat("\nOther elements: \"F\", \"G\", \"V\", \"pt\"\n")
 }
 
@@ -66,7 +66,7 @@ summary.fmca <- function(object, n = 6, ...) {
   cat("\nOptimal encoding:\n")
   print(head(object$alpha[[1]], n))
   cat("\nPrincipal components:\n")
-  print(head(object$pc[, 1:n]))
+  print(head(object$pc[, seq_len(min(n, ncol(object$pc)))]))
   cat("\n")
   cat("Total elapsed time:", round(object$runTime, 3), "s\n")
 }

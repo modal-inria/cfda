@@ -51,67 +51,34 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
   phi <- fd(I, basisobj) #les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  if(nCores > 1)
-  {
-    cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
-  }else{
-    registerDoSEQ()
-  }
-  
-  
+  cl <- makeCluster(nCores)
+  parallel::clusterExport(cl, "eval.fd")
   if(verbose)
   {
     cat("---- Compute V matrix:\n")
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   t2 <- proc.time()
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- cfda:::compute_Vxi(data[id2 == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  }
+  V <- do.call(rbind, pblapply(cl=cl, split(data, data$id), cfda:::compute_Vxi, phi = phi, K = K))
   rownames(V) = NULL
   G = cov(V)
   t3 <- proc.time()
   
   if(verbose)
   {
-    close(pb)
     cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n---- Compute F matrix:\n"))
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
   }
   
-  
-  Fval <- foreach(i = uniqueId2, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- cfda:::compute_Uxij(data[id2 == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  } 
-  
-  if(verbose)
-    close(pb)
+  Fval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), cfda:::compute_Uxij, phi = phi, K = K))
   
   # stop parallelization
-  if(nCores > 1)
-    stopCluster(cl)
+  stopCluster(cl)
   
   # create F matrix
   Fval = colMeans(Fval)
-  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) #matrice avec K blocs de taille nBasis*nBasis sur la diagonale
+  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # matrice avec K blocs de taille nBasis*nBasis sur la diagonale
   for(i in 1:K)
   {
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =

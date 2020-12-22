@@ -182,44 +182,36 @@ computeVmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  if(nCores > 1)
-  {
+  if(nCores > 1) {
     cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
-  }else{
-    registerDoSEQ()
+  } else {
+    cl <- NULL
   }
   
+
   if(verbose)
   {
     cat("---- Compute V matrix:\n")
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
+    pbo <- pboptions(char = "=")
+  } else {
+    pboptions(type = "none")
   }
   t2 <- proc.time()
   
   
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Vxi(data[id == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  }
+  V <- do.call(rbind, pblapply(cl=cl, split(data, data$id), compute_Vxi, phi = phi, K = K))
   rownames(V) = NULL
+  
   t3 <- proc.time()
   
   if(verbose)
   {
-    close(pb)
     cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n"))
   }
   
   # stop parallelization
-  if(nCores > 1)
+  if (nCores > 1)
     stopCluster(cl)
   
   return(V)
@@ -256,11 +248,11 @@ compute_Vxi <- function(x, phi, K, ...)
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
   
-  for(u in 1:(nrow(x)-1))
+  for(u in seq_len(nrow(x)-1))
   {
     state = x$state[u]
     
-    for(j in 1:nBasis)  # j = la base
+    for(j in seq_len(nBasis))  # j = la base
     {
       aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
         integrate(function(t){
@@ -284,35 +276,23 @@ computeUmatrix <- function(data, uniqueId, id, basisobj, K, nCores, verbose, ...
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
   
   # declare parallelization
-  if(nCores > 1)
-  {
+  if(nCores > 1) {
     cl <- makeCluster(nCores)
-    registerDoSNOW(cl)
-  }else{
-    registerDoSEQ()
+  } else {
+    cl <- NULL
   }
-  
+
   t3 <- proc.time()
   if(verbose)
   {
     cat(paste0("---- Compute U matrix:\n"))
-    pb <- txtProgressBar(0, nId, style = 3)
-    progress <- function(n) setTxtProgressBar(pb, n)
-    opts <- list(progress = progress)
-  }else{
-    opts <- list()
+    pbo <- pboptions(char = "=")
+  } else {
+    pbo <- pboptions(type = "none")
   }
   
-  Uval <- foreach(i = uniqueId, .combine = rbind, .options.snow = opts)%dopar%{
-    res <- compute_Uxij(data[id == i, ], phi, K, ...)
-    if((nCores == 1) && verbose)
-      setTxtProgressBar(pb, i)
-    return(res)
-  } 
-  
-  if(verbose)
-    close(pb)
-  
+  Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K))
+
   # stop parallelization
   if(nCores > 1)
     stopCluster(cl)
@@ -360,7 +340,7 @@ compute_Uxij <- function(x, phi, K, ...)
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
   
-  for(u in 1:(nrow(x)-1))
+  for(u in seq_len(nrow(x)-1))
   {
     state <- x$state[u]
     for(i in 1:nBasis) 
@@ -405,7 +385,7 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   # create F matrix
   Fval = colMeans(Uval)
   Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
-  for(i in 1:K)
+  for(i in seq_len(K))
   {
     Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
       matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
@@ -461,7 +441,7 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   
   # aux1 = split(res$vectors, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
   invF05vec <- invF05 %*% res$vectors
-  aux1 <- split(invF05vec, rep(1:ncol(res$vectors), each = nrow(res$vectors)))
+  aux1 <- split(invF05vec, rep(seq_len(ncol(res$vectors)), each = nrow(res$vectors)))
   
   # on construit les matrices m x K pour chaque valeur propre : 1ere colonne les coefs pour etat 1,
   # 2eme col les coefs pour état 2, etc

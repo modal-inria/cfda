@@ -1,10 +1,8 @@
-#' @import diagram doSNOW fda ggplot2 msm mgcv
-#' @importFrom parallel detectCores
-#' @importFrom snow makeCluster stopCluster
-#' @importFrom foreach foreach %dopar% registerDoSEQ
+#' @import diagram fda ggplot2 msm mgcv pbapply
+#' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot
-#' @importFrom utils head setTxtProgressBar txtProgressBar
+#' @importFrom utils head
 #' 
 #' @title Categorical Functional Data Analysis
 #' @docType package

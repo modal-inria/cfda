@@ -22,7 +22,7 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
   if(verbose)
     cat("---- Compute Bootstrap Encoding:\n")
   
-  for(i in 1:nBootstrap)
+  for(i in seq_len(nBootstrap))
   {
     if(verbose)
       cat("*")
@@ -120,10 +120,10 @@ computeVarianceAlpha <- function(bootEncoding, nState, nBasis)
   nHarm <- nState * nBasis
   
   varAlpha <- list()
-  for(harm in 1:nHarm)
+  for(harm in seq_len(nHarm))
   {
     varAlpha[[harm]] <- list()
-    for(iState in 1:nState)
+    for(iState in seq_len(nState))
     {
       tryCatch({varAlpha[[harm]][[iState]] <- var(do.call(rbind, 
                                                           lapply(bootEncoding, function(x) 
@@ -155,11 +155,11 @@ computeVarianceEncoding <- function(varAlpha, basisobj, harm = 1, nx = 200)
   timeVal <- seq(basisobj$rangeval[1], basisobj$rangeval[2], length = nx)
   
   Phi <- matrix(nrow = length(timeVal), ncol = nBasis)
-  for(i in 1:nBasis)
+  for(i in seq_len(nBasis))
     Phi[, i] = eval.fd(timeVal, phi[i])
   
   funcVar <- list()
-  for(iState in 1:nState)
+  for(iState in seq_len(nState))
   {
     funcVar[[iState]] = rep(NA, nx)
     for(j in seq_along(timeVal))
