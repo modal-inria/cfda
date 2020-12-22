@@ -454,9 +454,9 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE)
   labels = c("state0", labels)
   
   p <- ggplot(plot_data)
-  for(i in 1:nState)
+  for(i in seq_len(nState))
     p = p + geom_ribbon(aes_string(ymin = paste0("`", labels[i], "`"), 
-                                   ymax = paste0("`", labels[i+1], "`"), x = "time", 
+                                   ymax = paste0("`", labels[i + 1], "`"), x = "time", 
                                    fill = shortLabels[i]), 
                         colour = ifelse(addBorder, "black", NA), alpha = 0.8)
   

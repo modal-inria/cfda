@@ -61,7 +61,7 @@ generate_Markov <- function(n = 5, K = 2, P = 1 - diag(K), lambda = rep(1, K), p
   
   d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
   
-  for(i in 1:n)
+  for(i in seq_len(n))
   {
     e <- sample(K, 1, prob = pi0) 
     t <- 0
@@ -102,8 +102,8 @@ generate_2State <- function(n)
   ## end check
   
   temps <- rep(0, 2*n)
-  temps[(1:n)*2] = runif(n)
-  d <- data.frame(id = rep(1:n, each = 2), time = temps,  state = rep(0:1, n))
+  temps[seq_len(n)*2] = runif(n)
+  d <- data.frame(id = rep(seq_len(n), each = 2), time = temps,  state = rep(0:1, n))
   
   row.names(d) = NULL
   
