@@ -52,7 +52,7 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
   
   # declare parallelization
   cl <- makeCluster(nCores)
-  
+  parallel::clusterExport(cl, "eval.fd")
   if(verbose)
   {
     cat("---- Compute V matrix:\n")
