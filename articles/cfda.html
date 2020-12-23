@@ -67,7 +67,7 @@
       <h1 data-toc-skip>Categorical Functional Data Analysis</h1>
                         <h4 class="author">Cristian Preda, Quentin Grimonprez</h4>
             
-            <h4 class="date">2020-12-22</h4>
+            <h4 class="date">2020-12-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/modal-inria/cfda/blob/master/vignettes/cfda.Rmd"><code>vignettes/cfda.Rmd</code></a></small>
       <div class="hidden name"><code>cfda.Rmd</code></div>
@@ -211,7 +211,7 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 <a href="#transitions-in-0t_max" class="anchor"></a>Transitions in <span class="math inline">\([0,T_{\max}]\)</span>:</h3>
 <p>The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"> <span class="fu"><a href="../reference/statetable.html">statetable</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/statetable.html">statetable</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></code></pre></div>
 <pre><code>##     to
 ## from   A   C   G   T
 ##    A   0 110  85 105
@@ -286,14 +286,53 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 <span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>The optimal encoding is computed using:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fmca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_optimal_encoding.html">compute_optimal_encoding</a></span><span class="op">(</span><span class="va">d_JKT</span>, <span class="va">b</span>, nCores <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">fmca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_optimal_encoding.html">compute_optimal_encoding</a></span><span class="op">(</span><span class="va">d_JKT</span>, <span class="va">b</span>, nCores <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
+<pre><code>## #### FMCA
+## 
+## ## Data 
+## Number of individuals: 100 
+## Number of states: 4 
+## Time Range: 0 to 10 
+## States:  A C G T 
+## 
+## ## Basis 
+## Type: bspline 
+## Number of basis functions: 10 
+## 
+## ## Outputs
+## Eigenvalues:
+##   1.94391 1.826387 1.580183 1.444652 1.343374 1.250424 
+## 
+## Explained variance:
+##   0.093 0.181 0.256 0.325 0.39 0.45 
+## 
+## Optimal encoding:
+##                 A          C          G            T
+## [1,]  0.002527816  0.6581468 -0.3285742 -0.002813819
+## [2,] -0.017726679 -0.3705776  0.3315846 -0.025042589
+## [3,] -0.225499860 -0.6291487  0.6640907  0.944240906
+## [4,] -0.399692155  0.5459657 -0.3712249 -0.182539384
+## [5,]  0.351928506  0.1955320 -0.7963197  0.291925346
+## [6,]  0.226710987  0.5287919 -0.8474339 -0.085294795
+## 
+## Principal components:
+##          [,1]       [,2]       [,3]       [,4]        [,5]       [,6]
+## 1  0.49121450 -0.7761565 -2.2237978  0.8687437  0.20384095  0.4283276
+## 2  0.80112812 -0.9389699 -1.9379884  0.1778935  0.01221841 -0.7867856
+## 3 -4.05767245  0.3735209  0.6378840  0.4504148  0.45332552 -0.7901623
+## 4  0.88436329  0.2856844 -0.7993695 -1.6531371  1.23759838  0.9458713
+## 5  0.76235790 -2.3636970 -1.6430662  0.4241371 -0.56541361 -0.1747624
+## 6 -0.06611053  1.1208777 -1.5759303 -0.5073735 -0.73253829 -1.7198606
+## 
+## Total elapsed time: 59.003 s</code></pre>
 <p>By default this function computes bootstrap estimates of the encoding functions in order to have a confidence interval. This is controlled by the <code>computeCI</code> arguments. The output is a list containing the different elements computed during the process: <code>eigenvalues</code>, <code>pc</code>, <code>alpha</code>, <code>F</code>, <code>G</code>, <code>V</code> and <code>basisobj</code>. Note that <code>alpha</code>contains the coefficients of the different encoding functions and <code>pc</code>the principal components. These components can be used with classical statistic methods (k-means, regression…).</p>
 <p>The eigenvalues can be computed using:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotEigenvalues.html">plotEigenvalues</a></span><span class="op">(</span><span class="va">fmca</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>The first encoding function coefficients <span class="math inline">\(\alpha\)</span>’s:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">$</span><span class="va">alpha</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##                  A          C           G            T
 ##  [1,]  0.002527816  0.6581468 -0.32857421 -0.002813819
@@ -307,19 +346,19 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 ##  [9,] -0.473977007  0.1768115 -0.02103771  0.305263785
 ## [10,] -0.128365002 -0.1472297 -0.19896052  0.515596657</code></pre>
 <p>The resulting encoding can be plotted:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 3 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="cfda_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;"> or extracted as a <em>fd</em> object (or matrix):</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">encoding</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_encoding.html">get_encoding</a></span><span class="op">(</span><span class="va">fmca</span>, fdObject <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>By default, it plots (and returns) the first encoding functions. Other encoding can be accessed with the <code>harm</code> argument.</p>
 <p>A confidence interval can be plotted using the <code>addCI</code> argument:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fmca</span>, addCI <span class="op">=</span> <span class="cn">TRUE</span>, coeff <span class="op">=</span> <span class="fl">2</span>, states <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Plot the two first components:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plotComponent.html">plotComponent</a></span><span class="op">(</span><span class="va">fmca</span>, comp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, addNames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>

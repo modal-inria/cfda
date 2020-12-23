@@ -143,7 +143,28 @@ The biofam data set describes family life courses of 2000 individuals born betwe
     <p>Müller, N. S., M. Studer, G. Ritschard (2007). Classification de parcours de vie à l'aide de l'optimal matching. In XIVe Rencontre de la Société francophone de classification (SFC 2007), Paris, 5 - 7 septembre 2007, pp. 157–160.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"></pre>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   id time           state
+#&gt; 1  1   15          Parent
+#&gt; 2  1   24       Left+Marr
+#&gt; 3  1   25 Left+Marr+Child
+#&gt; 4  1   30 Left+Marr+Child
+#&gt; 5  2   15          Parent
+#&gt; 6  2   16            Left</div><div class='input'>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
+<span class='va'>basis</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>30</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='fl'>4</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
+<span class='va'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>biofam2</span>, <span class='va'>basis</span>, nCores <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span>
+
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>fmca</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, comp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='op'>}</span>
+  
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -43,8 +43,8 @@
 <meta property="og:description" content="cfda provides functions for the analysis of categorical functional data.
 The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 This can be done using the compute_optimal_encoding function that takes in arguments the data in a specific format and
-a basis of functions created using the fda package (cf. create.basis). The output can be analyzed with plot.fmca, 
-get_encoding, plotEigenvalues and plotComponent.
+a basis of functions created using the fda package (cf. create.basis). The output can be analysed with summary.fmca, 
+plot.fmca, get_encoding, plotEigenvalues and plotComponent.
 Moreover, cfda contains functions to visualize and compute some statistics about categorical functional data. 
 A summary of the dataset is available with summary_cfd.
 plotData shows a graphical representation of the dataset. 
@@ -127,8 +127,8 @@ In order to test the different functions, a real dataset is provided (biofam2) a
     <p>cfda provides functions for the analysis of categorical functional data.</p>
 <p>The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 This can be done using the <code><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></code> function that takes in arguments the data in a specific format and
-a basis of functions created using the <code>fda</code> package (cf. <code>create.basis</code>). The output can be analyzed with <code><a href='plot.fmca.html'>plot.fmca</a></code>, 
-<code><a href='get_encoding.html'>get_encoding</a></code>, <code><a href='plotEigenvalues.html'>plotEigenvalues</a></code> and <code><a href='plotComponent.html'>plotComponent</a></code>.</p>
+a basis of functions created using the <code>fda</code> package (cf. <code>create.basis</code>). The output can be analysed with <code><a href='summary.fmca.html'>summary.fmca</a></code>, 
+<code><a href='plot.fmca.html'>plot.fmca</a></code>, <code><a href='get_encoding.html'>get_encoding</a></code>, <code><a href='plotEigenvalues.html'>plotEigenvalues</a></code> and <code><a href='plotComponent.html'>plotComponent</a></code>.</p>
 <p>Moreover, <code>cfda</code> contains functions to visualize and compute some statistics about categorical functional data. 
 A summary of the dataset is available with <code><a href='summary_cfd.html'>summary_cfd</a></code>.
 <code><a href='plotData.html'>plotData</a></code> shows a graphical representation of the dataset. 
@@ -144,7 +144,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>See the vignette for a detailled example and mathematical background:
+    <p>See the vignette for a detailed example and mathematical background:
 <code><a href='https://rdrr.io/r/utils/RShowDoc.html'>RShowDoc("cfda", package = "cfda")</a></code></p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
@@ -182,13 +182,51 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; Number of cores: 1
 #&gt; ---- Compute V matrix:
 #&gt; 
-#&gt; DONE in 0.57s
+#&gt; DONE in 0.62s
 #&gt; ---- Compute U matrix:
 #&gt; 
-#&gt; DONE in 3.55s
+#&gt; DONE in 3.53s
 #&gt; ---- Compute encoding: 
 #&gt; DONE in 0.02s
-#&gt; Run Time: 4.16s</div><div class='input'>
+#&gt; Run Time: 4.19s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; #### FMCA
+#&gt; 
+#&gt; ## Data 
+#&gt; Number of individuals: 10 
+#&gt; Number of states: 4 
+#&gt; Time Range: 0 to 6 
+#&gt; States:  1 2 3 4 
+#&gt; 
+#&gt; ## Basis 
+#&gt; Type: bspline 
+#&gt; Number of basis functions: 6 
+#&gt; 
+#&gt; ## Outputs
+#&gt; Eigenvalues:
+#&gt;   4.637785 2.816563 2.793398 1.056381 0.9828662 0.625612 
+#&gt; 
+#&gt; Explained variance:
+#&gt;   0.334 0.536 0.737 0.813 0.884 0.929 
+#&gt; 
+#&gt; Optimal encoding:
+#&gt;                1          2           3          4
+#&gt; [1,] -0.07784014  0.9022159  0.24355469  0.9472357
+#&gt; [2,] -0.45074685 -0.8006644  0.60461057  0.4712409
+#&gt; [3,] -0.19825488  0.5339617 -1.26237349  0.7857174
+#&gt; [4,] -0.30988197 -0.8813381 -0.09140095  0.5483527
+#&gt; [5,]  0.69532124 -0.2916668  0.28642504  0.1939174
+#&gt; [6,]  0.38607934 -0.5892383  0.09890342 -0.1218741
+#&gt; 
+#&gt; Principal components:
+#&gt;         [,1]       [,2]       [,3]       [,4]        [,5]        [,6]
+#&gt; 1  0.1774185 -1.6596926  0.1665942  1.0931164  0.70077949 -1.02514668
+#&gt; 2  2.8887787  1.6241755 -0.5820663  0.4830865 -1.06206713  0.62807799
+#&gt; 3 -2.3506706  0.1748007 -2.3093265 -0.1257663 -0.17887866 -0.05405512
+#&gt; 4 -0.8689081 -0.2386552  2.1940062 -1.1036073 -1.32461857 -1.27120061
+#&gt; 5 -1.4634015  2.9280554  2.7585150  0.5531948  0.94109986  0.43530423
+#&gt; 6 -1.4605043 -1.2959339 -0.3862482  1.8745450 -0.08968941  0.17340474
+#&gt; 
+#&gt; Total elapsed time: 4.19 s</div><div class='input'>
 <span class='co'># plot eigenvalues</span>
 <span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>encoding</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='img'><img src='cfda-package-1.png' alt='' width='700' height='433' /></div><div class='input'>
