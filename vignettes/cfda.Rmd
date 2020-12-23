@@ -136,7 +136,7 @@ plot(pt_evol, ribbon = TRUE)
 The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.
 
 ```{r, echo=TRUE}  
- statetable(d_JK)
+statetable(d_JK)
 ``` 
 
 
@@ -253,6 +253,7 @@ The optimal encoding is computed using:
 
 ```{r, echo=TRUE}
 fmca <- compute_optimal_encoding(d_JKT, b, nCores = 2, verbose = FALSE)
+summary(fmca)
 ```
 
 By default this function computes bootstrap estimates of the encoding functions in order to have a confidence interval. This is controlled by the `computeCI` arguments.

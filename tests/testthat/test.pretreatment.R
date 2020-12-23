@@ -63,7 +63,7 @@ test_that("refactorCategorical works when oldCateg and newCateg do not have comm
   
   expectedOut <- newCateg
   
-  out <- refactorCategorical(x,oldCateg,newCateg)
+  out <- refactorCategorical(x, oldCateg, newCateg)
   expect_equal(out, expectedOut)
 })
 

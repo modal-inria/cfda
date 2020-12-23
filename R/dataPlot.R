@@ -117,7 +117,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 rep_large_ind <- function(data)
 {
   out <- by(data, data$id, function(x){
-    d <- data.frame(id = x$id[1:(nrow(x)-1)] , 
+    d <- data.frame(id = x$id[1:(nrow(x)-1)], 
                     t_start = x$time[1:(nrow(x)-1)], 
                     t_end = x$time[2:nrow(x)], 
                     state = x$state[1:(nrow(x)-1)], stringsAsFactors = FALSE)

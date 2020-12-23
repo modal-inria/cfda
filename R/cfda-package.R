@@ -13,8 +13,8 @@
 #' 
 #' The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 #' This can be done using the \code{\link{compute_optimal_encoding}} function that takes in arguments the data in a specific format and
-#' a basis of functions created using the \code{fda} package (cf. \code{\link{create.basis}}). The output can be analyzed with \code{\link{plot.fmca}}, 
-#' \code{\link{get_encoding}}, \code{\link{plotEigenvalues}} and \code{\link{plotComponent}}.
+#' a basis of functions created using the \code{fda} package (cf. \code{\link{create.basis}}). The output can be analysed with \code{\link{summary.fmca}}, 
+#' \code{\link{plot.fmca}}, \code{\link{get_encoding}}, \code{\link{plotEigenvalues}} and \code{\link{plotComponent}}.
 #' 
 #' Moreover, \code{cfda} contains functions to visualize and compute some statistics about categorical functional data. 
 #' A summary of the dataset is available with \code{\link{summary_cfd}}.
@@ -29,7 +29,7 @@
 #' (\code{\link{generate_Markov}} and \code{\link{generate_2State}}).
 #' 
 #' @details 
-#' See the vignette for a detailled example and mathematical background:
+#' See the vignette for a detailed example and mathematical background:
 #' \code{RShowDoc("cfda", package = "cfda")}
 #' 
 #' 
@@ -56,6 +56,7 @@
 #' 
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
+#' summary(encoding)
 #' 
 #' # plot eigenvalues
 #' plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
