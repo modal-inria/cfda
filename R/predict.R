@@ -56,16 +56,10 @@ predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectC
   
   # change state as integer
   newdata$state = refactorCategorical(newdata$state, object$label$label, object$label$code)
-  
-  # refactor labels as 1:nbId
-  uniqueId <- unique(newdata$id)
-  nId <- length(uniqueId)
-  id2 <- refactorCategorical(newdata$id, uniqueId, seq_along(uniqueId)) 
-  uniqueId2 <- unique(id2)
-  
+
   K <- length(object$label$label)
   
-  V <- computeVmatrix(newdata, uniqueId2, id2, object$basisobj, K, nCores, verbose, ...)
+  V <- computeVmatrix(newdata, object$basisobj, K, nCores, verbose, ...)
   
   invF05vec <- sapply(object$alpha, as.vector)
   invF05vec[is.na(invF05vec)] = 0
