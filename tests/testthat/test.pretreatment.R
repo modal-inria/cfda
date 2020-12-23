@@ -57,88 +57,88 @@ test_that("cut_data works", {
 
 
 test_that("refactorCategorical works when oldCateg and newCateg do not have common elements", {
-  x <- letters
+  x <- letters[c(26:9, 1:8, 20:25)]
   oldCateg <- letters
   newCateg <- seq_along(oldCateg)
   
-  expectedOut <- newCateg
+  expectedOut <- c(26:9, 1:8, 20:25)
   
   out <- refactorCategorical(x, oldCateg, newCateg)
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
 })
 
 test_that("refactorCategorical works when oldCateg and newCateg have common elements", {
-  x <- as.character(0:10)
+  x <- as.character(c(7:10, 0:6, 7:10))
   oldCateg <- as.character(0:10)
   newCateg <- 1:11
   
-  expectedOut <- newCateg
+  expectedOut <- c(7:10, 0:6, 7:10) + 1
   
   out <- refactorCategorical(x, oldCateg, newCateg)
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
 })
 
 test_that("refactorCategorical works when some categories are merged", {
   
-  x <- letters[1:6]
+  x <- letters[c(1, 4:6, 2:3)]
   oldCateg <- letters[1:6]
   newCateg <- rep(c("voyelle", "consonne", "voyelle", "consonne"), c(1, 3, 1, 1))
-  expectedOut <- newCateg
+  expectedOut <- c("voyelle", "consonne", "voyelle", "consonne", "consonne", "consonne")
   
   out <- refactorCategorical(x, oldCateg, newCateg)
   
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
 })
 
 test_that("refactorCategorical works when there are categories not included in the data", {
   
-  x <- letters[1:6]
+  x <- letters[c(1, 4:6, 2:3)]
   oldCateg <- letters[1:7]
   newCateg <- rep(c("voyelle", "consonne", "voyelle", "consonne"), c(1, 3, 1, 2))
   
-  expectedOut <- newCateg[1:6]
+  expectedOut <- c("voyelle", "consonne", "voyelle", "consonne", "consonne", "consonne")
   
   expect_warning(out <- refactorCategorical(x, oldCateg, newCateg), regexp = NA)
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
   
   
-  x <- letters[1:7]
+  x <- letters[c(1, 4:7, 2:3)]
   oldCateg <- letters[1:6]
   newCateg <- rep(c("voyelle", "consonne", "voyelle", "consonne"), c(1, 3, 1, 1))
   
-  expectedOut <- c(newCateg[1:6], NA)
+  expectedOut <- c("voyelle", "consonne", "voyelle", "consonne", NA, "consonne", "consonne")
   
   expect_warning(out <- refactorCategorical(x, oldCateg, newCateg))
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
 })
 
 
 test_that("refactorCategorical kept NA values in data", {
   
-  x <- c(letters[1:6], NA)
+  x <- c(letters[c(1, 4:6, 2:3)], NA)
   oldCateg <- letters[1:6]
   newCateg <- rep(c("voyelle", "consonne", "voyelle", "consonne"), c(1, 3, 1, 1))
-  expectedOut <- c(newCateg[1:6], NA)
   
+  expectedOut <- c("voyelle", "consonne", "voyelle", "consonne", "consonne", "consonne", NA)
   
   expect_warning(out <- refactorCategorical(x, oldCateg, newCateg), regexp = NA)
-  expect_equal(out, expectedOut)
+  expect_equal(as.character(out), as.character(expectedOut))
 })
 
 
 test_that("stateToInteger works", {
-  x <- letters[1:6]
+  x <- letters[c(1, 4:6, 2:3)]
 
   out <- stateToInteger(x)
-  expectedOut <- list(state = 1:6, label = data.frame(label = x, code = 1:6))
+  expectedOut <- list(state = c(1, 4:6, 2:3), label = data.frame(label = sort(x), code = 1:6))
   
   expect_equal(out, expectedOut)
   
   
-  x <- letters[6:1]
+  x <- letters[c(6:1, 6, 2)]
   
   out <- stateToInteger(x)
-  expectedOut <- list(state = 6:1, label = data.frame(label = letters[1:6], code = 1:6))
+  expectedOut <- list(state = c(6:1, 6, 2), label = data.frame(label = letters[1:6], code = 1:6))
   
   expect_equal(out, expectedOut)
 })
