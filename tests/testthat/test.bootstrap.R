@@ -87,6 +87,7 @@ test_that("compute_optimal_encoding throws error", {
 
 
 test_that("compute_optimal_encoding works with computeCI = TRUE", {
+  skip_on_cran()
   set.seed(42)
   n <- 200
   Tmax <- 1
@@ -131,6 +132,7 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
 
 
 test_that("plot.fmca works with addCI = TRUE", {
+  skip_on_cran()
   set.seed(42)
   n <- 25
   Tmax <- 1

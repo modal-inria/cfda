@@ -2,6 +2,7 @@
 
 context("Manage column fills with 0 in compute_optimal_encoding")
 
+
 oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
 {
   t1 <- proc.time()

@@ -34,6 +34,7 @@ d_JK2 <- cut_data(d_JK, Tmax)
 m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 
+\dontrun{
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 
@@ -44,6 +45,7 @@ plotEigenvalues(encoding, cumulative = TRUE, normalize = TRUE)
 library(ggplot2)
 plotEigenvalues(encoding, shape = 23) +
    labs(caption = "Jukes-Cantor model of nucleotide replacement")
+}
 
 }
 \seealso{

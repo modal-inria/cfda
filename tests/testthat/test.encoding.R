@@ -36,6 +36,7 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
 
 
 test_that("compute_Uxij works with a simple basis of 2 functions", {
+  skip_on_cran()
   m <- 2
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1) # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
@@ -90,6 +91,7 @@ oldcompute_Uxij <- function(x, phi, K)
 }
 
 test_that("refactor of compute_Uxij keeps the same results", {
+  skip_on_cran()
   m <- 10
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   I <- diag(rep(1, m))
@@ -125,6 +127,7 @@ test_that("compute_Vxi works with a simple basis of 1 function", {
 
 
 test_that("compute_Vxi works with a simple basis of 2 functions", {
+  skip_on_cran()
   m <- 2
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)# base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
   I <- diag(rep(1, m))
@@ -212,10 +215,10 @@ test_that("compute_optimal_encoding works", {
 
 ## data and results used in the next tests
 set.seed(42)
-n <- 50
+n <- 10
 Tmax <- 1
 K <- 2
-m <- 10
+m <- 5
 d <- generate_2State(n)
 dT <- cut_data(d, Tmax)
 row.names(dT) = NULL
@@ -235,11 +238,12 @@ test_that("print.cfda does not produce warnings/errors", {
 })
 
 test_that("compute_optimal_encoding works verbose", {
+  skip_on_cran()
   expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, computeCI = FALSE, nCores = 1, verbose = TRUE))
 })
 
 test_that("compute_optimal_encoding throws a warning when the basis is not well suited", {
-  
+  skip_on_cran()
   data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
   

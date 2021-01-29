@@ -29,6 +29,7 @@
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
+#' \dontrun{
 #' # compute encoding 
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -40,6 +41,7 @@
 #' library(ggplot2)
 #' plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow")) +
 #'    labs(title = "Optimal encoding")
+#' }
 #' 
 #' @seealso \link{plotComponent} \link{plotEigenvalues}
 #' 
@@ -157,12 +159,14 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
+#' \dontrun{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
 #' # extract the encoding using 1 harmonic
 #' encodFd <- get_encoding(encoding, fdObject = TRUE)
 #' encodMat <- get_encoding(encoding, nx = 200)
+#' }
 #' 
 #' @author Cristian Preda
 #'
@@ -248,6 +252,7 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
+#' \dontrun{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -257,6 +262,7 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
 #' library(ggplot2)
 #' plotComponent(encoding, comp = c(1, 2), shape = 23) +
 #'    labs(title = "Two first components")
+#' }
 #' 
 #' @seealso \link{plot.fmca} \link{plotEigenvalues}
 #' 
@@ -311,6 +317,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
+#' \dontrun{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -321,6 +328,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' library(ggplot2)
 #' plotEigenvalues(encoding, shape = 23) +
 #'    labs(caption = "Jukes-Cantor model of nucleotide replacement")
+#' }
 #' 
 #' @seealso \link{plot.fmca} \link{plotComponent}
 #' 
