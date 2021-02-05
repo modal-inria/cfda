@@ -36,16 +36,16 @@
 #' data(biofam2)
 #' head(biofam2)
 #' 
-#' \dontrun{
+#' \donttest{
+#' # It is recommended to increase the number of cores to reduce computation time
 #' set.seed(42)
 #' basis <- create.bspline.basis(c(15, 30), nbasis = 4, norder = 4)
-#' fmca <- compute_optimal_encoding(biofam2, basis, nCores = 7)
+#' fmca <- compute_optimal_encoding(biofam2, basis, nCores = 2)
 #' 
 #' plot(fmca, harm = 1)
 #' plot(fmca, harm = 2)
 #' plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE)
 #' plotComponent(fmca, comp = c(1, 2), addNames = FALSE)
-#' 
 #' }
 #'   
 NULL
@@ -101,10 +101,11 @@ NULL
 #' care2 <- cut_data(care[care$id %in% idToKeep, ], 18)
 #' head(care2)
 #'
-#' \dontrun{
+#' \donttest{
+#' # It is recommended to increase the number of cores to reduce computation time
 #' set.seed(42)
 #' basis <- create.bspline.basis(c(0, 18), nbasis = 10, norder = 4)
-#' fmca <- compute_optimal_encoding(care2, basis, nCores = 7)
+#' fmca <- compute_optimal_encoding(care2, basis, nCores = 2)
 #' 
 #' plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE)
 #' plot(fmca)

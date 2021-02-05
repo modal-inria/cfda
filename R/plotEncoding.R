@@ -29,7 +29,7 @@
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
-#' \dontrun{
+#' \donttest{
 #' # compute encoding 
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -159,7 +159,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL)
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
-#' \dontrun{
+#' \donttest{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -252,7 +252,7 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt)
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
-#' \dontrun{
+#' \donttest{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
@@ -317,7 +317,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' m <- 6
 #' b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 #' 
-#' \dontrun{
+#' \donttest{
 #' # compute encoding
 #' encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
 #' 
