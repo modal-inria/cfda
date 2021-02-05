@@ -107,6 +107,8 @@ completeStatetable <- function(aux)
 #' @param x output of \code{\link{estimate_Markov}} function
 #' @param ... parameters of \code{plotmat} function from \code{diagram} package (see details). 
 #' 
+#' @return No return value, called for side effects
+#' 
 #' @details 
 #' Some useful extra parameters:
 #' \itemize{

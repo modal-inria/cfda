@@ -15,6 +15,9 @@ Summary of a \code{fmca} object}
 
 \item{...}{Not used.}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Object Summaries
 

@@ -11,6 +11,9 @@
 
 \item{...}{parameters of \code{plotmat} function from \code{diagram} package (see details).}
 }
+\value{
+No return value, called for side effects
+}
 \description{
 Plot the transition graph between the different states. A node corresponds to a state with the mean 
 time spent in this state. Each arrow represents the probability of transition between states.

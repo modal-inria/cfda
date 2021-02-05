@@ -6,6 +6,7 @@
 #' @param n maximal number of rows and cols to print
 #' @param ... Not used.
 #'
+#' @return No return value, called for side effects
 #'
 #' @method print fmca
 #'
@@ -39,6 +40,7 @@ print.fmca <- function(x, n = 6, ...) {
 #' @param n maximal number of rows and cols to print
 #' @param ... Not used.
 #'
+#' @return No return value, called for side effects
 #'
 #' @method summary fmca
 #'
