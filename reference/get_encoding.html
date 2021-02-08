@@ -162,14 +162,28 @@
 <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
 <span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>Tmax</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='va'>m</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># \donttest{</span>
 <span class='co'># compute encoding</span>
 <span class='va'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>d_JK2</span>, <span class='va'>b</span>, computeCI <span class='op'>=</span> <span class='cn'>FALSE</span>, nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; ######### Compute encoding #########
+#&gt; Number of individuals: 10
+#&gt; Number of states: 4
+#&gt; Basis type: bspline
+#&gt; Number of basis functions: 6
+#&gt; Number of cores: 1
+#&gt; ---- Compute V matrix:
+#&gt; 
+#&gt; DONE in 0.54s
+#&gt; ---- Compute U matrix:
+#&gt; 
+#&gt; DONE in 3.76s
+#&gt; ---- Compute encoding: 
+#&gt; DONE in 0s
+#&gt; Run Time: 4.32s</div><div class='input'>
 <span class='co'># extract the encoding using 1 harmonic</span>
 <span class='va'>encodFd</span> <span class='op'>&lt;-</span> <span class='fu'>get_encoding</span><span class='op'>(</span><span class='va'>encoding</span>, fdObject <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>encodMat</span> <span class='op'>&lt;-</span> <span class='fu'>get_encoding</span><span class='op'>(</span><span class='va'>encoding</span>, nx <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='co'># }</span>
 
 </div></pre>
   </div>

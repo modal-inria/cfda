@@ -184,13 +184,13 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; Number of cores: 1
 #&gt; ---- Compute V matrix:
 #&gt; 
-#&gt; DONE in 0.61s
+#&gt; DONE in 0.53s
 #&gt; ---- Compute U matrix:
 #&gt; 
-#&gt; DONE in 4.02s
+#&gt; DONE in 3.54s
 #&gt; ---- Compute encoding: 
-#&gt; DONE in 0.02s
-#&gt; Run Time: 4.68s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
+#&gt; DONE in 0s
+#&gt; Run Time: 4.09s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; #### FMCA
 #&gt; 
 #&gt; ## Data 
@@ -205,30 +205,30 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; 
 #&gt; ## Outputs
 #&gt; Eigenvalues:
-#&gt;   4.637785 2.816563 2.793398 1.056381 0.9828662 0.625612 
+#&gt;   2.876942 2.519031 1.798857 1.460203 1.229762 0.9541622 
 #&gt; 
 #&gt; Explained variance:
-#&gt;   0.334 0.536 0.737 0.813 0.884 0.929 
+#&gt;   0.24 0.45 0.601 0.722 0.825 0.905 
 #&gt; 
 #&gt; Optimal encoding:
 #&gt;                1          2           3          4
-#&gt; [1,] -0.07784014  0.9022159  0.24355469  0.9472357
-#&gt; [2,] -0.45074685 -0.8006644  0.60461057  0.4712409
-#&gt; [3,] -0.19825488  0.5339617 -1.26237349  0.7857174
-#&gt; [4,] -0.30988197 -0.8813381 -0.09140095  0.5483527
-#&gt; [5,]  0.69532124 -0.2916668  0.28642504  0.1939174
-#&gt; [6,]  0.38607934 -0.5892383  0.09890342 -0.1218741
+#&gt; [1,]  0.09359928  1.0242383  1.87438765 -0.3618035
+#&gt; [2,] -0.79804383  1.1047690 -1.25082094  1.4434373
+#&gt; [3,]  0.06264214 -0.5091668  0.58412200 -0.1598306
+#&gt; [4,]  0.53185405  1.0832062  0.49674795 -1.4791688
+#&gt; [5,] -0.87696206 -0.1602298 -0.93282680  1.6675338
+#&gt; [6,]  1.22015073 -0.3510664 -0.01462745  0.7314401
 #&gt; 
 #&gt; Principal components:
-#&gt;         [,1]       [,2]       [,3]       [,4]        [,5]        [,6]
-#&gt; 1  0.1774185 -1.6596926  0.1665942  1.0931164  0.70077949 -1.02514668
-#&gt; 2  2.8887787  1.6241755 -0.5820663  0.4830865 -1.06206713  0.62807799
-#&gt; 3 -2.3506706  0.1748007 -2.3093265 -0.1257663 -0.17887866 -0.05405512
-#&gt; 4 -0.8689081 -0.2386552  2.1940062 -1.1036073 -1.32461857 -1.27120061
-#&gt; 5 -1.4634015  2.9280554  2.7585150  0.5531948  0.94109986  0.43530423
-#&gt; 6 -1.4605043 -1.2959339 -0.3862482  1.8745450 -0.08968941  0.17340474
+#&gt;         [,1]       [,2]        [,3]       [,4]       [,5]       [,6]
+#&gt; 1 -0.9968334 -0.8408495 -1.26357185 -0.9632974 -0.3649609 -0.2929574
+#&gt; 2 -0.1885850 -3.4465723 -0.72218105  0.6762954 -0.8980587  0.4909716
+#&gt; 3 -1.6302895  1.4103285 -0.03299319  1.0235193  0.6065495 -0.4256529
+#&gt; 4  2.7951102  0.1696082 -1.94332554 -0.3970665  1.5871869  0.6461257
+#&gt; 5 -1.8677553  0.6028495  0.89655024 -0.1332737  1.4861542  1.3698688
+#&gt; 6  1.1775745  2.0668707 -0.83643140  1.9402596 -1.2288137 -0.3416178
 #&gt; 
-#&gt; Total elapsed time: 4.681 s</div><div class='input'>
+#&gt; Total elapsed time: 4.094 s</div><div class='input'>
 <span class='co'># plot eigenvalues</span>
 <span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>encoding</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='img'><img src='cfda-package-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -237,7 +237,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 </div><div class='img'><img src='cfda-package-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot the encoding using the first harmonic</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='cfda-package-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 16 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='cfda-package-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># extract the encoding using the first harmonic</span>
 <span class='va'>encod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_encoding.html'>get_encoding</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
 

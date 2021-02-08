@@ -168,16 +168,34 @@ Trajectories have different lengths.</p>
 #&gt; 4 15    8     D
 #&gt; 5 15   15     C
 #&gt; 6 15   18     C</div><div class='input'>
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='co'># \donttest{</span>
+<span class='co'># It is recommended to increase the number of cores to reduce computation time</span>
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
 <span class='va'>basis</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>18</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='fl'>10</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
-<span class='va'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>care2</span>, <span class='va'>basis</span>, nCores <span class='op'>=</span> <span class='fl'>7</span><span class='op'>)</span>
-
+<span class='va'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>care2</span>, <span class='va'>basis</span>, nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; ######### Compute encoding #########
+#&gt; Number of individuals: 1317
+#&gt; Number of states: 4
+#&gt; Basis type: bspline
+#&gt; Number of basis functions: 10
+#&gt; Number of cores: 2
+#&gt; ---- Compute V matrix:
+#&gt; 
+#&gt; DONE in 44.16s
+#&gt; ---- Compute U matrix:
+#&gt; 
+#&gt; DONE in 289.03s
+#&gt; ---- Compute encoding: 
+#&gt; DONE in 0.01s
+#&gt; ---- Compute Bootstrap Encoding:
+#&gt; **************************************************
+#&gt; DONE in 0.73s
+#&gt; Run Time: 335.27s</div><div class='input'>
 <span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>fmca</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, addCI <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-<span class='op'>}</span>
+</div><div class='img'><img src='care-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 8 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='care-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, addCI <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 8 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='care-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='img'><img src='care-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
 
 </div></pre>
   </div>

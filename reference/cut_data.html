@@ -146,22 +146,22 @@
 <span class='va'>d_JK</span> <span class='op'>=</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>d_JK</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     id     time state
-#&gt; 110 10 3.274328     2
-#&gt; 111 10 4.827204     4
-#&gt; 112 10 5.318444     2
-#&gt; 113 10 7.345840     4
-#&gt; 114 10 7.683753     2
-#&gt; 115 10 7.974149     1</div><div class='input'>
+#&gt; 119 10 5.623519     1
+#&gt; 120 10 5.871141     4
+#&gt; 121 10 6.326422     2
+#&gt; 122 10 7.021747     1
+#&gt; 123 10 9.074678     2
+#&gt; 124 10 9.638416     1</div><div class='input'>
 <span class='co'># cut at Tmax = 8</span>
 <span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'>cut_data</span><span class='op'>(</span><span class='va'>d_JK</span>, Tmax <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     id     time state
-#&gt; 107 10 4.827204     4
-#&gt; 108 10 5.318444     2
-#&gt; 109 10 7.345840     4
-#&gt; 110 10 7.683753     2
-#&gt; 111 10 7.974149     1
-#&gt; 112 10 8.000000     1</div><div class='input'>
+#&gt; 108 10 4.378768     4
+#&gt; 109 10 5.623519     1
+#&gt; 110 10 5.871141     4
+#&gt; 111 10 6.326422     2
+#&gt; 112 10 7.021747     1
+#&gt; 113 10 8.000000     1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
