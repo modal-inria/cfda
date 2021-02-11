@@ -213,6 +213,8 @@ test_that("compute_optimal_encoding works", {
   expect_equal(fmca$label, data.frame(label = 0:1, code = 1:2))
 })
 
+skip_on_cran()
+
 ## data and results used in the next tests
 set.seed(42)
 n <- 10

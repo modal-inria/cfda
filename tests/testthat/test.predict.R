@@ -2,6 +2,8 @@
 
 context("Predict function")
 
+skip_on_cran()
+
 ## common dataset
 set.seed(42)
 
