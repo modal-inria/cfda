@@ -146,22 +146,22 @@
 <span class='va'>d_JK</span> <span class='op'>=</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>d_JK</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;     id     time state
-#&gt; 119 10 5.623519     1
-#&gt; 120 10 5.871141     4
-#&gt; 121 10 6.326422     2
-#&gt; 122 10 7.021747     1
-#&gt; 123 10 9.074678     2
-#&gt; 124 10 9.638416     1</div><div class='input'>
+#&gt; 103 10 5.745181     2
+#&gt; 104 10 6.399224     3
+#&gt; 105 10 6.658211     2
+#&gt; 106 10 7.359727     1
+#&gt; 107 10 8.174763     4
+#&gt; 108 10 9.045728     1</div><div class='input'>
 <span class='co'># cut at Tmax = 8</span>
 <span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'>cut_data</span><span class='op'>(</span><span class='va'>d_JK</span>, Tmax <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/head.html'>tail</a></span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;     id     time state
-#&gt; 108 10 4.378768     4
-#&gt; 109 10 5.623519     1
-#&gt; 110 10 5.871141     4
-#&gt; 111 10 6.326422     2
-#&gt; 112 10 7.021747     1
-#&gt; 113 10 8.000000     1</div><div class='input'>
+</div><div class='output co'>#&gt;    id     time state
+#&gt; 93 10 4.895024     4
+#&gt; 94 10 5.745181     2
+#&gt; 95 10 6.399224     3
+#&gt; 96 10 6.658211     2
+#&gt; 97 10 7.359727     1
+#&gt; 98 10 8.000000     1</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -164,14 +164,14 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement  </span>
 <span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
-<span class='va'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
+<span class='va'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span>
 <span class='va'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
 <span class='va'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='va'>Tmax</span><span class='op'>)</span>
 <span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span><span class='op'>(</span><span class='va'>d_JK</span>, <span class='va'>Tmax</span><span class='op'>)</span>
 
 <span class='co'># create basis object</span>
-<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fl'>6</span>
+<span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fl'>5</span>
 <span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>Tmax</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='va'>m</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
 
 <span class='co'># compute encoding</span>
@@ -180,55 +180,54 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 #&gt; Number of individuals: 10
 #&gt; Number of states: 4
 #&gt; Basis type: bspline
-#&gt; Number of basis functions: 6
+#&gt; Number of basis functions: 5
 #&gt; Number of cores: 1
 #&gt; ---- Compute V matrix:
 #&gt; 
-#&gt; DONE in 0.53s
+#&gt; DONE in 0.39s
 #&gt; ---- Compute U matrix:
 #&gt; 
-#&gt; DONE in 3.54s
+#&gt; DONE in 2.29s
 #&gt; ---- Compute encoding: 
 #&gt; DONE in 0s
-#&gt; Run Time: 4.09s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
+#&gt; Run Time: 2.69s</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; #### FMCA
 #&gt; 
 #&gt; ## Data 
 #&gt; Number of individuals: 10 
 #&gt; Number of states: 4 
-#&gt; Time Range: 0 to 6 
+#&gt; Time Range: 0 to 5 
 #&gt; States:  1 2 3 4 
 #&gt; 
 #&gt; ## Basis 
 #&gt; Type: bspline 
-#&gt; Number of basis functions: 6 
+#&gt; Number of basis functions: 5 
 #&gt; 
 #&gt; ## Outputs
 #&gt; Eigenvalues:
-#&gt;   2.876942 2.519031 1.798857 1.460203 1.229762 0.9541622 
+#&gt;   2.829354 2.282478 1.799415 1.469461 0.8318807 0.5187159 
 #&gt; 
 #&gt; Explained variance:
-#&gt;   0.24 0.45 0.601 0.722 0.825 0.905 
+#&gt;   0.279 0.504 0.682 0.827 0.909 0.96 
 #&gt; 
 #&gt; Optimal encoding:
-#&gt;                1          2           3          4
-#&gt; [1,]  0.09359928  1.0242383  1.87438765 -0.3618035
-#&gt; [2,] -0.79804383  1.1047690 -1.25082094  1.4434373
-#&gt; [3,]  0.06264214 -0.5091668  0.58412200 -0.1598306
-#&gt; [4,]  0.53185405  1.0832062  0.49674795 -1.4791688
-#&gt; [5,] -0.87696206 -0.1602298 -0.93282680  1.6675338
-#&gt; [6,]  1.22015073 -0.3510664 -0.01462745  0.7314401
+#&gt;                1           2          3           4
+#&gt; [1,]  0.07724088 -0.08412526 -0.9027137  2.12720557
+#&gt; [2,] -0.25779339 -0.02334403 -0.1051375 -0.06511844
+#&gt; [3,]  0.67368373  1.95593123 -0.8359572 -0.52846518
+#&gt; [4,]  0.37502015  0.52170093  0.7508664 -0.91307159
+#&gt; [5,]  0.60975737 -0.85600224  0.5711579 -0.46221965
 #&gt; 
 #&gt; Principal components:
-#&gt;         [,1]       [,2]        [,3]       [,4]       [,5]       [,6]
-#&gt; 1 -0.9968334 -0.8408495 -1.26357185 -0.9632974 -0.3649609 -0.2929574
-#&gt; 2 -0.1885850 -3.4465723 -0.72218105  0.6762954 -0.8980587  0.4909716
-#&gt; 3 -1.6302895  1.4103285 -0.03299319  1.0235193  0.6065495 -0.4256529
-#&gt; 4  2.7951102  0.1696082 -1.94332554 -0.3970665  1.5871869  0.6461257
-#&gt; 5 -1.8677553  0.6028495  0.89655024 -0.1332737  1.4861542  1.3698688
-#&gt; 6  1.1775745  2.0668707 -0.83643140  1.9402596 -1.2288137 -0.3416178
+#&gt;          [,1]       [,2]       [,3]        [,4]        [,5]        [,6]
+#&gt; 1  0.39384769  0.5060113 -0.5843700  0.10808698 -0.11785000 -0.92015845
+#&gt; 2  2.68822035  0.2163721  3.0389824 -0.72581512 -0.06233242  0.05730443
+#&gt; 3 -1.95315084  0.8408204  0.4365882 -0.44306343  0.47350322 -1.06325345
+#&gt; 4  0.03479608 -3.8778200 -0.5971021 -1.00341460  0.69688573 -0.08205826
+#&gt; 5 -1.47492490 -1.0091580  0.4422517  0.71320307 -2.28927486  0.22667328
+#&gt; 6 -1.81422272  0.6278327  0.3942423 -0.06794857  0.82622930  1.54360080
 #&gt; 
-#&gt; Total elapsed time: 4.094 s</div><div class='input'>
+#&gt; Total elapsed time: 2.69 s</div><div class='input'>
 <span class='co'># plot eigenvalues</span>
 <span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>encoding</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='img'><img src='cfda-package-1.png' alt='' width='700' height='433' /></div><div class='input'>
@@ -237,7 +236,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 </div><div class='img'><img src='cfda-package-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># plot the encoding using the first harmonic</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 16 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='cfda-package-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 50 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='cfda-package-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># extract the encoding using the first harmonic</span>
 <span class='va'>encod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_encoding.html'>get_encoding</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span>
 
