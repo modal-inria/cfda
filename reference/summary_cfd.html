@@ -58,9 +58,15 @@
 
 
 
+  
+
+  
+
   </head>
 
   <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
       </span>
     </div>
 
@@ -116,7 +122,7 @@
     <p>Get a summary of the data.frame containin categorical functional data</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summary_cfd</span><span class='op'>(</span><span class='va'>data</span>, max.print <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></pre>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>summary_cfd</span><span class='op'>(</span><span class='va'>data</span>, max.print <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,22 +154,23 @@
     <p>Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
-<span class='fu'>summary_cfd</span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Number of rows: 6965 
-#&gt; Number of individuals: 2000 
-#&gt; Time Range: 15 - 30 
-#&gt; Same time start value for all ids: TRUE 
-#&gt; Same time end value for all ids: TRUE 
-#&gt; Number of states: 8 
-#&gt; States:
-#&gt;   Parent, Left+Marr, Left+Marr+Child, Left, Married, Divorced, Left+Child, Child
-#&gt; Number of individuals visiting each state:
-#&gt;          Parent       Left+Marr Left+Marr+Child            Left         Married 
-#&gt;            1972             987             907             896             246 
-#&gt;        Divorced      Left+Child           Child 
-#&gt;              76              40               6 </div><div class='input'>
-</div></pre>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>summary_cfd</span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of rows: 6965 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of individuals: 2000 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Time Range: 15 - 30 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Same time start value for all ids: TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Same time end value for all ids: TRUE </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of states: 8 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> States:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Parent, Left+Marr, Left+Marr+Child, Left, Married, Divorced, Left+Child, Child</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of individuals visiting each state:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>          Parent       Left+Marr Left+Marr+Child            Left         Married </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>            1972             987             907             896             246 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>        Divorced      Left+Child           Child </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>              76              40               6 </span>
+<span class='r-in'></span>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -175,11 +182,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Cristian Preda, Quentin Grimonprez.</p>
+  <p><p>Developed by Cristian Preda, Quentin Grimonprez.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
@@ -187,6 +194,8 @@
 
   
 
+
+  
 
   </body>
 </html>
