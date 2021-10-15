@@ -19,8 +19,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,6 +38,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/cfda.html">Get started</a>
 </li>
 <li>
@@ -48,7 +52,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/modal-inria/cfda/" class="external-link">
+  <a href="https://github.com/modal-inria/cfda/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -67,11 +71,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Categorical Functional Data Analysis</h1>
-                        <h4 data-toc-skip class="author">Cristian Preda, Quentin Grimonprez</h4>
+                        <h4 class="author">Cristian Preda, Quentin Grimonprez</h4>
             
-            <h4 data-toc-skip class="date">2021-06-08</h4>
+            <h4 class="date">2021-10-15</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/modal-inria/cfda/blob/master/vignettes/cfda.Rmd" class="external-link"><code>vignettes/cfda.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/modal-inria/cfda/blob/master/vignettes/cfda.Rmd"><code>vignettes/cfda.Rmd</code></a></small>
       <div class="hidden name"><code>cfda.Rmd</code></div>
 
     </div>
@@ -80,10 +84,10 @@
     
 <div id="dataset-simulation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#dataset-simulation" class="anchor" aria-hidden="true"></a>Dataset Simulation</h2>
+<a href="#dataset-simulation" class="anchor"></a>Dataset Simulation</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">cfda</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modal-inria.github.io/cfda">cfda</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></code></pre></div>
 <p>We simulate the Jukes Cantor model of nucleotide replacement.</p>
 <p>Denote the set of nucleotides: <span class="math inline">\(E = \{A, T, G, C\}\)</span>. A DNA sequence is seen as a string of nucleotides: <code>ATGCATTAC</code>.</p>
 <p>Each  in the sequence is subject to mutation over time.</p>
@@ -99,15 +103,15 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 <p>Let assume that the process is observed over the period <span class="math inline">\([0,T_{\max}]\)</span> in <span class="math inline">\(n\)</span> sites with the nucleotide <span class="math inline">\(A\)</span> at time <span class="math inline">\(t=0\)</span>. In the following, nucleotides are recoded: <span class="math inline">\(A\leftrightarrow 1\)</span>, <span class="math inline">\(T\leftrightarrow 2\)</span>, <span class="math inline">\(G\leftrightarrow 3\)</span>, <span class="math inline">\(C\leftrightarrow 4\)</span>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span>
-<span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, ncol <span class="op">=</span> <span class="va">K</span>, nrow <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span>
-<span class="va">lambda_PJK</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, ncol <span class="op">=</span> <span class="va">K</span>, nrow <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span>
+<span class="va">lambda_PJK</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>
 
 <span class="va">Tmax</span> <span class="op">&lt;-</span> <span class="fl">10</span>
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
 
-<span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, K <span class="op">=</span> <span class="fl">4</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="va">Tmax</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="va">n</span>, K <span class="op">=</span> <span class="fl">4</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="va">Tmax</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">d_JK</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">d_JK</span>, <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##    id      time state
 ## 1   1 0.0000000     A
 ## 2   1 0.1983368     G
@@ -136,7 +140,7 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 <p>We can compute the duration of each trajectory.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">duration</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_duration.html">compute_duration</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">duration</span><span class="op">)</span></code></pre></div>
 <pre><code>##        1        2        3        4        5        6 
 ## 9.976904 7.812600 8.871661 8.357921 9.650790 9.993531</code></pre>
 <p>All individuals has a different length. The computation of an optimal encoding requires that the end time of each individual is the same (<span class="math inline">\(T_{\max}\)</span>), this can be done with the following function:</p>
@@ -149,11 +153,11 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 </div>
 <div id="basic-statistics" class="section level2">
 <h2 class="hasAnchor">
-<a href="#basic-statistics" class="anchor" aria-hidden="true"></a>Basic statistics</h2>
+<a href="#basic-statistics" class="anchor"></a>Basic statistics</h2>
 <p>Generally, in categorical functional data analysis, the following basic statistics are computed.</p>
 <div id="time-spent-in-each-state-over-a-period-of-length-t_max" class="section level3">
 <h3 class="hasAnchor">
-<a href="#time-spent-in-each-state-over-a-period-of-length-t_max" class="anchor" aria-hidden="true"></a>Time spent in each state over a period of length <span class="math inline">\(T_{\max}\)</span>:</h3>
+<a href="#time-spent-in-each-state-over-a-period-of-length-t_max" class="anchor"></a>Time spent in each state over a period of length <span class="math inline">\(T_{\max}\)</span>:</h3>
 <p>For each individual, the time spent in each of the <span class="math inline">\(K\)</span> states is computed.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">timeSpent</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_time_spent.html">compute_time_spent</a></span><span class="op">(</span><span class="va">d_JKT</span><span class="op">)</span>
@@ -171,26 +175,26 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 ## 10 4.788120 1.2389632 3.972917 0.000000</code></pre>
 <p>The results can be plotted:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html" class="external-link">boxplot</a></span><span class="op">(</span><span class="va">timeSpent</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">timeSpent</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-3-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="number-of-jumps-in-0t_max" class="section level3">
 <h3 class="hasAnchor">
-<a href="#number-of-jumps-in-0t_max" class="anchor" aria-hidden="true"></a>Number of jumps in <span class="math inline">\([0,T_{\max}]\)</span>:</h3>
+<a href="#number-of-jumps-in-0t_max" class="anchor"></a>Number of jumps in <span class="math inline">\([0,T_{\max}]\)</span>:</h3>
 <p>For each individual, the number of jumps occurring in <span class="math inline">\([0,T_{\max}]\)</span> is computed.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">nJump</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_number_jumps.html">compute_number_jumps</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nJump</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">nJump</span><span class="op">)</span></code></pre></div>
 <pre><code>##  1  2  3  4  5  6 
 ## 17  9  3 13 10 13</code></pre>
 <p>The results can be plotted:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">nJump</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">nJump</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-5-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="probabilities-to-be-in-some-state-x-at-time-t-p_xt" class="section level3">
 <h3 class="hasAnchor">
-<a href="#probabilities-to-be-in-some-state-x-at-time-t-p_xt" class="anchor" aria-hidden="true"></a>Probabilities to be in some state <span class="math inline">\(x\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(p_{x}(t)\)</span>:</h3>
+<a href="#probabilities-to-be-in-some-state-x-at-time-t-p_xt" class="anchor"></a>Probabilities to be in some state <span class="math inline">\(x\)</span> at time <span class="math inline">\(t\)</span>, <span class="math inline">\(p_{x}(t)\)</span>:</h3>
 <p>An other interesting statistic is the evolution of the probability to be in each state.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">pt_evol</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/estimate_pt.html">estimate_pt</a></span><span class="op">(</span><span class="va">d_JKT</span><span class="op">)</span>
@@ -201,16 +205,16 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 ## G 0  0.00  0.00  0.01  0.01  0.01  0.01  0.02 0.02  0.02
 ## T 0  0.00  0.01  0.01  0.02  0.03  0.03  0.03 0.03  0.03</code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pt_evol</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">pt_evol</span><span class="op">$</span><span class="va">t</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 0.000000000 0.007897421 0.038151747 0.038873269 0.044793148 0.058217068</code></pre>
 <p>The output is a list with two elements: <code>t</code> the different time values and <code>pt</code> a matrix where each row contains the probability to be in a given state for all the time values. The result can be plotted:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pt_evol</span>, ribbon <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">pt_evol</span>, ribbon <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-7-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 <div id="transitions-in-0t_max" class="section level3">
 <h3 class="hasAnchor">
-<a href="#transitions-in-0t_max" class="anchor" aria-hidden="true"></a>Transitions in <span class="math inline">\([0,T_{\max}]\)</span>:</h3>
+<a href="#transitions-in-0t_max" class="anchor"></a>Transitions in <span class="math inline">\([0,T_{\max}]\)</span>:</h3>
 <p>The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/statetable.html">statetable</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></code></pre></div>
@@ -240,23 +244,23 @@ C&amp;\alpha&amp;\alpha&amp;\alpha&amp;-3\alpha\\ \hline
 ## [1] "Markov"</code></pre>
 <p>The estimated parameters are closed to the ones used. The results can be plotted through a transition graph where each node corresponds to a state with the mean time spent within (corresponding to <span class="math inline">\(1/\lambda\)</span>) and arrows correspond to transition probabilities between states.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">mark</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mark</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-10-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="encoding" class="section level2">
 <h2 class="hasAnchor">
-<a href="#encoding" class="anchor" aria-hidden="true"></a>Encoding</h2>
+<a href="#encoding" class="anchor"></a>Encoding</h2>
 <div id="concept" class="section level3">
 <h3 class="hasAnchor">
-<a href="#concept" class="anchor" aria-hidden="true"></a>Concept</h3>
+<a href="#concept" class="anchor"></a>Concept</h3>
 <p><span class="math inline">\(X\)</span> is a continuous stochastic process with jumps. We define categorical functional data as a set of sample paths of <span class="math inline">\(X\)</span>.</p>
 <p><strong>cfda</strong> is seen as an extension of the multiple correspondence analysis to a stochastic process.</p>
 <p>The idea is to find a scalar real random variable <span class="math inline">\(z \in L_2(\Omega)\)</span> that is the <em>most correlated</em> to <span class="math inline">\({X} = \{X_{t}\ : \ t\in [0,T_{\max}]\}\)</span>.</p>
 </div>
 <div id="mathematical-background" class="section level3">
 <h3 class="hasAnchor">
-<a href="#mathematical-background" class="anchor" aria-hidden="true"></a>Mathematical Background</h3>
+<a href="#mathematical-background" class="anchor"></a>Mathematical Background</h3>
 <p>For a fixed <span class="math inline">\(t\in [0,T_{\max}]\)</span>, let <span class="math inline">\(E^{t}\)</span> the projection operator, <span class="math display">\[E^{t}(z) = \mathbb{E}(z|X_{t}) = \sum_{x\in S}{\mathbb{E}(z|X_t=x) \mathbf{1}_{X_t=x}}\]</span> Then, the correlation coefficient between <span class="math inline">\(z\)</span> and <span class="math inline">\(X_{t}\)</span> is: <span class="math display">\[\eta^{2}(z, X_{t}) = \frac{var(\mathbb{E}(z|X_{t}))}{var(z)}\]</span></p>
 <p>For <span class="math inline">\(t, s \in [0,T_{\max}]\)</span>, the <em>(simple) correspondence analysis</em> looks for <span class="math inline">\(z\)</span> such that it maximizes <span class="math display">\[\displaystyle\frac{1}{2}\left(\eta^{2}(z, X_{t})+\eta^{2}(z, X_{s})\right)\]</span><br>
 and the solution is:</p>
@@ -281,15 +285,15 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 </div>
 <div id="application" class="section level3">
 <h3 class="hasAnchor">
-<a href="#application" class="anchor" aria-hidden="true"></a>Application</h3>
+<a href="#application" class="anchor"></a>Application</h3>
 <p>Firstly, a basis of functions must be defined. We choose a B-splines basis of order 4.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/fda/man/create.bspline.basis.html" class="external-link">create.bspline.basis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>The optimal encoding is computed using:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fmca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_optimal_encoding.html">compute_optimal_encoding</a></span><span class="op">(</span><span class="va">d_JKT</span>, <span class="va">b</span>, nCores <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
 <pre><code>## #### FMCA
 ## 
 ## ## Data 
@@ -327,7 +331,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 ## 5  0.76235790 -2.3636970 -1.6430662  0.4241371 -0.56541361 -0.1747624
 ## 6 -0.06611053  1.1208777 -1.5759303 -0.5073735 -0.73253829 -1.7198606
 ## 
-## Total elapsed time: 82.835 s</code></pre>
+## Total elapsed time: 83.55 s</code></pre>
 <p>By default this function computes bootstrap estimates of the encoding functions in order to have a confidence interval. This is controlled by the <code>computeCI</code> arguments. The output is a list containing the different elements computed during the process: <code>eigenvalues</code>, <code>pc</code>, <code>alpha</code>, <code>F</code>, <code>G</code>, <code>V</code> and <code>basisobj</code>. Note that <code>alpha</code>contains the coefficients of the different encoding functions and <code>pc</code>the principal components. These components can be used with classical statistic methods (k-means, regression…).</p>
 <p>The eigenvalues can be computed using:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
@@ -335,7 +339,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 <p><img src="cfda_files/figure-html/unnamed-chunk-13-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>The first encoding function coefficients <span class="math inline">\(\alpha\)</span>’s:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">$</span><span class="va">alpha</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">$</span><span class="va">alpha</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <pre><code>##                  A          C           G            T
 ##  [1,]  0.002527816  0.6581468 -0.32857421 -0.002813819
 ##  [2,] -0.017726679 -0.3705776  0.33158464 -0.025042589
@@ -349,7 +353,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 ## [10,] -0.128365002 -0.1472297 -0.19896052  0.515596657</code></pre>
 <p>The resulting encoding can be plotted:</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fmca</span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: Removed 3 row(s) containing missing values (geom_path).</code></pre>
 <p><img src="cfda_files/figure-html/unnamed-chunk-15-1.png" width="480" style="display: block; margin: auto;"> or extracted as a <em>fd</em> object (or matrix):</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
@@ -357,11 +361,11 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 <p>By default, it plots (and returns) the first encoding functions. Other encoding can be accessed with the <code>harm</code> argument.</p>
 <p>A confidence interval can be plotted using the <code>addCI</code> argument:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fmca</span>, addCI <span class="op">=</span> <span class="cn">TRUE</span>, coeff <span class="op">=</span> <span class="fl">2</span>, states <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fmca</span>, addCI <span class="op">=</span> <span class="cn">TRUE</span>, coeff <span class="op">=</span> <span class="fl">2</span>, states <span class="op">=</span> <span class="st">"A"</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-17-1.png" width="480" style="display: block; margin: auto;"></p>
 <p>Plot the two first components:</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plotComponent.html">plotComponent</a></span><span class="op">(</span><span class="va">fmca</span>, comp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, addNames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plotComponent.html">plotComponent</a></span><span class="op">(</span><span class="va">fmca</span>, comp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, addNames <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="cfda_files/figure-html/unnamed-chunk-18-1.png" width="480" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -378,13 +382,11 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Cristian Preda, Quentin Grimonprez.</p>
+  <p>Developed by Cristian Preda, Quentin Grimonprez.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -392,8 +394,6 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 
   
 
-
-  
 
   </body>
 </html>

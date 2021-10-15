@@ -1,7 +1,10 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9001
-pkgdown_sha: 900ef5471576f8f29508a7e7d94fae51390f2d96
+pkgdown: 1.6.1
+pkgdown_sha: ~
 articles:
   cfda: cfda.html
-last_built: 2021-06-08T17:17Z
+last_built: 2021-10-15T16:03Z
+urls:
+  reference: https://modal-inria.github.io/cfda/reference
+  article: https://modal-inria.github.io/cfda/articles
 

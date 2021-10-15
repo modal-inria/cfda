@@ -45,8 +45,6 @@
 
 
 
-
-
 <!-- mathjax -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script>
@@ -58,15 +56,9 @@
 
 
 
-  
-
-  
-
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -87,6 +79,12 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
+  <a href="../index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/cfda.html">Get started</a>
 </li>
 <li>
@@ -122,7 +120,7 @@
     <p>Estimate probabilities to be in each state</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>estimate_pt</span><span class='op'>(</span><span class='va'>data</span>, NAafterTmax <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre></div>
+    <pre class="usage"><span class='fu'>estimate_pt</span><span class='op'>(</span><span class='va'>data</span>, NAafterTmax <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,7 +139,7 @@
 
     <p>A list of two elements:</p><ul>
 <li><p>t: vector of time</p></li>
-<li><p>pt: a matrix with K (= number of states) rows and with <code>length(t)</code> columns containing the probabilities to be in each state at each time.</p></li>
+<li><p>pt: a matrix with K (= number of states) rows and with <code><a href='https://rdrr.io/r/base/length.html'>length(t)</a></code> columns containing the probabilities to be in each state at each time.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -152,87 +150,86 @@
     <p>Cristian Preda, Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span></span>
-<span class='r-in'><span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
-<span class='r-in'><span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span></span>
-<span class='r-in'><span class='va'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span><span class='op'>(</span><span class='va'>d_JK</span>, <span class='fl'>10</span><span class='op'>)</span></span>
-<span class='r-in'></span>
-<span class='r-in'><span class='co'># estimate probabilities</span></span>
-<span class='r-in'><span class='fu'>estimate_pt</span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span></span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $pt</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   0 0.218 0.492 0.87 1.06 1.063 1.082 1.139 1.225 1.364 1.651 1.797 1.887 1.898</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1 1   0.9   0.8  0.7  0.6   0.7   0.7   0.6   0.5   0.4   0.3   0.3   0.2   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2 0   0.0   0.1  0.1  0.2   0.2   0.2   0.3   0.3   0.4   0.4   0.5   0.6   0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3 0   0.1   0.1  0.1  0.1   0.1   0.0   0.0   0.1   0.1   0.1   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4 0   0.0   0.0  0.1  0.1   0.0   0.1   0.1   0.1   0.1   0.2   0.1   0.1   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   2.315 2.324 2.36 2.396 2.414 2.416 2.452 2.456 2.509 2.876 2.949 3.034 3.136</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1   0.2  0.1   0.1   0.1   0.1   0.2   0.2   0.2   0.1   0.2   0.2   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.5   0.4  0.4   0.3   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.3   0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.1   0.1  0.2   0.2   0.2   0.3   0.2   0.1   0.2   0.2   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.3   0.3  0.3   0.4   0.3   0.3   0.3   0.4   0.4   0.5   0.5   0.4   0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   3.158 3.228 3.228 3.353 3.387 3.481 3.579 3.659 3.707 3.731 3.735 3.754 3.767</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1   0.1   0.1   0.1   0.2   0.2   0.2   0.1   0.1   0.1   0.2   0.2   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.4   0.3   0.4   0.5   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.3   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.1   0.1   0.1   0.1   0.1   0.2   0.3   0.4   0.5   0.6   0.5   0.4   0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.4   0.5   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.1   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   3.842 3.865 3.933 4.061 4.205 4.411 4.459 4.486 4.739 4.843 4.86 4.868 4.947</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.2   0.2   0.2   0.1   0.2   0.1   0.1   0.2   0.1   0.1  0.1   0.1   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.1   0.1   0.2   0.2   0.2   0.2   0.1   0.1   0.1   0.1  0.2   0.3   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.6   0.5   0.4   0.5   0.5   0.5   0.5   0.4   0.4   0.5  0.4   0.4   0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.1   0.2   0.2   0.2   0.1   0.2   0.3   0.3   0.4   0.3  0.3   0.2   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   4.966 5.019 5.108 5.161 5.257 5.27 5.372 5.497 5.499 5.596 5.658 5.702 5.744</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1   0.1   0.2   0.2   0.1  0.1   0.1   0.1   0.1   0.1   0.1   0.0   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.3   0.2   0.1   0.2   0.2  0.3   0.4   0.4   0.3   0.3   0.4   0.5   0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.4   0.4   0.4   0.3   0.4  0.3   0.2   0.1   0.1   0.2   0.2   0.2   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.2   0.3   0.3   0.3   0.3  0.3   0.3   0.4   0.5   0.4   0.3   0.3   0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   5.814 5.899 5.924 5.928 5.947 5.949 6.034 6.135 6.192 6.4 6.662 6.845 6.859</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1   0.1   0.1   0.2   0.1   0.2   0.3   0.2   0.2 0.1   0.1   0.1   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.4   0.3   0.2   0.2   0.2   0.2   0.2   0.3   0.3 0.3   0.4   0.3   0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.2   0.3   0.4   0.4   0.4   0.4   0.3   0.3   0.2 0.2   0.2   0.2   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.3   0.3   0.3   0.2   0.3   0.2   0.2   0.2   0.3 0.4   0.3   0.4   0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   6.944 7.002 7.054 7.231 7.365 7.39 7.633 7.698 7.884 7.959 8.091 8.175 8.435</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1   0.1   0.1   0.1   0.1  0.1   0.1   0.2   0.2   0.2   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.3   0.2   0.2   0.2   0.2  0.3   0.3   0.3   0.4   0.5   0.5   0.4   0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.3   0.4   0.3   0.4   0.5  0.5   0.4   0.3   0.2   0.2   0.3   0.3   0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.3   0.3   0.4   0.3   0.2  0.1   0.2   0.2   0.2   0.1   0.1   0.2   0.2</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   8.448 8.5 8.509 8.78 8.825 8.933 8.969 9.007 9.118 9.193 9.495 9.505 9.616</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1 0.1   0.1  0.2   0.3   0.2   0.3   0.3   0.3   0.2   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.4 0.4   0.4  0.4   0.4   0.5   0.5   0.4   0.3   0.4   0.4   0.5   0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.3 0.2   0.1  0.1   0.0   0.0   0.0   0.1   0.1   0.1   0.1   0.1   0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.2 0.3   0.4  0.3   0.3   0.3   0.2   0.2   0.3   0.3   0.4   0.3   0.4</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   9.695  10</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 1   0.1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 2   0.5 0.5</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 3   0.1 0.1</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> 4   0.3 0.3</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> $t</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   [1]  0.0000000  0.2180290  0.4916986  0.8704080  1.0598693  1.0630830</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>   [7]  1.0821039  1.1386970  1.2252254  1.3641016  1.6505646  1.7966908</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [13]  1.8865232  1.8982560  2.3147437  2.3242932  2.3595847  2.3962857</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [19]  2.4142236  2.4164476  2.4515318  2.4559213  2.5088731  2.8756229</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [25]  2.9490862  3.0344741  3.1364854  3.1582254  3.2276375  3.2283513</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [31]  3.3529494  3.3870680  3.4811082  3.5791198  3.6594506  3.7066318</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [37]  3.7305269  3.7351765  3.7537738  3.7666453  3.8419602  3.8645643</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [43]  3.9331921  4.0612357  4.2052891  4.4113183  4.4591223  4.4856190</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [49]  4.7390957  4.8429651  4.8601339  4.8677843  4.9474937  4.9655662</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [55]  5.0192617  5.1075602  5.1605100  5.2572109  5.2702445  5.3719475</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [61]  5.4971349  5.4987108  5.5964307  5.6583688  5.7016005  5.7435824</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [67]  5.8141455  5.8987583  5.9243166  5.9276891  5.9472630  5.9486004</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [73]  6.0340074  6.1351050  6.1920048  6.3999147  6.6621396  6.8453858</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [79]  6.8587893  6.9439245  7.0017352  7.0541344  7.2311462  7.3652745</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [85]  7.3897437  7.6329481  7.6977100  7.8835715  7.9586442  8.0911328</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [91]  8.1754997  8.4353185  8.4476586  8.5003673  8.5091307  8.7800235</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span>  [97]  8.8250077  8.9327908  8.9690600  9.0067103  9.1176893  9.1931784</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [103]  9.4945033  9.5053692  9.6159107  9.6951914 10.0000000</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> attr(,"class")</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "pt"</span>
-<span class='r-in'></span>
-</code></pre></div>
+    <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
+<span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
+<span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+
+<span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span><span class='op'>(</span><span class='va'>d_JK</span>, <span class='fl'>10</span><span class='op'>)</span>
+
+<span class='co'># estimate probabilities</span>
+<span class='fu'>estimate_pt</span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; $pt
+#&gt;   0 0.218 0.492 0.87 1.06 1.063 1.082 1.139 1.225 1.364 1.651 1.797 1.887 1.898
+#&gt; 1 1   0.9   0.8  0.7  0.6   0.7   0.7   0.6   0.5   0.4   0.3   0.3   0.2   0.2
+#&gt; 2 0   0.0   0.1  0.1  0.2   0.2   0.2   0.3   0.3   0.4   0.4   0.5   0.6   0.5
+#&gt; 3 0   0.1   0.1  0.1  0.1   0.1   0.0   0.0   0.1   0.1   0.1   0.1   0.1   0.1
+#&gt; 4 0   0.0   0.0  0.1  0.1   0.0   0.1   0.1   0.1   0.1   0.2   0.1   0.1   0.2
+#&gt;   2.315 2.324 2.36 2.396 2.414 2.416 2.452 2.456 2.509 2.876 2.949 3.034 3.136
+#&gt; 1   0.1   0.2  0.1   0.1   0.1   0.1   0.2   0.2   0.2   0.1   0.2   0.2   0.1
+#&gt; 2   0.5   0.4  0.4   0.3   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.3   0.3
+#&gt; 3   0.1   0.1  0.2   0.2   0.2   0.3   0.2   0.1   0.2   0.2   0.1   0.1   0.1
+#&gt; 4   0.3   0.3  0.3   0.4   0.3   0.3   0.3   0.4   0.4   0.5   0.5   0.4   0.5
+#&gt;   3.158 3.228 3.228 3.353 3.387 3.481 3.579 3.659 3.707 3.731 3.735 3.754 3.767
+#&gt; 1   0.1   0.1   0.1   0.1   0.2   0.2   0.2   0.1   0.1   0.1   0.2   0.2   0.2
+#&gt; 2   0.4   0.3   0.4   0.5   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.3   0.2
+#&gt; 3   0.1   0.1   0.1   0.1   0.1   0.2   0.3   0.4   0.5   0.6   0.5   0.4   0.5
+#&gt; 4   0.4   0.5   0.4   0.3   0.3   0.3   0.2   0.2   0.2   0.1   0.1   0.1   0.1
+#&gt;   3.842 3.865 3.933 4.061 4.205 4.411 4.459 4.486 4.739 4.843 4.86 4.868 4.947
+#&gt; 1   0.2   0.2   0.2   0.1   0.2   0.1   0.1   0.2   0.1   0.1  0.1   0.1   0.2
+#&gt; 2   0.1   0.1   0.2   0.2   0.2   0.2   0.1   0.1   0.1   0.1  0.2   0.3   0.2
+#&gt; 3   0.6   0.5   0.4   0.5   0.5   0.5   0.5   0.4   0.4   0.5  0.4   0.4   0.4
+#&gt; 4   0.1   0.2   0.2   0.2   0.1   0.2   0.3   0.3   0.4   0.3  0.3   0.2   0.2
+#&gt;   4.966 5.019 5.108 5.161 5.257 5.27 5.372 5.497 5.499 5.596 5.658 5.702 5.744
+#&gt; 1   0.1   0.1   0.2   0.2   0.1  0.1   0.1   0.1   0.1   0.1   0.1   0.0   0.1
+#&gt; 2   0.3   0.2   0.1   0.2   0.2  0.3   0.4   0.4   0.3   0.3   0.4   0.5   0.5
+#&gt; 3   0.4   0.4   0.4   0.3   0.4  0.3   0.2   0.1   0.1   0.2   0.2   0.2   0.1
+#&gt; 4   0.2   0.3   0.3   0.3   0.3  0.3   0.3   0.4   0.5   0.4   0.3   0.3   0.3
+#&gt;   5.814 5.899 5.924 5.928 5.947 5.949 6.034 6.135 6.192 6.4 6.662 6.845 6.859
+#&gt; 1   0.1   0.1   0.1   0.2   0.1   0.2   0.3   0.2   0.2 0.1   0.1   0.1   0.2
+#&gt; 2   0.4   0.3   0.2   0.2   0.2   0.2   0.2   0.3   0.3 0.3   0.4   0.3   0.3
+#&gt; 3   0.2   0.3   0.4   0.4   0.4   0.4   0.3   0.3   0.2 0.2   0.2   0.2   0.2
+#&gt; 4   0.3   0.3   0.3   0.2   0.3   0.2   0.2   0.2   0.3 0.4   0.3   0.4   0.3
+#&gt;   6.944 7.002 7.054 7.231 7.365 7.39 7.633 7.698 7.884 7.959 8.091 8.175 8.435
+#&gt; 1   0.1   0.1   0.1   0.1   0.1  0.1   0.1   0.2   0.2   0.2   0.1   0.1   0.1
+#&gt; 2   0.3   0.2   0.2   0.2   0.2  0.3   0.3   0.3   0.4   0.5   0.5   0.4   0.3
+#&gt; 3   0.3   0.4   0.3   0.4   0.5  0.5   0.4   0.3   0.2   0.2   0.3   0.3   0.4
+#&gt; 4   0.3   0.3   0.4   0.3   0.2  0.1   0.2   0.2   0.2   0.1   0.1   0.2   0.2
+#&gt;   8.448 8.5 8.509 8.78 8.825 8.933 8.969 9.007 9.118 9.193 9.495 9.505 9.616
+#&gt; 1   0.1 0.1   0.1  0.2   0.3   0.2   0.3   0.3   0.3   0.2   0.1   0.1   0.1
+#&gt; 2   0.4 0.4   0.4  0.4   0.4   0.5   0.5   0.4   0.3   0.4   0.4   0.5   0.4
+#&gt; 3   0.3 0.2   0.1  0.1   0.0   0.0   0.0   0.1   0.1   0.1   0.1   0.1   0.1
+#&gt; 4   0.2 0.3   0.4  0.3   0.3   0.3   0.2   0.2   0.3   0.3   0.4   0.3   0.4
+#&gt;   9.695  10
+#&gt; 1   0.1 0.1
+#&gt; 2   0.5 0.5
+#&gt; 3   0.1 0.1
+#&gt; 4   0.3 0.3
+#&gt; 
+#&gt; $t
+#&gt;   [1]  0.0000000  0.2180290  0.4916986  0.8704080  1.0598693  1.0630830
+#&gt;   [7]  1.0821039  1.1386970  1.2252254  1.3641016  1.6505646  1.7966908
+#&gt;  [13]  1.8865232  1.8982560  2.3147437  2.3242932  2.3595847  2.3962857
+#&gt;  [19]  2.4142236  2.4164476  2.4515318  2.4559213  2.5088731  2.8756229
+#&gt;  [25]  2.9490862  3.0344741  3.1364854  3.1582254  3.2276375  3.2283513
+#&gt;  [31]  3.3529494  3.3870680  3.4811082  3.5791198  3.6594506  3.7066318
+#&gt;  [37]  3.7305269  3.7351765  3.7537738  3.7666453  3.8419602  3.8645643
+#&gt;  [43]  3.9331921  4.0612357  4.2052891  4.4113183  4.4591223  4.4856190
+#&gt;  [49]  4.7390957  4.8429651  4.8601339  4.8677843  4.9474937  4.9655662
+#&gt;  [55]  5.0192617  5.1075602  5.1605100  5.2572109  5.2702445  5.3719475
+#&gt;  [61]  5.4971349  5.4987108  5.5964307  5.6583688  5.7016005  5.7435824
+#&gt;  [67]  5.8141455  5.8987583  5.9243166  5.9276891  5.9472630  5.9486004
+#&gt;  [73]  6.0340074  6.1351050  6.1920048  6.3999147  6.6621396  6.8453858
+#&gt;  [79]  6.8587893  6.9439245  7.0017352  7.0541344  7.2311462  7.3652745
+#&gt;  [85]  7.3897437  7.6329481  7.6977100  7.8835715  7.9586442  8.0911328
+#&gt;  [91]  8.1754997  8.4353185  8.4476586  8.5003673  8.5091307  8.7800235
+#&gt;  [97]  8.8250077  8.9327908  8.9690600  9.0067103  9.1176893  9.1931784
+#&gt; [103]  9.4945033  9.5053692  9.6159107  9.6951914 10.0000000
+#&gt; 
+#&gt; attr(,"class")
+#&gt; [1] "pt"</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -244,11 +241,11 @@
 
       <footer>
       <div class="copyright">
-  <p><p>Developed by Cristian Preda, Quentin Grimonprez.</p></p>
+  <p>Developed by Cristian Preda, Quentin Grimonprez.</p>
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -256,8 +253,6 @@
 
   
 
-
-  
 
   </body>
 </html>
