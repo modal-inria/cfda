@@ -22,7 +22,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Plot the probabilities of each state at each given time
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)

@@ -2,7 +2,7 @@
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param group vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots. 
+#' @param group vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots.
 #' If \code{group = NA}, the corresponding individuals in \code{data} is ignored.
 #' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
@@ -11,38 +11,38 @@
 #' @param nCol number of columns when \code{group} is given
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
-#' On the plot, each row represents an individual over [0:Tmax]. 
-#' The color at a given time gives the state of the individual. 
-#' 
-#' @examples 
-#' # Simulate the Jukes-Cantor model of nucleotide replacement 
+#' On the plot, each row represents an individual over [0:Tmax].
+#' The color at a given time gives the state of the individual.
+#'
+#' @examples
+#' # Simulate the Jukes-Cantor model of nucleotide replacement
 #' K <- 4
 #' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
-#' 
+#'
 #' # add a line with time Tmax at the end of each individual
 #' d_JKT <- cut_data(d_JK, Tmax = 10)
-#' 
+#'
 #' plotData(d_JKT)
-#' 
+#'
 #' # modify the plot using ggplot2
 #' library(ggplot2)
 #' plotData(d_JKT, col = c("red", "blue", "green", "brown")) +
 #'    labs(title = "Trajectories of a Markov process")
-#'   
-#'   
+#'
+#'
 #' # use the group variable: create a group with the 3 first variables and one with the others
 #' group <- rep(1:2, c(3, 7))
 #' plotData(d_JKT, group = group)
-#' 
-#' 
+#'
+#'
 #' # use the group variable: remove the id number 5 and 6
 #' group[c(5, 6)] = NA
 #' plotData(d_JKT, group = group)
-#'   
+#'
 #' @author Cristian Preda, Quentin Grimonprez
-#' 
+#'
 #' @export
 plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL)
 {
@@ -56,57 +56,57 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   if(!is.null(nCol) && (!is.numeric(nCol) || (length(nCol)  != 1) || !is.whole.number(nCol) || (nCol < 1)))
     stop("nCol must be an integer > 0.")
   ## end check
-  
+
   if(!is.null(group))
   {
     data$group = rep(NA, nrow(data))
-    idNames <- unique(data$id) 
+    idNames <- unique(data$id)
     for(i in seq_along(idNames))
     {
       data$group[data$id == idNames[i]] = group[i]
     }
     data = data[!is.na(data$group),]
   }
-  
+
   d_graph <- rep_large_ind(data)
-  
+
   if(!is.null(group))
     d_graph = d_graph[order(d_graph$group), ]
-  
+
   # to be sure that state are considered a qualitative
   # if already a factor, we do not execute this in order to not drop unused levels
   if(!is.factor(d_graph$state))
     d_graph$state = factor(d_graph$state)
-  
+
   nInd <- length(unique(d_graph$id))
-  
+
   if(is.null(group))
     d_graph$position <- computePosition(data, d_graph$id, sort)
   else
     d_graph$position <- computePositionPerGroup(data, d_graph$id, d_graph$group, sort)
-  
-  p <- ggplot() + 
-    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"), 
-              color = ifelse(addBorder, "black", NA)) + 
-    scale_x_continuous(name = "Time") + 
+
+  p <- ggplot() +
+    geom_rect(data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"),
+              color = ifelse(addBorder, "black", NA)) +
+    scale_x_continuous(name = "Time") +
     labs(fill = "State")
-  
+
   if(!is.null(group))
     p = p + facet_wrap("group", scales = "free_y", labeller = labeller(.default = createLabeller(group)), ncol = nCol)
 
-  
+
   if(addId)
   {
     p = p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id)[order(unique(d_graph$position))])
   }else{
     p = p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
-  
+
   if(!is.null(col))
     p = p + scale_fill_manual(values = col, drop = FALSE)
   else
     p = p + scale_fill_hue(drop = FALSE) # do not remove unused labels
-  
+
   return(p)
 }
 
@@ -117,17 +117,17 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 rep_large_ind <- function(data)
 {
   out <- by(data, data$id, function(x){
-    d <- data.frame(id = x$id[1:(nrow(x)-1)], 
-                    t_start = x$time[1:(nrow(x)-1)], 
-                    t_end = x$time[2:nrow(x)], 
+    d <- data.frame(id = x$id[1:(nrow(x)-1)],
+                    t_start = x$time[1:(nrow(x)-1)],
+                    t_end = x$time[2:nrow(x)],
                     state = x$state[1:(nrow(x)-1)], stringsAsFactors = FALSE)
-    
+
     if("group" %in% names(data))
       d$group = x$group[1:(nrow(x)-1)]
-    
+
     return(d)
   })
-  
+
   return(do.call(rbind, out))
 }
 
@@ -138,13 +138,13 @@ computePosition <- function(data, id, sort = FALSE)
   {
     # order according to first state duration
     b <- orderFirstState(data)
-    
+
     ord = match(id, b$id)
     position <- ord # position of id on the y-axis
   }else{
     position <- unclass(factor(id)) # return integers associated with the different ids (labels from a factor)
   }
-  
+
   return(position)
 }
 
@@ -183,11 +183,11 @@ createLabeller <- function(group)
   part <- table(group)
   labelGroup <- as.list(paste0(names(part), ": n=", part))
   names(labelGroup) = names(part)
-  
+
   group_labeller <- function(variable, value){
     return(labelGroup[value])
   }
-  
+
   return(group_labeller)
 }
 
@@ -198,7 +198,7 @@ createLabeller <- function(group)
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param max.print maximal number of states to display
-#' 
+#'
 #' @return a list containing:
 #' \itemize{
 #'   \item \code{nRow} number of rows
@@ -209,35 +209,35 @@ createLabeller <- function(group)
 #'   \item \code{states} vector containing the different states
 #'   \item \code{visit} number of individuals visiting each state
 #' }
-#' 
-#' @examples 
+#'
+#' @examples
 #' data(biofam2)
 #' summary_cfd(biofam2)
-#' 
+#'
 #' @author Quentin Grimonprez
-#' 
+#'
 #' @export
 summary_cfd <- function(data, max.print = 10)
 {
   checkData(data)
-  
+
   nIndiv <- length(unique(data$id))
   if(is.factor(data$state))
     states <- levels(data$state)
   else
     states <- as.character(sort(unique(data$state)))
   nState <- length(states)
-  
+
   timeRange <- range(data$time)
-  
+
   timeRangeInd <- do.call(rbind, tapply(data$time, data$id, range))
   sameStart <- (length(unique(timeRangeInd[, 1])) == 1)
   sameEnd <- (length(unique(timeRangeInd[, 2])) == 1)
-  
+
   nRow <- nrow(data)
-  
+
   nIndVisitingState <- tapply(data$id, data$state, function(x) length(unique(x)))
-  
+
   cat("Number of rows:", nRow, "\n")
   cat("Number of individuals:", nIndiv, "\n")
   cat("Time Range:", timeRange[1], "-", timeRange[2], "\n")
@@ -249,7 +249,7 @@ summary_cfd <- function(data, max.print = 10)
   cat("\n")
   cat("Number of individuals visiting each state:\n")
   print(head(nIndVisitingState, n = 10))
-  
+
   invisible(list(nRow = nRow, nInd = nIndiv, timeRange = timeRange, uniqueStart = sameStart, uniqueEnd = sameEnd,
                  states = states, visit = nIndVisitingState))
 }

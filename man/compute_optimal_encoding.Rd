@@ -43,7 +43,7 @@ A list containing:
   \item \code{G} covariance matrix of \code{V}
   \item \code{basisobj} \code{basisobj} input parameter
   \item \code{pt} output of \link{estimate_pt} function
-  \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run 
+  \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run
   \item \code{varAlpha} Only if \code{computeCI = TRUE}. Variance of alpha parameters
   \item \code{runTime} Total elapsed time
 }
@@ -62,7 +62,7 @@ Extra parameters (\emph{...}) for the \code{\link{integrate}} function can be:
 }
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 Tmax <- 5
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

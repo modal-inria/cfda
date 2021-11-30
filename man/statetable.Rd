@@ -18,7 +18,7 @@ a vector of length \code{K} containing the total time spent in each state
 Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)

@@ -16,13 +16,13 @@ list of two elements: \code{Q}, the estimated transition matrix, and \code{lambd
 Calculates crude initial values for transition intensities by assuming that the data represent the exact transition times of the Markov process.
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
-# estimation  
+# estimation
 mark <- estimate_Markov(d_JK)
 mark$P
 mark$lambda

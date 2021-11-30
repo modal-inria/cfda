@@ -15,7 +15,7 @@
 No return value, called for side effects
 }
 \description{
-Plot the transition graph between the different states. A node corresponds to a state with the mean 
+Plot the transition graph between the different states. A node corresponds to a state with the mean
 time spent in this state. Each arrow represents the probability of transition between states.
 }
 \details{
@@ -30,13 +30,13 @@ Some useful extra parameters:
 }
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
-# estimation  
+# estimation
 mark <- estimate_Markov(d_JK)
 
 # transition graph

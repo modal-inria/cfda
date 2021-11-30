@@ -20,7 +20,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Boxplot of time spent in each state
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement  
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
@@ -37,8 +37,8 @@ boxplot(timeSpent, col = c("#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))
 
 # modify the plot using ggplot2
 library(ggplot2)
-boxplot(timeSpent, notch = TRUE, outlier.colour = "black") + 
-   coord_flip() + 
+boxplot(timeSpent, notch = TRUE, outlier.colour = "black") +
+   coord_flip() +
    labs(title = "Time spent in each state")
 
 }

@@ -30,7 +30,7 @@ principal components for the individuals
 Predict the cluster of new samples.
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 Tmax <- 6
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))

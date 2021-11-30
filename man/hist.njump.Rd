@@ -20,7 +20,7 @@ a \code{ggplot} object that can be modified using \code{ggplot2} package.
 Plot the number of jumps
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
@@ -34,7 +34,7 @@ hist(nJump)
 library(ggplot2)
 hist(nJump, fill = "#984EA3") +
    labs(title = "Distribution of the number of jumps")
-   
+
 }
 \author{
 Quentin Grimonprez

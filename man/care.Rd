@@ -5,7 +5,7 @@
 \alias{care}
 \title{Care trajectories}
 \format{
-A data.frame containing three columns: 
+A data.frame containing three columns:
 \itemize{
   \item \emph{id} id of individuals (2929 different ids)
   \item \emph{time} number of months since the diagnosis
@@ -22,8 +22,8 @@ data(care)
 Care trajectories of patients diagnosed with a serious and chronic condition
 }
 \details{
-In this study, patients were followed from the time they were diagnosed with a serious and chronic condition 
-and their care trajectories were tracked monthly from the time of diagnosis. 
+In this study, patients were followed from the time they were diagnosed with a serious and chronic condition
+and their care trajectories were tracked monthly from the time of diagnosis.
 The status variable contains the care status of each individual for each month of follow-up.
 Trajectories have different lengths.
 
@@ -39,7 +39,7 @@ The four states are:
 data(care)
 head(care)
 
-# Individuals has not the same length. In order to compute the encoding, 
+# Individuals has not the same length. In order to compute the encoding,
 # we keep individuals with at least 18 months of history and work
 # with the 18 first months.
 duration <- compute_duration(care)

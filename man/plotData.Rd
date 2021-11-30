@@ -17,7 +17,7 @@ plotData(
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
-\item{group}{vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots. 
+\item{group}{vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots.
 If \code{group = NA}, the corresponding individuals in \code{data} is ignored.}
 
 \item{col}{a vector containing color for each state (can be named)}
@@ -32,14 +32,14 @@ If \code{group = NA}, the corresponding individuals in \code{data} is ignored.}
 }
 \value{
 a \code{ggplot} object that can be modified using \code{ggplot2} package.
-On the plot, each row represents an individual over [0:Tmax]. 
+On the plot, each row represents an individual over [0:Tmax].
 The color at a given time gives the state of the individual.
 }
 \description{
 Plot categorical functional data
 }
 \examples{
-# Simulate the Jukes-Cantor model of nucleotide replacement 
+# Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
 lambda_PJK <- c(1, 1, 1, 1)
@@ -54,8 +54,8 @@ plotData(d_JKT)
 library(ggplot2)
 plotData(d_JKT, col = c("red", "blue", "green", "brown")) +
    labs(title = "Trajectories of a Markov process")
-  
-  
+
+
 # use the group variable: create a group with the 3 first variables and one with the others
 group <- rep(1:2, c(3, 7))
 plotData(d_JKT, group = group)
@@ -64,7 +64,7 @@ plotData(d_JKT, group = group)
 # use the group variable: remove the id number 5 and 6
 group[c(5, 6)] = NA
 plotData(d_JKT, group = group)
-  
+
 }
 \author{
 Cristian Preda, Quentin Grimonprez
