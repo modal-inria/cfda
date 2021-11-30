@@ -136,8 +136,8 @@
     <p>https://larmarange.github.io/analyse-R/data/care_trajectories.RData https://larmarange.github.io/analyse-R/trajectoires-de-soins.html</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>In this study, patients were followed from the time they were diagnosed with a serious and chronic condition 
-and their care trajectories were tracked monthly from the time of diagnosis. 
+    <p>In this study, patients were followed from the time they were diagnosed with a serious and chronic condition
+and their care trajectories were tracked monthly from the time of diagnosis.
 The status variable contains the care status of each individual for each month of follow-up.
 Trajectories have different lengths.</p>
 <p>The four states are:</p><ul>
@@ -159,7 +159,7 @@ Trajectories have different lengths.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 5 13    0     D</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 6 13    7     D</span>
 <span class='r-in'></span>
-<span class='r-in'><span class='co'># Individuals has not the same length. In order to compute the encoding, </span></span>
+<span class='r-in'><span class='co'># Individuals has not the same length. In order to compute the encoding,</span></span>
 <span class='r-in'><span class='co'># we keep individuals with at least 18 months of history and work</span></span>
 <span class='r-in'><span class='co'># with the 18 first months.</span></span>
 <span class='r-in'><span class='va'>duration</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_duration.html'>compute_duration</a></span><span class='op'>(</span><span class='va'>care</span><span class='op'>)</span></span>
@@ -187,16 +187,16 @@ Trajectories have different lengths.</p>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 74.22s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 102.92s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 497.53s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 686.7s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.01s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute Bootstrap Encoding:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> **************************************************</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.47s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 572.73s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.53s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 790.9s</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>fmca</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
 <span class='r-plt img'><img src='care-1.png' alt='' width='700' height='433' /></span>

@@ -210,7 +210,7 @@
     <p>Cristian Preda, Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span></span>
+    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
 <span class='r-in'><span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
 <span class='r-in'><span class='va'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>5</span></span>
 <span class='r-in'><span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -233,13 +233,13 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.32s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.47s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 1.86s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 2.64s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 2.19s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 3.13s</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> #### FMCA</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -277,7 +277,7 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 5 -1.4152094 -0.4455948 -2.90049296 -0.7621926 -0.8536573 -0.19485874</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 6 -1.4478108  1.8617776 -0.18646993  1.8808029  0.8624878 -0.01407049</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Total elapsed time: 2.19 s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total elapsed time: 3.127 s</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># plot the optimal encoding</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span></span>

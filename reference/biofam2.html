@@ -136,11 +136,11 @@
     <p>Swiss Household Panel https://forscenter.ch/projects/swiss-household-panel/</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The biofam2 dataset derives from the biofam dataset from <code>TraMineR</code> package. The biofam2 format is adapted to <code>cfda</code> functions. 
+    <p>The biofam2 dataset derives from the biofam dataset from <code>TraMineR</code> package. The biofam2 format is adapted to <code>cfda</code> functions.
 The biofam data set was constructed by Müller et al. (2007) from the data of the retrospective biographical survey carried out by the Swiss Household Panel (SHP) in 2002.
-The data set contains sequences of family life states from age 15 to 30 (sequence length is 16). 
-The sequences are a sample of 2000 sequences of those created from the SHP biographical survey. 
-It includes only individuals who were at least 30 years old at the time of the survey. 
+The data set contains sequences of family life states from age 15 to 30 (sequence length is 16).
+The sequences are a sample of 2000 sequences of those created from the SHP biographical survey.
+It includes only individuals who were at least 30 years old at the time of the survey.
 The biofam data set describes family life courses of 2000 individuals born between 1909 and 1972.</p>
 <p>The eight states are defined from the combination of five basic states, namely Living with parents (Parent), Left home (Left), Married (Marr), Having Children (Child), Divorced:
 "Parent", "Left", "Married", "Left+Marr", "Child", "Left+Child", "Left+Marr+Child", "Divorced"</p>
@@ -172,20 +172,20 @@ The biofam data set describes family life courses of 2000 individuals born betwe
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 19.04s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 28.64s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 91.85s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 136.32s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.19s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.29s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute Bootstrap Encoding:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ********</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ****************************************</span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> **</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.8s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 112.61s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 1.1s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 167.46s</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
 <span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Removed 162 row(s) containing missing values (geom_path).</span>
@@ -198,7 +198,7 @@ The biofam data set describes family life courses of 2000 individuals born betwe
 <span class='r-in'><span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, comp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
 <span class='r-plt img'><img src='biofam2-4.png' alt='' width='700' height='433' /></span>
 <span class='r-in'><span class='co'># }</span></span>
-<span class='r-in'>  </span>
+<span class='r-in'></span>
 </pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

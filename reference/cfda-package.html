@@ -43,16 +43,16 @@
 <meta property="og:description" content="cfda provides functions for the analysis of categorical functional data.
 The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 This can be done using the compute_optimal_encoding function that takes in arguments the data in a specific format and
-a basis of functions created using the fda package (cf. create.basis). The output can be analysed with summary.fmca, 
+a basis of functions created using the fda package (cf. create.basis). The output can be analysed with summary.fmca,
 plot.fmca, get_encoding, plotEigenvalues and plotComponent.
-Moreover, cfda contains functions to visualize and compute some statistics about categorical functional data. 
+Moreover, cfda contains functions to visualize and compute some statistics about categorical functional data.
 A summary of the dataset is available with summary_cfd.
-plotData shows a graphical representation of the dataset. 
-Basic statistics can be computed: the number of jumps (compute_number_jumps), the duration (compute_duration), 
+plotData shows a graphical representation of the dataset.
+Basic statistics can be computed: the number of jumps (compute_number_jumps), the duration (compute_duration),
 the time spent in each state (compute_time_spent), the probability to be in each state at any given time (estimate_pt),
 the transition table (statetable).
 The parameters of a Markov process can be estimated using estimate_Markov function.
-In order to test the different functions, a real dataset is provided (biofam2) as well as two functions for generating data: 
+In order to test the different functions, a real dataset is provided (biofam2) as well as two functions for generating data:
 (generate_Markov and generate_2State)." />
 
 
@@ -133,16 +133,16 @@ In order to test the different functions, a real dataset is provided (biofam2) a
     <p>cfda provides functions for the analysis of categorical functional data.</p>
 <p>The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
 This can be done using the <code><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></code> function that takes in arguments the data in a specific format and
-a basis of functions created using the <code>fda</code> package (cf. <code>create.basis</code>). The output can be analysed with <code><a href='summary.fmca.html'>summary.fmca</a></code>, 
+a basis of functions created using the <code>fda</code> package (cf. <code>create.basis</code>). The output can be analysed with <code><a href='summary.fmca.html'>summary.fmca</a></code>,
 <code><a href='plot.fmca.html'>plot.fmca</a></code>, <code><a href='get_encoding.html'>get_encoding</a></code>, <code><a href='plotEigenvalues.html'>plotEigenvalues</a></code> and <code><a href='plotComponent.html'>plotComponent</a></code>.</p>
-<p>Moreover, <code>cfda</code> contains functions to visualize and compute some statistics about categorical functional data. 
+<p>Moreover, <code>cfda</code> contains functions to visualize and compute some statistics about categorical functional data.
 A summary of the dataset is available with <code><a href='summary_cfd.html'>summary_cfd</a></code>.
-<code><a href='plotData.html'>plotData</a></code> shows a graphical representation of the dataset. 
-Basic statistics can be computed: the number of jumps (<code><a href='compute_number_jumps.html'>compute_number_jumps</a></code>), the duration (<code><a href='compute_duration.html'>compute_duration</a></code>), 
+<code><a href='plotData.html'>plotData</a></code> shows a graphical representation of the dataset.
+Basic statistics can be computed: the number of jumps (<code><a href='compute_number_jumps.html'>compute_number_jumps</a></code>), the duration (<code><a href='compute_duration.html'>compute_duration</a></code>),
 the time spent in each state (<code><a href='compute_time_spent.html'>compute_time_spent</a></code>), the probability to be in each state at any given time (<code><a href='estimate_pt.html'>estimate_pt</a></code>),
 the transition table (<code><a href='statetable.html'>statetable</a></code>).</p>
 <p>The parameters of a Markov process can be estimated using <code><a href='estimate_Markov.html'>estimate_Markov</a></code> function.</p>
-<p>In order to test the different functions, a real dataset is provided (<code><a href='biofam2.html'>biofam2</a></code>) as well as two functions for generating data: 
+<p>In order to test the different functions, a real dataset is provided (<code><a href='biofam2.html'>biofam2</a></code>) as well as two functions for generating data:
 (<code><a href='generate_Markov.html'>generate_Markov</a></code> and <code><a href='generate_2State.html'>generate_2State</a></code>).</p>
     </div>
 
@@ -166,7 +166,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
     <div class='dont-index'><p><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement  </span></span>
+    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
 <span class='r-in'><span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
 <span class='r-in'><span class='va'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>5</span></span>
 <span class='r-in'><span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -188,13 +188,13 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.3s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.43s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 1.69s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 2.44s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 1.99s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 2.88s</span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> #### FMCA</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
@@ -232,7 +232,7 @@ the transition table (<code><a href='statetable.html'>statetable</a></code>).</p
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 5 -1.47492490 -1.0091580  0.4422517  0.71320307 -2.28927486  0.22667328</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> 6 -1.81422272  0.6278327  0.3942423 -0.06794857  0.82622930  1.54360080</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Total elapsed time: 1.992 s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Total elapsed time: 2.883 s</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># plot eigenvalues</span></span>
 <span class='r-in'><span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>encoding</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>

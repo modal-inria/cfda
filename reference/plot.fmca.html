@@ -183,7 +183,7 @@
     <p>Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span></span>
+    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
 <span class='r-in'><span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
 <span class='r-in'><span class='va'>Tmax</span> <span class='op'>&lt;-</span> <span class='fl'>6</span></span>
 <span class='r-in'><span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></span>
@@ -196,7 +196,7 @@
 <span class='r-in'><span class='va'>b</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='va'>Tmax</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='va'>m</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span></span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># \donttest{</span></span>
-<span class='r-in'><span class='co'># compute encoding </span></span>
+<span class='r-in'><span class='co'># compute encoding</span></span>
 <span class='r-in'><span class='va'>encoding</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>d_JK2</span>, <span class='va'>b</span>, computeCI <span class='op'>=</span> <span class='cn'>FALSE</span>, nCores <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ######### Compute encoding #########</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of individuals: 10</span>
@@ -206,13 +206,13 @@
 <span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.41s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.6s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 2.72s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 3.8s</span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
 <span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0s</span>
-<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 3.14s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 4.4s</span>
 <span class='r-in'></span>
 <span class='r-in'><span class='co'># plot the encoding produced by the first harmonic</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>encoding</span><span class='op'>)</span></span>
