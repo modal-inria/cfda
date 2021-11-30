@@ -142,19 +142,19 @@
     <p>Cristian Preda, Quentin Grimonprez</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span>
-<span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span>
-<span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span>
-<span class='va'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-
-<span class='co'># cut at Tmax = 8</span>
-<span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span><span class='op'>(</span><span class='va'>d_JK</span>, Tmax <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span>
-
-<span class='co'># compute time spent by each id in each state</span>
-<span class='va'>timeSpent</span> <span class='op'>&lt;-</span> <span class='fu'>compute_time_spent</span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span>
-
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='co'># Simulate the Jukes-Cantor model of nucleotide replacement </span></span>
+<span class='r-in'><span class='va'>K</span> <span class='op'>&lt;-</span> <span class='fl'>4</span></span>
+<span class='r-in'><span class='va'>PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>matrix</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, nrow <span class='op'>=</span> <span class='va'>K</span>, ncol <span class='op'>=</span> <span class='va'>K</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>/</span><span class='fl'>3</span>, <span class='va'>K</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>lambda_PJK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>d_JK</span> <span class='op'>&lt;-</span> <span class='fu'><a href='generate_Markov.html'>generate_Markov</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>10</span>, K <span class='op'>=</span> <span class='va'>K</span>, P <span class='op'>=</span> <span class='va'>PJK</span>, lambda <span class='op'>=</span> <span class='va'>lambda_PJK</span>, Tmax <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># cut at Tmax = 8</span></span>
+<span class='r-in'><span class='va'>d_JK2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='cut_data.html'>cut_data</a></span><span class='op'>(</span><span class='va'>d_JK</span>, Tmax <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># compute time spent by each id in each state</span></span>
+<span class='r-in'><span class='va'>timeSpent</span> <span class='op'>&lt;-</span> <span class='fu'>compute_time_spent</span><span class='op'>(</span><span class='va'>d_JK2</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

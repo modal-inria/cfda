@@ -73,7 +73,7 @@
       <h1 data-toc-skip>Categorical Functional Data Analysis</h1>
                         <h4 class="author">Cristian Preda, Quentin Grimonprez</h4>
             
-            <h4 class="date">2021-10-15</h4>
+            <h4 class="date">2021-11-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/modal-inria/cfda/blob/master/vignettes/cfda.Rmd"><code>vignettes/cfda.Rmd</code></a></small>
       <div class="hidden name"><code>cfda.Rmd</code></div>
@@ -289,7 +289,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 <p>Firstly, a basis of functions must be defined. We choose a B-splines basis of order 4.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">10</span>
-<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+<span class="va">b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/fda/man/create.bspline.basis.html">create.bspline.basis</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
 <p>The optimal encoding is computed using:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">fmca</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/compute_optimal_encoding.html">compute_optimal_encoding</a></span><span class="op">(</span><span class="va">d_JKT</span>, <span class="va">b</span>, nCores <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
@@ -331,7 +331,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 ## 5  0.76235790 -2.3636970 -1.6430662  0.4241371 -0.56541361 -0.1747624
 ## 6 -0.06611053  1.1208777 -1.5759303 -0.5073735 -0.73253829 -1.7198606
 ## 
-## Total elapsed time: 83.55 s</code></pre>
+## Total elapsed time: 83.121 s</code></pre>
 <p>By default this function computes bootstrap estimates of the encoding functions in order to have a confidence interval. This is controlled by the <code>computeCI</code> arguments. The output is a list containing the different elements computed during the process: <code>eigenvalues</code>, <code>pc</code>, <code>alpha</code>, <code>F</code>, <code>G</code>, <code>V</code> and <code>basisobj</code>. Note that <code>alpha</code>contains the coefficients of the different encoding functions and <code>pc</code>the principal components. These components can be used with classical statistic methods (k-means, regression…).</p>
 <p>The eigenvalues can be computed using:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">

@@ -149,45 +149,57 @@ The biofam data set describes family life courses of 2000 individuals born betwe
     <p>Müller, N. S., M. Studer, G. Ritschard (2007). Classification de parcours de vie à l'aide de l'optimal matching. In XIVe Rencontre de la Société francophone de classification (SFC 2007), Paris, 5 - 7 septembre 2007, pp. 157–160.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;   id time           state
-#&gt; 1  1   15          Parent
-#&gt; 2  1   24       Left+Marr
-#&gt; 3  1   25 Left+Marr+Child
-#&gt; 4  1   30 Left+Marr+Child
-#&gt; 5  2   15          Parent
-#&gt; 6  2   16            Left</div><div class='input'>
-<span class='co'># \donttest{</span>
-<span class='co'># It is recommended to increase the number of cores to reduce computation time</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span>
-<span class='va'>basis</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>30</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='fl'>4</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span>
-<span class='va'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>biofam2</span>, <span class='va'>basis</span>, nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; ######### Compute encoding #########
-#&gt; Number of individuals: 2000
-#&gt; Number of states: 8
-#&gt; Basis type: bspline
-#&gt; Number of basis functions: 4
-#&gt; Number of cores: 1
-#&gt; ---- Compute V matrix:
-#&gt; 
-#&gt; DONE in 20.33s
-#&gt; ---- Compute U matrix:
-#&gt; 
-#&gt; DONE in 96.89s
-#&gt; ---- Compute encoding: 
-#&gt; DONE in 0.08s
-#&gt; ---- Compute Bootstrap Encoding:
-#&gt; ********</div><div class='output co'>#&gt; <span class='warning'>Warning: The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span></div><div class='output co'>#&gt; ****************************************</div><div class='output co'>#&gt; <span class='warning'>Warning: The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span></div><div class='output co'>#&gt; **
-#&gt; DONE in 0.78s
-#&gt; Run Time: 118.78s</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 162 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='biofam2-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 162 row(s) containing missing values (geom_path).</span></div><div class='img'><img src='biofam2-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>fmca</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='img'><img src='biofam2-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, comp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='img'><img src='biofam2-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='co'># }</span>
-  
-</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>biofam2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   id time           state</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 1  1   15          Parent</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 2  1   24       Left+Marr</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 3  1   25 Left+Marr+Child</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 4  1   30 Left+Marr+Child</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 5  2   15          Parent</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 6  2   16            Left</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># \donttest{</span></span>
+<span class='r-in'><span class='co'># It is recommended to increase the number of cores to reduce computation time</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>42</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>basis</span> <span class='op'>&lt;-</span> <span class='fu'>create.bspline.basis</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>15</span>, <span class='fl'>30</span><span class='op'>)</span>, nbasis <span class='op'>=</span> <span class='fl'>4</span>, norder <span class='op'>=</span> <span class='fl'>4</span><span class='op'>)</span></span>
+<span class='r-in'><span class='va'>fmca</span> <span class='op'>&lt;-</span> <span class='fu'><a href='compute_optimal_encoding.html'>compute_optimal_encoding</a></span><span class='op'>(</span><span class='va'>biofam2</span>, <span class='va'>basis</span>, nCores <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ######### Compute encoding #########</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of individuals: 2000</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of states: 8</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Basis type: bspline</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of basis functions: 4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Number of cores: 1</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute V matrix:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 19.04s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute U matrix:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 91.85s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute encoding: </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.19s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ---- Compute Bootstrap Encoding:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ********</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> ****************************************</span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> **</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> DONE in 0.8s</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Run Time: 112.61s</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Removed 162 row(s) containing missing values (geom_path).</span>
+<span class='r-plt img'><img src='biofam2-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>fmca</span>, harm <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>Removed 162 row(s) containing missing values (geom_path).</span>
+<span class='r-plt img'><img src='biofam2-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='plotEigenvalues.html'>plotEigenvalues</a></span><span class='op'>(</span><span class='va'>fmca</span>, cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='biofam2-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='fu'><a href='plotComponent.html'>plotComponent</a></span><span class='op'>(</span><span class='va'>fmca</span>, comp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span>, addNames <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></span>
+<span class='r-plt img'><img src='biofam2-4.png' alt='' width='700' height='433' /></span>
+<span class='r-in'><span class='co'># }</span></span>
+<span class='r-in'>  </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
