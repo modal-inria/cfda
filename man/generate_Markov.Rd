@@ -46,14 +46,14 @@ For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j}, t
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
-d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10,
-                        labels = c("A", "C", "G", "T"))
+d_JK <- generate_Markov(
+  n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10,
+  labels = c("A", "C", "G", "T")
+)
 
 head(d_JK)
-
-
 }
 \author{
 Cristian Preda

@@ -35,7 +35,6 @@ The eight states are defined from the combination of five basic states, namely L
 \examples{
 data(biofam2)
 head(biofam2)
-
 \donttest{
 # It is recommended to increase the number of cores to reduce computation time
 set.seed(42)

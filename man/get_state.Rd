@@ -22,7 +22,7 @@ Extract the state of each individual at a given time
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
@@ -34,7 +34,6 @@ get_state(d_JK, 6)
 get_state(d_JK, 12)
 # if NAafterTmax = TRUE, it will return NA for t > Tmax
 get_state(d_JK, 12, NAafterTmax = TRUE)
-
 }
 \author{
 Cristian Preda, Quentin Grimonprez
