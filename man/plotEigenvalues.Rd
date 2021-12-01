@@ -9,7 +9,7 @@ plotEigenvalues(x, cumulative = FALSE, normalize = FALSE, ...)
 \arguments{
 \item{x}{output of \code{\link{compute_optimal_encoding}} function}
 
-\item{cumulative}{if TRUE, plot the cumualtive eigenvalues}
+\item{cumulative}{if TRUE, plot the cumulative eigenvalues}
 
 \item{normalize}{if TRUE eigenvalues are normalized for summing to 1}
 

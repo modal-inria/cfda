@@ -2,7 +2,7 @@
 % Please edit documentation in R/predict.R
 \name{predict.fmca}
 \alias{predict.fmca}
-\title{Predict using RMixtComp}
+\title{Predict the principal components for new trajectories}
 \usage{
 \method{predict}{fmca}(
   object,
@@ -27,7 +27,7 @@
 principal components for the individuals
 }
 \description{
-Predict the cluster of new samples.
+Predict the principal components for new trajectories
 }
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement

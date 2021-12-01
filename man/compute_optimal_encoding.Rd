@@ -20,7 +20,7 @@ compute_optimal_encoding(
 
 \item{basisobj}{basis created using the \code{fda} package (cf. \code{\link{create.basis}}).}
 
-\item{computeCI}{if TRUE, perform a bootstrap to estimate the variance of encoding's coefficients}
+\item{computeCI}{if TRUE, perform a bootstrap to estimate the variance of encoding functions coefficients}
 
 \item{nBootstrap}{number of bootstrap samples}
 

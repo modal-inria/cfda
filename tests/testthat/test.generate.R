@@ -66,7 +66,7 @@ test_that("generate_Markov output has the right format", {
   # id are between 1 and n
   expect_equal(sort(unique(d_JK$id)), 1:n)
 
-  # state are betwwen 1 and K
+  # state are between 1 and K
   expect_equal(sort(unique(d_JK$state)), 1:K)
 
   # all time are between 0 and Tmax
@@ -101,7 +101,7 @@ test_that("generate_Markov output has the right format with labels", {
   # id are between 1 and n
   expect_equal(sort(unique(d_JK$id)), 1:n)
 
-  # state are betwwen 1 and K
+  # state are between 1 and K
   expect_equal(sort(unique(d_JK$state)), LETTERS[1:4])
 
   # all time are between 0 and Tmax

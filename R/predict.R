@@ -1,6 +1,6 @@
-#' @title Predict using RMixtComp
+#' @title Predict the principal components for new trajectories
 #'
-#' @description Predict the cluster of new samples.
+#' @description Predict the principal components for new trajectories
 #'
 #' @param object output of \link{compute_optimal_encoding} function.
 #' @param newdata data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}})..

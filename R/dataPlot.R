@@ -201,7 +201,7 @@ createLabeller <- function(group) {
 
 #' @title Summary
 #'
-#' @description Get a summary of the data.frame containin categorical functional data
+#' @description Get a summary of the data.frame containing categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param max.print maximal number of states to display

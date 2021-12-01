@@ -301,7 +301,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' Plot Eigenvalues
 #'
 #' @param x output of \code{\link{compute_optimal_encoding}} function
-#' @param cumulative if TRUE, plot the cumualtive eigenvalues
+#' @param cumulative if TRUE, plot the cumulative eigenvalues
 #' @param normalize if TRUE eigenvalues are normalized for summing to 1
 #' @param ... \code{geom_point} parameters
 #'
