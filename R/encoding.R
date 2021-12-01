@@ -40,10 +40,12 @@
 #' # Simulate the Jukes-Cantor model of nucleotide replacement
 #' K <- 4
 #' Tmax <- 5
-#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
-#' d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax,
-#'                             labels = c("A", "C", "G", "T"))
+#' d_JK <- generate_Markov(
+#'   n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax,
+#'   labels = c("A", "C", "G", "T")
+#' )
 #' d_JK2 <- cut_data(d_JK, Tmax)
 #'
 #' # create basis object
@@ -62,7 +64,6 @@
 #'
 #' # extract the optimal encoding
 #' get_encoding(encoding, harm = 1)
-#'
 #' @seealso \link{plot.fmca} \link{print.fmca} \link{summary.fmca} \link{plotComponent} \link{get_encoding}
 #'
 #' @author Cristian Preda, Quentin Grimonprez
@@ -76,52 +77,54 @@
 #'
 #'
 #' @export
-compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, nCores = max(1, ceiling(detectCores()/2)), verbose = TRUE, ...)
-{
+compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, nCores = max(1, ceiling(detectCores() / 2)), verbose = TRUE, ...) {
   t1 <- proc.time()
   ## check parameters
   checkData(data)
   checkDataBeginTime(data)
   checkDataEndTmax(data)
-  if(!is.basis(basisobj))
+  if (!is.basis(basisobj)) {
     stop("basisobj is not a basis object.")
-  if(any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1))
+  }
+  if (any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1)) {
     stop("nCores must be an integer > 0.")
+  }
   checkLogical(verbose, "verbose")
   checkLogical(computeCI, "computeCI")
-  if(computeCI)
-  {
-    if(any(is.na(nBootstrap)) || (length(nBootstrap) != 1) || !is.whole.number(nBootstrap) || (nBootstrap < 1))
+  if (computeCI) {
+    if (any(is.na(nBootstrap)) || (length(nBootstrap) != 1) || !is.whole.number(nBootstrap) || (nBootstrap < 1)) {
       stop("nBootstrap must be an integer > 0.")
-    if(any(is.na(propBootstrap)) || !is.numeric(propBootstrap) || (length(propBootstrap) != 1) || (propBootstrap > 1) || (propBootstrap <= 0))
+    }
+    if (any(is.na(propBootstrap)) || !is.numeric(propBootstrap) || (length(propBootstrap) != 1) || (propBootstrap > 1) || (propBootstrap <= 0)) {
       stop("propBootstrap must be a real between 0 and 1.")
+    }
   }
   ## end check
 
   # used to determine the moments where the probability is 0 in plot.fmca
   pt <- estimate_pt(data)
 
-  if(verbose)
+  if (verbose) {
     cat("######### Compute encoding #########\n")
+  }
 
 
   # change state as integer
   out <- stateToInteger(data$state)
-  data$state = out$state
+  data$state <- out$state
   label <- out$label
   rm(out)
 
   uniqueId <- unique(data$id)
   nId <- length(uniqueId)
 
-  nCores <- min(max(1, nCores), detectCores()-1)
+  nCores <- min(max(1, nCores), detectCores() - 1)
 
   Tmax <- max(data$time)
   K <- length(label$label)
   nBasis <- basisobj$nbasis
 
-  if(verbose)
-  {
+  if (verbose) {
     cat(paste0("Number of individuals: ", nId, "\n"))
     cat(paste0("Number of states: ", K, "\n"))
     cat(paste0("Basis type: ", basisobj$type, "\n"))
@@ -137,32 +140,28 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   fullEncoding <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = TRUE)
 
 
-  if(computeCI)
-  {
+  if (computeCI) {
     signRef <- getSignReference(fullEncoding$alpha)
 
     bootEncoding <- computeBootStrapEncoding(Uval, V, K, nBasis, label, nId, propBootstrap, nBootstrap, signRef, verbose)
-    if(length(bootEncoding) == 0)
-    {
+    if (length(bootEncoding) == 0) {
       warning("All bootstrap samples return an error. Try to change the basis.")
       out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
-    }
-    else
-    {
+    } else {
       varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
       out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt, bootstrap = bootEncoding, varAlpha = varAlpha))
     }
-
-  }else{
+  } else {
     out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
   }
 
-  class(out) = "fmca"
+  class(out) <- "fmca"
   t2 <- proc.time()
 
-  out$runTime = as.numeric((t2-t1)[3])
-  if(verbose)
+  out$runTime <- as.numeric((t2 - t1)[3])
+  if (verbose) {
     cat(paste0("Run Time: ", round(out$runTime, 2), "s\n"))
+  }
 
   return(out)
 }
@@ -170,22 +169,20 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
 
 
 # return a matrix with nId rows and nBasis * nState columns
-computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...)
-{
+computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
   nBasis <- basisobj$nbasis
 
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
 
   # declare parallelization
-  if(nCores > 1) {
+  if (nCores > 1) {
     cl <- makeCluster(nCores)
   } else {
     cl <- NULL
   }
 
 
-  if(verbose)
-  {
+  if (verbose) {
     cat("---- Compute V matrix:\n")
     pbo <- pboptions(char = "=")
   } else {
@@ -196,18 +193,18 @@ computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...)
 
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
   V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Vxi, phi = phi, K = K))
-  rownames(V) = NULL
+  rownames(V) <- NULL
 
   t3 <- proc.time()
 
-  if(verbose)
-  {
-    cat(paste0("\nDONE in ", round((t3-t2)[3], 2), "s\n"))
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t3 - t2)[3], 2), "s\n"))
   }
 
   # stop parallelization
-  if (nCores > 1)
+  if (nCores > 1) {
     stopCluster(cl)
+  }
 
   return(V)
 }
@@ -238,46 +235,44 @@ computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...)
 # compute_Vxi(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda
-compute_Vxi <- function(x, phi, K, ...)
-{
+compute_Vxi <- function(x, phi, K, ...) {
   nBasis <- phi$basis$nbasis
-  aux <- rep(0, K * nBasis)  #V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
+  aux <- rep(0, K * nBasis) # V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
 
-  for(u in seq_len(nrow(x)-1))
+  for (u in seq_len(nrow(x) - 1))
   {
-    state = x$state[u]
+    state <- x$state[u]
 
-    for(j in seq_len(nBasis))  # j = la base
+    for (j in seq_len(nBasis)) # j = la base
     {
-      aux[(state-1)*nBasis + j] = aux[(state-1)*nBasis + j] +
-        integrate(function(t){
+      aux[(state - 1) * nBasis + j] <- aux[(state - 1) * nBasis + j] +
+        integrate(function(t) {
           eval.fd(t, phi[j])
-        }, lower = x$time[u], upper = x$time[u+1],
-        stop.on.error = FALSE, ...)$value
+        },
+        lower = x$time[u], upper = x$time[u + 1],
+        stop.on.error = FALSE, ...
+        )$value
     }
-
   }
 
   return(aux)
 }
 
 # return a matrix with nId rows and nBasis * nState columns
-computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...)
-{
+computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
   nBasis <- basisobj$nbasis
 
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
 
   # declare parallelization
-  if(nCores > 1) {
+  if (nCores > 1) {
     cl <- makeCluster(nCores)
   } else {
     cl <- NULL
   }
 
   t3 <- proc.time()
-  if(verbose)
-  {
+  if (verbose) {
     cat(paste0("---- Compute U matrix:\n"))
     pbo <- pboptions(char = "=")
   } else {
@@ -287,13 +282,15 @@ computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...)
   Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K))
 
   # stop parallelization
-  if(nCores > 1)
+  if (nCores > 1) {
     stopCluster(cl)
+  }
 
 
   t4 <- proc.time()
-  if(verbose)
-    cat(paste0("\nDONE in ", round((t4-t3)[3], 2), "s\n"))
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t4 - t3)[3], 2), "s\n"))
+  }
 
 
   return(Uval)
@@ -328,37 +325,33 @@ computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...)
 # compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Uxij <- function(x, phi, K, ...)
-{
+compute_Uxij <- function(x, phi, K, ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
 
-  for(u in seq_len(nrow(x)-1))
+  for (u in seq_len(nrow(x) - 1))
   {
     state <- x$state[u]
-    for(i in 1:nBasis)
+    for (i in 1:nBasis)
     {
-      for(j in i:nBasis) # symmetry between i and j
+      for (j in i:nBasis) # symmetry between i and j
       {
-
         integral <- integrate(function(t) {
           eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-        }, lower = x$time[u], upper = x$time[u+1],
-        stop.on.error = FALSE, ...)$value
+        },
+        lower = x$time[u], upper = x$time[u + 1],
+        stop.on.error = FALSE, ...
+        )$value
 
-        aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] = aux[(state-1)*nBasis*nBasis + (i-1)*nBasis + j] + integral
+        aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] <- aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] + integral
 
 
         # when i == j, we are on the diagonal of the matrix, no symmetry to apply
-        if(i != j)
-        {
-          aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] = aux[(state-1)*nBasis*nBasis + (j-1)*nBasis + i] + integral
+        if (i != j) {
+          aux[(state - 1) * nBasis * nBasis + (j - 1) * nBasis + i] <- aux[(state - 1) * nBasis * nBasis + (j - 1) * nBasis + i] + integral
         }
-
       }
-
     }
-
   }
 
   return(aux)
@@ -367,21 +360,21 @@ compute_Uxij <- function(x, phi, K, ...)
 
 
 # @author Cristian Preda, Quentin Grimonprez
-computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = FALSE)
-{
+computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = FALSE) {
   t4 <- proc.time()
-  if(verbose)
+  if (verbose) {
     cat(paste0("---- Compute encoding: "))
+  }
 
   G <- cov(V)
 
   # create F matrix
-  Fval = colMeans(Uval)
-  Fmat <- matrix(0, ncol = K*nBasis, nrow = K*nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
-  for(i in seq_len(K))
+  Fval <- colMeans(Uval)
+  Fmat <- matrix(0, ncol = K * nBasis, nrow = K * nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
+  for (i in seq_len(K))
   {
-    Fmat[((i-1)*nBasis+1):(i*nBasis), ((i-1)*nBasis+1):(i*nBasis)] =
-      matrix(Fval[((i-1)*nBasis*nBasis+1):(i*nBasis*nBasis)], ncol = nBasis, byrow = TRUE)
+    Fmat[((i - 1) * nBasis + 1):(i * nBasis), ((i - 1) * nBasis + 1):(i * nBasis)] <-
+      matrix(Fval[((i - 1) * nBasis * nBasis + 1):(i * nBasis * nBasis)], ncol = nBasis, byrow = TRUE)
   }
 
   # save matrices before modifying them
@@ -391,28 +384,27 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   # manage the case where there is a column full of 0 (non invertible matrix)
   # if TRUE, we remove the 0-columns (and rows) and throw a warning
   # otherwise we throw an error and the process stops
-  if(manage0)
-  {
+  if (manage0) {
     # column full of 0
     ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
-    if(sum(ind0) > 0)
+    if (sum(ind0) > 0) {
       warning("The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.")
+    }
 
-    F05 <- t(mroot(Fmat[!ind0, !ind0]))#F  = t(F05)%*%F05
-    G = G[!ind0, !ind0]
-    V = V[, !ind0]
-
-  }else{
+    F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
+    G <- G[!ind0, !ind0]
+    V <- V[, !ind0]
+  } else {
     ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
 
     # res = eigen(solve(F)%*%G)
-    F05 <- t(mroot(Fmat)) #F  = t(F05)%*%F05
+    F05 <- t(mroot(Fmat)) # F  = t(F05)%*%F05
 
-    if(any(dim(F05) != rep(K*nBasis, 2)))
-    {
+    if (any(dim(F05) != rep(K * nBasis, 2))) {
       cat("\n")
-      if(any(colSums(Fmat) == 0))
+      if (any(colSums(Fmat) == 0)) {
         stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+      }
 
       stop("F matrix is not invertible. You can try to change the basis.")
     }
@@ -440,20 +432,20 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   # 2eme col les coefs pour état 2, etc
 
   alpha <- lapply(aux1, function(w) {
-    wb = rep(NA, nBasis * K)
-    wb[!ind0] = w
+    wb <- rep(NA, nBasis * K)
+    wb[!ind0] <- w
 
     return(matrix(wb, ncol = K, dimnames = list(NULL, label$label)))
   })
 
   pc <- V %*% invF05vec
-  rownames(pc) = uniqueId
+  rownames(pc) <- uniqueId
 
   t5 <- proc.time()
 
-  if(verbose)
-    cat(paste0("\nDONE in ", round((t5-t4)[3], 2), "s\n"))
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t5 - t4)[3], 2), "s\n"))
+  }
 
   return(list(eigenvalues = res$values, alpha = alpha, pc = pc, F = outMat$F, G = outMat$G))
 }
-
