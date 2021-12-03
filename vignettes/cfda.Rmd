@@ -182,7 +182,7 @@ $$(E^{t}+E^{s})z = \lambda z$$
 $z$ is called a *principal component*.
 
 
-As an extension, the *functional correspondance analysis* is defined as the solution of
+As an extension, the *functional correspondence analysis* is defined as the solution of
 the optimization problem: 
 
  $$ \arg\max_{z}\displaystyle\frac{1}{T_{max}}\int_{0}^{T_{max}}\eta^{2}(z, X_{t})dt$$
@@ -210,7 +210,7 @@ Under general conditions (continuity in probability of $X$), there exists $\{\la
 $\{a_x^i\}_{i\geq 1}$
 eigen-functions.  
 
-The folowing expansion formula holds (Mercer thm.):
+The following expansion formula holds (Mercer thm.):
 
 $$p_{x,y}(t,s) = p_x(t)p_y(s)\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)$$
 For $x=y$, one obtains:

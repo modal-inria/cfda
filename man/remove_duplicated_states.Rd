@@ -19,10 +19,11 @@ Remove duplicated consecutive states from data. If for an individual there is tw
 only the first is kept. Only time when the state changes are kept.
 }
 \examples{
-data <- data.frame(id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8),
-                   state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1))))
+data <- data.frame(
+  id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8),
+  state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1)))
+)
 out <- remove_duplicated_states(data)
-
 }
 \author{
 Quentin Grimonprez

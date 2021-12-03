@@ -41,7 +41,7 @@ Plot categorical functional data
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
@@ -53,7 +53,7 @@ plotData(d_JKT)
 # modify the plot using ggplot2
 library(ggplot2)
 plotData(d_JKT, col = c("red", "blue", "green", "brown")) +
-   labs(title = "Trajectories of a Markov process")
+  labs(title = "Trajectories of a Markov process")
 
 
 # use the group variable: create a group with the 3 first variables and one with the others
@@ -62,9 +62,8 @@ plotData(d_JKT, group = group)
 
 
 # use the group variable: remove the id number 5 and 6
-group[c(5, 6)] = NA
+group[c(5, 6)] <- NA
 plotData(d_JKT, group = group)
-
 }
 \author{
 Cristian Preda, Quentin Grimonprez

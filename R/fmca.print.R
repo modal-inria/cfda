@@ -64,7 +64,7 @@ summary.fmca <- function(object, n = 6, ...) {
   cat("Eigenvalues:\n  ")
   cat(head(object$eigenvalues, n), "\n")
   cat("\nExplained variance:\n  ")
-  cat(round(head(cumsum(object$eigenvalues)/sum(object$eigenvalues), n), 3), "\n")
+  cat(round(head(cumsum(object$eigenvalues) / sum(object$eigenvalues), n), 3), "\n")
   cat("\nOptimal encoding:\n")
   print(head(object$alpha[[1]], n))
   cat("\nPrincipal components:\n")
