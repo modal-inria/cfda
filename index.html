@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,18 +35,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.10</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.10</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/cfda.html">Get started</a>
 </li>
@@ -54,7 +50,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/modal-inria/cfda/">
+  <a href="https://github.com/modal-inria/cfda/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -71,89 +67,99 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="cfda-categorical-functional-data-analysis" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#cfda-categorical-functional-data-analysis" class="anchor"></a>cfda: Categorical Functional Data Analysis</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="cfda-categorical-functional-data-analysis">cfda: Categorical Functional Data Analysis<a class="anchor" aria-label="anchor" href="#cfda-categorical-functional-data-analysis"></a>
+</h1></div>
 
-<p><a href="https://cran.r-project.org/package=cfda"><img src="http://www.r-pkg.org/badges/version/cfda" alt="CRAN_Status_Badge"></a> <a href="http://cranlogs.r-pkg.org/badges/grand-total/cfda"><img src="http://cranlogs.r-pkg.org/badges/grand-total/cfda?color=blue" alt="Total Downloads"></a> <a href="https://cran.rstudio.com/web/packages/cfda/index.html"><img src="https://cranlogs.r-pkg.org/badges/cfda" alt="Downloads"></a></p>
+<p><a href="https://cran.r-project.org/package=cfda" class="external-link"><img src="http://www.r-pkg.org/badges/version/cfda" alt="CRAN_Status_Badge"></a> <a href="http://cranlogs.r-pkg.org/badges/grand-total/cfda" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/cfda?color=blue" alt="Total Downloads"></a> <a href="https://cran.rstudio.com/web/packages/cfda/index.html" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/cfda" alt="Downloads"></a></p>
 <p><strong>cfda</strong> provides functions for the analysis of categorical functional data.</p>
 <p>The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>From CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"cfda"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"cfda"</span><span class="op">)</span></code></pre></div>
 <p>From github:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org">remotes</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
 <span class="fu">install_github</span><span class="op">(</span><span class="st">"modal-inria/cfda"</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="vignette" class="section level2">
-<h2 class="hasAnchor">
-<a href="#vignette" class="anchor"></a>Vignette</h2>
+<div class="section level2">
+<h2 id="vignette">Vignette<a class="anchor" aria-label="anchor" href="#vignette"></a>
+</h2>
 <p>Once the package is installed, a vignette describing the mathematical background and showing an example is available using the R command:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/RShowDoc.html">RShowDoc</a></span><span class="op">(</span><span class="st">"cfda"</span>, package <span class="op">=</span> <span class="st">"cfda"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/RShowDoc.html" class="external-link">RShowDoc</a></span><span class="op">(</span><span class="st">"cfda"</span>, package <span class="op">=</span> <span class="st">"cfda"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="credits" class="section level2">
-<h2 class="hasAnchor">
-<a href="#credits" class="anchor"></a>Credits</h2>
+<div class="section level2">
+<h2 id="credits">Credits<a class="anchor" aria-label="anchor" href="#credits"></a>
+</h2>
 <p><strong>cfda</strong> is developed by Cristian Preda (Inria Lille, Université de Lille), Quentin Grimonprez (Inria Lille) and Vincent Vandewalle (Inria Lille, Université de Lille).</p>
 <p>Copyright Inria - Université de Lille</p>
 </div>
-<div id="licence" class="section level2">
-<h2 class="hasAnchor">
-<a href="#licence" class="anchor"></a>Licence</h2>
-<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a href="https://www.gnu.org/licenses/agpl-3.0.en.html">GNU Affero General Public License</a> for more details.</p>
+<div class="section level2">
+<h2 id="licence">Licence<a class="anchor" aria-label="anchor" href="#licence"></a>
+</h2>
+<p>This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the <a href="https://www.gnu.org/licenses/agpl-3.0.en.html" class="external-link">GNU Affero General Public License</a> for more details.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=cfda">https://​cloud.r-project.org/​package=cfda</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/modal-inria/cfda/">https://​github.com/​modal-inria/​cfda/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/modal-inria/cfda/issues">https://​github.com/​modal-inria/​cfda/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/AGPL-3">AGPL-3</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Cristian Preda <br><small class="roles"> Author </small>  </li>
-<li>Quentin Grimonprez <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=cfda" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/modal-inria/cfda/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/modal-inria/cfda/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/modal-inria/cfda/actions"><img src="https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/modal-inria/cfda"><img src="https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg" alt="codecov"></a></li>
+<li><a href="https://www.r-project.org/Licenses/AGPL-3" class="external-link">AGPL-3</a></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing cfda</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Cristian Preda <br><small class="roles"> Author </small>  </li>
+<li>Quentin Grimonprez <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/modal-inria/cfda/actions" class="external-link"><img src="https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/modal-inria/cfda" class="external-link"><img src="https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg" alt="codecov"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Cristian Preda, Quentin Grimonprez.</p>
+  <p></p>
+<p>Developed by Cristian Preda, Quentin Grimonprez.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -161,6 +167,8 @@
 
   
 
+
+  
 
   </body>
 </html>

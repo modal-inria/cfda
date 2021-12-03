@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://modal-inria.github.io/cfda/404.html</loc>
+  </url>
+  <url>
+    <loc>https://modal-inria.github.io/cfda/articles/cfda.html</loc>
+  </url>
+  <url>
+    <loc>https://modal-inria.github.io/cfda/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://modal-inria.github.io/cfda/authors.html</loc>
+  </url>
+  <url>
     <loc>https://modal-inria.github.io/cfda/index.html</loc>
   </url>
   <url>
@@ -55,6 +67,9 @@
     <loc>https://modal-inria.github.io/cfda/reference/hist.njump.html</loc>
   </url>
   <url>
+    <loc>https://modal-inria.github.io/cfda/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://modal-inria.github.io/cfda/reference/plot.Markov.html</loc>
   </url>
   <url>
@@ -89,8 +104,5 @@
   </url>
   <url>
     <loc>https://modal-inria.github.io/cfda/reference/summary_cfd.html</loc>
-  </url>
-  <url>
-    <loc>https://modal-inria.github.io/cfda/articles/cfda.html</loc>
   </url>
 </urlset>
