@@ -9,6 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+See <https://www.mdpi.com/2227-7390/9/23/3074> for more details about the mathematical background and an overview of the package.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.align = "center", fig.width = 5, fig.height = 5)

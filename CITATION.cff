@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the following paper."
+title: "cfda R package"
+authors:
+- family-names: "Preda"
+  given-names: "Cristian"
+  email: "cristian.preda@univ-lille.fr"
+  orcid: "https://orcid.org/0000-0001-6787-7374"
+  affiliation: "UMR CNRS 8524—Laboratoire Paul Painlevé, University of Lille AND Institute of Statistics and Applied Mathematics of the Romanian Academy AND Inria Lille Nord-Europe, MODAL team"
+- family-names: "Grimonprez"
+  given-names: "Quentin"
+  email: "qgrimonprez@diagrams-technologies.com"
+  affiliation: "DiagRAMS-Technologies"
+- family-names: "Vandewalle"
+  given-names: "Vincent"
+  email: "vincent.vandewalle@univ-lille.fr"
+  orcid: "https://orcid.org/0000-0003-2946-9059"
+  affiliation: "Inria Lille Nord-Europe, MODAL team AND Biostatistics Department, University of Lille, CHU Lille—ULR 2694 METRICS"
+preferred-citation:
+  type: article
+  authors:
+  - family-names: "Preda"
+    given-names: "Cristian"
+    email: "cristian.preda@univ-lille.fr"
+    orcid: "https://orcid.org/0000-0001-6787-7374"
+    affiliation: "UMR CNRS 8524—Laboratoire Paul Painlevé, University of Lille AND Institute of Statistics and Applied Mathematics of the Romanian Academy AND Inria Lille Nord-Europe, MODAL team"
+  - family-names: "Grimonprez"
+    given-names: "Quentin"
+    email: "qgrimonprez@diagrams-technologies.com"
+    affiliation: "DiagRAMS-Technologies"
+  - family-names: "Vandewalle"
+    given-names: "Vincent"
+    email: "vincent.vandewalle@univ-lille.fr"
+    orcid: "https://orcid.org/0000-0003-2946-9059"
+    affiliation: "Inria Lille Nord-Europe, MODAL team AND Biostatistics Department, University of Lille, CHU Lille—ULR 2694 METRICS"
+  doi: "10.3390/math9233074"
+  url: "https://www.mdpi.com/2227-7390/9/23/3074"
+  journal: "Mathematics"
+  title: "Categorical Functional Data Analysis. The cfda R Package"
+  volume: 9
+  issue: 23
+  year: 2021
