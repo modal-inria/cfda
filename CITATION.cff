@@ -36,8 +36,7 @@ preferred-citation:
   doi: "10.3390/math9233074"
   url: "https://www.mdpi.com/2227-7390/9/23/3074"
   journal: "Mathematics"
-  month: 9
   title: "Categorical Functional Data Analysis. The cfda R Package"
   volume: 9
-  number: 23
+  issue: 23
   year: 2021
