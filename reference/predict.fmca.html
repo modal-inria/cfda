@@ -52,14 +52,16 @@
     <p>Predict the principal components for new trajectories</p>
     </div>
 
-    <div id="ref-usage">Usage,<div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for fmca</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for fmca</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span>
   <span class="va">object</span>,
   newdata <span class="op">=</span> <span class="cn">NULL</span>,
   nCores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu">detectCores</span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">...</span>
-<span class="op">)</span></code></pre></div></div>
+<span class="op">)</span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
@@ -114,13 +116,13 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of cores: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.58s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.53s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.61s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.4s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 4.2s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 3.94s</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># predict principal components</span></span>
 <span class="r-in"><span class="va">d_JK_predict</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span>
@@ -133,7 +135,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> ######### Predict Principal Components #########</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 1.03s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.53s</span>
 <span class="r-in"><span class="co"># }</span></span>
 <span class="r-in"></span>
 </code></pre></div>
@@ -150,7 +152,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer></div>
