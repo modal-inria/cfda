@@ -38,6 +38,25 @@ RShowDoc("cfda", package = "cfda")
 
 Copyright Inria - Université de Lille
 
+
+## Citation
+
+Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The cfda R Package. Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
+
+
+``` bibtex
+@Article{,
+  title = {Categorical Functional Data Analysis. The cfda R Package},
+  author = {{Preda} and {Cristian} and {Grimonprez} and {Quentin} and {Vandewalle} and {Vincent}},
+  journal = {Mathematics},
+  year = {2021},
+  volume = {9},
+  number = {23},
+  url = {https://www.mdpi.com/2227-7390/9/23/3074},
+  doi = {10.3390/math9233074},
+}
+```
+
 ## Licence
 
 This program is free software: you can redistribute it and/or modify
