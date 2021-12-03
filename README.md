@@ -1,6 +1,6 @@
 # cfda: Categorical Functional Data Analysis
 
-[![R-CMD-check](https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg)](https://github.com/modal-inria/cfda/actions) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
+[![R-CMD-check](https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/modal-inria/cfda/actions) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
 
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cfda)](https://cran.r-project.org/package=cfda) [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/cfda?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/cfda) [![Downloads](https://cranlogs.r-pkg.org/badges/cfda)](https://cran.rstudio.com/web/packages/cfda/index.html)
 

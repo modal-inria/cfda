@@ -146,6 +146,8 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
 
 test_that("compute_optimal_encodings has the same results as before when there is no 0-column", {
   skip_on_cran()
+  skip_on_ci()
+  skip_on_covr()
 
   set.seed(42)
   n <- 25
