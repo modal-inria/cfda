@@ -91,6 +91,9 @@ oldcompute_Uxij <- function(x, phi, K) {
 
 test_that("refactor of compute_Uxij keeps the same results", {
   skip_on_cran()
+  skip_on_ci()
+  skip_on_covr()
+
   m <- 10
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   I <- diag(rep(1, m))
