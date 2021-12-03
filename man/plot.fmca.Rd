@@ -45,7 +45,7 @@ The encoding for the harmonic \code{h} is \eqn{a_{x}^{(h)} \approx \sum_{i=1}^m 
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 Tmax <- 6
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
 d_JK2 <- cut_data(d_JK, Tmax)
@@ -53,7 +53,6 @@ d_JK2 <- cut_data(d_JK, Tmax)
 # create basis object
 m <- 6
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-
 \donttest{
 # compute encoding
 encoding <- compute_optimal_encoding(d_JK2, b, computeCI = FALSE, nCores = 1)
@@ -64,8 +63,8 @@ plot(encoding)
 
 # modify the plot using ggplot2
 library(ggplot2)
-plot(encoding, harm = 2, col = c("red" , "blue", "darkgreen", "yellow")) +
-   labs(title = "Optimal encoding")
+plot(encoding, harm = 2, col = c("red", "blue", "darkgreen", "yellow")) +
+  labs(title = "Optimal encoding")
 }
 
 }

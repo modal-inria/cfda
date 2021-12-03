@@ -24,12 +24,11 @@ a list containing:
 }
 }
 \description{
-Get a summary of the data.frame containin categorical functional data
+Get a summary of the data.frame containing categorical functional data
 }
 \examples{
 data(biofam2)
 summary_cfd(biofam2)
-
 }
 \author{
 Quentin Grimonprez

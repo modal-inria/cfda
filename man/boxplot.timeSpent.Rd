@@ -22,7 +22,7 @@ Boxplot of time spent in each state
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 
@@ -38,9 +38,8 @@ boxplot(timeSpent, col = c("#8DA0CB", "#E78AC3", "#A6D854", "#FFD92F"))
 # modify the plot using ggplot2
 library(ggplot2)
 boxplot(timeSpent, notch = TRUE, outlier.colour = "black") +
-   coord_flip() +
-   labs(title = "Time spent in each state")
-
+  coord_flip() +
+  labs(title = "Time spent in each state")
 }
 \author{
 Quentin Grimonprez

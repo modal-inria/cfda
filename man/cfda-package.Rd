@@ -32,7 +32,7 @@ See the vignette for a detailed example and mathematical background:
 # Simulate the Jukes-Cantor model of nucleotide replacement
 K <- 4
 Tmax <- 5
-PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
 d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
 d_JK2 <- cut_data(d_JK, Tmax)
@@ -56,8 +56,6 @@ plot(encoding)
 
 # extract the encoding using the first harmonic
 encod <- get_encoding(encoding)
-
-
 }
 \references{
 \itemize{

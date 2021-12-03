@@ -35,7 +35,6 @@
 #' @examples
 #' data(biofam2)
 #' head(biofam2)
-#'
 #' \donttest{
 #' # It is recommended to increase the number of cores to reduce computation time
 #' set.seed(42)
@@ -100,7 +99,6 @@ NULL
 #' idToKeep <- as.numeric(names(duration[duration >= 18]))
 #' care2 <- cut_data(care[care$id %in% idToKeep, ], 18)
 #' head(care2)
-#'
 #' \donttest{
 #' # It is recommended to increase the number of cores to reduce computation time
 #' set.seed(42)

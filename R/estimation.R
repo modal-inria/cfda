@@ -11,7 +11,7 @@
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement
 #' K <- 4
-#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #'
@@ -19,29 +19,27 @@
 #' mark <- estimate_Markov(d_JK)
 #' mark$P
 #' mark$lambda
-#'
 #' @seealso \link{plot.Markov}
 #'
 #' @author Cristian Preda
 #'
 #' @export
-estimate_Markov <- function(data)
-{
+estimate_Markov <- function(data) {
   ## check parameters
   checkData(data)
   ## end check
 
   # il faut supprimer les sauts dans les mêmes états
-  data = remove_duplicated_states(data, keep.last = TRUE)
+  data <- remove_duplicated_states(data, keep.last = TRUE)
 
   P_est <- prop.table(statetable(data, removeDiagonal = TRUE), margin = 1)
 
   # estimation of the time spent in each state
   T_est <- estimateT(data)
-  lambda_est <- 1/T_est
+  lambda_est <- 1 / T_est
 
   out <- list(P = P_est, lambda = lambda_est)
-  class(out) = "Markov"
+  class(out) <- "Markov"
 
   return(out)
 }
@@ -51,16 +49,16 @@ estimate_Markov <- function(data)
 #
 # @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #
-estimateT <- function(data)
-{
-  tSpentInState <- by(data, data$id,
-                      function(x)
-                      {
-                        t = diff(x$time)
-                        s = x$state[seq_along(t)]
-                        data.frame(duration = t, state = s)
-                      })
-  tSpentInState = do.call(rbind, tSpentInState)
+estimateT <- function(data) {
+  tSpentInState <- by(
+    data, data$id,
+    function(x) {
+      t <- diff(x$time)
+      s <- x$state[seq_along(t)]
+      data.frame(duration = t, state = s)
+    }
+  )
+  tSpentInState <- do.call(rbind, tSpentInState)
 
   t <- tapply(tSpentInState$duration, tSpentInState$state, mean)
 
@@ -74,26 +72,20 @@ estimateT <- function(data)
 #
 # @param aux output of statetable.msm
 # @author Cristian Preda
-completeStatetable <- function(aux)
-{
+completeStatetable <- function(aux) {
   aux1 <- aux
-  for(i in which(!as.numeric(colnames(aux))%in%as.numeric(row.names(aux))))
+  for (i in which(!as.numeric(colnames(aux)) %in% as.numeric(row.names(aux))))
   {
-    if(i == 1)
-    {
-      aux1 =  rbind(rep(0, ncol(aux)), aux1)
-    }
-    else if(i == ncol(aux))
-    {
-      aux1 = rbind(aux1, rep(0, ncol(aux)))
-    }
-    else
-    {
-      aux1 = rbind(aux1[1:(i-1), ], rep(0, ncol(aux)), aux1[i:nrow(aux1), ])
+    if (i == 1) {
+      aux1 <- rbind(rep(0, ncol(aux)), aux1)
+    } else if (i == ncol(aux)) {
+      aux1 <- rbind(aux1, rep(0, ncol(aux)))
+    } else {
+      aux1 <- rbind(aux1[1:(i - 1), ], rep(0, ncol(aux)), aux1[i:nrow(aux1), ])
     }
   }
 
-  rownames(aux1) = colnames(aux)
+  rownames(aux1) <- colnames(aux)
 
   return(aux1)
 }
@@ -123,7 +115,7 @@ completeStatetable <- function(aux)
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement
 #' K <- 4
-#' PJK <- matrix(1/3, nrow = K, ncol = K) - diag(rep(1/3, K))
+#' PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
 #' d_JK <- generate_Markov(n = 100, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 #'
@@ -132,19 +124,21 @@ completeStatetable <- function(aux)
 #'
 #' # transition graph
 #' plot(mark)
-#'
 #' @author Cristian Preda
 #'
 #' @export
-plot.Markov <- function(x, ...)
-{
+plot.Markov <- function(x, ...) {
   extraParam <- list(...)
-  defaultParam <- list(A = t(round(x$P, 2)), main = "The transition graph", box.prop = 0.3,
-                       box.col = "yellow", arr.length = 0.2, shadow.size = 0,
-                       name = paste0(colnames(x$P), rep(" (", ncol(x$P)), round(1/x$lambda, 2),
-                                     rep(")", ncol(x$P))))
+  defaultParam <- list(
+    A = t(round(x$P, 2)), main = "The transition graph", box.prop = 0.3,
+    box.col = "yellow", arr.length = 0.2, shadow.size = 0,
+    name = paste0(
+      colnames(x$P), rep(" (", ncol(x$P)), round(1 / x$lambda, 2),
+      rep(")", ncol(x$P))
+    )
+  )
 
-  param <- c(extraParam, defaultParam[which(!(names(defaultParam)%in%names(extraParam)))])
+  param <- c(extraParam, defaultParam[which(!(names(defaultParam) %in% names(extraParam)))])
 
   do.call(plotmat, param)
 }
