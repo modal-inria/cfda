@@ -8,7 +8,7 @@ Authors@R: c(person("Cristian", "Preda", role = "aut", email = "cristian.preda@i
              person("Vincent", "Vandewalle", role = "ctb", email = "vincent.vandewalle@inria.fr"))
 Copyright: Inria - Université de Lille
 Description: Package for the analysis of categorical functional data. 
-  The main purpose is to compute an encoding (real functional variable) for each state <https://hal.inria.fr/hal-02973094>. 
+  The main purpose is to compute an encoding (real functional variable) for each state <doi:10.1080/00031305.2017.1375990>. 
   It also provides functions to perform basic statistical analysis on categorical functional data. 
 BugReports: https://github.com/modal-inria/cfda/issues
 License: AGPL-3
