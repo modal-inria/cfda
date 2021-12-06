@@ -47,7 +47,7 @@ Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The c
 ``` bibtex
 @Article{,
   title = {Categorical Functional Data Analysis. The cfda R Package},
-  author = {{Preda} and {Cristian} and {Grimonprez} and {Quentin} and {Vandewalle} and {Vincent}},
+  author = {Cristian Preda and Quentin Grimonprez and Vincent Vandewalle},
   journal = {Mathematics},
   year = {2021},
   volume = {9},
