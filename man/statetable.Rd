@@ -13,7 +13,7 @@ and \code{state}, associated state.}
 \item{removeDiagonal}{if TRUE, does not count transition from a state i to i}
 }
 \value{
-a vector of length \code{K} containing the total time spent in each state
+a matrix of size \code{K*K} containing the number of transition for each pair
 }
 \description{
 Calculates a frequency table counting the number of times each pair of states were observed in successive observation times.

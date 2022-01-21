@@ -574,7 +574,7 @@ hist.njump <- function(x, breaks = NULL, ...) {
 #' and \code{state}, associated state.
 #' @param removeDiagonal if TRUE, does not count transition from a state i to i
 #'
-#' @return a vector of length \code{K} containing the total time spent in each state
+#' @return a matrix of size \code{K*K} containing the number of transition for each pair
 #'
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement

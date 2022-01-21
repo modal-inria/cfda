@@ -10,5 +10,5 @@ citEntry(
   number   = "23",
   url      = "https://www.mdpi.com/2227-7390/9/23/3074",
   doi      = "10.3390/math9233074",
-  textVersion = paste("Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The cfda R Package. Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074 ")
+  textVersion = paste("Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The cfda R Package. Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074")
 )
