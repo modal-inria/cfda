@@ -40,12 +40,20 @@ test_that("checkDataEndTmax works", {
   expect_silent(checkDataEndTmax(df))
 })
 
-test_that("checkDataBeginTimeworks", {
+test_that("checkDataBeginTime works", {
   df <- data.frame(id = 1:2, time = 1:2, state = 1:2)
   expect_error(checkDataBeginTime(df), "Each individual must begin with the same time value.")
 
   df <- data.frame(id = 1:2, time = rep(1, 1), state = 1:2)
   expect_silent(checkDataBeginTime(df))
+})
+
+test_that("checkDataNoDuplicatedTimes works", {
+  df <- data.frame(id = rep(1:2, each = 2), time = c(0, 0, 1, 2), state = rep(1:2, 2))
+  expect_warning(checkDataNoDuplicatedTimes(df), "Some ids contain duplicated time values.")
+
+  df <- data.frame(id = rep(1:2, each = 2), time = rep(1:2, 2), state = rep(1:2, 2))
+  expect_silent(checkDataNoDuplicatedTimes(df))
 })
 
 test_that("checkLogical works", {

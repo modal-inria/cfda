@@ -52,6 +52,18 @@ checkDataBeginTime <- function(data) {
   invisible(NULL)
 }
 
+# Check if all individual has different time values
+# @author Quentin Grimonprez
+checkDataNoDuplicatedTimes <- function(data) {
+  duplicatedTimes <- any(tapply(data$time, data$id, function(x) any(duplicated(x))))
+
+  if (duplicatedTimes) {
+    warning("Some ids contain duplicated time values.")
+  }
+
+  invisible(NULL)
+}
+
 # Check if the given parameter is a single boolean
 # @author Quentin Grimonprez
 checkLogical <- function(x, paramName) {

@@ -83,6 +83,8 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   checkData(data)
   checkDataBeginTime(data)
   checkDataEndTmax(data)
+  checkDataNoDuplicatedTimes(data)
+
   if (!is.basis(basisobj)) {
     stop("basisobj is not a basis object.")
   }
