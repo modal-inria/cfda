@@ -156,6 +156,66 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
 
+test_that("computeVmatrix keeps the id order", {
+  all_dat_P1S1 <- data.frame(state = c(1, 2, 1), time = c(0, 0.5, 1), id = rep("P1S1", 3))
+  all_dat_P1S2 <- data.frame(state = c(1, 2, 1), time = c(0, 0.4, 1), id = rep("P1S2", 3))
+  all_dat_P1S3 <- data.frame(state = c(1, 2, 1), time = c(0, 0.6, 1), id = rep("P1S3", 3))
+  all_dat_P2S1 <- data.frame(state = c(1, 3, 1), time = c(0, 0.5, 1), id = rep("P2S1", 3))
+  all_dat_P2S2 <- data.frame(state = c(1, 3, 1), time = c(0, 0.4, 1), id = rep("P2S2", 3))
+  all_dat_P2S3 <- data.frame(state = c(1, 3, 1), time = c(0, 0.6, 1), id = rep("P2S3", 3))
+  all_dat_P3S1 <- data.frame(state = c(3, 1, 1), time = c(0, 0.5, 1), id = rep("P3S1", 3))
+  all_dat_P3S2 <- data.frame(state = c(3, 1, 1), time = c(0, 0.4, 1), id = rep("P3S2", 3))
+  all_dat_P3S3 <- data.frame(state = c(3, 1, 1), time = c(0, 0.6, 1), id = rep("P3S3", 3))
+
+  # Original dataset
+  all_dat_a <- rbind(all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
+                     all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3)
+
+  all_dat_b <- rbind(all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
+                     all_dat_P1S1, all_dat_P1S2, all_dat_P1S3)
+  uniqueIdA <- unique(all_dat_a$id)
+  uniqueIdB <- unique(all_dat_b$id)
+
+  basisobj <- create.bspline.basis(c(0, 1), nbasis = 6, norder = 1)
+
+  Va <- computeVmatrix(all_dat_a, basisobj, K = 3, uniqueId = uniqueIdA, nCores = 1, verbose = FALSE)
+  Vb <- computeVmatrix(all_dat_b, basisobj, K = 3, uniqueId = uniqueIdB, nCores = 1, verbose = FALSE)
+
+  expect_equal(Va, Vb[c(7, 8, 9, 1, 2, 3, 4, 5, 6), ])
+})
+
+test_that("computeUmatrix keeps the id order", {
+  all_dat_P1S1 <- data.frame(state = c(1, 2, 1), time = c(0, 0.5, 1), id = rep("P1S1", 3))
+  all_dat_P1S2 <- data.frame(state = c(1, 2, 1), time = c(0, 0.4, 1), id = rep("P1S2", 3))
+  all_dat_P1S3 <- data.frame(state = c(1, 2, 1), time = c(0, 0.6, 1), id = rep("P1S3", 3))
+  all_dat_P2S1 <- data.frame(state = c(1, 3, 1), time = c(0, 0.5, 1), id = rep("P2S1", 3))
+  all_dat_P2S2 <- data.frame(state = c(1, 3, 1), time = c(0, 0.4, 1), id = rep("P2S2", 3))
+  all_dat_P2S3 <- data.frame(state = c(1, 3, 1), time = c(0, 0.6, 1), id = rep("P2S3", 3))
+  all_dat_P3S1 <- data.frame(state = c(3, 1, 1), time = c(0, 0.5, 1), id = rep("P3S1", 3))
+  all_dat_P3S2 <- data.frame(state = c(3, 1, 1), time = c(0, 0.4, 1), id = rep("P3S2", 3))
+  all_dat_P3S3 <- data.frame(state = c(3, 1, 1), time = c(0, 0.6, 1), id = rep("P3S3", 3))
+
+  # Original dataset
+  all_dat_a <- rbind(all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
+                     all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3)
+
+  all_dat_b <- rbind(all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
+                     all_dat_P1S1, all_dat_P1S2, all_dat_P1S3)
+  uniqueIdA <- unique(all_dat_a$id)
+  uniqueIdB <- unique(all_dat_b$id)
+
+  basisobj <- create.bspline.basis(c(0, 1), nbasis = 6, norder = 1)
+
+  Ua <- computeUmatrix(all_dat_a, basisobj, K = 3, uniqueId = uniqueIdA, nCores = 1, verbose = FALSE)
+  Ub <- computeUmatrix(all_dat_b, basisobj, K = 3, uniqueId = uniqueIdB, nCores = 1, verbose = FALSE)
+
+  expect_equal(Ua, Ub[c(7, 8, 9, 1, 2, 3, 4, 5, 6), ])
+})
+
 test_that("compute_optimal_encoding throws error", {
   set.seed(42)
 
@@ -263,6 +323,8 @@ test_that("compute_optimal_encoding throws a warning when the basis is not well 
     fixed = TRUE
   )
 })
+
+
 
 test_that("get_encoding throws error", {
   fmca <- list(alpha = rep(1, 5))
