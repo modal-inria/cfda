@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.11</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.12</span>
       </span>
     </div>
 
@@ -115,14 +115,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of basis functions: 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of cores: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.6s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.52s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~02s            |==========                                        | 20% ~02s            |===============                                   | 30% ~02s            |====================                              | 40% ~02s            |=========================                         | 50% ~02s            |==============================                    | 60% ~01s            |===================================               | 70% ~01s            |========================================          | 80% ~01s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=03s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.99s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.3s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 4.6s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 3.83s</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># predict principal components</span></span>
 <span class="r-in"><span class="va">d_JK_predict</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span>
@@ -134,8 +136,9 @@
 <span class="r-in"><span class="va">pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">encoding</span>, <span class="va">d_JK_predict2</span>, nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ######### Predict Principal Components #########</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.56s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.49s</span>
 <span class="r-in"><span class="co"># }</span></span>
 <span class="r-in"></span>
 </code></pre></div>
