@@ -41,3 +41,13 @@ test_that("predict works", {
 
   expect_equivalent(out, fmca$pc)
 })
+
+
+test_that("predict works with NULL", {
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
+  fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE)
+
+  expect_silent(out <- predict(fmca, nCores = 1, verbose = FALSE))
+
+  expect_equivalent(out, fmca$pc)
+})

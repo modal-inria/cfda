@@ -45,6 +45,10 @@
 #' @author Quentin Grimonprez
 #' @export
 predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectCores() / 2)), verbose = TRUE, ...) {
+  if (is.null(newdata)) {
+    return(object$pc)
+  }
+
   ## check parameters
   checkData(newdata)
   checkLogical(verbose, "verbose")
