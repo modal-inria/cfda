@@ -186,7 +186,7 @@ computeVmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 
   if (verbose) {
     cat("---- Compute V matrix:\n")
-    pbo <- pboptions(char = "=")
+    pbo <- pboptions(type = "timer", char = "=")
   } else {
     pboptions(type = "none")
   }
@@ -276,7 +276,7 @@ computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
   t3 <- proc.time()
   if (verbose) {
     cat(paste0("---- Compute U matrix:\n"))
-    pbo <- pboptions(char = "=")
+    pbo <- pboptions(type = "timer", char = "=")
   } else {
     pbo <- pboptions(type = "none")
   }
