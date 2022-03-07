@@ -117,7 +117,7 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   label <- out$label
   rm(out)
 
-  uniqueId <- unique(data$id)
+  uniqueId <- as.character(unique(data$id))
   nId <- length(uniqueId)
 
   nCores <- min(max(1, nCores), detectCores() - 1)
@@ -135,9 +135,9 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   }
 
 
-  V <- computeVmatrix(data, basisobj, K, nCores, verbose, ...)
+  V <- computeVmatrix(data, basisobj, K, uniqueId, nCores, verbose, ...)
 
-  Uval <- computeUmatrix(data, basisobj, K, nCores, verbose, ...)
+  Uval <- computeUmatrix(data, basisobj, K, uniqueId, nCores, verbose, ...)
 
   fullEncoding <- computeEncoding(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = TRUE)
 
@@ -171,7 +171,7 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
 
 
 # return a matrix with nId rows and nBasis * nState columns
-computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
+computeVmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
   nBasis <- basisobj$nbasis
 
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
@@ -194,7 +194,7 @@ computeVmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
 
 
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Vxi, phi = phi, K = K))
+  V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Vxi, phi = phi, K = K)[uniqueId])
   rownames(V) <- NULL
 
   t3 <- proc.time()
@@ -261,7 +261,7 @@ compute_Vxi <- function(x, phi, K, ...) {
 }
 
 # return a matrix with nId rows and nBasis * nState columns
-computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
+computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
   nBasis <- basisobj$nbasis
 
   phi <- fd(diag(nBasis), basisobj) # les fonctions de base comme données fonctionnelles
@@ -281,7 +281,7 @@ computeUmatrix <- function(data, basisobj, K, nCores, verbose, ...) {
     pbo <- pboptions(type = "none")
   }
 
-  Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K))
+  Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K)[uniqueId])
 
   # stop parallelization
   if (nCores > 1) {
