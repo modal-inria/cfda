@@ -117,7 +117,7 @@ compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstra
   label <- out$label
   rm(out)
 
-  uniqueId <- unique(data$id)
+  uniqueId <- as.character(unique(data$id))
   nId <- length(uniqueId)
 
   nCores <- min(max(1, nCores), detectCores() - 1)

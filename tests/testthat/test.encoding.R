@@ -183,6 +183,10 @@ test_that("computeVmatrix keeps the id order", {
   Va <- computeVmatrix(all_dat_a, basisobj, K = 3, uniqueId = uniqueIdA, nCores = 1, verbose = FALSE)
   Vb <- computeVmatrix(all_dat_b, basisobj, K = 3, uniqueId = uniqueIdB, nCores = 1, verbose = FALSE)
 
+  expect_equal(nrow(Va), 9)
+  expect_equal(ncol(Va), 6 * 3)
+  expect_equal(nrow(Vb), 9)
+  expect_equal(ncol(Vb), 6 * 3)
   expect_equal(Va, Vb[c(7, 8, 9, 1, 2, 3, 4, 5, 6), ])
 })
 
@@ -213,6 +217,10 @@ test_that("computeUmatrix keeps the id order", {
   Ua <- computeUmatrix(all_dat_a, basisobj, K = 3, uniqueId = uniqueIdA, nCores = 1, verbose = FALSE)
   Ub <- computeUmatrix(all_dat_b, basisobj, K = 3, uniqueId = uniqueIdB, nCores = 1, verbose = FALSE)
 
+  expect_equal(nrow(Ua), 9)
+  expect_equal(ncol(Ua), 6 * 6 * 3)
+  expect_equal(nrow(Ub), 9)
+  expect_equal(ncol(Ub), 6 * 6 * 3)
   expect_equal(Ua, Ub[c(7, 8, 9, 1, 2, 3, 4, 5, 6), ])
 })
 
