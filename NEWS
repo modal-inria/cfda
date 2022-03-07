@@ -1,0 +1,18 @@
+v0.9.12 2022-03-07
+- fix bug when ids are not in alphabetical order #16
+- add warning when an individual has duplicated time values
+- correct statetable doc
+- fix disappeared progress bars
+- predict manages NULL as newdata
+
+v0.9.10 2021-12-07
+- fix DOI
+
+v0.9.10 2021-12-06
+- add ggplot2 in depends
+- add citation
+- fix default values in generate_Markov
+- run styler
+
+v0.9.9 2021-02-12
+- on CRAN, now
