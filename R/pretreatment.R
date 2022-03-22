@@ -160,14 +160,11 @@ melt2cfd <- function(X, times = NULL, byrow = FALSE) {
 
   outData <- data.frame(id = c(), time = c(), state = c())
 
-  for (ind in seq_len(nInd))
-  {
+  for (ind in seq_len(nInd)) {
     outData <- rbind(outData, data.frame(id = ind, time = times[1], state = X[1, ind]))
-    if (nTimes > 2)
-    {
+    if (nTimes > 2) {
       # do not copy 2 consecutive time values with the same state
-      for (time in 2:(nTimes - 1))
-      {
+      for (time in 2:(nTimes - 1)) {
         if (X[time, ind] != X[time - 1, ind]) {
           outData <- rbind(outData, data.frame(id = ind, time = times[time], state = X[time, ind]))
         }
@@ -178,3 +175,33 @@ melt2cfd <- function(X, times = NULL, byrow = FALSE) {
 
   return(outData)
 }
+
+
+quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
+  checkLogical(leftClosed, "leftClosed")
+  if (!is.matrix(X)) {
+    stop("X must be a matrix")
+  }
+
+  if (is.null(labels)) {
+    labels <- seq_len(length(thr) - 1)
+  } else {
+    if (!is.vector(labels) || (length(labels) != (length(thr) - 1))) {
+      stop(paste0("labels must be a vector of length ", length(thr) - 1))
+    }
+  }
+
+  X2 <- matrix(nrow = nrow(X), ncol = ncol(X))
+  for (i in seq_len(length(thr) - 1)) {
+    if (leftClosed) {
+      X2[(thr[i] <= X) & (X < thr[i + 1])] <- labels[i]
+    } else {
+      X2[(thr[i] < X) & (X <= thr[i + 1])] <- labels[i]
+    }
+  }
+
+  if (any(is.na(X2))) {
+    warning("The conversion has generated NA elements")
+  }
+
+  return(X2)

@@ -234,3 +234,65 @@ test_that("melt2cfd errors", {
   expect_error(melt2cfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
 
 })
+
+
+test_that("quanti2quali works", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
+
+  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = NULL)
+  expectedOut <- matrix(c(2, 2, 3, 4,
+                          2, 3, 3, 3,
+                          2, 3, 4, 3), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+
+  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = FALSE, labels = NULL)
+  expectedOut <- matrix(c(2, 2, 3, 3,
+                          1, 2, 3, 3,
+                          2, 3, 4, 3), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+})
+
+test_that("quanti2quali labels", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
+
+  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c("a", "b", "c", "d"))
+  expectedOut <- matrix(c("b", "b", "c", "d",
+                          "b", "c", "c", "c",
+                          "b", "c", "d", "c"), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+
+  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = FALSE, labels = c(4, 3, 2, 1))
+  expectedOut <- matrix(c(3, 3, 2, 2,
+                          4, 3, 2, 2,
+                          3, 2, 1, 2), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+})
+
+test_that("quanti2quali warnings NA elements", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
+
+  expect_warning(out <- quanti2quali(x, c(0.2, 1, 2, Inf), leftClosed = FALSE, labels = NULL),
+                 "The conversion has generated NA elements")
+  expectedOut <- matrix(c(1, 1, 2, 2,
+                          NA, 1, 2, 2,
+                          1, 2, 3, 2), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+})
+
+
+test_that("quanti2quali errors", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
+
+  expect_error(quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = 3, labels = NULL),
+               "leftClosed must be either TRUE or FALSE.")
+  expect_error(quanti2quali(4, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = NULL), "X must be a matrix")
+  expect_error(quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c(1)), "labels must be a vector of length 4")
+})
