@@ -176,3 +176,61 @@ test_that("remove_duplicated_states works", {
 
   expect_equivalent(out, expectedOut)
 })
+
+test_that("melt2cfd works", {
+  x <- matrix(c("a", "b", "c", "c",
+                "c", "a", "a", "a",
+                "b", "c", "a", "b"), ncol = 4, byrow = TRUE)
+
+
+  out <- melt2cfd(x, byrow = FALSE)
+
+  expectedOut <- data.frame(id = rep(1:4, each = 3),
+                            time = rep(1:3, 4),
+                            state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
+
+  expect_equivalent(out, expectedOut)
+
+
+  out <- melt2cfd(x, byrow = TRUE)
+
+  expectedOut <- data.frame(id = rep(1:3, c(4, 3, 4)),
+                            time = c(1:4, c(1, 2, 4), 1:4),
+                            state = c("a", "b", "c", "c",
+                                      "c", "a", "a",
+                                      "b", "c", "a", "b"))
+
+  expect_equivalent(out, expectedOut)
+
+  out <- melt2cfd(x, times = c(1.5, 2.5, 3.5), byrow = FALSE)
+
+  expectedOut <- data.frame(id = rep(1:4, each = 3),
+                            time = rep(1:3, 4) + 0.5,
+                            state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
+
+  expect_equivalent(out, expectedOut)
+
+
+  out <- melt2cfd(x, times = c(1.5, 2.5, 3.5, 4.5), byrow = TRUE)
+
+  expectedOut <- data.frame(id = rep(1:3, c(4, 3, 4)),
+                            time = c(1:4, c(1, 2, 4), 1:4) + 0.5,
+                            state = c("a", "b", "c", "c",
+                                      "c", "a", "a",
+                                      "b", "c", "a", "b"))
+
+  expect_equivalent(out, expectedOut)
+})
+
+
+test_that("melt2cfd errors", {
+  x <- matrix(c("a", "b", "c", "c",
+                "c", "a", "a", "a",
+                "b", "c", "a", "b"), ncol = 4, byrow = TRUE)
+
+  expect_error(melt2cfd(x, times = NULL, byrow = 3), "byrow must be either TRUE or FALSE.")
+  expect_error(melt2cfd(x, times = 3, byrow = TRUE), "times must be a vector of length 4")
+  expect_error(melt2cfd(x, times = c(3, 2), byrow = FALSE), "times must be a vector of length 3")
+  expect_error(melt2cfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
+
+})
