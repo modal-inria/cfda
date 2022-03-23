@@ -191,7 +191,8 @@ quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
     }
   }
 
-  X2 <- matrix(nrow = nrow(X), ncol = ncol(X))
+  X2 <- matrix(nrow = nrow(X), ncol = ncol(X), dimnames = list(rownames(X), colnames(X)))
+
   for (i in seq_len(length(thr) - 1)) {
     if (leftClosed) {
       X2[(thr[i] <= X) & (X < thr[i + 1])] <- labels[i]

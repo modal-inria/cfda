@@ -272,6 +272,20 @@ test_that("quanti2quali labels", {
   expect_equivalent(out, expectedOut)
 })
 
+test_that("quanti2quali keeps column and row names", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE,
+              dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
+
+  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c("a", "b", "c", "d"))
+  expectedOut <- matrix(c("b", "b", "c", "d",
+                          "b", "c", "c", "c",
+                          "b", "c", "d", "c"), ncol = 4, byrow = TRUE,
+                        dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
+  expect_equal(out, expectedOut)
+})
+
 test_that("quanti2quali warnings NA elements", {
   x <- matrix(c(0.5, 0.7, 1.5, 2,
                 0, 1, 1.2, 1.5,
