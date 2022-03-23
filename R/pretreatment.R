@@ -205,3 +205,4 @@ quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
   }
 
   return(X2)
+}
