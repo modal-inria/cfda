@@ -138,7 +138,7 @@ remove_duplicated_states.intern <- function(data, keep.last = TRUE) {
 
 
 # convert a matrix into a cfda data.frame
-melt2cfd <- function(X, times = NULL, byrow = FALSE) {
+matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   checkLogical(byrow, "byrow")
   if (!is.matrix(X) && !is.data.frame(X)) {
     stop("X must be a matrix or a data.frame")
@@ -158,21 +158,30 @@ melt2cfd <- function(X, times = NULL, byrow = FALSE) {
     X <- t(X)
   }
 
+  if (is.null(labels)) {
+    if (!is.null(colnames(X))) {
+      labels <- colnames(X)
+    } else {
+      labels <- seq_len(ncol(X))
+    }
+  }
+
   outData <- data.frame(id = c(), time = c(), state = c())
 
   for (ind in seq_len(nInd)) {
-    outData <- rbind(outData, data.frame(id = ind, time = times[1], state = X[1, ind]))
+    outData <- rbind(outData, data.frame(id = labels[ind], time = times[1], state = X[1, ind]))
     if (nTimes > 2) {
       # do not copy 2 consecutive time values with the same state
       for (time in 2:(nTimes - 1)) {
         if (X[time, ind] != X[time - 1, ind]) {
-          outData <- rbind(outData, data.frame(id = ind, time = times[time], state = X[time, ind]))
+          outData <- rbind(outData, data.frame(id = labels[ind], time = times[time], state = X[time, ind]))
         }
       }
     }
-    outData <- rbind(outData, data.frame(id = ind, time = times[nTimes], state = X[nTimes, ind]))
+    outData <- rbind(outData, data.frame(id = labels[ind], time = times[nTimes], state = X[nTimes, ind]))
   }
 
+  rownames(outData) = NULL
   return(outData)
 }
 

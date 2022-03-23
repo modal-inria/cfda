@@ -177,13 +177,13 @@ test_that("remove_duplicated_states works", {
   expect_equivalent(out, expectedOut)
 })
 
-test_that("melt2cfd works", {
+test_that("matrixToCfd works", {
   x <- matrix(c("a", "b", "c", "c",
                 "c", "a", "a", "a",
                 "b", "c", "a", "b"), ncol = 4, byrow = TRUE)
 
 
-  out <- melt2cfd(x, byrow = FALSE)
+  out <- matrixToCfd(x, byrow = FALSE)
 
   expectedOut <- data.frame(id = rep(1:4, each = 3),
                             time = rep(1:3, 4),
@@ -192,7 +192,7 @@ test_that("melt2cfd works", {
   expect_equivalent(out, expectedOut)
 
 
-  out <- melt2cfd(x, byrow = TRUE)
+  out <- matrixToCfd(x, byrow = TRUE)
 
   expectedOut <- data.frame(id = rep(1:3, c(4, 3, 4)),
                             time = c(1:4, c(1, 2, 4), 1:4),
@@ -202,7 +202,7 @@ test_that("melt2cfd works", {
 
   expect_equivalent(out, expectedOut)
 
-  out <- melt2cfd(x, times = c(1.5, 2.5, 3.5), byrow = FALSE)
+  out <- matrixToCfd(x, times = c(1.5, 2.5, 3.5), byrow = FALSE)
 
   expectedOut <- data.frame(id = rep(1:4, each = 3),
                             time = rep(1:3, 4) + 0.5,
@@ -211,7 +211,7 @@ test_that("melt2cfd works", {
   expect_equivalent(out, expectedOut)
 
 
-  out <- melt2cfd(x, times = c(1.5, 2.5, 3.5, 4.5), byrow = TRUE)
+  out <- matrixToCfd(x, times = c(1.5, 2.5, 3.5, 4.5), byrow = TRUE)
 
   expectedOut <- data.frame(id = rep(1:3, c(4, 3, 4)),
                             time = c(1:4, c(1, 2, 4), 1:4) + 0.5,
@@ -222,16 +222,46 @@ test_that("melt2cfd works", {
   expect_equivalent(out, expectedOut)
 })
 
+test_that("matrixToCfd keeps manages labels", {
+  x <- matrix(c("a", "b", "c", "c",
+                "c", "a", "a", "a",
+                "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
+              dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
 
-test_that("melt2cfd errors", {
+
+  out <- matrixToCfd(x, byrow = FALSE)
+
+  expectedOut <- data.frame(id = rep(paste0("ind", 1:4), each = 3),
+                            time = rep(1:3, 4),
+                            state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
+
+  expect_equal(out, expectedOut)
+
+  x <- matrix(c("a", "b", "c", "c",
+                "c", "a", "a", "a",
+                "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
+              dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
+
+
+  out <- matrixToCfd(x, byrow = FALSE, labels = )
+
+  expectedOut <- data.frame(id = rep(paste0("ind", 1:4), each = 3),
+                            time = rep(1:3, 4),
+                            state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
+
+  expect_equal(out, expectedOut)
+})
+
+
+test_that("matrixToCfd errors", {
   x <- matrix(c("a", "b", "c", "c",
                 "c", "a", "a", "a",
                 "b", "c", "a", "b"), ncol = 4, byrow = TRUE)
 
-  expect_error(melt2cfd(x, times = NULL, byrow = 3), "byrow must be either TRUE or FALSE.")
-  expect_error(melt2cfd(x, times = 3, byrow = TRUE), "times must be a vector of length 4")
-  expect_error(melt2cfd(x, times = c(3, 2), byrow = FALSE), "times must be a vector of length 3")
-  expect_error(melt2cfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
+  expect_error(matrixToCfd(x, times = NULL, byrow = 3), "byrow must be either TRUE or FALSE.")
+  expect_error(matrixToCfd(x, times = 3, byrow = TRUE), "times must be a vector of length 4")
+  expect_error(matrixToCfd(x, times = c(3, 2), byrow = FALSE), "times must be a vector of length 3")
+  expect_error(matrixToCfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
 
 })
 
@@ -254,7 +284,7 @@ test_that("quanti2quali works", {
   expect_equivalent(out, expectedOut)
 })
 
-test_that("quanti2quali labels", {
+test_that("quanti2quali state labels", {
   x <- matrix(c(0.5, 0.7, 1.5, 2,
                 0, 1, 1.2, 1.5,
                 0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
