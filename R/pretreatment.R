@@ -137,7 +137,22 @@ remove_duplicated_states.intern <- function(data, keep.last = TRUE) {
 }
 
 
-# convert a matrix into a cfda data.frame
+#' Convert a matrix to a cfda data.frame
+#'
+#' @param X matrix containing the states
+#' @param times time values. If \code{NULL}, it uses a sequence of integers starting with 1
+#' @param labels id labels. If \code{NULL}, it uses the matrix colnames
+#' @param byrow if \code{FALSE}, one column = one trajectory
+#'
+#' @return a data.frame in the cfda format
+#'
+#' @examples
+#' x <- matrix(c("a", "b", "c", "c",
+#'               "c", "a", "a", "a",
+#'               "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
+#'               dimnames = list(NULL, paste0("ind", 1:4)))
+#' matrixToCfd(x)
+#' @export
 matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   checkLogical(byrow, "byrow")
   if (!is.matrix(X) && !is.data.frame(X)) {
