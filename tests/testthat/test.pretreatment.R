@@ -340,3 +340,37 @@ test_that("quanti2quali errors", {
   expect_error(quanti2quali(4, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = NULL), "X must be a matrix")
   expect_error(quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c(1)), "labels must be a vector of length 4")
 })
+
+
+data("CanadianWeather")
+temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
+basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
+fd <- smooth.basis(1:365, temp, basis)$fd
+
+test_that("fdToCfd works", {
+  out <- fdToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+                 labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), evalarg = 1:365)
+
+  expect_true(is.data.frame(out))
+  expect_equal(colnames(out), c("id", "time", "state"))
+  expect_equal(range(out$time), c(1, 365))
+  expect_equal(sort(unique(out$state)), sort(c("Very Cold", "Cold", "Fresh", "OK", "Hot")))
+  expect_equal(unique(out$id), colnames(temp))
+
+  expectedOut <- data.frame(id = rep("St. Johns", 6),
+                            time = c(1, 97, 161, 271, 340, 365),
+                            state = c("Cold", "Fresh", "OK", "Fresh", "Cold", "Cold"))
+  expect_equal(out[out$id==out$id[1], ], expectedOut)
+})
+
+test_that("fdToCfd errors", {
+  expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = TRUE,
+                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), evalarg = 1:365),
+               "labels must be a vector of length 1")
+  expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = 3,
+                       labels = c("Very Cold"), evalarg = 1:365),
+               "leftClosed must be either TRUE or FALSE.")
+  expect_error(fdToCfd(5, thr = c(-50, -10), leftClosed = TRUE,
+                       labels = c("Very Cold"), evalarg = 1:365),
+               "fd is not a fd object")
+})

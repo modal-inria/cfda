@@ -231,3 +231,42 @@ quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
 
   return(X2)
 }
+
+
+#' Convert functional data to categorical functional data
+#'
+#' @param fd fd object
+#' @param thr vector defining the intervals to create the categories
+#' @param leftClosed If \code{TRUE}, intervals generated with \code{thr} are left closed (\code{[thr[i]:thr[i+1])})
+#' otherwise there are right closed (\code{(thr[i]:thr[i+1]]})
+#' @param labels labels of categories (\code{length(thr) - 1}). \code{abels[i]} is the category
+#' associated with \code{[thr[i]:thr[i+1])}. If \code{NULL}, categories are numbered
+#' @param evalarg vector containing values at which \code{fd} is to be evaluated
+#' @param nx number of points to evaluate \code{fd}
+#'
+#' @return a data.frame in the cfda format
+#'
+#' @examples
+#' data("CanadianWeather")
+#' temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
+#' basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
+#' fd <- smooth.basis(1:365, temp, basis)$fd
+#'
+#' # "Very Cold" = [-50:-10), "Cold" = [-10:0), ...
+#' fdToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50),
+#'         labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
+#'         evalarg = 1:365)
+#'
+#' @export
+fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, evalarg = NULL, nx = 200) {
+  if (class(fd) != "fd") {
+    stop("fd is not a fd object")
+  }
+  if (is.null(evalarg)) {
+    evalarg <- seq(fd$basis$rangeval[1], fd$basis$rangeval[2], length = nx)
+  }
+
+  X <- eval.fd(evalarg, fd)
+  X <- quanti2quali(X, thr, leftClosed, labels = labels)
+
+  return(matrixToCfd(X, evalarg))
