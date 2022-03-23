@@ -259,10 +259,10 @@ test_that("matrixToCfd errors", {
                 "b", "c", "a", "b"), ncol = 4, byrow = TRUE)
 
   expect_error(matrixToCfd(x, times = NULL, byrow = 3), "byrow must be either TRUE or FALSE.")
-  expect_error(matrixToCfd(x, times = 3, byrow = TRUE), "times must be a vector of length 4")
-  expect_error(matrixToCfd(x, times = c(3, 2), byrow = FALSE), "times must be a vector of length 3")
+  expect_error(matrixToCfd(x, times = 3, byrow = TRUE), "times must be a numeric vector of length 4")
+  expect_error(matrixToCfd(x, times = c(3, 2), byrow = FALSE), "times must be a numeric vector of length 3")
+  expect_error(matrixToCfd(x, times = c("a", "b", "c"), byrow = FALSE), "times must be a numeric vector of length 3")
   expect_error(matrixToCfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
-
 })
 
 

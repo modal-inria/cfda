@@ -149,8 +149,8 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   if (is.null(times)) {
     times <- seq_len(nTimes)
   } else {
-    if (!is.vector(times) || (length(times) != nTimes)) {
-      stop(paste0("times must be a vector of length ", nTimes))
+    if (!is.vector(times) || (length(times) != nTimes) || !is.numeric(times)) {
+      stop(paste0("times must be a numeric vector of length ", nTimes))
     }
   }
 
