@@ -270,3 +270,4 @@ fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, evalarg = NULL, n
   X <- quanti2quali(X, thr, leftClosed, labels = labels)
 
   return(matrixToCfd(X, evalarg))
+}
