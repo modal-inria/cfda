@@ -243,9 +243,9 @@ test_that("matrixToCfd keeps manages labels", {
               dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
 
 
-  out <- matrixToCfd(x, byrow = FALSE, labels = )
+  out <- matrixToCfd(x, byrow = FALSE, labels = c("a", "b", "c", "d"))
 
-  expectedOut <- data.frame(id = rep(paste0("ind", 1:4), each = 3),
+  expectedOut <- data.frame(id = rep(c("a", "b", "c", "d"), each = 3),
                             time = rep(1:3, 4),
                             state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
 
@@ -263,6 +263,7 @@ test_that("matrixToCfd errors", {
   expect_error(matrixToCfd(x, times = c(3, 2), byrow = FALSE), "times must be a numeric vector of length 3")
   expect_error(matrixToCfd(x, times = c("a", "b", "c"), byrow = FALSE), "times must be a numeric vector of length 3")
   expect_error(matrixToCfd(c(1, 3), times = NULL, byrow = TRUE), "X must be a matrix or a data.frame")
+  expect_error(matrixToCfd(x, times = NULL, labels = c("a"), byrow = TRUE), "labels must be a vector of length 3")
 })
 
 
@@ -347,9 +348,38 @@ temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
 basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 fd <- smooth.basis(1:365, temp, basis)$fd
 
+
+test_that("qualiMatrixToCfd works", {
+  out <- qualiMatrixToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+                          labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), idLabels = NULL, times = 0:364)
+
+  expect_true(is.data.frame(out))
+  expect_equal(colnames(out), c("id", "time", "state"))
+  expect_equal(range(out$time), c(0, 364))
+  expect_equal(sort(unique(out$state)), sort(c("Very Cold", "Cold", "Fresh", "OK", "Hot")))
+  expect_equal(unique(out$id), colnames(temp))
+
+  expectedOut <- data.frame(id = rep("St. Johns", 10),
+                            time = c(0, 94, 164, 271, 275, 276, 335, 340, 341, 364),
+                            state = c("Cold", "Fresh", "OK", "Fresh", "OK", "Fresh", "Cold", "Fresh", "Cold", "Cold"))
+  expect_equal(out[out$id==out$id[1], ], expectedOut)
+})
+
+test_that("qualiMatrixToCfd errors", {
+  expect_error(qualiMatrixToCfd(temp, thr = c(-50, -10), leftClosed = TRUE,
+                                labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365),
+               "labels must be a vector of length 1")
+  expect_error(qualiMatrixToCfd(temp, thr = c(-50, -10), leftClosed = 3,
+                                labels = c("Very Cold"), times = 1:365),
+               "leftClosed must be either TRUE or FALSE.")
+  expect_error(qualiMatrixToCfd(fd, thr = c(-50, -10), leftClosed = TRUE,
+                                labels = c("Very Cold"), times = 1:365),
+               "X must be a matrix")
+})
+
 test_that("fdToCfd works", {
   out <- fdToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
-                 labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), evalarg = 1:365)
+                 labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365)
 
   expect_true(is.data.frame(out))
   expect_equal(colnames(out), c("id", "time", "state"))
@@ -365,12 +395,45 @@ test_that("fdToCfd works", {
 
 test_that("fdToCfd errors", {
   expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = TRUE,
-                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), evalarg = 1:365),
+                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365),
                "labels must be a vector of length 1")
   expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = 3,
-                       labels = c("Very Cold"), evalarg = 1:365),
+                       labels = c("Very Cold"), times = 1:365),
                "leftClosed must be either TRUE or FALSE.")
   expect_error(fdToCfd(5, thr = c(-50, -10), leftClosed = TRUE,
-                       labels = c("Very Cold"), evalarg = 1:365),
+                       labels = c("Very Cold"), times = 1:365),
                "fd is not a fd object")
+})
+
+
+test_that("convertToCfd works with matrix", {
+  out <- convertToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), idLabels = NULL, times = 0:364)
+
+  expect_true(is.data.frame(out))
+  expect_equal(colnames(out), c("id", "time", "state"))
+  expect_equal(range(out$time), c(0, 364))
+  expect_equal(sort(unique(out$state)), sort(c("Very Cold", "Cold", "Fresh", "OK", "Hot")))
+  expect_equal(unique(out$id), colnames(temp))
+
+  expectedOut <- data.frame(id = rep("St. Johns", 10),
+                            time = c(0, 94, 164, 271, 275, 276, 335, 340, 341, 364),
+                            state = c("Cold", "Fresh", "OK", "Fresh", "OK", "Fresh", "Cold", "Fresh", "Cold", "Cold"))
+  expect_equal(out[out$id==out$id[1], ], expectedOut)
+})
+
+test_that("convertToCfd works with fd", {
+  out <- convertToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365)
+
+  expect_true(is.data.frame(out))
+  expect_equal(colnames(out), c("id", "time", "state"))
+  expect_equal(range(out$time), c(1, 365))
+  expect_equal(sort(unique(out$state)), sort(c("Very Cold", "Cold", "Fresh", "OK", "Hot")))
+  expect_equal(unique(out$id), colnames(temp))
+
+  expectedOut <- data.frame(id = rep("St. Johns", 6),
+                            time = c(1, 97, 161, 271, 340, 365),
+                            state = c("Cold", "Fresh", "OK", "Fresh", "Cold", "Cold"))
+  expect_equal(out[out$id==out$id[1], ], expectedOut)
 })

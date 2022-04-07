@@ -179,6 +179,8 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
     } else {
       labels <- seq_len(ncol(X))
     }
+  } else if (!is.vector(labels) || (length(labels) != nInd)) {
+      stop(paste0("labels must be a vector of length ", nInd))
   }
 
   outData <- data.frame(id = c(), time = c(), state = c())
@@ -200,7 +202,7 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   return(outData)
 }
 
-
+# convert a quantitative matrix to a qualitative matrix (see convertToCfd)
 quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
   checkLogical(leftClosed, "leftClosed")
   if (!is.matrix(X)) {
@@ -232,42 +234,66 @@ quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
   return(X2)
 }
 
+# convert a fd object to a categorical functional data frame (see convertToCfd)
+fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, nx = 200) {
+  if (class(fd) != "fd") {
+    stop("fd is not a fd object")
+  }
+  if (is.null(times)) {
+    times <- seq(fd$basis$rangeval[1], fd$basis$rangeval[2], length = nx)
+  }
+  if (is.null(idLabels)) {
+    idLabels <- fd$fdnames$reps
+  }
+  X <- eval.fd(times, fd)
+  return(qualiMatrixToCfd(X, thr, leftClosed = leftClosed, labels = labels,
+                          idLabels = idLabels, times = times, byrow = FALSE))
+}
 
-#' Convert functional data to categorical functional data
+# convert a qualitative matrix to a categorical functional data frame (see convertToCfd)
+qualiMatrixToCfd <- function(X, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, byrow = FALSE) {
+  X <- quanti2quali(X, thr, leftClosed, labels = labels)
+
+  return(matrixToCfd(X, times, idLabels, byrow))
+}
+
+#' Convert data to categorical functional data
 #'
-#' @param fd fd object
+#' @param x matrix or fd object
 #' @param thr vector defining the intervals to create the categories
 #' @param leftClosed If \code{TRUE}, intervals generated with \code{thr} are left closed (\code{[thr[i]:thr[i+1])})
 #' otherwise there are right closed (\code{(thr[i]:thr[i+1]]})
 #' @param labels labels of categories (\code{length(thr) - 1}). \code{abels[i]} is the category
 #' associated with \code{[thr[i]:thr[i+1])}. If \code{NULL}, categories are numbered
-#' @param evalarg vector containing values at which \code{fd} is to be evaluated
-#' @param nx number of points to evaluate \code{fd}
+#' @param times vector containing values at which \code{fd} is to be evaluated
+#' @param idLabels vector containing id labels. If NULL it use the names found in the matrix or fd object
+#' @param nx Only if \code{x} is a fd object. Number of points to evaluate \code{fd}
+#' @param byrow Only if \code{x} is a matrix. If \code{FALSE}, one column = one trajectory
 #'
 #' @return a data.frame in the cfda format
 #'
 #' @examples
+#' # fd object
 #' data("CanadianWeather")
 #' temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
 #' basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 #' fd <- smooth.basis(1:365, temp, basis)$fd
 #'
 #' # "Very Cold" = [-50:-10), "Cold" = [-10:0), ...
-#' fdToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50),
-#'         labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
-#'         evalarg = 1:365)
+#' out <- convertToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50),
+#'                     labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
+#'                     times = 1:365)
+#'
+#' # matrix
+#' out2 <- convertToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50),
+#'                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
+#'                      times = 1:365, byrow = FALSE)
 #'
 #' @export
-fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, evalarg = NULL, nx = 200) {
-  if (class(fd) != "fd") {
-    stop("fd is not a fd object")
+convertToCfd <- function(x, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, nx = 200, byrow = FALSE) {
+  if (class(x) == "fd") {
+    return(fdToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, nx))
+  } else if (class(x) == "matrix") {
+    return(qualiMatrixToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, byrow))
   }
-  if (is.null(evalarg)) {
-    evalarg <- seq(fd$basis$rangeval[1], fd$basis$rangeval[2], length = nx)
-  }
-
-  X <- eval.fd(evalarg, fd)
-  X <- quanti2quali(X, thr, leftClosed, labels = labels)
-
-  return(matrixToCfd(X, evalarg))
 }
