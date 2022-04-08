@@ -291,9 +291,9 @@ qualiMatrixToCfd <- function(X, thr, leftClosed = TRUE, labels = NULL, times = N
 #'
 #' @export
 convertToCfd <- function(x, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, nx = 200, byrow = FALSE) {
-  if (class(x) == "fd") {
+  if ("fd" %in% class(x)) {
     return(fdToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, nx))
-  } else if (class(x) == "matrix") {
+  } else if (is.matrix(x)) {
     return(qualiMatrixToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, byrow))
   }
 }
