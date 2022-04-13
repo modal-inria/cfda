@@ -285,6 +285,24 @@ test_that("quanti2quali works", {
   expect_equivalent(out, expectedOut)
 })
 
+test_that("quanti2quali manages the first/last interval as closed", {
+  x <- matrix(c(0.5, 0.7, 1.5, 2,
+                0, 1, 1.2, 1.5,
+                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
+
+  out <- quanti2quali(x, c(0, 1, 2.2), leftClosed = TRUE, labels = NULL)
+  expectedOut <- matrix(c(1, 1, 2, 2,
+                          1, 2, 2, 2,
+                          1, 2, 2, 2), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+
+  out <- quanti2quali(x, c(0, 1, 2.2), leftClosed = FALSE, labels = NULL)
+  expectedOut <- matrix(c(1, 1, 2, 2,
+                          1, 1, 2, 2,
+                          1, 2, 2, 2), ncol = 4, byrow = TRUE)
+  expect_equivalent(out, expectedOut)
+})
+
 test_that("quanti2quali state labels", {
   x <- matrix(c(0.5, 0.7, 1.5, 2,
                 0, 1, 1.2, 1.5,

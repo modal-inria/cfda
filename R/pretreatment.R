@@ -224,9 +224,17 @@ quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
 
   for (i in seq_len(length(thr) - 1)) {
     if (leftClosed) {
-      X2[(thr[i] <= X) & (X < thr[i + 1])] <- labels[i]
+      if (i == (length(thr) - 1)) {
+        X2[(thr[i] <= X) & (X <= thr[i + 1])] <- labels[i] # the last one is closed
+      } else {
+        X2[(thr[i] <= X) & (X < thr[i + 1])] <- labels[i]
+      }
     } else {
-      X2[(thr[i] < X) & (X <= thr[i + 1])] <- labels[i]
+      if (i == 1) {
+        X2[(thr[i] <= X) & (X <= thr[i + 1])] <- labels[i] # the first one is closed
+      } else {
+        X2[(thr[i] < X) & (X <= thr[i + 1])] <- labels[i]
+      }
     }
   }
 
