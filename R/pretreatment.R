@@ -1,6 +1,7 @@
 #' Cut data to a maximal given time
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time},
+#' time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
@@ -64,7 +65,7 @@ cut_cfd <- function(data, Tmax) {
 #
 # @author Quentin Grimonprez
 stateToInteger <- function(state) {
-  lab <- data.frame(label = sort(unique(state)), code = 1:length(unique(state)))
+  lab <- data.frame(label = sort(unique(state)), code = seq_along(unique(state)))
 
   newstate <- refactorCategorical(state, lab$label, lab$code)
 
@@ -85,7 +86,7 @@ stateToInteger <- function(state) {
 # refactorCategorical(dat, c("single", "married", "divorced"), 1:3)
 #
 # @author Quentin Grimonprez
-refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:length(oldCateg)) {
+refactorCategorical <- function(data, oldCateg = unique(data), newCateg = seq_along(oldCateg)) {
   ind <- match(data, oldCateg)
 
   if (any(is.na(ind[!is.na(data)]))) {
@@ -98,10 +99,12 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = 1:leng
 
 #' Remove duplicated states
 #'
-#' Remove duplicated consecutive states from data. If for an individual there is two or more consecutive states that are identical,
-#' only the first is kept. Only time when the state changes are kept.
+#' Remove duplicated consecutive states from data.
+#' If for an individual there is two or more consecutive states that are identical, only the first is kept.
+#' Only time when the state changes are kept.
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+#' and \code{state}, associated state.
 #' @param keep.last if TRUE, keep the last state for every individual even if it is a duplicated state.
 #'
 #' @return \code{data} without duplicated consecutive states

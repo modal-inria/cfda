@@ -16,7 +16,9 @@ compute_optimal_encoding(
 )
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}}).}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
+(use \code{\link{cut_data}}).}
 
 \item{basisobj}{basis created using the \code{fda} package (cf. \code{\link{create.basis}}).}
 
@@ -49,7 +51,8 @@ A list containing:
 }
 }
 \description{
-Compute the optimal encoding for categorical functional data using an extension of the multiple correspondence analysis to a stochastic process.
+Compute the optimal encoding for categorical functional data using an extension of the multiple correspondence analysis
+to a stochastic process.
 }
 \details{
 See the vignette for the mathematical background: \code{RShowDoc("cfda", package = "cfda")}
@@ -92,9 +95,14 @@ get_encoding(encoding, harm = 1)
 }
 \references{
 \itemize{
-  \item Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?, Annales de l'INSEE, No 45, p. 45-104.
-  \item Deville J.C. et  Saporta G. (1980) Analyse harmonique qualitative, DIDAY et al. (editors), Data Analysis and Informatics, North Holland, p. 375-389.
-  \item Saporta G. (1981) Méthodes exploratoires d'analyse de données temporelles, Cahiers du B.U.R.O, Université Pierre et Marie Curie, 37-38, Paris.
+  \item Deville J.C. (1982) Analyse de données chronologiques qualitatives : comment analyser des calendriers ?,
+Annales de l'INSEE, No 45, p. 45-104.
+  \item Deville J.C. et  Saporta G. (1980) Analyse harmonique qualitative, DIDAY et al. (editors), Data Analysis and
+Informatics, North Holland, p. 375-389.
+  \item Saporta G. (1981) Méthodes exploratoires d'analyse de données temporelles, Cahiers du B.U.R.O, Université
+Pierre et Marie Curie, 37-38, Paris.
+  \item Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The cfda R Package.
+Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
 }
 }
 \seealso{

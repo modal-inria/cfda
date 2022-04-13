@@ -1,8 +1,10 @@
 
 #' Plot categorical functional data
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param group vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' \code{state}, associated state.
+#' @param group vector, of the same length as the number individuals of \code{data}, containing group index.
+#' Groups are displayed on separate plots.
 #' If \code{group = NA}, the corresponding individuals in \code{data} is ignored.
 #' @param col a vector containing color for each state (can be named)
 #' @param addId If TRUE, add id labels
@@ -60,8 +62,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   if (!is.null(group)) {
     data$group <- rep(NA, nrow(data))
     idNames <- unique(data$id)
-    for (i in seq_along(idNames))
-    {
+    for (i in seq_along(idNames)) {
       data$group[data$id == idNames[i]] <- group[i]
     }
     data <- data[!is.na(data$group), ]
@@ -88,10 +89,10 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   }
 
   p <- ggplot() +
-    geom_rect(
-      data = d_graph, mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5", ymax = "position + 0.5", fill = "state"),
-      color = ifelse(addBorder, "black", NA)
-    ) +
+    geom_rect(data = d_graph,
+              mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5",
+                                   ymax = "position + 0.5", fill = "state"),
+              color = ifelse(addBorder, "black", NA)) +
     scale_x_continuous(name = "Time") +
     labs(fill = "State")
 
@@ -116,7 +117,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 }
 
 
-# transform the data format to a new format with 4 columns: id, t_stast, t_end, state.
+# transform the data format to a new format with 4 columns: id, t_stat, t_end, state.
 # usefull for ggplot
 # @author Cristian Preda
 rep_large_ind <- function(data) {
@@ -176,7 +177,8 @@ computePositionPerGroup <- function(data, id, group, sort = FALSE) {
 # @author Quentin Grimonprez
 orderFirstState <- function(data) {
   firstState <- do.call(rbind, by(data, data$id, function(x) {
-    data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]), state = x$state[1], stringsAsFactors = FALSE)
+    data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]),
+               state = x$state[1], stringsAsFactors = FALSE)
   }))
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {
     x[order(x$time), ]
@@ -203,7 +205,8 @@ createLabeller <- function(group) {
 #'
 #' @description Get a summary of the data.frame containing categorical functional data
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' \code{state}, associated state.
 #' @param max.print maximal number of states to display
 #'
 #' @return a list containing:
