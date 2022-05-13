@@ -80,14 +80,14 @@ unifySign <- function(out, signReference) {
         {
           signNeg <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
 
-          # if there is a NA at he given position, we try an other position
+          # if there is a NA at the given position, we try an other position
           if (!is.na(signNeg)) {
             if (signNeg != signReference$isNegative[j]) {
               out[[i]]$alpha[[j]] <- out[[i]]$alpha[[j]] * -1
               out[[i]]$pc[, j] <- out[[i]]$pc[, j] * -1
             }
           } else {
-            newPos <- which.max(out[[i]]$alpha[[j]])
+            newPos <- which.max(abs(out[[i]]$alpha[[j]]))
             signNeg <- Re(out[[i]]$alpha[[j]][newPos]) < 0
 
             if (signNeg != signReference$allNegative[[j]][newPos]) {
