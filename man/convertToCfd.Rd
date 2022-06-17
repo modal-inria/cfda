@@ -51,12 +51,12 @@ basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 fd <- smooth.basis(1:365, temp, basis)$fd
 
 # "Very Cold" = [-50:-10), "Cold" = [-10:0), ...
-out <- convertToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50),
+out <- convertToCfd(fd, breaks = c(-50, -10, 0, 10, 20, 50),
                     labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
                     times = 1:365)
 
 # matrix
-out2 <- convertToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50),
+out2 <- convertToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50),
                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
                      times = 1:365, byrow = FALSE)
 
