@@ -205,48 +205,8 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   return(outData)
 }
 
-# convert a quantitative matrix to a qualitative matrix (see convertToCfd)
-quanti2quali <- function(X, thr, leftClosed = TRUE, labels = NULL) {
-  checkLogical(leftClosed, "leftClosed")
-  if (!is.matrix(X)) {
-    stop("X must be a matrix")
-  }
-
-  if (is.null(labels)) {
-    labels <- seq_len(length(thr) - 1)
-  } else {
-    if (!is.vector(labels) || (length(labels) != (length(thr) - 1))) {
-      stop(paste0("labels must be a vector of length ", length(thr) - 1))
-    }
-  }
-
-  X2 <- matrix(nrow = nrow(X), ncol = ncol(X), dimnames = list(rownames(X), colnames(X)))
-
-  for (i in seq_len(length(thr) - 1)) {
-    if (leftClosed) {
-      if (i == (length(thr) - 1)) {
-        X2[(thr[i] <= X) & (X <= thr[i + 1])] <- labels[i] # the last one is closed
-      } else {
-        X2[(thr[i] <= X) & (X < thr[i + 1])] <- labels[i]
-      }
-    } else {
-      if (i == 1) {
-        X2[(thr[i] <= X) & (X <= thr[i + 1])] <- labels[i] # the first one is closed
-      } else {
-        X2[(thr[i] < X) & (X <= thr[i + 1])] <- labels[i]
-      }
-    }
-  }
-
-  if (any(is.na(X2))) {
-    warning("The conversion has generated NA elements")
-  }
-
-  return(X2)
-}
-
 # convert a fd object to a categorical functional data frame (see convertToCfd)
-fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, nx = 200) {
+fdToCfd <- function(fd, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL, idLabels = NULL, nx = 200) {
   if (class(fd) != "fd") {
     stop("fd is not a fd object")
   }
@@ -257,25 +217,27 @@ fdToCfd <- function(fd, thr, leftClosed = TRUE, labels = NULL, times = NULL, idL
     idLabels <- fd$fdnames$reps
   }
   X <- eval.fd(times, fd)
-  return(qualiMatrixToCfd(X, thr, leftClosed = leftClosed, labels = labels,
+  return(qualiMatrixToCfd(X, breaks, labels = labels, include.lowest = include.lowest, right = right,
                           idLabels = idLabels, times = times, byrow = FALSE))
 }
 
 # convert a qualitative matrix to a categorical functional data frame (see convertToCfd)
-qualiMatrixToCfd <- function(X, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, byrow = FALSE) {
-  X <- quanti2quali(X, thr, leftClosed, labels = labels)
-
+qualiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, right = TRUE,
+                             times = NULL, idLabels = NULL, byrow = FALSE) {
+  X <- matrix(cut(X, breaks = breaks, labels = labels, right = right, include.lowest = include.lowest),
+              nrow = nrow(X), dimnames = dimnames(X))
   return(matrixToCfd(X, times, idLabels, byrow))
 }
 
 #' Convert data to categorical functional data
 #'
 #' @param x matrix or fd object
-#' @param thr vector defining the intervals to create the categories
-#' @param leftClosed If \code{TRUE}, intervals generated with \code{thr} are left closed (\code{[thr[i]:thr[i+1])})
-#' otherwise there are right closed (\code{(thr[i]:thr[i+1]]})
-#' @param labels labels of categories (\code{length(thr) - 1}). \code{abels[i]} is the category
-#' associated with \code{[thr[i]:thr[i+1])}. If \code{NULL}, categories are numbered
+#' @param breaks either a numeric vector of two or more unique cut points or a single number (greater than or equal to 2)
+#' giving the number of intervals into which x is to be cut.
+#' @param labels labels for the levels of the resulting category. By default, labels are constructed using "(a,b]"
+#' interval notation. If labels = FALSE, simple integer codes are returned instead of a factor.
+#' @param include.lowest logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’ value should be included.
+#' @param right logical, indicating if the intervals should be closed on the right (and open on the left) or vice versa.
 #' @param times vector containing values at which \code{fd} is to be evaluated
 #' @param idLabels vector containing id labels. If NULL it use the names found in the matrix or fd object
 #' @param nx Only if \code{x} is a fd object. Number of points to evaluate \code{fd}
@@ -301,10 +263,11 @@ qualiMatrixToCfd <- function(X, thr, leftClosed = TRUE, labels = NULL, times = N
 #'                      times = 1:365, byrow = FALSE)
 #'
 #' @export
-convertToCfd <- function(x, thr, leftClosed = TRUE, labels = NULL, times = NULL, idLabels = NULL, nx = 200, byrow = FALSE) {
+convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL,
+                         idLabels = NULL, nx = 200, byrow = FALSE) {
   if ("fd" %in% class(x)) {
-    return(fdToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, nx))
-  } else if (is.matrix(x)) {
-    return(qualiMatrixToCfd(x, thr, leftClosed, labels, times, idLabels = NULL, byrow))
+    return(fdToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, nx))
+  } else if (is.matrix(x) || is.data.frame(x)) {
+    return(qualiMatrixToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, byrow))
   }
 }

@@ -267,100 +267,6 @@ test_that("matrixToCfd errors", {
 })
 
 
-test_that("quanti2quali works", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
-
-  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = NULL)
-  expectedOut <- matrix(c(2, 2, 3, 4,
-                          2, 3, 3, 3,
-                          2, 3, 4, 3), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-
-  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = FALSE, labels = NULL)
-  expectedOut <- matrix(c(2, 2, 3, 3,
-                          1, 2, 3, 3,
-                          2, 3, 4, 3), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-})
-
-test_that("quanti2quali manages the first/last interval as closed", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
-
-  out <- quanti2quali(x, c(0, 1, 2.2), leftClosed = TRUE, labels = NULL)
-  expectedOut <- matrix(c(1, 1, 2, 2,
-                          1, 2, 2, 2,
-                          1, 2, 2, 2), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-
-  out <- quanti2quali(x, c(0, 1, 2.2), leftClosed = FALSE, labels = NULL)
-  expectedOut <- matrix(c(1, 1, 2, 2,
-                          1, 1, 2, 2,
-                          1, 2, 2, 2), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-})
-
-test_that("quanti2quali state labels", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
-
-  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c("a", "b", "c", "d"))
-  expectedOut <- matrix(c("b", "b", "c", "d",
-                          "b", "c", "c", "c",
-                          "b", "c", "d", "c"), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-
-  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = FALSE, labels = c(4, 3, 2, 1))
-  expectedOut <- matrix(c(3, 3, 2, 2,
-                          4, 3, 2, 2,
-                          3, 2, 1, 2), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-})
-
-test_that("quanti2quali keeps column and row names", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE,
-              dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
-
-  out <- quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c("a", "b", "c", "d"))
-  expectedOut <- matrix(c("b", "b", "c", "d",
-                          "b", "c", "c", "c",
-                          "b", "c", "d", "c"), ncol = 4, byrow = TRUE,
-                        dimnames = list(paste0("time", 1:3), paste0("ind", 1:4)))
-  expect_equal(out, expectedOut)
-})
-
-test_that("quanti2quali warnings NA elements", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
-
-  expect_warning(out <- quanti2quali(x, c(0.2, 1, 2, Inf), leftClosed = FALSE, labels = NULL),
-                 "The conversion has generated NA elements")
-  expectedOut <- matrix(c(1, 1, 2, 2,
-                          NA, 1, 2, 2,
-                          1, 2, 3, 2), ncol = 4, byrow = TRUE)
-  expect_equivalent(out, expectedOut)
-})
-
-
-test_that("quanti2quali errors", {
-  x <- matrix(c(0.5, 0.7, 1.5, 2,
-                0, 1, 1.2, 1.5,
-                0.8, 1.6, 2.2, 1.7), ncol = 4, byrow = TRUE)
-
-  expect_error(quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = 3, labels = NULL),
-               "leftClosed must be either TRUE or FALSE.")
-  expect_error(quanti2quali(4, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = NULL), "X must be a matrix")
-  expect_error(quanti2quali(x, c(-Inf, 0, 1, 2, Inf), leftClosed = TRUE, labels = c(1)), "labels must be a vector of length 4")
-})
-
-
 data("CanadianWeather")
 temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
 basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
@@ -368,7 +274,7 @@ fd <- smooth.basis(1:365, temp, basis)$fd
 
 
 test_that("qualiMatrixToCfd works", {
-  out <- qualiMatrixToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+  out <- qualiMatrixToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
                           labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), idLabels = NULL, times = 0:364)
 
   expect_true(is.data.frame(out))
@@ -384,19 +290,16 @@ test_that("qualiMatrixToCfd works", {
 })
 
 test_that("qualiMatrixToCfd errors", {
-  expect_error(qualiMatrixToCfd(temp, thr = c(-50, -10), leftClosed = TRUE,
-                                labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365),
-               "labels must be a vector of length 1")
-  expect_error(qualiMatrixToCfd(temp, thr = c(-50, -10), leftClosed = 3,
-                                labels = c("Very Cold"), times = 1:365),
-               "leftClosed must be either TRUE or FALSE.")
-  expect_error(qualiMatrixToCfd(fd, thr = c(-50, -10), leftClosed = TRUE,
-                                labels = c("Very Cold"), times = 1:365),
-               "X must be a matrix")
+  expect_error(qualiMatrixToCfd(temp, breaks = c(-50, -10), right = TRUE,
+                                labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365))
+  expect_error(qualiMatrixToCfd(temp, breaks = c(-50, -10), right = "3",
+                                labels = c("Very Cold"), times = 1:365))
+  expect_error(qualiMatrixToCfd(fd, breaks = c(-50, -10), right = TRUE,
+                                labels = c("Very Cold"), times = 1:365))
 })
 
 test_that("fdToCfd works", {
-  out <- fdToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+  out <- fdToCfd(fd, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
                  labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365)
 
   expect_true(is.data.frame(out))
@@ -412,20 +315,17 @@ test_that("fdToCfd works", {
 })
 
 test_that("fdToCfd errors", {
-  expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = TRUE,
-                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365),
-               "labels must be a vector of length 1")
-  expect_error(fdToCfd(fd, thr = c(-50, -10), leftClosed = 3,
-                       labels = c("Very Cold"), times = 1:365),
-               "leftClosed must be either TRUE or FALSE.")
-  expect_error(fdToCfd(5, thr = c(-50, -10), leftClosed = TRUE,
-                       labels = c("Very Cold"), times = 1:365),
-               "fd is not a fd object")
+  expect_error(fdToCfd(fd, breaks = c(-50, -10), right = TRUE,
+                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365))
+  expect_error(fdToCfd(fd, breaks = c(-50, -10), right = "3",
+                       labels = c("Very Cold"), times = 1:365))
+  expect_error(fdToCfd(5, breaks = c(-50, -10), right = TRUE,
+                       labels = c("Very Cold"), times = 1:365))
 })
 
 
 test_that("convertToCfd works with matrix", {
-  out <- convertToCfd(temp, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+  out <- convertToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), idLabels = NULL, times = 0:364)
 
   expect_true(is.data.frame(out))
@@ -441,7 +341,7 @@ test_that("convertToCfd works with matrix", {
 })
 
 test_that("convertToCfd works with fd", {
-  out <- convertToCfd(fd, thr = c(-50, -10, 0, 10, 20, 50), leftClosed = TRUE,
+  out <- convertToCfd(fd, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
                       labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365)
 
   expect_true(is.data.frame(out))

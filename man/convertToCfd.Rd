@@ -6,9 +6,10 @@
 \usage{
 convertToCfd(
   x,
-  thr,
-  leftClosed = TRUE,
+  breaks,
   labels = NULL,
+  include.lowest = FALSE,
+  right = TRUE,
   times = NULL,
   idLabels = NULL,
   nx = 200,
@@ -18,13 +19,15 @@ convertToCfd(
 \arguments{
 \item{x}{matrix or fd object}
 
-\item{thr}{vector defining the intervals to create the categories}
+\item{breaks}{either a numeric vector of two or more unique cut points or a single number (greater than or equal to 2)
+giving the number of intervals into which x is to be cut.}
 
-\item{leftClosed}{If \code{TRUE}, intervals generated with \code{thr} are left closed (\code{[thr[i]:thr[i+1])})
-otherwise there are right closed (\code{(thr[i]:thr[i+1]]})}
+\item{labels}{labels for the levels of the resulting category. By default, labels are constructed using "(a,b]"
+interval notation. If labels = FALSE, simple integer codes are returned instead of a factor.}
 
-\item{labels}{labels of categories (\code{length(thr) - 1}). \code{abels[i]} is the category
-associated with \code{[thr[i]:thr[i+1])}. If \code{NULL}, categories are numbered}
+\item{include.lowest}{logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’ value should be included.}
+
+\item{right}{logical, indicating if the intervals should be closed on the right (and open on the left) or vice versa.}
 
 \item{times}{vector containing values at which \code{fd} is to be evaluated}
 
