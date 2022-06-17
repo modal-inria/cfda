@@ -167,14 +167,27 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   if (is.null(times)) {
     times <- seq_len(nTimes)
   } else {
-    if (!is.vector(times) || (length(times) != nTimes) || !is.numeric(times)) {
-      stop(paste0("times must be a numeric vector of length ", nTimes))
+    if (!is.numeric(times) || !((is.vector(times) && (length(times) == nTimes)) ||
+                                (is.matrix(times) && (length(times) == nTimes)) ||
+                                (is.matrix(times) && (length(times) == nTimes * nInd)))) {
+      stop(paste0("times must be a numeric vector of length ", nTimes, " or a matrix of length ", nTimes, "x", nInd))
     }
   }
 
   if (byrow) {
     X <- t(X)
+    if (is.vector(times)) {
+      times <- matrix(times, ncol = 1)
+    } else {
+      times <- t(times)
+    }
   }
+
+  if (is.vector(times)) {
+    times <- matrix(times, ncol = 1)
+  }
+
+  timesPerInd <- ncol(times) > 1
 
   if (is.null(labels)) {
     if (!is.null(colnames(X))) {
@@ -189,16 +202,17 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   outData <- data.frame(id = c(), time = c(), state = c())
 
   for (ind in seq_len(nInd)) {
-    outData <- rbind(outData, data.frame(id = labels[ind], time = times[1], state = X[1, ind]))
+    indT <- ifelse(timesPerInd, ind, 1)
+    outData <- rbind(outData, data.frame(id = labels[ind], time = times[1, indT], state = X[1, ind]))
     if (nTimes > 2) {
       # do not copy 2 consecutive time values with the same state
       for (time in 2:(nTimes - 1)) {
         if (X[time, ind] != X[time - 1, ind]) {
-          outData <- rbind(outData, data.frame(id = labels[ind], time = times[time], state = X[time, ind]))
+          outData <- rbind(outData, data.frame(id = labels[ind], time = times[time, indT], state = X[time, ind]))
         }
       }
     }
-    outData <- rbind(outData, data.frame(id = labels[ind], time = times[nTimes], state = X[nTimes, ind]))
+    outData <- rbind(outData, data.frame(id = labels[ind], time = times[nTimes, indT], state = X[nTimes, ind]))
   }
 
   rownames(outData) = NULL
@@ -217,12 +231,12 @@ fdToCfd <- function(fd, breaks, labels = NULL, include.lowest = FALSE, right = T
     idLabels <- fd$fdnames$reps
   }
   X <- eval.fd(times, fd)
-  return(qualiMatrixToCfd(X, breaks, labels = labels, include.lowest = include.lowest, right = right,
+  return(quantiMatrixToCfd(X, breaks, labels = labels, include.lowest = include.lowest, right = right,
                           idLabels = idLabels, times = times, byrow = FALSE))
 }
 
 # convert a qualitative matrix to a categorical functional data frame (see convertToCfd)
-qualiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, right = TRUE,
+quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, right = TRUE,
                              times = NULL, idLabels = NULL, byrow = FALSE) {
   X <- matrix(cut(X, breaks = breaks, labels = labels, right = right, include.lowest = include.lowest),
               nrow = nrow(X), dimnames = dimnames(X))
@@ -271,6 +285,6 @@ convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right
   if ("fd" %in% class(x)) {
     return(fdToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, nx))
   } else if (is.matrix(x) || is.data.frame(x)) {
-    return(qualiMatrixToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, byrow))
+    return(quantiMatrixToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, byrow))
   }
 }

@@ -220,6 +220,14 @@ test_that("matrixToCfd works", {
                                       "b", "c", "a", "b"))
 
   expect_equivalent(out, expectedOut)
+
+  times <- matrix(c(1:3, 0:2 + 0.5, 1:3, 1:3 + 0.5), nrow = 3)
+  out <- matrixToCfd(x, times = times, byrow = FALSE)
+  expectedOut <- data.frame(id = rep(1:4, each = 3),
+                            time = as.vector(times),
+                            state = c("a", "c", "b", "b", "a", "c", "c", "a", "a", "c", "a", "b"))
+  expect_equivalent(out, expectedOut)
+
 })
 
 test_that("matrixToCfd keeps manages labels", {
@@ -273,8 +281,8 @@ basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 fd <- smooth.basis(1:365, temp, basis)$fd
 
 
-test_that("qualiMatrixToCfd works", {
-  out <- qualiMatrixToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
+test_that("quantiMatrixToCfd works", {
+  out <- quantiMatrixToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50), right = FALSE,
                           labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), idLabels = NULL, times = 0:364)
 
   expect_true(is.data.frame(out))
@@ -289,12 +297,12 @@ test_that("qualiMatrixToCfd works", {
   expect_equal(out[out$id==out$id[1], ], expectedOut)
 })
 
-test_that("qualiMatrixToCfd errors", {
-  expect_error(qualiMatrixToCfd(temp, breaks = c(-50, -10), right = TRUE,
+test_that("quantiMatrixToCfd errors", {
+  expect_error(quantiMatrixToCfd(temp, breaks = c(-50, -10), right = TRUE,
                                 labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"), times = 1:365))
-  expect_error(qualiMatrixToCfd(temp, breaks = c(-50, -10), right = "3",
+  expect_error(quantiMatrixToCfd(temp, breaks = c(-50, -10), right = "3",
                                 labels = c("Very Cold"), times = 1:365))
-  expect_error(qualiMatrixToCfd(fd, breaks = c(-50, -10), right = TRUE,
+  expect_error(quantiMatrixToCfd(fd, breaks = c(-50, -10), right = TRUE,
                                 labels = c("Very Cold"), times = 1:365))
 })
 
