@@ -4,12 +4,14 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data, Tmax)
+cut_data(data, Tmax, addNA = FALSE)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
 \item{Tmax}{max time considered}
+
+\item{addNA}{if TRUE, add NA as last state for all trajectories not long enough, default is FALSE}
 }
 \value{
 a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.

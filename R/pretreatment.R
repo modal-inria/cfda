@@ -2,6 +2,7 @@
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
+#' @param addNA if TRUE, add NA as last state for all trajectories not long enough, default is FALSE
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #'
@@ -19,16 +20,17 @@
 #' @author Cristian Preda
 #'
 #' @export
-cut_data <- function(data, Tmax) {
+cut_data <- function(data, Tmax, addNA = FALSE) {
   ## check parameters
   checkData(data)
+  checkLogical(NAafterTmax, "addNA")
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1)) {
     stop("Tmax must be a real.")
   }
   ## end check
 
   d <- do.call(rbind, by(data, data$id, function(x) {
-    cut_cfd(x, Tmax)
+    cut_cfd(x, Tmax, addNA)
   }))
   rownames(d) <- NULL
 
@@ -36,11 +38,15 @@ cut_data <- function(data, Tmax) {
 }
 
 # @author Cristian Preda
-cut_cfd <- function(data, Tmax) {
+cut_cfd <- function(data, Tmax, addNA = FALSE) {
   l <- nrow(data)
   currTmax <- max(data$time)
   if (Tmax > currTmax) {
-    return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
+    if (addNA) {
+      return(rbind(data, data.frame(id = data$id[1], state = NA, time = Tmax)))
+    } else {
+      return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
+    }
   } else {
     if (currTmax == Tmax) {
       return(data)
