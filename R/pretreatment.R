@@ -226,6 +226,9 @@ qualiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, r
                              times = NULL, idLabels = NULL, byrow = FALSE) {
   X <- matrix(cut(X, breaks = breaks, labels = labels, right = right, include.lowest = include.lowest),
               nrow = nrow(X), dimnames = dimnames(X))
+  if (any(is.na(X))) {
+    stop("The conversion has generated NA. Please, correct your breaks.")
+  }
   return(matrixToCfd(X, times, idLabels, byrow))
 }
 

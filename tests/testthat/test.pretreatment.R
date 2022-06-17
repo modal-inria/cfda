@@ -355,3 +355,14 @@ test_that("convertToCfd works with fd", {
                             state = c("Cold", "Fresh", "OK", "Fresh", "Cold", "Cold"))
   expect_equal(out[out$id==out$id[1], ], expectedOut)
 })
+
+test_that("convertToCfd errors", {
+  expect_error(convertToCfd(fd, breaks = c(-50, -10), right = TRUE,
+                            labels = c("Very Cold"), times = 1:365),
+               "The conversion has generated NA. Please, correct your breaks.")
+
+  expect_error(convertToCfd(temp, breaks = c(-50, -10), right = TRUE,
+                            labels = c("Very Cold"), times = 1:365),
+               "The conversion has generated NA. Please, correct your breaks.")
+})
+
