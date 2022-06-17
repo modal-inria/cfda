@@ -23,7 +23,7 @@
 cut_data <- function(data, Tmax, addNA = FALSE) {
   ## check parameters
   checkData(data)
-  checkLogical(NAafterTmax, "addNA")
+  checkLogical(addNA, "addNA")
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1)) {
     stop("Tmax must be a real.")
   }
