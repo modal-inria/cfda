@@ -67,18 +67,29 @@
     <h2>Arguments</h2>
     <dl><dt>object</dt>
 <dd><p>output of <a href="compute_optimal_encoding.html">compute_optimal_encoding</a> function.</p></dd>
+
+
 <dt>newdata</dt>
 <dd><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and <code>state</code>, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use <code><a href="cut_data.html">cut_data</a></code>)..</p></dd>
+
+
 <dt>nCores</dt>
 <dd><p>number of cores used for parallelization. Default is the half of cores.</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>if TRUE print some information</p></dd>
+
+
 <dt>...</dt>
 <dd><p>parameters for <code><a href="https://rdrr.io/r/stats/integrate.html" class="external-link">integrate</a></code> function (see details).</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>principal components for the individuals</p>
+    
+
+<p>principal components for the individuals</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -115,16 +126,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of basis functions: 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of cores: 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.52s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.18s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~02s            |==========                                        | 20% ~02s            |===============                                   | 30% ~02s            |====================                              | 40% ~02s            |=========================                         | 50% ~02s            |==============================                    | 60% ~01s            |===================================               | 70% ~01s            |========================================          | 80% ~01s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=03s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~01s            |==========                                        | 20% ~01s            |===============                                   | 30% ~01s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.3s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.99s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 3.83s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 1.18s</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># predict principal components</span></span>
 <span class="r-in"><span class="va">d_JK_predict</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span>
@@ -138,7 +149,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.49s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.18s</span>
 <span class="r-in"><span class="co"># }</span></span>
 <span class="r-in"></span>
 </code></pre></div>
@@ -155,7 +166,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

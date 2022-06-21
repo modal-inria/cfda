@@ -67,24 +67,41 @@
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>data</dt>
-<dd><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and <code>state</code>, associated state.</p></dd>
+<dd><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and
+<code>state</code>, associated state.</p></dd>
+
+
 <dt>group</dt>
-<dd><p>vector, of the same length as the number individuals of <code>data</code>, containing group index. Groups are displayed on separate plots.
+<dd><p>vector, of the same length as the number individuals of <code>data</code>, containing group index.
+Groups are displayed on separate plots.
 If <code>group = NA</code>, the corresponding individuals in <code>data</code> is ignored.</p></dd>
+
+
 <dt>col</dt>
 <dd><p>a vector containing color for each state (can be named)</p></dd>
+
+
 <dt>addId</dt>
 <dd><p>If TRUE, add id labels</p></dd>
+
+
 <dt>addBorder</dt>
 <dd><p>If TRUE, add black border to each individual</p></dd>
+
+
 <dt>sort</dt>
 <dd><p>If TRUE, id are sorted according to the duration in their first state</p></dd>
+
+
 <dt>nCol</dt>
 <dd><p>number of columns when <code>group</code> is given</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>ggplot</code> object that can be modified using <code>ggplot2</code> package.
+    
+
+<p>a <code>ggplot</code> object that can be modified using <code>ggplot2</code> package.
 On the plot, each row represents an individual over [0:Tmax].
 The color at a given time gives the state of the individual.</p>
     </div>
@@ -138,7 +155,7 @@ The color at a given time gives the state of the individual.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>

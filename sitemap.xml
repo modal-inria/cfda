@@ -40,6 +40,9 @@
     <loc>https://modal-inria.github.io/cfda/reference/compute_time_spent.html</loc>
   </url>
   <url>
+    <loc>https://modal-inria.github.io/cfda/reference/convertToCfd.html</loc>
+  </url>
+  <url>
     <loc>https://modal-inria.github.io/cfda/reference/cut_data.html</loc>
   </url>
   <url>
@@ -68,6 +71,9 @@
   </url>
   <url>
     <loc>https://modal-inria.github.io/cfda/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://modal-inria.github.io/cfda/reference/matrixToCfd.html</loc>
   </url>
   <url>
     <loc>https://modal-inria.github.io/cfda/reference/plot.Markov.html</loc>

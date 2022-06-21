@@ -60,16 +60,25 @@
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>Output of <code><a href="compute_optimal_encoding.html">compute_optimal_encoding</a></code></p></dd>
+
+
 <dt>harm</dt>
 <dd><p>harmonic to use for the encoding</p></dd>
+
+
 <dt>fdObject</dt>
 <dd><p>If TRUE returns a <code>fd</code> object else a matrix</p></dd>
+
+
 <dt>nx</dt>
 <dd><p>(Only if <code>fdObject = TRUE</code>) Number of points to evaluate the encoding</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a <code>fd</code> object or a list of two elements <code>y</code>, a matrix with <code>nx</code> rows containing the encoding of the state and <code>x</code>, the vector with time values.</p>
+    
+
+<p>a <code>fd</code> object or a list of two elements <code>y</code>, a matrix with <code>nx</code> rows containing the encoding of the state and <code>x</code>, the vector with time values.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -105,14 +114,14 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.48s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.17s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~03s            |==========                                        | 20% ~03s            |===============                                   | 30% ~02s            |====================                              | 40% ~02s            |=========================                         | 50% ~02s            |==============================                    | 60% ~01s            |===================================               | 70% ~01s            |========================================          | 80% ~01s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=03s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~01s            |==========                                        | 20% ~01s            |===============                                   | 30% ~01s            |====================                              | 40% ~01s            |=========================                         | 50% ~01s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 3.04s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.98s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 3.52s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 1.17s</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># extract the encoding using 1 harmonic</span></span>
 <span class="r-in"><span class="va">encodFd</span> <span class="op">&lt;-</span> <span class="fu">get_encoding</span><span class="op">(</span><span class="va">encoding</span>, fdObject <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
@@ -133,7 +142,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer></div>
