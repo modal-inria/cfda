@@ -4,14 +4,16 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data, Tmax, addNA = FALSE)
+cut_data(data, Tmax, absorbingStates = "all")
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
 
 \item{Tmax}{max time considered}
 
-\item{addNA}{if TRUE, add NA as last state for all trajectories not long enough, default is FALSE}
+\item{absorbingStates}{list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
+we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will throw an error.
+Set `absorbingStates = c()` to indicate there is no absorbing state.}
 }
 \value{
 a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
@@ -30,6 +32,10 @@ tail(d_JK)
 # cut at Tmax = 8
 d_JK2 <- cut_data(d_JK, Tmax = 8)
 tail(d_JK2)
+
+
+try(d_JK2 <- cut_data(d_JK, Tmax = 100, absorbingStates = c()))
+
 }
 \author{
 Cristian Preda

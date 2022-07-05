@@ -2,7 +2,9 @@
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
-#' @param addNA if TRUE, add NA as last state for all trajectories not long enough, default is FALSE
+#' @param absorbingStates list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
+#' we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will throw an error.
+#' Set `absorbingStates = c()` to indicate there is no absorbing state.
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #'
@@ -17,20 +19,24 @@
 #' # cut at Tmax = 8
 #' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #' tail(d_JK2)
+#'
+#'
+#' try(d_JK2 <- cut_data(d_JK, Tmax = 100, absorbingStates = c()))
+#'
 #' @author Cristian Preda
 #'
 #' @export
-cut_data <- function(data, Tmax, addNA = FALSE) {
+cut_data <- function(data, Tmax, absorbingStates = "all") {
   ## check parameters
   checkData(data)
-  checkLogical(addNA, "addNA")
+
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1)) {
     stop("Tmax must be a real.")
   }
   ## end check
 
   d <- do.call(rbind, by(data, data$id, function(x) {
-    cut_cfd(x, Tmax, addNA)
+    cut_cfd(x, Tmax, absorbingStates)
   }))
   rownames(d) <- NULL
 
@@ -38,14 +44,16 @@ cut_data <- function(data, Tmax, addNA = FALSE) {
 }
 
 # @author Cristian Preda
-cut_cfd <- function(data, Tmax, addNA = FALSE) {
+cut_cfd <- function(data, Tmax, absorbingStates = "all") {
   l <- nrow(data)
   currTmax <- max(data$time)
+
   if (Tmax > currTmax) {
-    if (addNA) {
-      return(rbind(data, data.frame(id = data$id[1], state = NA, time = Tmax)))
-    } else {
+    if (((length(absorbingStates) > 0) && all(absorbingStates == "all")) || (data$state[l] %in% absorbingStates)) {
       return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
+    } else {
+      stop(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot detect impute the state until time ", Tmax,
+                  ". Please, add more records or change the Tmax value."))
     }
   } else {
     if (currTmax == Tmax) {

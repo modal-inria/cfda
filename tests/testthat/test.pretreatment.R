@@ -5,23 +5,23 @@ context("Data pretreatment")
 test_that("cut_cfd with equal Tmax", {
   dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
 
-  out <- cut_cfd(dat, Tmax = 4, addNA = FALSE)
+  out <- cut_cfd(dat, Tmax = 4, absorbingStates = "all")
   expect_equal(out, dat)
 
-  out <- cut_cfd(dat, Tmax = 4, addNA = TRUE)
+  out <- cut_cfd(dat, Tmax = 4, absorbingStates = c())
   expect_equal(out, dat)
 })
 
 test_that("cut_cfd with lower Tmax", {
   dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
 
-  out <- cut_cfd(dat, Tmax = 3, addNA = FALSE)
+  out <- cut_cfd(dat, Tmax = 3, absorbingStates = "all")
   expectedOut <- dat
   expectedOut[3, 2:3] <- c(3, 3)
 
   expect_equal(out, expectedOut)
 
-  out <- cut_cfd(dat, Tmax = 3, addNA = TRUE)
+  out <- cut_cfd(dat, Tmax = 3, absorbingStates = c())
 
   expect_equal(out, expectedOut)
 })
@@ -29,54 +29,48 @@ test_that("cut_cfd with lower Tmax", {
 test_that("cut_cfd with lower Tmax and a time value equal to the desired Tmax", {
   dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
 
-  out <- cut_cfd(dat, Tmax = 2, addNA = FALSE)
+  out <- cut_cfd(dat, Tmax = 2, absorbingStates = "all")
   expectedOut <- dat[1:2, ]
 
   expect_equal(out, expectedOut)
 
-  out <- cut_cfd(dat, Tmax = 2, addNA = TRUE)
+  out <- cut_cfd(dat, Tmax = 2, absorbingStates = c())
   expect_equal(out, expectedOut)
 })
 
 test_that("cut_cfd with greater Tmax", {
   dat <- data.frame(id = rep(1, 3), time = c(0, 2, 4), state = c(1, 3, 2))
 
-  out <- cut_cfd(dat, Tmax = 5, addNA = FALSE)
+  out <- cut_cfd(dat, Tmax = 5, absorbingStates = "all")
   expectedOut <- dat
   expectedOut[4, 1:3] <- c(1, 5, 2)
 
   expect_equal(out, expectedOut)
 
-
-  out <- cut_cfd(dat, Tmax = 5, addNA = TRUE)
-  expectedOut <- dat
-  expectedOut[4, 1:3] <- c(1, 5, NA)
-
-  expect_equal(out, expectedOut)
+  expect_error(cut_cfd(dat, Tmax = 5, absorbingStates = c()),
+               regexp = paste0("id ", 1, " does not end with an absorbing state. Cannot detect impute the state until time ",
+                               5, ". Please, add more records or change the Tmax value."))
 })
 
 
 test_that("cut_data works", {
   dat <- data.frame(id = rep(1:3, each = 3), time = c(0, 2, 4, 0, 1.5, 5, 0, 2.5, 3), state = c(1, 3, 2, 1, 2, 3, 1, 3, 1))
 
-  expect_error(cut_data(dat, Tmax = c(4, 5), addNA = FALSE), regexp = "Tmax must be a real.")
-  expect_error(cut_data(dat, Tmax = NA, addNA = FALSE), regexp = "Tmax must be a real.")
-  expect_error(cut_data(dat, Tmax = NaN, addNA = FALSE), regexp = "Tmax must be a real.")
-  expect_error(cut_data(dat, Tmax = NaN, addNA = "FALSE"), regexp = "addNA must be either TRUE or FALSE.")
+  expect_error(cut_data(dat, Tmax = c(4, 5), absorbingStates = "all"), regexp = "Tmax must be a real.")
+  expect_error(cut_data(dat, Tmax = NA, absorbingStates = "all"), regexp = "Tmax must be a real.")
+  expect_error(cut_data(dat, Tmax = NaN, absorbingStates = "all"), regexp = "Tmax must be a real.")
 
-  out <- cut_data(dat, Tmax = 4, addNA = FALSE)
+  out <- cut_data(dat, Tmax = 4, absorbingStates = "all")
   expectedOut <- dat
   expectedOut[6, 1:3] <- c(2, 4, 2)
   expectedOut[10, 1:3] <- c(3, 4, 1)
 
   expect_equivalent(out, expectedOut)
 
-  out <- cut_data(dat, Tmax = 4, addNA = TRUE)
-  expectedOut <- dat
-  expectedOut[6, 1:3] <- c(2, 4, 2)
-  expectedOut[10, 1:3] <- c(3, 4, NA)
+  expect_error(cut_data(dat, Tmax = 4, absorbingStates = c()),
+               regexp = paste0("id ", 3, " does not end with an absorbing state. Cannot detect impute the state until time ",
+                               4, ". Please, add more records or change the Tmax value."))
 
-  expect_equivalent(out, expectedOut)
 })
 
 
