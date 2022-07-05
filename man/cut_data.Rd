@@ -12,7 +12,7 @@ cut_data(data, Tmax, absorbingStates = "all")
 \item{Tmax}{max time considered}
 
 \item{absorbingStates}{list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
-we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will throw an error.
+we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will add NA and throw a warning.
 Set `absorbingStates = c()` to indicate there is no absorbing state.}
 }
 \value{

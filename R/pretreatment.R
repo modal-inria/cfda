@@ -3,7 +3,7 @@
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
 #' @param absorbingStates list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
-#' we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will throw an error.
+#' we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will add NA and throw a warning.
 #' Set `absorbingStates = c()` to indicate there is no absorbing state.
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
@@ -52,8 +52,11 @@ cut_cfd <- function(data, Tmax, absorbingStates = "all") {
     if (((length(absorbingStates) > 0) && all(absorbingStates == "all")) || (data$state[l] %in% absorbingStates)) {
       return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
     } else {
-      stop(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot detect impute the state until time ", Tmax,
+      warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ", Tmax,
                   ". Please, add more records or change the Tmax value."))
+      d <- data
+      d$state[l] <- NA
+      return(rbind(d, data.frame(id = data$id[1], state = NA, time = Tmax)))
     }
   } else {
     if (currTmax == Tmax) {
