@@ -1,5 +1,3 @@
-#' @title Print \code{fmca} object
-#'
 #' Print a \code{fmca} object
 #'
 #' @param x \code{fmca} object (see \link{compute_optimal_encoding} function)
@@ -33,8 +31,7 @@ print.fmca <- function(x, n = 6, ...) {
 
 #' @title Object Summaries
 #'
-#' Summary of a \code{fmca} object
-#'
+#' @description Summary of a \code{fmca} object
 #'
 #' @param object \code{fmca} object (see \link{compute_optimal_encoding} function)
 #' @param n maximal number of rows and cols to print

@@ -2,9 +2,7 @@
 % Please edit documentation in R/fmca.print.R
 \name{summary.fmca}
 \alias{summary.fmca}
-\title{Object Summaries
-
-Summary of a \code{fmca} object}
+\title{Object Summaries}
 \usage{
 \method{summary}{fmca}(object, n = 6, ...)
 }
@@ -19,8 +17,6 @@ Summary of a \code{fmca} object}
 No return value, called for side effects
 }
 \description{
-Object Summaries
-
 Summary of a \code{fmca} object
 }
 \seealso{
