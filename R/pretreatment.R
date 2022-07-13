@@ -13,6 +13,7 @@
 #'
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement
+#' set.seed(42)
 #' K <- 4
 #' PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
@@ -23,8 +24,7 @@
 #' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #' tail(d_JK2)
 #'
-#'
-#' try(d_JK2 <- cut_data(d_JK, Tmax = 100, prolongLastState = c()))
+#' try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
 #'
 #' @author Cristian Preda
 #'
