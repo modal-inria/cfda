@@ -7,7 +7,8 @@
 summary_cfd(data, max.print = 10)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state.}
 
 \item{max.print}{maximal number of states to display}
 }

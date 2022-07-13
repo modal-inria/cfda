@@ -7,8 +7,8 @@
 cut_data(data, Tmax, prolongLastState = "all", NAstate = "Not observable")
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
-\code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time},
+time at which a change occurs and \code{state}, associated state.}
 
 \item{Tmax}{max time considered}
 
