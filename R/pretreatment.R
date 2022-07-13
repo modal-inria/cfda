@@ -1,10 +1,13 @@
 #' Cut data to a maximal given time
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' \code{state}, associated state.
 #' @param Tmax max time considered
-#' @param absorbingStates list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
-#' we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will add NA and throw a warning.
-#' Set `absorbingStates = c()` to indicate there is no absorbing state.
+#' @param prolongLastState list of states to prolong (can be "all"). In the case where the last state of a trajectory is
+#' lesser than \code{Tmax}, we can assume that this trajectory will be in the same state at time Tmax only if it is an
+#' absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
+#' Set `prolongLastState = c()` to indicate there is no absorbing state.
+#' @param NAstate state value used when the last state is not prolonged.
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #'
@@ -21,12 +24,12 @@
 #' tail(d_JK2)
 #'
 #'
-#' try(d_JK2 <- cut_data(d_JK, Tmax = 100, absorbingStates = c()))
+#' try(d_JK2 <- cut_data(d_JK, Tmax = 100, prolongLastState = c()))
 #'
 #' @author Cristian Preda
 #'
 #' @export
-cut_data <- function(data, Tmax, absorbingStates = "all") {
+cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable") {
   ## check parameters
   checkData(data)
 
@@ -36,7 +39,7 @@ cut_data <- function(data, Tmax, absorbingStates = "all") {
   ## end check
 
   d <- do.call(rbind, by(data, data$id, function(x) {
-    cut_cfd(x, Tmax, absorbingStates)
+    cut_cfd(x, Tmax, prolongLastState, NAstate)
   }))
   rownames(d) <- NULL
 
@@ -44,19 +47,19 @@ cut_data <- function(data, Tmax, absorbingStates = "all") {
 }
 
 # @author Cristian Preda
-cut_cfd <- function(data, Tmax, absorbingStates = "all") {
+cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA) {
   l <- nrow(data)
   currTmax <- max(data$time)
 
   if (Tmax > currTmax) {
-    if (((length(absorbingStates) > 0) && all(absorbingStates == "all")) || (data$state[l] %in% absorbingStates)) {
+    if (((length(prolongLastState) > 0) && all(prolongLastState == "all")) || (data$state[l] %in% prolongLastState)) {
       return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
     } else {
       warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ", Tmax,
                   ". Please, add more records or change the Tmax value."))
       d <- data
-      d$state[l] <- NA
-      return(rbind(d, data.frame(id = data$id[1], state = NA, time = Tmax)))
+      d$state[l] <- NAstate
+      return(rbind(d, data.frame(id = data$id[1], state = NAstate, time = Tmax)))
     }
   } else {
     if (currTmax == Tmax) {

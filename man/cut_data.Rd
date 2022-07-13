@@ -4,16 +4,20 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data, Tmax, absorbingStates = "all")
+cut_data(data, Tmax, prolongLastState = "all", NAstate = "Not observable")
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state.}
 
 \item{Tmax}{max time considered}
 
-\item{absorbingStates}{list of absorbing states (can be "all"). In the case where the last state of a trajectory is lesser than Tmax,
-we only can assume that this trajectory will be in the same state at time Tmax if it is an absorbing state. Otherwise it will add NA and throw a warning.
-Set `absorbingStates = c()` to indicate there is no absorbing state.}
+\item{prolongLastState}{list of states to prolong (can be "all"). In the case where the last state of a trajectory is
+lesser than \code{Tmax}, we can assume that this trajectory will be in the same state at time Tmax only if it is an
+absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
+Set `prolongLastState = c()` to indicate there is no absorbing state.}
+
+\item{NAstate}{state value used when the last state is not prolonged.}
 }
 \value{
 a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
@@ -34,7 +38,7 @@ d_JK2 <- cut_data(d_JK, Tmax = 8)
 tail(d_JK2)
 
 
-try(d_JK2 <- cut_data(d_JK, Tmax = 100, absorbingStates = c()))
+try(d_JK2 <- cut_data(d_JK, Tmax = 100, prolongLastState = c()))
 
 }
 \author{
