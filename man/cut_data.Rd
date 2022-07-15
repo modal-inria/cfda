@@ -4,7 +4,13 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data, Tmax, prolongLastState = "all", NAstate = "Not observable")
+cut_data(
+  data,
+  Tmax,
+  prolongLastState = "all",
+  NAstate = "Not observable",
+  warning = FALSE
+)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
@@ -18,6 +24,8 @@ absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
 Set `prolongLastState = c()` to indicate there is no absorbing state.}
 
 \item{NAstate}{state value used when the last state is not prolonged.}
+
+\item{warning}{if TRUE, the function raises warnings when it has prolonged a trajectory with NAstate}
 }
 \value{
 a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.

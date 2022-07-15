@@ -8,6 +8,7 @@
 #' absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
 #' Set `prolongLastState = c()` to indicate there is no absorbing state.
 #' @param NAstate state value used when the last state is not prolonged.
+#' @param warning if TRUE, the function raises warnings when it has prolonged a trajectory with NAstate
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #'
@@ -29,17 +30,20 @@
 #' @author Cristian Preda
 #'
 #' @export
-cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable") {
+cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable", warning = FALSE) {
   ## check parameters
   checkData(data)
-
+  checkLogical(warning, "warning")
+  if (length(NAstate) > 1) {
+    stop("NAstate must have a length of 1")
+  }
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1)) {
     stop("Tmax must be a real.")
   }
   ## end check
 
   d <- do.call(rbind, by(data, data$id, function(x) {
-    cut_cfd(x, Tmax, prolongLastState, NAstate)
+    cut_cfd(x, Tmax, prolongLastState, NAstate, warning)
   }))
   rownames(d) <- NULL
 
@@ -47,7 +51,7 @@ cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observ
 }
 
 # @author Cristian Preda
-cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA) {
+cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA, warning = FALSE) {
   l <- nrow(data)
   currTmax <- max(data$time)
 
@@ -55,8 +59,10 @@ cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA) {
     if (((length(prolongLastState) > 0) && all(prolongLastState == "all")) || (data$state[l] %in% prolongLastState)) {
       return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
     } else {
-      warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ", Tmax,
-                  ". Please, add more records or change the Tmax value."))
+      if (warning) {
+        warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ",
+                       Tmax, ". Please, add more records or change the Tmax value."))
+      }
       d <- data
       d$state[l] <- NAstate
       return(rbind(d, data.frame(id = data$id[1], state = NAstate, time = Tmax)))
