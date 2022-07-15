@@ -15,9 +15,11 @@ plotData(
 )
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state.}
 
-\item{group}{vector, of the same length as the number individuals of \code{data}, containing group index. Groups are displayed on separate plots.
+\item{group}{vector, of the same length as the number individuals of \code{data}, containing group index.
+Groups are displayed on separate plots.
 If \code{group = NA}, the corresponding individuals in \code{data} is ignored.}
 
 \item{col}{a vector containing color for each state (can be named)}

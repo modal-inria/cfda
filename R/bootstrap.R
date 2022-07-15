@@ -9,7 +9,7 @@
 # @param nId number of individuals
 # @param propBootstrap proportion of individuals used for bootstrap sample
 # @param nBootstrap number of bootstrap samples
-# @param output of getSignReference functionon the ful encoding
+# @param output of getSignReference function the full encoding
 # @param verbose if TRUE print some information
 #
 # @return a list of computeEncoding function output
@@ -22,15 +22,15 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
     cat("---- Compute Bootstrap Encoding:\n")
   }
 
-  for (i in seq_len(nBootstrap))
-  {
+  for (i in seq_len(nBootstrap)) {
     if (verbose) {
       cat("*")
     }
     idToKeep <- sample(nId, floor(propBootstrap * nId), replace = TRUE)
 
     try({
-      outEnc[[i]] <- computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep, label, verbose = FALSE, manage0 = TRUE)
+      outEnc[[i]] <- computeEncoding(Uval[idToKeep, ], V[idToKeep, ], K, nBasis, idToKeep,
+                                     label, verbose = FALSE, manage0 = TRUE)
     })
 
     # outEnc[[i]] = c(outEnc[[i]] , list(basisobj = basisobj))
@@ -54,8 +54,7 @@ computeBootStrapEncoding <- function(Uval, V, K, nBasis, label, nId, propBootstr
 getSignReference <- function(alpha) {
   pos <- rep(0, length(alpha))
   isNeg <- rep(FALSE, length(alpha))
-  for (i in seq_along(alpha))
-  {
+  for (i in seq_along(alpha)) {
     pos[i] <- which.max(abs(alpha[[i]]))
     isNeg[i] <- Re(alpha[[i]][pos[i]]) < 0
   }
@@ -71,32 +70,29 @@ getSignReference <- function(alpha) {
 #
 # @author Quentin Grimonprez
 unifySign <- function(out, signReference) {
-  for (i in seq_along(out))
-  {
-    if (!is.null(out[[i]])) # an output can be NULL due to inversion problem
-      {
-        # we look if the element at the given position is negative
-        for (j in seq_along(out[[i]]$alpha))
-        {
-          signNeg <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
+  for (i in seq_along(out)) {
+    if (!is.null(out[[i]])) { # an output can be NULL due to inversion problem
+      # we look if the element at the given position is negative
+      for (j in seq_along(out[[i]]$alpha)) {
+        signNeg <- Re(out[[i]]$alpha[[j]][signReference$position[j]]) < 0
 
-          # if there is a NA at he given position, we try an other position
-          if (!is.na(signNeg)) {
-            if (signNeg != signReference$isNegative[j]) {
-              out[[i]]$alpha[[j]] <- out[[i]]$alpha[[j]] * -1
-              out[[i]]$pc[, j] <- out[[i]]$pc[, j] * -1
-            }
-          } else {
-            newPos <- which.max(out[[i]]$alpha[[j]])
-            signNeg <- Re(out[[i]]$alpha[[j]][newPos]) < 0
+        # if there is a NA at the given position, we try an other position
+        if (!is.na(signNeg)) {
+          if (signNeg != signReference$isNegative[j]) {
+            out[[i]]$alpha[[j]] <- out[[i]]$alpha[[j]] * -1
+            out[[i]]$pc[, j] <- out[[i]]$pc[, j] * -1
+          }
+        } else {
+          newPos <- which.max(abs(out[[i]]$alpha[[j]]))
+          signNeg <- Re(out[[i]]$alpha[[j]][newPos]) < 0
 
-            if (signNeg != signReference$allNegative[[j]][newPos]) {
-              out[[i]]$alpha[[j]] <- out[[i]]$alpha[[j]] * -1
-              out[[i]]$pc[, j] <- out[[i]]$pc[, j] * -1
-            }
+          if (signNeg != signReference$allNegative[[j]][newPos]) {
+            out[[i]]$alpha[[j]] <- out[[i]]$alpha[[j]] * -1
+            out[[i]]$pc[, j] <- out[[i]]$pc[, j] * -1
           }
         }
       }
+    }
   }
 
 
@@ -117,11 +113,9 @@ computeVarianceAlpha <- function(bootEncoding, nState, nBasis) {
   nHarm <- nState * nBasis
 
   varAlpha <- list()
-  for (harm in seq_len(nHarm))
-  {
+  for (harm in seq_len(nHarm)) {
     varAlpha[[harm]] <- list()
-    for (iState in seq_len(nState))
-    {
+    for (iState in seq_len(nState)) {
       tryCatch(
         {
           varAlpha[[harm]][[iState]] <- var(do.call(
@@ -163,11 +157,9 @@ computeVarianceEncoding <- function(varAlpha, basisobj, harm = 1, nx = 200) {
   }
 
   funcVar <- list()
-  for (iState in seq_len(nState))
-  {
+  for (iState in seq_len(nState)) {
     funcVar[[iState]] <- rep(NA, nx)
-    for (j in seq_along(timeVal))
-    {
+    for (j in seq_along(timeVal)) {
       varAlpha[[harm]][[iState]][is.na(varAlpha[[harm]][[iState]])] <- 0
       funcVar[[iState]][j] <- Phi[j, , drop = FALSE] %*% varAlpha[[harm]][[iState]] %*% t(Phi[j, , drop = FALSE])
     }
