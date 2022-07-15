@@ -47,9 +47,13 @@ test_that("cut_cfd with greater Tmax", {
 
   expect_equal(out, expectedOut)
 
-  expect_warning(out <- cut_cfd(dat, Tmax = 5, prolongLastState = c()),
+  expect_warning(out <- cut_cfd(dat, Tmax = 5, prolongLastState = c(), warning = TRUE),
                  regexp = paste0("id ", 1, " does not end with an absorbing state. Cannot impute the state until time ",
                                  5, ". Please, add more records or change the Tmax value."))
+  expectedOut$state[3:4] <- NA
+  expect_equal(out, expectedOut)
+
+  expect_silent(out <- cut_cfd(dat, Tmax = 5, prolongLastState = c(), warning = FALSE))
   expectedOut$state[3:4] <- NA
   expect_equal(out, expectedOut)
 })
