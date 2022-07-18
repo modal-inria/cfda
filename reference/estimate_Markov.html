@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">estimate_Markov</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">estimate_Markov</span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -79,24 +79,24 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
-<span class="r-in"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
-<span class="r-in"><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># estimation</span></span>
-<span class="r-in"><span class="va">mark</span> <span class="op">&lt;-</span> <span class="fu">estimate_Markov</span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mark</span><span class="op">$</span><span class="va">P</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span></span>
+<span class="r-in"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># estimation</span></span></span>
+<span class="r-in"><span><span class="va">mark</span> <span class="op">&lt;-</span> <span class="fu">estimate_Markov</span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mark</span><span class="op">$</span><span class="va">P</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     to</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> from         1         2         3         4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    1 0.0000000 0.3289037 0.2956811 0.3754153</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    2 0.3069767 0.0000000 0.3255814 0.3674419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    3 0.3857143 0.3190476 0.0000000 0.2952381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    4 0.3491379 0.3103448 0.3405172 0.0000000</span>
-<span class="r-in"><span class="va">mark</span><span class="op">$</span><span class="va">lambda</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9933151 1.0508401 1.1517039 1.1413771 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    1 0.0000000 0.3707483 0.2687075 0.3605442</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    2 0.2931034 0.0000000 0.3577586 0.3491379</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    3 0.3137255 0.3235294 0.0000000 0.3627451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    4 0.3803419 0.3461538 0.2735043 0.0000000</span>
+<span class="r-in"><span><span class="va">mark</span><span class="op">$</span><span class="va">lambda</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        1        2        3        4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.056262 1.035155 1.061696 1.141148 </span>
 </code></pre></div>
     </div>
   </div>
@@ -111,7 +111,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

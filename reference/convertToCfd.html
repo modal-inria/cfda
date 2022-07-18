@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -53,17 +53,17 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">convertToCfd</span><span class="op">(</span>
-  <span class="va">x</span>,
-  <span class="va">breaks</span>,
-  labels <span class="op">=</span> <span class="cn">NULL</span>,
-  include.lowest <span class="op">=</span> <span class="cn">FALSE</span>,
-  right <span class="op">=</span> <span class="cn">TRUE</span>,
-  times <span class="op">=</span> <span class="cn">NULL</span>,
-  idLabels <span class="op">=</span> <span class="cn">NULL</span>,
-  nx <span class="op">=</span> <span class="fl">200</span>,
-  byrow <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">convertToCfd</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  <span class="va">breaks</span>,</span>
+<span>  labels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  include.lowest <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  right <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  times <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  idLabels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  nx <span class="op">=</span> <span class="fl">200</span>,</span>
+<span>  byrow <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -115,22 +115,22 @@ interval notation. If labels = FALSE, simple integer codes are returned instead 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># fd object</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"CanadianWeather"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">temp</span> <span class="op">&lt;-</span> <span class="va">CanadianWeather</span><span class="op">$</span><span class="va">dailyAv</span><span class="op">[</span>,, <span class="st">"Temperature.C"</span><span class="op">]</span></span>
-<span class="r-in"><span class="va">basis</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">365</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="fl">8</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">fd</span> <span class="op">&lt;-</span> <span class="fu">smooth.basis</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">365</span>, <span class="va">temp</span>, <span class="va">basis</span><span class="op">)</span><span class="op">$</span><span class="va">fd</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># "Very Cold" = [-50:-10), "Cold" = [-10:0), ...</span></span>
-<span class="r-in"><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">convertToCfd</span><span class="op">(</span><span class="va">fd</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span>
-<span class="r-in">                    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Cold"</span>, <span class="st">"Cold"</span>, <span class="st">"Fresh"</span>, <span class="st">"OK"</span>, <span class="st">"Hot"</span><span class="op">)</span>,</span>
-<span class="r-in">                    times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># matrix</span></span>
-<span class="r-in"><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu">convertToCfd</span><span class="op">(</span><span class="va">temp</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span>
-<span class="r-in">                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Cold"</span>, <span class="st">"Cold"</span>, <span class="st">"Fresh"</span>, <span class="st">"OK"</span>, <span class="st">"Hot"</span><span class="op">)</span>,</span>
-<span class="r-in">                     times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># fd object</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"CanadianWeather"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">temp</span> <span class="op">&lt;-</span> <span class="va">CanadianWeather</span><span class="op">$</span><span class="va">dailyAv</span><span class="op">[</span>,, <span class="st">"Temperature.C"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">basis</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">365</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="fl">8</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fd</span> <span class="op">&lt;-</span> <span class="fu">smooth.basis</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">365</span>, <span class="va">temp</span>, <span class="va">basis</span><span class="op">)</span><span class="op">$</span><span class="va">fd</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># "Very Cold" = [-50:-10), "Cold" = [-10:0), ...</span></span></span>
+<span class="r-in"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu">convertToCfd</span><span class="op">(</span><span class="va">fd</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Cold"</span>, <span class="st">"Cold"</span>, <span class="st">"Fresh"</span>, <span class="st">"OK"</span>, <span class="st">"Hot"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                    times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># matrix</span></span></span>
+<span class="r-in"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu">convertToCfd</span><span class="op">(</span><span class="va">temp</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Cold"</span>, <span class="st">"Cold"</span>, <span class="st">"Fresh"</span>, <span class="st">"OK"</span>, <span class="st">"Hot"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                     times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -145,7 +145,7 @@ interval notation. If labels = FALSE, simple integer codes are returned instead 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

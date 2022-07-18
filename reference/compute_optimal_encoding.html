@@ -18,7 +18,7 @@ to a stochastic process."><!-- mathjax --><script src="https://cdnjs.cloudflare.
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -55,16 +55,16 @@ to a stochastic process.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">compute_optimal_encoding</span><span class="op">(</span>
-  <span class="va">data</span>,
-  <span class="va">basisobj</span>,
-  computeCI <span class="op">=</span> <span class="cn">TRUE</span>,
-  nBootstrap <span class="op">=</span> <span class="fl">50</span>,
-  propBootstrap <span class="op">=</span> <span class="fl">1</span>,
-  nCores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu">detectCores</span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>,
-  verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compute_optimal_encoding</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">basisobj</span>,</span>
+<span>  computeCI <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  nBootstrap <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  propBootstrap <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  nCores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu">detectCores</span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -149,23 +149,23 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074</p></li>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
-<span class="r-in"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
-<span class="r-in"><span class="va">Tmax</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span>
-<span class="r-in">  n <span class="op">=</span> <span class="fl">10</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="va">Tmax</span>,</span>
-<span class="r-in">  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="va">d_JK2</span> <span class="op">&lt;-</span> <span class="fu"><a href="cut_data.html">cut_data</a></span><span class="op">(</span><span class="va">d_JK</span>, <span class="va">Tmax</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># create basis object</span></span>
-<span class="r-in"><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span class="r-in"><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># compute encoding</span></span>
-<span class="r-in"><span class="va">encoding</span> <span class="op">&lt;-</span> <span class="fu">compute_optimal_encoding</span><span class="op">(</span><span class="va">d_JK2</span>, <span class="va">b</span>, computeCI <span class="op">=</span> <span class="cn">FALSE</span>, nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span></span>
+<span class="r-in"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="va">Tmax</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  n <span class="op">=</span> <span class="fl">10</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="va">Tmax</span>,</span></span>
+<span class="r-in"><span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"C"</span>, <span class="st">"G"</span>, <span class="st">"T"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d_JK2</span> <span class="op">&lt;-</span> <span class="fu"><a href="cut_data.html">cut_data</a></span><span class="op">(</span><span class="va">d_JK</span>, <span class="va">Tmax</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># create basis object</span></span></span>
+<span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span><span class="va">b</span> <span class="op">&lt;-</span> <span class="fu">create.bspline.basis</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="va">Tmax</span><span class="op">)</span>, nbasis <span class="op">=</span> <span class="va">m</span>, norder <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># compute encoding</span></span></span>
+<span class="r-in"><span><span class="va">encoding</span> <span class="op">&lt;-</span> <span class="fu">compute_optimal_encoding</span><span class="op">(</span><span class="va">d_JK2</span>, <span class="va">b</span>, computeCI <span class="op">=</span> <span class="cn">FALSE</span>, nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ######### Compute encoding #########</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of individuals: 10</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of states: 4</span>
@@ -177,13 +177,13 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.12s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~01s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~01s            |===============                                   | 30% ~01s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.59s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.66s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 0.72s</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">encoding</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 0.79s</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">encoding</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> #### FMCA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ## Data </span>
@@ -220,19 +220,19 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5 -1.4152094 -0.4455948 -2.90049296 -0.7621926 -0.8536573 -0.19485874</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6 -1.4478108  1.8617776 -0.18646993  1.8808029  0.8624878 -0.01407049</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Total elapsed time: 0.723 s</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># plot the optimal encoding</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">encoding</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Total elapsed time: 0.789 s</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot the optimal encoding</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">encoding</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 13 row(s) containing missing values (geom_path).</span>
 <span class="r-plt img"><img src="compute_optimal_encoding-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># plot the two first components</span></span>
-<span class="r-in"><span class="fu"><a href="plotComponent.html">plotComponent</a></span><span class="op">(</span><span class="va">encoding</span>, comp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># plot the two first components</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="plotComponent.html">plotComponent</a></span><span class="op">(</span><span class="va">encoding</span>, comp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="compute_optimal_encoding-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># extract the optimal encoding</span></span>
-<span class="r-in"><span class="fu"><a href="get_encoding.html">get_encoding</a></span><span class="op">(</span><span class="va">encoding</span>, harm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># extract the optimal encoding</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="get_encoding.html">get_encoding</a></span><span class="op">(</span><span class="va">encoding</span>, harm <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1] 0.00000000 0.03937008 0.07874016 0.11811024 0.15748031 0.19685039</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [7] 0.23622047 0.27559055 0.31496063 0.35433071 0.39370079 0.43307087</span>
@@ -402,7 +402,7 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074</p></li>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

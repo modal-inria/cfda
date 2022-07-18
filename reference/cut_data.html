@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.9.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.0</span>
       </span>
     </div>
 
@@ -53,7 +53,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">cut_data</span><span class="op">(</span><span class="va">data</span>, <span class="va">Tmax</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cut_data</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">Tmax</span>,</span>
+<span>  prolongLastState <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  NAstate <span class="op">=</span> <span class="st">"Not observable"</span>,</span>
+<span>  warning <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -65,6 +71,21 @@ time at which a change occurs and <code>state</code>, associated state.</p></dd>
 
 <dt>Tmax</dt>
 <dd><p>max time considered</p></dd>
+
+
+<dt>prolongLastState</dt>
+<dd><p>list of states to prolong (can be "all"). In the case where the last state of a trajectory is
+lesser than <code>Tmax</code>, we can assume that this trajectory will be in the same state at time Tmax only if it is an
+absorbing state. Otherwise it will add <code>NAstate</code> and throw a warning.
+Set `prolongLastState = c()` to indicate there is no absorbing state.</p></dd>
+
+
+<dt>NAstate</dt>
+<dd><p>state value used when the last state is not prolonged.</p></dd>
+
+
+<dt>warning</dt>
+<dd><p>if TRUE, the function raises warnings when it has prolonged a trajectory with NAstate</p></dd>
 
 </dl></div>
     <div id="value">
@@ -80,30 +101,34 @@ time at which a change occurs and <code>state</code>, associated state.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span>
-<span class="r-in"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span>
-<span class="r-in"><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Simulate the Jukes-Cantor model of nucleotide replacement</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">4</span></span></span>
+<span class="r-in"><span><span class="va">PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, nrow <span class="op">=</span> <span class="va">K</span>, ncol <span class="op">=</span> <span class="va">K</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">3</span>, <span class="va">K</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">lambda_PJK</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">d_JK</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, K <span class="op">=</span> <span class="va">K</span>, P <span class="op">=</span> <span class="va">PJK</span>, lambda <span class="op">=</span> <span class="va">lambda_PJK</span>, Tmax <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">d_JK</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     id     time state</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 103 10 5.745181     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 104 10 6.399224     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 105 10 6.658211     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 106 10 7.359727     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 107 10 8.174763     4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108 10 9.045728     1</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># cut at Tmax = 8</span></span>
-<span class="r-in"><span class="va">d_JK2</span> <span class="op">&lt;-</span> <span class="fu">cut_data</span><span class="op">(</span><span class="va">d_JK</span>, Tmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">d_JK2</span><span class="op">)</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103  9 7.534493     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104  9 9.419641     4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 105 10 0.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 106 10 3.661730     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 107 10 7.634647     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 108 10 8.873610     1</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># cut at Tmax = 8</span></span></span>
+<span class="r-in"><span><span class="va">d_JK2</span> <span class="op">&lt;-</span> <span class="fu">cut_data</span><span class="op">(</span><span class="va">d_JK</span>, Tmax <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">d_JK2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    id     time state</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93 10 4.895024     4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94 10 5.745181     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95 10 6.399224     3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96 10 6.658211     2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97 10 7.359727     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98 10 8.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 94  9 7.534493     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 95  9 8.000000     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 96 10 0.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 97 10 3.661730     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 98 10 7.634647     2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 99 10 8.000000     2</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="va">d_JK2</span> <span class="op">&lt;-</span> <span class="fu">cut_data</span><span class="op">(</span><span class="va">d_JK</span>, Tmax <span class="op">=</span> <span class="fl">12</span>, prolongLastState <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -118,7 +143,7 @@ time at which a change occurs and <code>state</code>, associated state.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
