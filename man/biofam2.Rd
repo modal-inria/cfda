@@ -50,10 +50,15 @@ plot(fmca, harm = 2)
 plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE)
 plotComponent(fmca, comp = c(1, 2), addNames = FALSE)
 }
-
 }
 \references{
 Müller, N. S., M. Studer, G. Ritschard (2007). Classification de parcours de vie à l'aide de l'optimal matching.
 In XIVe Rencontre de la Société francophone de classification (SFC 2007), Paris, 5 - 7 septembre 2007, pp. 157–160.
 }
+\seealso{
+Other datasets: 
+\code{\link{care}},
+\code{\link{flours}}
+}
+\concept{datasets}
 \keyword{data}

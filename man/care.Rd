@@ -59,4 +59,10 @@ plotComponent(fmca, addNames = FALSE)
 }
 
 }
+\seealso{
+Other datasets: 
+\code{\link{biofam2}},
+\code{\link{flours}}
+}
+\concept{datasets}
 \keyword{data}

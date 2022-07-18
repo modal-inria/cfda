@@ -51,10 +51,8 @@
 #' plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE)
 #' plotComponent(fmca, comp = c(1, 2), addNames = FALSE)
 #' }
-#'
+#' @family datasets
 NULL
-
-
 
 
 #' Care trajectories
@@ -115,5 +113,49 @@ NULL
 #' plot(fmca, addCI = TRUE)
 #' plotComponent(fmca, addNames = FALSE)
 #' }
+#'
+#' @family datasets
+NULL
+
+
+#' Flours dataset
+#'
+#' Resistance of dough during the kneading process
+#'
+#' @name flours
+#' @aliases flours
+#' @docType data
+#' @keywords data
+#'
+#' @usage data(flours)
+#'
+#' @format \code{flours} is a list of 3 elements:
+#' \itemize{
+#'   \item \code{data} A matrix of size 241*115 containing the resistance of dough (measured every 2s) during the kneading process. One dough batch = 1 column
+#'   \item \code{quality} Quality of cookies baked with the associated dough (1=Good, 2=Medium, 3=Bad)
+#'   \item \code{time} time values
+#' }
+#'
+#' @examples
+#' data(flours)
+#'
+#' matplot(flours$time, flours$data, col = flours$quality, type = "l", lty = 1)
+#'
+#' # convert to categorical data
+#' flours_cfd <- convertToCfd(flours$data, breaks = c(-Inf, 150, 300, 450, 600, Inf),
+#'                            times = flours$time)
+#'
+#' plotData(flours_cfd, group = flours$quality)
+#'
+#'
+#' # convert to categorical data after projecting in a basis of functions
+#' basis <- create.bspline.basis(c(0, 480), nbasis = 10)
+#' flours_fd <- Data2fd(flours$time, flours$data, basis)
+#' plot(flours_fd)
+#'
+#' flours_cfd2 <- convertToCfd(flours_fd, breaks = c(-Inf, 150, 300, 450, 600, Inf))
+#'
+#' plotData(flours_cfd2, group = flours$quality)
+#' @family datasets
 #'
 NULL
