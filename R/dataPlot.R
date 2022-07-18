@@ -43,7 +43,7 @@
 #' group[c(5, 6)] <- NA
 #' plotData(d_JKT, group = group)
 #' @author Cristian Preda, Quentin Grimonprez
-#'
+#' @family Descriptive statistics
 #' @export
 plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL) {
   ## check parameters
@@ -224,7 +224,7 @@ createLabeller <- function(group) {
 #' data(biofam2)
 #' summary_cfd(biofam2)
 #' @author Quentin Grimonprez
-#'
+#' @family Descriptive statistics
 #' @export
 summary_cfd <- function(data, max.print = 10) {
   checkData(data)

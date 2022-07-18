@@ -46,6 +46,17 @@ encodMat <- get_encoding(encoding, nx = 200)
 }
 
 }
+\seealso{
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{plot.fmca}()},
+\code{\link{plotComponent}()},
+\code{\link{plotEigenvalues}()},
+\code{\link{predict.fmca}()},
+\code{\link{print.fmca}()},
+\code{\link{summary.fmca}()}
+}
 \author{
 Cristian Preda
 }
+\concept{encoding functions}

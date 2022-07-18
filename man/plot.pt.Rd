@@ -34,6 +34,22 @@ pt <- estimate_pt(d_JK2)
 
 plot(pt, ribbon = TRUE)
 }
+\seealso{
+\link{estimate_pt}
+
+Other Descriptive statistics: 
+\code{\link{boxplot.timeSpent}()},
+\code{\link{compute_duration}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{estimate_pt}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plotData}()},
+\code{\link{statetable}()},
+\code{\link{summary_cfd}()}
+}
 \author{
 Quentin Grimonprez
 }
+\concept{Descriptive statistics}

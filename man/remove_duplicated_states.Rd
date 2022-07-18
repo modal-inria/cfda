@@ -27,6 +27,13 @@ data <- data.frame(
 )
 out <- remove_duplicated_states(data)
 }
+\seealso{
+Other format: 
+\code{\link{convertToCfd}()},
+\code{\link{cut_data}()},
+\code{\link{matrixToCfd}()}
+}
 \author{
 Quentin Grimonprez
 }
+\concept{format}

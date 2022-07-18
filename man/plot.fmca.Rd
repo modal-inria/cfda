@@ -69,8 +69,16 @@ plot(encoding, harm = 2, col = c("red", "blue", "darkgreen", "yellow")) +
 
 }
 \seealso{
-\link{plotComponent} \link{plotEigenvalues}
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{get_encoding}()},
+\code{\link{plotComponent}()},
+\code{\link{plotEigenvalues}()},
+\code{\link{predict.fmca}()},
+\code{\link{print.fmca}()},
+\code{\link{summary.fmca}()}
 }
 \author{
 Quentin Grimonprez
 }
+\concept{encoding functions}

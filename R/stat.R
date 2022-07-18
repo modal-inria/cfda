@@ -19,7 +19,7 @@
 #' # compute time spent by each id in each state
 #' timeSpent <- compute_time_spent(d_JK2)
 #' @seealso \link{boxplot.timeSpent}
-#'
+#' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
@@ -90,6 +90,8 @@ compute_time_spent_intern <- function(data, labels) {
 #'   coord_flip() +
 #'   labs(title = "Time spent in each state")
 #' @author Quentin Grimonprez
+#' @seealso \link{compute_time_spent}
+#' @family Descriptive statistics
 #'
 #' @export
 boxplot.timeSpent <- function(x, col = NULL, ...) {
@@ -129,7 +131,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...) {
 #'
 #' hist(duration)
 #' @seealso \link{hist.duration}
-#'
+#' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
@@ -171,6 +173,8 @@ compute_duration <- function(data) {
 #' hist(duration) +
 #'   labs(title = "Distribution of the duration")
 #' @author Quentin Grimonprez
+#' @seealso \link{compute_duration}
+#' @family Descriptive statistics
 #'
 #' @export
 hist.duration <- function(x, breaks = NULL, ...) {
@@ -213,6 +217,7 @@ hist.duration <- function(x, breaks = NULL, ...) {
 #' get_state(d_JK, 12)
 #' # if NAafterTmax = TRUE, it will return NA for t > Tmax
 #' get_state(d_JK, 12, NAafterTmax = TRUE)
+#'
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
@@ -272,9 +277,9 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 #'
 #' # estimate probabilities
 #' estimate_pt(d_JK2)
-#' @seealso \link{plot.pt}
-#'
 #' @author Cristian Preda, Quentin Grimonprez
+#' @seealso \link{plot.pt}
+#' @family Descriptive statistics
 #'
 #' @export
 estimate_pt <- function(data, NAafterTmax = FALSE) {
@@ -384,8 +389,9 @@ get_proba <- function(pt, t) {
 #'
 #' plot(pt, ribbon = TRUE)
 #' @author Quentin Grimonprez
-#'
 #' @method plot pt
+#' @seealso \link{estimate_pt}
+#' @family Descriptive statistics
 #'
 #' @export
 plot.pt <- function(x, col = NULL, ribbon = FALSE, ...) {
@@ -488,7 +494,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE) {
 #' # compute the number of jumps
 #' nJump <- compute_number_jumps(d_JK)
 #' @seealso \link{hist.njump}
-#'
+#' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
 #' @export
@@ -547,6 +553,8 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE) {
 #' hist(nJump, fill = "#984EA3") +
 #'   labs(title = "Distribution of the number of jumps")
 #' @author Quentin Grimonprez
+#' @seealso \link{compute_number_jumps}
+#' @family Descriptive statistics
 #'
 #' @export
 hist.njump <- function(x, breaks = NULL, ...) {
@@ -586,6 +594,7 @@ hist.njump <- function(x, breaks = NULL, ...) {
 #' # table of transitions
 #' statetable(d_JK)
 #' @author Quentin Grimonprez
+#' @family Descriptive statistics
 #'
 #' @export
 statetable <- function(data, removeDiagonal = FALSE) {

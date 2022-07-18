@@ -35,7 +35,20 @@ estimate_pt(d_JK2)
 }
 \seealso{
 \link{plot.pt}
+
+Other Descriptive statistics: 
+\code{\link{boxplot.timeSpent}()},
+\code{\link{compute_duration}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plot.pt}()},
+\code{\link{plotData}()},
+\code{\link{statetable}()},
+\code{\link{summary_cfd}()}
 }
 \author{
 Cristian Preda, Quentin Grimonprez
 }
+\concept{Descriptive statistics}

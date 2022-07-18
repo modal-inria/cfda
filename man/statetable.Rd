@@ -28,6 +28,20 @@ d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 # table of transitions
 statetable(d_JK)
 }
+\seealso{
+Other Descriptive statistics: 
+\code{\link{boxplot.timeSpent}()},
+\code{\link{compute_duration}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{estimate_pt}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plot.pt}()},
+\code{\link{plotData}()},
+\code{\link{summary_cfd}()}
+}
 \author{
 Quentin Grimonprez
 }
+\concept{Descriptive statistics}

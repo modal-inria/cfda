@@ -20,5 +20,13 @@ No return value, called for side effects
 Summary of a \code{fmca} object
 }
 \seealso{
-\link{compute_optimal_encoding} \link{print.fmca}
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{get_encoding}()},
+\code{\link{plot.fmca}()},
+\code{\link{plotComponent}()},
+\code{\link{plotEigenvalues}()},
+\code{\link{predict.fmca}()},
+\code{\link{print.fmca}()}
 }
+\concept{encoding functions}

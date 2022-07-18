@@ -26,9 +26,8 @@
 #' tail(d_JK2)
 #'
 #' try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
-#'
 #' @author Cristian Preda
-#'
+#' @family format
 #' @export
 cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable", warning = FALSE) {
   ## check parameters
@@ -141,7 +140,7 @@ refactorCategorical <- function(data, oldCateg = unique(data), newCateg = seq_al
 #' )
 #' out <- remove_duplicated_states(data)
 #' @author Quentin Grimonprez
-#'
+#' @family format
 #' @export
 remove_duplicated_states <- function(data, keep.last = TRUE) {
   out <- do.call(rbind, by(data, data$id, remove_duplicated_states.intern, keep.last))
@@ -180,6 +179,7 @@ remove_duplicated_states.intern <- function(data, keep.last = TRUE) {
 #'               "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
 #'               dimnames = list(NULL, paste0("ind", 1:4)))
 #' matrixToCfd(x)
+#' @family format
 #' @export
 matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   checkLogical(byrow, "byrow")
@@ -303,7 +303,8 @@ quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, 
 #' out2 <- convertToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50),
 #'                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
 #'                      times = 1:365, byrow = FALSE)
-#'
+#' @seealso \link{flours}
+#' @family format
 #' @export
 convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL,
                          idLabels = NULL, nx = 200, byrow = FALSE) {

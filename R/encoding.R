@@ -83,6 +83,7 @@
 #' Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
 #' }
 #'
+#' @family encoding functions
 #'
 #' @export
 compute_optimal_encoding <- function(data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1,

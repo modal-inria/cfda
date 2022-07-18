@@ -41,6 +41,22 @@ boxplot(timeSpent, notch = TRUE, outlier.colour = "black") +
   coord_flip() +
   labs(title = "Time spent in each state")
 }
+\seealso{
+\link{compute_time_spent}
+
+Other Descriptive statistics: 
+\code{\link{compute_duration}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{estimate_pt}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plot.pt}()},
+\code{\link{plotData}()},
+\code{\link{statetable}()},
+\code{\link{summary_cfd}()}
+}
 \author{
 Quentin Grimonprez
 }
+\concept{Descriptive statistics}

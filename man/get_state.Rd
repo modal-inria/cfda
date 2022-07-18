@@ -34,6 +34,7 @@ get_state(d_JK, 6)
 get_state(d_JK, 12)
 # if NAafterTmax = TRUE, it will return NA for t > Tmax
 get_state(d_JK, 12, NAafterTmax = TRUE)
+
 }
 \author{
 Cristian Preda, Quentin Grimonprez

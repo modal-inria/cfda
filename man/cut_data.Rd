@@ -47,8 +47,14 @@ d_JK2 <- cut_data(d_JK, Tmax = 8)
 tail(d_JK2)
 
 try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
-
+}
+\seealso{
+Other format: 
+\code{\link{convertToCfd}()},
+\code{\link{matrixToCfd}()},
+\code{\link{remove_duplicated_states}()}
 }
 \author{
 Cristian Preda
 }
+\concept{format}

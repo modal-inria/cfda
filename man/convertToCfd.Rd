@@ -59,5 +59,13 @@ out <- convertToCfd(fd, breaks = c(-50, -10, 0, 10, 20, 50),
 out2 <- convertToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50),
                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
                      times = 1:365, byrow = FALSE)
-
 }
+\seealso{
+\link{flours}
+
+Other format: 
+\code{\link{cut_data}()},
+\code{\link{matrixToCfd}()},
+\code{\link{remove_duplicated_states}()}
+}
+\concept{format}

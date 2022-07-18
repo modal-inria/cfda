@@ -28,3 +28,10 @@ x <- matrix(c("a", "b", "c", "c",
               dimnames = list(NULL, paste0("ind", 1:4)))
 matrixToCfd(x)
 }
+\seealso{
+Other format: 
+\code{\link{convertToCfd}()},
+\code{\link{cut_data}()},
+\code{\link{remove_duplicated_states}()}
+}
+\concept{format}

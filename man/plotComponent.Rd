@@ -57,10 +57,19 @@ plotComponent(encoding, comp = c(1, 2), shape = 23) +
   labs(title = "Two first components")
 }
 
+
 }
 \seealso{
-\link{plot.fmca} \link{plotEigenvalues}
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{get_encoding}()},
+\code{\link{plot.fmca}()},
+\code{\link{plotEigenvalues}()},
+\code{\link{predict.fmca}()},
+\code{\link{print.fmca}()},
+\code{\link{summary.fmca}()}
 }
 \author{
 Quentin Grimonprez
 }
+\concept{encoding functions}

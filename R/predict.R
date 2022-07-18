@@ -41,7 +41,8 @@
 #' }
 #'
 #' @method predict fmca
-#' @seealso \link{compute_optimal_encoding}
+#'
+#' @family encoding functions
 #' @author Quentin Grimonprez
 #' @export
 predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectCores() / 2)), verbose = TRUE, ...) {

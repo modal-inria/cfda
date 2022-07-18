@@ -41,8 +41,7 @@
 #'   labs(title = "Optimal encoding")
 #' }
 #'
-#' @seealso \link{plotComponent} \link{plotEigenvalues}
-#'
+#' @family encoding functions
 #' @author Quentin Grimonprez
 #'
 #' @export
@@ -171,7 +170,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL) {
 #' }
 #'
 #' @author Cristian Preda
-#'
+#' @family encoding functions
 #' @export
 get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL) {
   ## check parameters
@@ -264,10 +263,9 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt) {
 #'   labs(title = "Two first components")
 #' }
 #'
-#' @seealso \link{plot.fmca} \link{plotEigenvalues}
 #'
 #' @author Quentin Grimonprez
-#'
+#' @family encoding functions
 #' @export
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4, ...) {
   ## check parameters
@@ -332,10 +330,9 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #'   labs(caption = "Jukes-Cantor model of nucleotide replacement")
 #' }
 #'
-#' @seealso \link{plot.fmca} \link{plotComponent}
 #'
 #' @author Quentin Grimonprez
-#'
+#' @family encoding functions
 #' @export
 plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...) {
   ## check parameters

@@ -60,8 +60,16 @@ pc <- predict(encoding, d_JK_predict2, nCores = 1)
 
 }
 \seealso{
-\link{compute_optimal_encoding}
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{get_encoding}()},
+\code{\link{plot.fmca}()},
+\code{\link{plotComponent}()},
+\code{\link{plotEigenvalues}()},
+\code{\link{print.fmca}()},
+\code{\link{summary.fmca}()}
 }
 \author{
 Quentin Grimonprez
 }
+\concept{encoding functions}

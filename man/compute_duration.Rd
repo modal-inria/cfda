@@ -30,7 +30,20 @@ hist(duration)
 }
 \seealso{
 \link{hist.duration}
+
+Other Descriptive statistics: 
+\code{\link{boxplot.timeSpent}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{estimate_pt}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plot.pt}()},
+\code{\link{plotData}()},
+\code{\link{statetable}()},
+\code{\link{summary_cfd}()}
 }
 \author{
 Cristian Preda, Quentin Grimonprez
 }
+\concept{Descriptive statistics}

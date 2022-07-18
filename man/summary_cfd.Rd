@@ -31,6 +31,20 @@ Get a summary of the data.frame containing categorical functional data
 data(biofam2)
 summary_cfd(biofam2)
 }
+\seealso{
+Other Descriptive statistics: 
+\code{\link{boxplot.timeSpent}()},
+\code{\link{compute_duration}()},
+\code{\link{compute_number_jumps}()},
+\code{\link{compute_time_spent}()},
+\code{\link{estimate_pt}()},
+\code{\link{hist.duration}()},
+\code{\link{hist.njump}()},
+\code{\link{plot.pt}()},
+\code{\link{plotData}()},
+\code{\link{statetable}()}
+}
 \author{
 Quentin Grimonprez
 }
+\concept{Descriptive statistics}

@@ -46,10 +46,19 @@ plotEigenvalues(encoding, shape = 23) +
   labs(caption = "Jukes-Cantor model of nucleotide replacement")
 }
 
+
 }
 \seealso{
-\link{plot.fmca} \link{plotComponent}
+Other encoding functions: 
+\code{\link{compute_optimal_encoding}()},
+\code{\link{get_encoding}()},
+\code{\link{plot.fmca}()},
+\code{\link{plotComponent}()},
+\code{\link{predict.fmca}()},
+\code{\link{print.fmca}()},
+\code{\link{summary.fmca}()}
 }
 \author{
 Quentin Grimonprez
 }
+\concept{encoding functions}
