@@ -246,7 +246,7 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
 
 # convert a fd object to a categorical functional data frame (see convertToCfd)
 fdToCfd <- function(fd, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL, idLabels = NULL, nx = 200) {
-  if (class(fd) != "fd") {
+  if (!inherits(fd, "fd")) {
     stop("fd is not a fd object")
   }
   if (is.null(times)) {
@@ -307,7 +307,7 @@ quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, 
 #' @export
 convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL,
                          idLabels = NULL, nx = 200, byrow = FALSE) {
-  if ("fd" %in% class(x)) {
+  if (inherits(x, "fd")) {
     return(fdToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, nx))
   } else if (is.matrix(x) || is.data.frame(x)) {
     return(quantiMatrixToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, byrow))
