@@ -4,13 +4,28 @@
 \alias{cut_data}
 \title{Cut data to a maximal given time}
 \usage{
-cut_data(data, Tmax)
+cut_data(
+  data,
+  Tmax,
+  prolongLastState = "all",
+  NAstate = "Not observable",
+  warning = FALSE
+)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time},
 time at which a change occurs and \code{state}, associated state.}
 
 \item{Tmax}{max time considered}
+
+\item{prolongLastState}{list of states to prolong (can be "all"). In the case where the last state of a trajectory is
+lesser than \code{Tmax}, we can assume that this trajectory will be in the same state at time Tmax only if it is an
+absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
+Set `prolongLastState = c()` to indicate there is no absorbing state.}
+
+\item{NAstate}{state value used when the last state is not prolonged.}
+
+\item{warning}{if TRUE, the function raises warnings when it has prolonged a trajectory with NAstate}
 }
 \value{
 a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
@@ -20,6 +35,7 @@ Cut data to a maximal given time
 }
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement
+set.seed(42)
 K <- 4
 PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 lambda_PJK <- c(1, 1, 1, 1)
@@ -29,6 +45,9 @@ tail(d_JK)
 # cut at Tmax = 8
 d_JK2 <- cut_data(d_JK, Tmax = 8)
 tail(d_JK2)
+
+try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
+
 }
 \author{
 Cristian Preda

@@ -3,11 +3,18 @@
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time},
 #' time at which a change occurs and \code{state}, associated state.
 #' @param Tmax max time considered
+#' @param prolongLastState list of states to prolong (can be "all"). In the case where the last state of a trajectory is
+#' lesser than \code{Tmax}, we can assume that this trajectory will be in the same state at time Tmax only if it is an
+#' absorbing state. Otherwise it will add \code{NAstate} and throw a warning.
+#' Set `prolongLastState = c()` to indicate there is no absorbing state.
+#' @param NAstate state value used when the last state is not prolonged.
+#' @param warning if TRUE, the function raises warnings when it has prolonged a trajectory with NAstate
 #'
 #' @return a data.frame with the same format as \code{data} where each individual has \code{Tmax} as last time entry.
 #'
 #' @examples
 #' # Simulate the Jukes-Cantor model of nucleotide replacement
+#' set.seed(42)
 #' K <- 4
 #' PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
 #' lambda_PJK <- c(1, 1, 1, 1)
@@ -17,19 +24,26 @@
 #' # cut at Tmax = 8
 #' d_JK2 <- cut_data(d_JK, Tmax = 8)
 #' tail(d_JK2)
+#'
+#' try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
+#'
 #' @author Cristian Preda
 #'
 #' @export
-cut_data <- function(data, Tmax) {
+cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable", warning = FALSE) {
   ## check parameters
   checkData(data)
+  checkLogical(warning, "warning")
+  if (length(NAstate) > 1) {
+    stop("NAstate must have a length of 1")
+  }
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1)) {
     stop("Tmax must be a real.")
   }
   ## end check
 
   d <- do.call(rbind, by(data, data$id, function(x) {
-    cut_cfd(x, Tmax)
+    cut_cfd(x, Tmax, prolongLastState, NAstate, warning)
   }))
   rownames(d) <- NULL
 
@@ -37,11 +51,22 @@ cut_data <- function(data, Tmax) {
 }
 
 # @author Cristian Preda
-cut_cfd <- function(data, Tmax) {
+cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA, warning = FALSE) {
   l <- nrow(data)
   currTmax <- max(data$time)
+
   if (Tmax > currTmax) {
-    return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
+    if (((length(prolongLastState) > 0) && all(prolongLastState == "all")) || (data$state[l] %in% prolongLastState)) {
+      return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
+    } else {
+      if (warning) {
+        warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ",
+                       Tmax, ". Please, add more records or change the Tmax value."))
+      }
+      d <- data
+      d$state[l] <- NAstate
+      return(rbind(d, data.frame(id = data$id[1], state = NAstate, time = Tmax)))
+    }
   } else {
     if (currTmax == Tmax) {
       return(data)

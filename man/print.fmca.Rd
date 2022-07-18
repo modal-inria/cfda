@@ -2,9 +2,7 @@
 % Please edit documentation in R/fmca.print.R
 \name{print.fmca}
 \alias{print.fmca}
-\title{Print \code{fmca} object
-
-Print a \code{fmca} object}
+\title{Print a \code{fmca} object}
 \usage{
 \method{print}{fmca}(x, n = 6, ...)
 }
@@ -19,8 +17,6 @@ Print a \code{fmca} object}
 No return value, called for side effects
 }
 \description{
-Print \code{fmca} object
-
 Print a \code{fmca} object
 }
 \seealso{
