@@ -102,7 +102,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
 
   if (addId) {
-    p <- p + scale_y_continuous(name = "id", breaks = 1:nInd, labels = unique(d_graph$id)[order(unique(d_graph$position))])
+    p <- p + scale_y_continuous(name = "Id", breaks = 1:nInd, labels = unique(d_graph$id)[order(unique(d_graph$position))])
   } else {
     p <- p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
@@ -136,7 +136,7 @@ rep_large_ind <- function(data) {
     return(d)
   })
 
-  return(do.call(rbind, out))
+  return(do.call(rbind, out[unique(data$id)]))
 }
 
 
@@ -148,7 +148,7 @@ computePosition <- function(data, id, sort = FALSE) {
     ord <- match(id, b$id)
     position <- ord # position of id on the y-axis
   } else {
-    position <- unclass(factor(id)) # return integers associated with the different ids (labels from a factor)
+    position <- unclass(factor(id, levels = unique(id))) # return integers associated with the different ids (labels from a factor)
   }
 
   return(position)

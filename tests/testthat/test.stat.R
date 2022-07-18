@@ -331,6 +331,23 @@ test_that("rep_large_ind works", {
   expect_equivalent(out, expectedOut)
 
 
+  out <- rep_large_ind(dat[dat$id == 1, ])
+
+  expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
+})
+
+test_that("rep_large_ind keeps id order", {
+  dat <- data.frame(id = rep(2:1, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(
+    id = rep(2:1, c(5, 4)),
+    t_start = c(0:4, 0, 1.5, 2, 3.5),
+    t_end = c(1:5, 1.5, 2, 3.5, 5),
+    state = c(1:5, 1:4)
+  )
+
+  expect_equivalent(out, expectedOut)
+
 
   out <- rep_large_ind(dat[dat$id == 1, ])
 
@@ -362,6 +379,21 @@ test_that("computePosition works", {
   expect_equivalent(out, order(c(1, 5, 3, 2, 4)))
 })
 
+test_that("computePosition keeps id orders", {
+  dat <- data.frame(id = rep(c(2, 3, 1, 5, 4), each = 2),
+                    time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)),
+                    state = c(1:2, 2:1, 2:1, 2:1, 1:2))
+  d <- rep_large_ind(dat)
+
+  out <- computePosition(dat, d$id, sort = FALSE)
+
+  expect_equivalent(out, 1:5)
+  expect_equivalent(levels(out), c("2", "3", "1", "5", "4"))
+
+  out <- computePosition(dat, d$id, sort = TRUE)
+
+  expect_equivalent(out, order(c(1, 5, 3, 2, 4)))
+})
 
 test_that("computePositionPerGroup works", {
   dat <- data.frame(
