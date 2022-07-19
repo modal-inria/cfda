@@ -1,5 +1,8 @@
-v0.10.0 2022-
-- feat: fucntion to convert quantitative functional to categorial
+v0.10.0 2022-07-19
+- add function to convert quantitative functional to categorial
+- add new parameters for cut_data: prolongLastState, NAstate
+- fix id order in plotData
+- add flours dataset
 
 v0.9.12 2022-03-07
 - fix bug when ids are not in alphabetical order #16
