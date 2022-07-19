@@ -59,6 +59,19 @@ test_that("cut_cfd with greater Tmax", {
 })
 
 
+test_that("cut_cfd with factor", {
+  dat <- data.frame(id = 1,
+                    time = c(0, 5, 12, 15),
+                    state = as.factor(c("D", "C", "A", "D")))
+  expect_silent(out <- cut_cfd(dat, Tmax = 20, prolongLastState = "S", NAstate = "Not observable"))
+  expectedOut <- data.frame(id = 1,
+                            time = c(0, 5, 12, 15, 20),
+                            state = as.factor(c("D", "C", "A", "Not observable", "Not observable")))
+
+  expect_equal(out, expectedOut)
+})
+
+
 test_that("cut_data generates error with bad parameters", {
   dat <- data.frame(id = rep(1:3, each = 3), time = c(0, 2, 4, 0, 1.5, 5, 0, 2.5, 3), state = c(1, 3, 2, 1, 2, 3, 1, 3, 1))
 
