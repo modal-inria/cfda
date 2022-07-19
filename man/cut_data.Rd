@@ -8,7 +8,7 @@ cut_data(
   data,
   Tmax,
   prolongLastState = "all",
-  NAstate = "Not observable",
+  NAstate = "Not observed",
   warning = FALSE
 )
 }

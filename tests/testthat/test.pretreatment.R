@@ -97,7 +97,7 @@ test_that("cut_data works", {
   expect_warning(out <- cut_data(dat, Tmax = 4, prolongLastState = c(), warning = TRUE),
                  regexp = paste0("id ", 3, " does not end with an absorbing state. Cannot impute the state until time ",
                                  4, ". Please, add more records or change the Tmax value."))
-  expectedOut$state[9:10] <- "Not observable"
+  expectedOut$state[9:10] <- "Not observed"
   expect_equal(out, expectedOut)
 
   expect_silent(out <- cut_data(dat, Tmax = 4, prolongLastState = c(), NAstate = "blabla"))

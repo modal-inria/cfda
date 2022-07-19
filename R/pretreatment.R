@@ -29,7 +29,7 @@
 #' @author Cristian Preda
 #' @family format
 #' @export
-cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observable", warning = FALSE) {
+cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observed", warning = FALSE) {
   ## check parameters
   checkData(data)
   checkLogical(warning, "warning")
