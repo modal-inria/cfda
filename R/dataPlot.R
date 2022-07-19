@@ -136,7 +136,7 @@ rep_large_ind <- function(data) {
     return(d)
   })
 
-  return(do.call(rbind, out[unique(data$id)]))
+  return(do.call(rbind, out[match(unique(data$id), names(out))]))
 }
 
 

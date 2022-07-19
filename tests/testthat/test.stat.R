@@ -336,11 +336,11 @@ test_that("rep_large_ind works", {
   expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
 })
 
-test_that("rep_large_ind keeps id order", {
-  dat <- data.frame(id = rep(2:1, c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+test_that("rep_large_ind keeps id order int", {
+  dat <- data.frame(id = rep(c(8, 5), c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
   out <- rep_large_ind(dat)
   expectedOut <- data.frame(
-    id = rep(2:1, c(5, 4)),
+    id = rep(c(8, 5), c(5, 4)),
     t_start = c(0:4, 0, 1.5, 2, 3.5),
     t_end = c(1:5, 1.5, 2, 3.5, 5),
     state = c(1:5, 1:4)
@@ -348,12 +348,45 @@ test_that("rep_large_ind keeps id order", {
 
   expect_equivalent(out, expectedOut)
 
+  out <- rep_large_ind(dat[dat$id == 5, ])
 
-  out <- rep_large_ind(dat[dat$id == 1, ])
-
-  expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
+  expect_equivalent(out, expectedOut[expectedOut$id == 5, ])
 })
 
+test_that("rep_large_ind keeps id order char", {
+  dat <- data.frame(id = rep(c("Flour9", "Flour10"), c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(
+    id = rep(c("Flour9", "Flour10"), c(5, 4)),
+    t_start = c(0:4, 0, 1.5, 2, 3.5),
+    t_end = c(1:5, 1.5, 2, 3.5, 5),
+    state = c(1:5, 1:4)
+  )
+
+  expect_equivalent(out, expectedOut)
+
+  out <- rep_large_ind(dat[dat$id == "Flour10", ])
+
+  expect_equivalent(out, expectedOut[expectedOut$id == "Flour10", ])
+})
+
+test_that("rep_large_ind keeps id order factor", {
+  dat <- data.frame(id = factor(rep(c("Flour9", "Flour10"), c(6, 5)), levels = c("Flour10", "Flour9")),
+                    time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(
+    id = factor(rep(c("Flour9", "Flour10"), c(5, 4)), levels = c("Flour10", "Flour9")),
+    t_start = c(0:4, 0, 1.5, 2, 3.5),
+    t_end = c(1:5, 1.5, 2, 3.5, 5),
+    state = c(1:5, 1:4)
+  )
+
+  expect_equivalent(out, expectedOut)
+
+  out <- rep_large_ind(dat[dat$id == "Flour10", ])
+
+  expect_equivalent(out, expectedOut[expectedOut$id == "Flour10", ])
+})
 
 test_that("orderFirstState works", {
   dat <- data.frame(id = rep(1:5, c(2, 1, 2, 2, 1)), time = c(0:1, 0, 0, 2, 0, 3, 0), state = c(1:2, 1, 1:2, 2:1, 2))
@@ -476,9 +509,49 @@ test_that("plotData produces an error when nCol is bad", {
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
 
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = -1), regexp = "nCol must be an integer > 0.")
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = "aaa"), regexp = "nCol must be an integer > 0.")
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = 1:3), regexp = "nCol must be an integer > 0.")
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = -1),
+               regexp = "nCol must be an integer > 0.")
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = "aaa"),
+               regexp = "nCol must be an integer > 0.")
+  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = 1:3),
+               regexp = "nCol must be an integer > 0.")
+})
+
+test_that("plotData does not produce warnings with factor ids", {
+  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
+                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  d <- care
+  d$id <- as.factor(d$id)
+  expect_silent(plotData(d))
+
+  d <- d[c(3:4, 5:11, 1:2), ]
+  d$id <- as.factor(d$id)
+  expect_silent(plotData(d))
+})
+
+test_that("plotData does not produce warnings with integer ids", {
+  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
+                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  d <- care
+  expect_silent(plotData(d))
+
+  d <- d[c(3:4, 5:11, 1:2), ]
+  expect_silent(plotData(d))
+})
+
+test_that("plotData does not produce warnings with character ids", {
+  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
+                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  d <- care
+  d$id <- as.character(d$id)
+  expect_silent(plotData(d))
+
+  d <- d[c(3:4, 5:11, 1:2), ]
+  d$id <- as.character(d$id)
+  expect_silent(plotData(d))
 })
 
 test_that("summary_cfd words", {

@@ -46,6 +46,7 @@ tail(d_JK)
 d_JK2 <- cut_data(d_JK, Tmax = 8)
 tail(d_JK2)
 
+# do not prolong any state
 try(d_JK2 <- cut_data(d_JK, Tmax = 12, prolongLastState = c()))
 }
 \seealso{
