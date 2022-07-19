@@ -345,7 +345,7 @@ compute_Uxij <- function(x, phi, K, ...) {
   for (u in seq_len(nrow(x) - 1))
   {
     state <- x$state[u]
-    for (i in 1:nBasis)
+    for (i in seq_len(nBasis))
     {
       for (j in i:nBasis) # symmetry between i and j
       {

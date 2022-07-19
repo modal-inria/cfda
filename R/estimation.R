@@ -81,7 +81,7 @@ completeStatetable <- function(aux) {
     } else if (i == ncol(aux)) {
       aux1 <- rbind(aux1, rep(0, ncol(aux)))
     } else {
-      aux1 <- rbind(aux1[1:(i - 1), ], rep(0, ncol(aux)), aux1[i:nrow(aux1), ])
+      aux1 <- rbind(aux1[seq_len(i - 1), ], rep(0, ncol(aux)), aux1[i:nrow(aux1), ])
     }
   }
 

@@ -72,10 +72,10 @@ cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA, warning 
     } else {
       if (Tmax %in% data$time) {
         k <- which(data$time == Tmax)
-        return(data[1:k, ])
+        return(data[seq_len(k), ])
       } else {
         k <- max(which(data$time <= Tmax))
-        return(rbind(data[1:k, ], data.frame(state = data$state[k], time = Tmax, id = data$id[1])))
+        return(rbind(data[seq_len(k), ], data.frame(state = data$state[k], time = Tmax, id = data$id[1])))
       }
     }
   }

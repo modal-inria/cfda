@@ -102,7 +102,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
 
   if (addId) {
-    p <- p + scale_y_continuous(name = "Id", breaks = 1:nInd, labels = unique(d_graph$id)[order(unique(d_graph$position))])
+    p <- p + scale_y_continuous(name = "Id", breaks = seq_len(nInd), labels = unique(d_graph$id)[order(unique(d_graph$position))])
   } else {
     p <- p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
@@ -123,14 +123,14 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 rep_large_ind <- function(data) {
   out <- by(data, data$id, function(x) {
     d <- data.frame(
-      id = x$id[1:(nrow(x) - 1)],
-      t_start = x$time[1:(nrow(x) - 1)],
+      id = x$id[seq_len(nrow(x) - 1)],
+      t_start = x$time[seq_len(nrow(x) - 1)],
       t_end = x$time[2:nrow(x)],
-      state = x$state[1:(nrow(x) - 1)], stringsAsFactors = FALSE
+      state = x$state[seq_len(nrow(x) - 1)], stringsAsFactors = FALSE
     )
 
     if ("group" %in% names(data)) {
-      d$group <- x$group[1:(nrow(x) - 1)]
+      d$group <- x$group[seq_len(nrow(x) - 1)]
     }
 
     return(d)
