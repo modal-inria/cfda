@@ -112,6 +112,14 @@ interval notation. If labels = FALSE, simple integer codes are returned instead 
 
 <p>a data.frame in the cfda format</p>
     </div>
+    <div id="see-also">
+    <h2>See also</h2>
+    <div class="dont-index"><p><a href="flours.html">flours</a></p>
+<p>Other format: 
+<code><a href="cut_data.html">cut_data</a>()</code>,
+<code><a href="matrixToCfd.html">matrixToCfd</a>()</code>,
+<code><a href="remove_duplicated_states.html">remove_duplicated_states</a>()</code></p></div>
+    </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
@@ -130,7 +138,6 @@ interval notation. If labels = FALSE, simple integer codes are returned instead 
 <span class="r-in"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu">convertToCfd</span><span class="op">(</span><span class="va">temp</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                     labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Very Cold"</span>, <span class="st">"Cold"</span>, <span class="st">"Fresh"</span>, <span class="st">"OK"</span>, <span class="st">"Hot"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                     times <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">365</span>, byrow <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
