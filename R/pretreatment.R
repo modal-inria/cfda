@@ -63,7 +63,9 @@ cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA, warning 
                        Tmax, ". Please, add more records or change the Tmax value."))
       }
       d <- data
-      levels(d$state) = c(levels(d$state), NAstate)
+      if (is.factor(d$state)) {
+        levels(d$state) = c(levels(d$state), NAstate)
+      }
       d$state[l] <- NAstate
       return(rbind(d, data.frame(id = data$id[1], state = NAstate, time = Tmax)))
     }
