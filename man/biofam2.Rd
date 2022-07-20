@@ -39,6 +39,9 @@ Left home (Left), Married (Marr), Having Children (Child), Divorced:
 \examples{
 data(biofam2)
 head(biofam2)
+
+plotData(biofam2)
+
 \donttest{
 # It is recommended to increase the number of cores to reduce computation time
 set.seed(42)

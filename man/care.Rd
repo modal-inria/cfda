@@ -39,6 +39,8 @@ The four states are:
 data(care)
 head(care)
 
+plotData(care)
+
 # Individuals has not the same length. In order to compute the encoding,
 # we keep individuals with at least 18 months of history and work
 # with the 18 first months.
@@ -57,7 +59,6 @@ plot(fmca)
 plot(fmca, addCI = TRUE)
 plotComponent(fmca, addNames = FALSE)
 }
-
 }
 \seealso{
 Other datasets: 

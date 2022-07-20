@@ -40,6 +40,9 @@
 #' @examples
 #' data(biofam2)
 #' head(biofam2)
+#'
+#' plotData(biofam2)
+#'
 #' \donttest{
 #' # It is recommended to increase the number of cores to reduce computation time
 #' set.seed(42)
@@ -95,6 +98,8 @@ NULL
 #' data(care)
 #' head(care)
 #'
+#' plotData(care)
+#'
 #' # Individuals has not the same length. In order to compute the encoding,
 #' # we keep individuals with at least 18 months of history and work
 #' # with the 18 first months.
@@ -113,7 +118,6 @@ NULL
 #' plot(fmca, addCI = TRUE)
 #' plotComponent(fmca, addNames = FALSE)
 #' }
-#'
 #' @family datasets
 NULL
 

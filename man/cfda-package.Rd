@@ -19,7 +19,7 @@ A summary of the dataset is available with \code{\link{summary_cfd}}.
 \code{\link{plotData}} shows a graphical representation of the dataset.
 Basic statistics can be computed: the number of jumps (\code{\link{compute_number_jumps}}), the duration
 (\code{\link{compute_duration}}), the time spent in each state (\code{\link{compute_time_spent}}),
-the probability to be in each state at any given time (\code{\link{estimate_pt}}),  the transition table
+the probability to be in each state at any given time (\code{\link{estimate_pt}}), the transition table
 (\code{\link{statetable}}).
 
 The parameters of a Markov process can be estimated using \code{\link{estimate_Markov}} function.
