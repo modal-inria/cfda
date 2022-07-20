@@ -123,14 +123,14 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 rep_large_ind <- function(data) {
   out <- by(data, data$id, function(x) {
     d <- data.frame(
-      id = x$id[seq_len(nrow(x) - 1)],
-      t_start = x$time[seq_len(nrow(x) - 1)],
-      t_end = x$time[2:nrow(x)],
-      state = x$state[seq_len(nrow(x) - 1)], stringsAsFactors = FALSE
+      id = x$id[seq_len(max(nrow(x) - 1, 1))],
+      t_start = x$time[seq_len(max(nrow(x) - 1, 1))],
+      t_end = x$time[min(2, nrow(x)):nrow(x)],
+      state = x$state[seq_len(max(nrow(x) - 1, 1))], stringsAsFactors = FALSE
     )
 
     if ("group" %in% names(data)) {
-      d$group <- x$group[seq_len(nrow(x) - 1)]
+      d$group <- x$group[seq_len(max(nrow(x) - 1, 1))]
     }
 
     return(d)
@@ -138,7 +138,6 @@ rep_large_ind <- function(data) {
 
   return(do.call(rbind, out[match(unique(data$id), names(out))]))
 }
-
 
 computePosition <- function(data, id, sort = FALSE) {
   if (sort) {

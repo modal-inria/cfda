@@ -336,6 +336,33 @@ test_that("rep_large_ind works", {
   expect_equivalent(out, expectedOut[expectedOut$id == 1, ])
 })
 
+test_that("rep_large_ind works with data with one element", {
+  dat <- data.frame(id = 1, time = 0, state = 1)
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(
+    id = 1,
+    t_start = 0,
+    t_end = 0,
+    state = 1
+  )
+
+  expect_equivalent(out, expectedOut)
+})
+
+test_that("rep_large_ind works with group", {
+  dat <- data.frame(id = rep(1:2, c(6, 1)), time = c(0:5, 0), state = c(1:6, 1), group = rep(c(5, 2), c(6, 1)))
+  out <- rep_large_ind(dat)
+  expectedOut <- data.frame(
+    id = rep(1:2, c(5, 1)),
+    t_start = c(0:4, 0),
+    t_end = c(1:5, 0),
+    state = c(1:5, 1),
+    group = rep(c(5, 2), c(5, 1))
+  )
+
+  expect_equivalent(out, expectedOut)
+})
+
 test_that("rep_large_ind keeps id order int", {
   dat <- data.frame(id = rep(c(8, 5), c(6, 5)), time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
   out <- rep_large_ind(dat)
@@ -553,6 +580,12 @@ test_that("plotData does not produce warnings with character ids", {
   d$id <- as.character(d$id)
   expect_silent(plotData(d))
 })
+
+test_that("plotData does not produce warnings with care", {
+  data(care)
+  expect_silent(plotData(care))
+})
+
 
 test_that("summary_cfd words", {
   dat <- data.frame(id = rep(1:5, c(2, 1, 2, 2, 1)), time = c(0:1, 0, 0, 2, 0, 3, 0), state = c(1:2, 1, 1:2, 2:1, 2))
