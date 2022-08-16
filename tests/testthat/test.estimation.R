@@ -14,7 +14,6 @@ test_that("completeStatetable does not change a square statetable", {
 
 
 test_that("completeStatetable completes one missing row", {
-
   # middle
   aux <- matrix(c(0, 3, 4, 1, 3, 4, 1, 0, 4, 1, 3, 0), nrow = 3, dimnames = list(c(1, 3, 4), 1:4))
 
@@ -60,6 +59,27 @@ test_that("completeStatetable completes several missing rows", {
   expect_equal(out, expectedOut)
 })
 
+test_that("completeStatetable completes several missing rows (2 lasts)", {
+  aux <- matrix(c(0, 3, 1, 3, 1, 0, 1, 3), nrow = 2, dimnames = list(c(1, 2), 1:4))
+
+  out <- completeStatetable(aux)
+
+  expectedOut <- rbind(aux[1, ], aux[2, ], rep(0, 4), rep(0, 4))
+  rownames(expectedOut) <- 1:4
+
+  expect_equal(out, expectedOut)
+})
+
+test_that("completeStatetable completes several missing rows non integer labels", {
+  aux <- matrix(c(0, 3, 1, 3, 1, 0, 1, 3), nrow = 2, dimnames = list(c("A", "B"), c("A", "B", "C", "D")))
+
+  out <- completeStatetable(aux)
+
+  expectedOut <- rbind(aux[1, ], aux[2, ], rep(0, 4), rep(0, 4))
+  rownames(expectedOut) <- c("A", "B", "C", "D")
+
+  expect_equal(out, expectedOut)
+})
 
 test_that("estimateT estimates well", {
   data <- data.frame(
