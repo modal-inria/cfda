@@ -36,7 +36,9 @@ estimate_Markov <- function(data) {
 
   # estimation of the time spent in each state
   T_est <- estimateT(data)
-  lambda_est <- 1 / T_est
+  lambda_est <- rep(NaN, ncol(P_est))
+  names(lambda_est) <- colnames(P_est)
+  lambda_est[names(T_est)] <- 1 / T_est
 
   out <- list(P = P_est, lambda = lambda_est)
   class(out) <- "Markov"
