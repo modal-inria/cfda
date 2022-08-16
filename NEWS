@@ -1,3 +1,10 @@
+v0.10.1 2022-08-16
+- fix cut_data when state column is a factor
+- fix bug in plotData when id's are unevenly spaced integers
+- fix bug in plotData error when there are some individuals with only one element
+- fix bug in completeStatetable when the 2 last rows (or more) are missing
+- fix bug in estimate_Markov: no matching size between lambda and P when there is some missing rows in P
+
 v0.10.0 2022-07-19
 - add function to convert quantitative functional to categorial
 - add new parameters for cut_data: prolongLastState, NAstate
