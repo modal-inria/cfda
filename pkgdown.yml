@@ -3,7 +3,7 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   cfda: cfda.html
-last_built: 2022-07-20T09:44Z
+last_built: 2022-08-16T09:25Z
 urls:
   reference: https://modal-inria.github.io/cfda/reference
   article: https://modal-inria.github.io/cfda/articles
