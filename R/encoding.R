@@ -271,6 +271,43 @@ compute_Vxi <- function(x, phi, K, ...) {
   return(aux)
 }
 
+compute_integral_V <- function(phi, uniqueTime, ...) {
+  nBasis <- phi$basis$nbasis
+
+  integrals <- list()
+  for (i in seq_len(nBasis)) { # TODO parallel
+    integrals[[i]] <- rep(0., length(uniqueTime))
+    for (ii in seq_len(length(uniqueTime) - 1)) {
+      integrals[[i]][ii] <- integrate(
+        function(t) {
+          eval.fd(t, phi[i])
+        },
+        lower = uniqueTime[ii], upper = uniqueTime[ii + 1],
+        stop.on.error = FALSE, ...
+      )$value
+    }
+  }
+
+  return(integrals)
+}
+
+
+fill_V <- function(x, integrals, index, K, nBasis) {
+  aux <- rep(0, K * nBasis)
+  for (u in seq_len(nrow(x) - 1)) {
+    state <- x$state[u]
+    s <- as.character(x$time[u])
+    e <- as.character(x$time[u + 1])
+    for (i in seq_len(nBasis)) {
+        integral <- sum(integrals[[i]][index[s, ]:(index[e, ] - 1)])
+        ind <- (state - 1) * nBasis + i
+        aux[ind] <- aux[ind] + integral
+    }
+  }
+  return(aux)
+}
+
+
 # return a matrix with nId rows and nBasis * nState columns
 computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
   nBasis <- basisobj$nbasis
@@ -370,6 +407,51 @@ compute_Uxij <- function(x, phi, K, ...) {
 }
 
 
+
+compute_integral_U <- function(phi, uniqueTime, ...) {
+  nBasis <- phi$basis$nbasis
+
+  integrals <- list()
+  for (i in seq_len(nBasis)) { # TODO parallel
+    integrals[[i]] <- list()
+    for (j in i:nBasis) {
+      integrals[[i]][[j]] <- rep(0, length(uniqueTime))
+      for (ii in seq_len(length(uniqueTime) - 1)) {
+        integrals[[i]][[j]][ii] <- integrate(
+          function(t) {
+            eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+          },
+          lower = uniqueTime[ii], upper = uniqueTime[ii + 1],
+          stop.on.error = FALSE, ...
+        )$value
+      }
+    }
+  }
+  return(integrals)
+}
+
+fill_U <- function(x, integrals, index, K, nBasis) {
+  aux <- rep(0, K * nBasis * nBasis)
+  for (u in seq_len(nrow(x) - 1)) {
+    state <- x$state[u]
+    s <- as.character(x$time[u])
+    e <- as.character(x$time[u + 1])
+    for (i in seq_len(nBasis)) {
+      for (j in i:nBasis) { # symmetry between i and j
+        integral <- sum(integrals[[i]][[j]][index[s, ]:(index[e, ] - 1)])
+        ind <- (state - 1) * nBasis * nBasis + (i - 1) * nBasis + j
+        aux[ind] <- aux[ind] + integral
+
+        # when i == j, we are on the diagonal of the matrix, no symmetry to apply
+        if (i != j) {
+          ind <- (state - 1) * nBasis * nBasis + (j - 1) * nBasis + i
+          aux[ind] <- aux[ind] + integral
+        }
+      }
+    }
+  }
+  return(aux)
+}
 
 # @author Cristian Preda, Quentin Grimonprez
 computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage0 = FALSE) {
