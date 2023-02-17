@@ -7,7 +7,8 @@
 compute_time_spent(data)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+and \code{state}, associated state.}
 }
 \value{
 a matrix with \code{K} columns containing the total time spent in each state for each individual

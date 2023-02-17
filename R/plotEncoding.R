@@ -77,8 +77,7 @@ plot.fmca <- function(x, harm = 1, states = NULL, addCI = FALSE, coeff = 1.96, c
 # @author Quentin Grimonprez
 plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, col = NULL) {
   p <- ggplot()
-  for (i in match(states, colnames(fdmat$y)))
-  {
+  for (i in match(states, colnames(fdmat$y))) {
     df <- data.frame(
       time = fdmat$x,
       ymin = fdmat$y[, i] - sqrt(variance[[i]]) * coeff,
@@ -91,7 +90,11 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
     )
   }
 
-  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  df <- data.frame(
+    x = rep(fdmat$x, ncol(fdmat$y)),
+    y = as.vector(fdmat$y),
+    State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y))
+  )
   df <- df[df$State %in% states, ]
 
   p <- p +
@@ -113,7 +116,11 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
 # plot the encoding for each state
 # @author Quentin Grimonprez
 plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL) {
-  df <- data.frame(x = rep(fdmat$x, ncol(fdmat$y)), y = as.vector(fdmat$y), State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y)))
+  df <- data.frame(
+    x = rep(fdmat$x, ncol(fdmat$y)),
+    y = as.vector(fdmat$y),
+    State = factor(rep(colnames(fdmat$y), each = nrow(fdmat$y)), levels = colnames(fdmat$y))
+  )
 
   df <- df[df$State %in% states, ]
   p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
@@ -142,7 +149,8 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL) {
 #' @param fdObject If TRUE returns a \code{fd} object else a matrix
 #' @param nx (Only if \code{fdObject = TRUE}) Number of points to evaluate the encoding
 #'
-#' @return a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing the encoding of the state and \code{x}, the vector with time values.
+#' @return a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing
+#' the encoding of the state and \code{x}, the vector with time values.
 #'
 #' @details
 #' The encoding is \eqn{a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i}.

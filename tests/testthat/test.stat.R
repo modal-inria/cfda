@@ -130,7 +130,13 @@ test_that("estimate_pt works with same t", {
   expect_equal(names(out), c("pt", "t"))
   expect_equal(out$t, 0:5)
   expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
-  expect_equal(out$pt, matrix(c(1 / 2, 1 / 2, 0, 0, 0, 1, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 0, 1 / 2, 1, 0, 0), nrow = 3, dimnames = list(1:3, 0:5)))
+  expect_equal(
+    out$pt,
+    matrix(
+      c(1 / 2, 1 / 2, 0, 0, 0, 1, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 0, 1 / 2, 1, 0, 0),
+      nrow = 3, dimnames = list(1:3, 0:5)
+    )
+  )
 })
 
 
@@ -146,7 +152,13 @@ test_that("estimate_pt keeps unused levels", {
   expect_equal(names(out), c("pt", "t"))
   expect_equal(out$t, 0:5)
   expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
-  expect_equal(out$pt, matrix(c(1 / 2, 1 / 2, 0, 0, 0, 0, 1, 0, 1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1 / 2, 0, 1 / 2, 0, 1, 0, 0, 0), nrow = 4, dimnames = list(1:4, 0:5)))
+  expect_equal(
+    out$pt,
+    matrix(
+      c(1 / 2, 1 / 2, 0, 0, 0, 0, 1, 0, 1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1 / 2, 0, 1 / 2, 0, 1, 0, 0, 0),
+      nrow = 4, dimnames = list(1:4, 0:5)
+    )
+  )
 })
 
 
@@ -162,8 +174,16 @@ test_that("estimate_pt works with different t", {
   expect_equal(names(out), c("pt", "t"))
   expect_equal(out$t, c(0, 1, 1.5, 2, 3, 3.5, 4, 5, 6))
   expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
-  expect_equal(out$pt, matrix(c(1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1, 1 / 2, 1 / 2, 0, 1, 0, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0), nrow = 3, dimnames = list(1:3, out$t)))
-
+  expect_equal(
+    out$pt,
+    matrix(
+      c(
+        1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1, 1 / 2, 1 / 2, 0, 1, 0, 0,
+        1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0
+      ),
+      nrow = 3, dimnames = list(1:3, out$t)
+    )
+  )
 
   out <- estimate_pt(dat, NAafterTmax = TRUE)
 
@@ -171,7 +191,16 @@ test_that("estimate_pt works with different t", {
   expect_equal(names(out), c("pt", "t"))
   expect_equal(out$t, c(0, 1, 1.5, 2, 3, 3.5, 4, 5, 6))
   expect_equivalent(colSums(out$pt), rep(1, ncol(out$pt)))
-  expect_equal(out$pt, matrix(c(1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1, 1 / 2, 1 / 2, 0, 1, 0, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 0, 1, 0), nrow = 3, dimnames = list(1:3, out$t)))
+  expect_equal(
+    out$pt,
+    matrix(
+      c(
+        1 / 2, 1 / 2, 0, 0, 1 / 2, 1 / 2, 0, 0, 1, 1 / 2, 1 / 2, 0, 1, 0, 0, 1 / 2,
+        1 / 2, 0, 1 / 2, 1 / 2, 0, 1 / 2, 1 / 2, 0, 0, 1, 0
+      ),
+      nrow = 3, dimnames = list(1:3, out$t)
+    )
+  )
 })
 
 
@@ -426,7 +455,11 @@ test_that("orderFirstState works", {
 
 
 test_that("computePosition works", {
-  dat <- data.frame(id = rep(1:5, each = 2), time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)), state = c(1:2, 2:1, 2:1, 2:1, 1:2))
+  dat <- data.frame(
+    id = rep(1:5, each = 2),
+    time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)),
+    state = c(1:2, 2:1, 2:1, 2:1, 1:2)
+  )
   d <- rep_large_ind(dat)
 
   out <- computePosition(dat, d$id, sort = FALSE)
@@ -507,13 +540,19 @@ test_that("plotData does not produce warnings", {
   group <- rep(1:2, c(3, 7))
 
   expect_warning(plotData(d_JK, addId = TRUE, addBorder = TRUE, sort = FALSE), regexp = NA)
-  expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")), regexp = NA)
+  expect_warning(
+    plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")),
+    regexp = NA
+  )
   expect_silent(plotData(d_JK, addId = FALSE, addBorder = FALSE, col = c("red", "blue", "green", "yellow")))
   expect_warning(plotData(d_JK, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE), regexp = NA)
   expect_warning(plotData(d_JK, group = group, addId = FALSE, addBorder = FALSE, sort = TRUE, nCol = 2), regexp = NA)
-  expect_warning(plotData(d_JK, group = as.factor(group), addId = FALSE, addBorder = FALSE, sort = TRUE, nCol = 2), regexp = NA)
+  expect_warning(
+    plotData(d_JK, group = as.factor(group), addId = FALSE, addBorder = FALSE, sort = TRUE, nCol = 2),
+    regexp = NA
+  )
 })
 
 test_that("plotData produces an error when group is bad", {
@@ -524,8 +563,14 @@ test_that("plotData produces an error when group is bad", {
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
 
-  expect_error(plotData(d_JK, group = 2, addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of ids of data.")
-  expect_error(plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE), regexp = "group must be a vector with the same length than the number of ids of data.")
+  expect_error(
+    plotData(d_JK, group = 2, addId = FALSE, addBorder = FALSE, sort = FALSE),
+    regexp = "group must be a vector with the same length than the number of ids of data."
+  )
+  expect_error(
+    plotData(d_JK, group = 2:nrow(d_JK), addId = FALSE, addBorder = FALSE, sort = FALSE),
+    regexp = "group must be a vector with the same length than the number of ids of data."
+  )
 })
 
 test_that("plotData produces an error when nCol is bad", {

@@ -244,7 +244,7 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
     outData <- rbind(outData, data.frame(id = labels[ind], time = times[nTimes, indT], state = X[nTimes, ind]))
   }
 
-  rownames(outData) = NULL
+  rownames(outData) <- NULL
   return(outData)
 }
 
@@ -282,7 +282,8 @@ quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, 
 #' giving the number of intervals into which x is to be cut.
 #' @param labels labels for the levels of the resulting category. By default, labels are constructed using "(a,b]"
 #' interval notation. If labels = FALSE, simple integer codes are returned instead of a factor.
-#' @param include.lowest logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’ value should be included.
+#' @param include.lowest logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’
+#' value should be included.
 #' @param right logical, indicating if the intervals should be closed on the right (and open on the left) or vice versa.
 #' @param times vector containing values at which \code{fd} is to be evaluated
 #' @param idLabels vector containing id labels. If NULL it use the names found in the matrix or fd object

@@ -49,7 +49,8 @@ estimate_Markov <- function(data) {
 
 # estimate the mean time spent in each state
 #
-# @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+# @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+# \code{state}, associated state.
 #
 estimateT <- function(data) {
   tSpentInState <- by(
@@ -69,7 +70,7 @@ estimateT <- function(data) {
 
 
 
-# identifier les etats d'ou on part jamais dans [0,T] (absorbants ou pas)
+# identifier les états d'où on part jamais dans [0,T] (absorbants ou pas)
 # add row (containing 0s) for the missing state
 #
 # @param aux output of statetable.msm

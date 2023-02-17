@@ -7,15 +7,18 @@
 estimate_pt(data, NAafterTmax = FALSE)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+and \code{state}, associated state.}
 
-\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)}
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+(useful when individuals has different lengths)}
 }
 \value{
 A list of two elements:
 \itemize{
   \item{t: vector of time}
-  \item{pt: a matrix with K (= number of states) rows and with \code{length(t)} columns containing the probabilities to be in each state at each time.}
+  \item{pt: a matrix with K (= number of states) rows and with \code{length(t)} columns containing the
+probabilities to be in each state at each time.}
 }
 }
 \description{

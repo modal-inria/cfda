@@ -79,8 +79,7 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
   # create F matrix
   Fval <- colMeans(Fval)
   Fmat <- matrix(0, ncol = K * nBasis, nrow = K * nBasis) # matrice avec K blocs de taille nBasis*nBasis sur la diagonale
-  for (i in 1:K)
-  {
+  for (i in 1:K) {
     Fmat[((i - 1) * nBasis + 1):(i * nBasis), ((i - 1) * nBasis + 1):(i * nBasis)] <-
       matrix(Fval[((i - 1) * nBasis * nBasis + 1):(i * nBasis * nBasis)], ncol = nBasis, byrow = TRUE)
   }
@@ -186,14 +185,21 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
     {
       fmcaNew <- compute_optimal_encoding(d, b, computeCI = FALSE, nCores = 1, verbose = FALSE)
     },
-    regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.",
+    regexp = paste(
+      "The F matrix contains at least one column of 0s.",
+      "At least one state is not present in the support of one basis function.",
+      "Corresponding coefficients in the alpha output will have a 0 value."
+    ),
     fixed = TRUE
   )
   expect_error(
     {
       fmcaOld <- oldcompute_optimal_encoding(d, b, nCores = 1, verbose = FALSE)
     },
-    regexp = "F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.",
+    regexp = paste(
+      "F matrix is not invertible. In the support of each basis function,",
+      "each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis."
+    ),
     fixed = TRUE
   )
 
@@ -209,7 +215,11 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
     {
       fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, nCores = 1, verbose = FALSE)
     },
-    regexp = "The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.",
+    regexp = paste(
+      "The F matrix contains at least one column of 0s.",
+      "At least one state is not present in the support of one basis function.",
+      "Corresponding coefficients in the alpha output will have a 0 value."
+    ),
     fixed = TRUE
   )
 
@@ -232,7 +242,10 @@ test_that("removeTimeAssociatedWithNACoeff works", {
   fdmat <- matrix(rnorm(80), nrow = 20, ncol = 4, dimnames = list(NULL, c("b", "d", "a", "e")))
   timeVal <- 1:20
 
-  pt <- list(t = seq(1, 20, length = 10), pt = matrix(runif(50, 0, 1), nrow = 5, ncol = 10, dimnames = list(c(letters[1:5]), NULL)))
+  pt <- list(
+    t = seq(1, 20, length = 10),
+    pt = matrix(runif(50, 0, 1), nrow = 5, ncol = 10, dimnames = list(c(letters[1:5]), NULL))
+  )
   class(pt) <- "pt"
   pt$pt[1, 1:5] <- 0
   pt$pt[4, 3:5] <- 0

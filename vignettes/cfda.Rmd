@@ -23,7 +23,7 @@ library(cfda)
 set.seed(42)
 ```
 
-We simulate the Jukes Cantor model of nucleotide replacement. 
+We simulate the Jukes Cantor model of nucleotide replacement.
 
 Denote the set of nucleotides: $E = \{A, T, G, C\}$. A DNA sequence is seen as a string of nucleotides: `ATGCATTAC`.
 
@@ -33,8 +33,8 @@ In the Jukes-Cantor model (1969), each site is a Markovian jump process with con
 
 $$ Q = \ \ \ \begin{array}{c|cccc}
 &A&T&G&C \\ \hline
-A&-3\alpha&\alpha&\alpha&\alpha\\ 
-T&\alpha&-3\alpha&\alpha&\alpha\\ 
+A&-3\alpha&\alpha&\alpha&\alpha\\
+T&\alpha&-3\alpha&\alpha&\alpha\\
 G&\alpha&\alpha&-3\alpha&\alpha\\
 C&\alpha&\alpha&\alpha&-3\alpha\\ \hline
 \end{array}$$
@@ -42,13 +42,13 @@ C&\alpha&\alpha&\alpha&-3\alpha\\ \hline
 for some $\alpha >0$.
 
 
-Let assume that the process is observed over the period $[0,T_{\max}]$ in $n$ sites with the nucleotide $A$ at time $t=0$. In the following, nucleotides are recoded: $A\leftrightarrow 1$, $T\leftrightarrow 2$, $G\leftrightarrow 3$, $C\leftrightarrow 4$. 
+Let assume that the process is observed over the period $[0,T_{\max}]$ in $n$ sites with the nucleotide $A$ at time $t=0$. In the following, nucleotides are recoded: $A\leftrightarrow 1$, $T\leftrightarrow 2$, $G\leftrightarrow 3$, $C\leftrightarrow 4$.
 
 
 ```{r genData, echo=TRUE}
 K <- 4
-PJK <- matrix(1/3, ncol = K, nrow = K) - diag(rep(1/3, K))
-lambda_PJK = c(1, 1, 1, 1)
+PJK <- matrix(1 / 3, ncol = K, nrow = K) - diag(rep(1 / 3, K))
+lambda_PJK <- c(1, 1, 1, 1)
 
 Tmax <- 10
 n <- 100
@@ -77,7 +77,7 @@ d_JKT <- cut_data(d_JK, Tmax = Tmax)
 ```
 
 
-Individuals can be plotted: 
+Individuals can be plotted:
 ```{r plot, echo=TRUE, fig.height = 7}
 plotData(d_JKT)
 ```
@@ -90,36 +90,36 @@ Generally, in categorical functional data analysis, the following basic statisti
 ### Time spent in each state over a period of length $T_{\max}$:
 
 For each individual, the time spent in each of the $K$ states is computed.
- 
-```{r, echo=TRUE}  
+
+```{r, echo=TRUE}
 timeSpent <- compute_time_spent(d_JKT)
-timeSpent[1:10,]
+timeSpent[1:10, ]
 ```
 
 The results can be plotted:
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 boxplot(timeSpent)
-```  
+```
 
 
 ### Number of jumps in $[0,T_{\max}]$:
- 
+
 For each individual, the number of jumps occurring in $[0,T_{\max}]$ is computed.
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 nJump <- compute_number_jumps(d_JK)
 head(nJump)
-``` 
+```
 
 The results can be plotted:
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 hist(nJump)
-``` 
-  
+```
 
-### Probabilities to be in some state $x$ at time $t$, $p_{x}(t)$: 
+
+### Probabilities to be in some state $x$ at time $t$, $p_{x}(t)$:
 
 An other interesting statistic is the evolution of the probability to be in each state.
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 pt_evol <- estimate_pt(d_JKT)
 pt_evol$pt[1:K, 1:10]
 head(pt_evol$t)
@@ -127,29 +127,29 @@ head(pt_evol$t)
 
 The output is a list with two elements: `t` the different time values and `pt` a matrix where each row contains the probability to be in a given state for all the time values. The result can be plotted:
 
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 plot(pt_evol, ribbon = TRUE)
-```  
-  
-  
-### Transitions in $[0,T_{\max}]$: 
+```
+
+
+### Transitions in $[0,T_{\max}]$:
 
 The transitions between states can been studied by computing a frequency table counting the number of times each pair of states were observed in successive observation times.
 
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 statetable(d_JK)
-``` 
+```
 
 
 Assuming that the data follows a Markov process, parameters $P$ (transition probability matrix) and $\lambda$ of the process can be estimated.
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 mark <- estimate_Markov(d_JK)
 mark
 ```
 
 The estimated parameters are closed to the ones used. The results can be plotted through a transition graph where each node corresponds to a state with the mean time spent within (corresponding to $1/\lambda$) and arrows correspond to transition probabilities between states.
 
-```{r, echo=TRUE}  
+```{r, echo=TRUE}
 plot(mark)
 ```
 
@@ -171,12 +171,12 @@ The idea is to find a scalar real random variable $z \in L_2(\Omega)$ that is th
 
 For a fixed $t\in [0,T_{\max}]$, let $E^{t}$ the projection operator,
 $$E^{t}(z) = \mathbb{E}(z|X_{t}) = \sum_{x\in S}{\mathbb{E}(z|X_t=x) \mathbf{1}_{X_t=x}}$$
-Then, the correlation coefficient between $z$ and $X_{t}$ is: $$\eta^{2}(z, X_{t}) = \frac{var(\mathbb{E}(z|X_{t}))}{var(z)}$$ 
+Then, the correlation coefficient between $z$ and $X_{t}$ is: $$\eta^{2}(z, X_{t}) = \frac{var(\mathbb{E}(z|X_{t}))}{var(z)}$$
 
 
 
 
-For $t, s \in [0,T_{\max}]$, the *(simple) correspondence analysis* looks for $z$ such that it maximizes $$\displaystyle\frac{1}{2}\left(\eta^{2}(z, X_{t})+\eta^{2}(z, X_{s})\right)$$   
+For $t, s \in [0,T_{\max}]$, the *(simple) correspondence analysis* looks for $z$ such that it maximizes $$\displaystyle\frac{1}{2}\left(\eta^{2}(z, X_{t})+\eta^{2}(z, X_{s})\right)$$
 and the solution is:
 
 $$(E^{t}+E^{s})z = \lambda z$$
@@ -184,21 +184,21 @@ $z$ is called a *principal component*.
 
 
 As an extension, the *functional correspondence analysis* is defined as the solution of
-the optimization problem: 
+the optimization problem:
 
  $$ \arg\max_{z}\displaystyle\frac{1}{T_{max}}\int_{0}^{T_{max}}\eta^{2}(z, X_{t})dt$$
 Solution: $$\int_{0}^{T_{max}}E^{s}z\ ds = \lambda z$$
 
-Denote $\xi_t = E^{t}z$, 
+Denote $\xi_t = E^{t}z$,
 
-$$\int_0^{T_{\max}}K(t,s)\xi_s\ ds = \lambda \xi_t, \ \ \ \ \mbox{with}\ K(s,t) = E^tE^s. $$  
+$$\int_0^{T_{\max}}K(t,s)\xi_s\ ds = \lambda \xi_t, \ \ \ \ \mbox{with}\ K(s,t) = E^tE^s. $$
 
 
-It follows that,  
+It follows that,
 $$\xi_{t} = \sum_{x\in S}a_{x}(t)\mathbf{1}_{X_t=x}$$
 with $a_x(t) =\mathbb{E}(z|X_t= x), \ \ \forall x \in S$.
 
-For each $x\in S$, the functions $a_x: [0,T_{\max}|\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$. 
+For each $x\in S$, the functions $a_x: [0,T_{\max}|\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$.
 
 The eigenvalue problem becomes in terms of encodings:
 
@@ -209,7 +209,7 @@ where$p_{x,y}(t,s) = \mathbb{P}(X_t=x, X_s=y)$ and $p_x(t)= \mathbb{P}(X_t=x)$.
 
 Under general conditions (continuity in probability of $X$), there exists $\{\lambda_i\}_{i\geq1}$ positive eigen-values and
 $\{a_x^i\}_{i\geq 1}$
-eigen-functions.  
+eigen-functions.
 
 The following expansion formula holds (Mercer thm.):
 
@@ -220,10 +220,10 @@ $$p_x(t) =\displaystyle\frac{1}{\displaystyle\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^
 
 
 
-We are interested in approximating the encoding functions, $a_x$, by 
+We are interested in approximating the encoding functions, $a_x$, by
 
 $$a_{x} \approx \sum_{i=1}^m \alpha_{x,i}\phi_i, $$
-where $\mathbf{\alpha_x} = (\alpha_{x,1}, \ldots, \alpha_{x,m}) \in \mathbb{R}^m$ are the expansion coefficients onto a basis of functions defined on $[0,T]$, $\{\phi_1, \ldots, \phi_m\}$, $m \geq 1$. 
+where $\mathbf{\alpha_x} = (\alpha_{x,1}, \ldots, \alpha_{x,m}) \in \mathbb{R}^m$ are the expansion coefficients onto a basis of functions defined on $[0,T]$, $\{\phi_1, \ldots, \phi_m\}$, $m \geq 1$.
 
 
 
@@ -234,7 +234,7 @@ is the solution of the following eigen-value problem:
 $$F^{-1}G\alpha = \lambda\alpha, $$
 where $G$ and $F$ the matrix defined by: $$G = cov(\{V_{(x,i)}\}_{x\in S; i=1:m }),$$
 $$F = \mathbb{E}\left(\{F_{(x,i),(y,j)}\}_{x,y\in S ; i,j=1:m}\right)$$
-with the random variables $V_{(x,i)}$ and $F_{(x,i),(x,j)}$ defined by: $$V_{(x,i)} = \int_{0}^{T_{\max}}\phi_i(t)\mathbf{1}_xdt \ \ \ \ \mbox{and}\ \ \ \ 
+with the random variables $V_{(x,i)}$ and $F_{(x,i),(x,j)}$ defined by: $$V_{(x,i)} = \int_{0}^{T_{\max}}\phi_i(t)\mathbf{1}_xdt \ \ \ \ \mbox{and}\ \ \ \
 F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}_y dt$$
 
 
@@ -245,7 +245,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 
 
 Firstly, a basis of functions must be defined. We choose a B-splines basis of order 4.
-```{r, echo=TRUE} 
+```{r, echo=TRUE}
 m <- 10
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 ```

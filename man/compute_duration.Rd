@@ -7,7 +7,8 @@
 compute_duration(data)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+and \code{state}, associated state.}
 }
 \value{
 a vector containing the duration of each trajectories

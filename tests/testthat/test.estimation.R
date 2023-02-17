@@ -125,9 +125,9 @@ test_that("estimate_Markov works with missing transitions", {
   d_JK <- data.frame(id = rep(1:10, each = 2),
                      time = rep(0:1, 10),
                      state = rep(c("C", "D"), 10))
-  d_JK$state[2] = "T"
-  d_JK$state[3:4] = c("D", "T")
-  d_JK$state[6] = "C"
+  d_JK$state[2] <- "T"
+  d_JK$state[3:4] <- c("D", "T")
+  d_JK$state[6] <- "C"
 
   mark <- estimate_Markov(d_JK)
   lam <- c(1, 1, NaN)

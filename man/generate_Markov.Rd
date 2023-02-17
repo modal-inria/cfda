@@ -19,7 +19,8 @@ generate_Markov(
 
 \item{K}{number of states}
 
-\item{P}{matrix containing the transition probabilities from one state to another. Each row contains positive reals summing to 1.}
+\item{P}{matrix containing the transition probabilities from one state to another.
+Each row contains positive reals summing to 1.}
 
 \item{lambda}{time spent in each state}
 
@@ -30,13 +31,16 @@ generate_Markov(
 \item{labels}{state names. If \code{NULL}, integers are used}
 }
 \value{
-a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
+a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time},
+time at which a change occurs and \code{state}, new state.
 }
 \description{
-Simulate individuals from a Markov process defined by a transition matrix, time spent in each time and initial probabilities.
+Simulate individuals from a Markov process defined by a transition matrix,
+time spent in each time and initial probabilities.
 }
 \details{
-For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j}, the next state and time is simulated as follows:
+For one individual, assuming the current state is \eqn{s_j} at time \eqn{t_j},
+the next state and time is simulated as follows:
 \enumerate{
 \item generate one sample, \eqn{d}, of an exponential law of parameter \code{lambda[s_j]}
 \item define the next time values as: \eqn{t_{j+1} = t_j + d}

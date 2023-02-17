@@ -25,7 +25,8 @@ giving the number of intervals into which x is to be cut.}
 \item{labels}{labels for the levels of the resulting category. By default, labels are constructed using "(a,b]"
 interval notation. If labels = FALSE, simple integer codes are returned instead of a factor.}
 
-\item{include.lowest}{logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’ value should be included.}
+\item{include.lowest}{logical, indicating if an ‘x[i]’ equal to the lowest (or highest, for right = FALSE) ‘breaks’
+value should be included.}
 
 \item{right}{logical, indicating if the intervals should be closed on the right (and open on the left) or vice versa.}
 
