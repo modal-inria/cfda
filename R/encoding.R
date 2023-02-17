@@ -252,18 +252,18 @@ compute_Vxi <- function(x, phi, K, ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis) # V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
 
-  for (u in seq_len(nrow(x) - 1))
-  {
+  for (u in seq_len(nrow(x) - 1)) {
     state <- x$state[u]
 
-    for (j in seq_len(nBasis)) # j = la base
-    {
-      aux[(state - 1) * nBasis + j] <- aux[(state - 1) * nBasis + j] +
-        integrate(function(t) {
-          eval.fd(t, phi[j])
-        },
-        lower = x$time[u], upper = x$time[u + 1],
-        stop.on.error = FALSE, ...
+    for (j in seq_len(nBasis)) { # j = la base
+      ind <- (state - 1) * nBasis + j
+      aux[ind] <- aux[ind] +
+        integrate(
+          function(t) {
+            eval.fd(t, phi[j])
+          },
+          lower = x$time[u], upper = x$time[u + 1],
+          stop.on.error = FALSE, ...
         )$value
     }
   }
@@ -342,26 +342,25 @@ compute_Uxij <- function(x, phi, K, ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
 
-  for (u in seq_len(nrow(x) - 1))
-  {
+  for (u in seq_len(nrow(x) - 1)) {
     state <- x$state[u]
-    for (i in seq_len(nBasis))
-    {
-      for (j in i:nBasis) # symmetry between i and j
-      {
-        integral <- integrate(function(t) {
-          eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-        },
-        lower = x$time[u], upper = x$time[u + 1],
-        stop.on.error = FALSE, ...
+    for (i in seq_len(nBasis)) {
+      for (j in i:nBasis) { # symmetry between i and j
+        integral <- integrate(
+          function(t) {
+            eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+          },
+          lower = x$time[u], upper = x$time[u + 1],
+          stop.on.error = FALSE, ...
         )$value
 
-        aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] <- aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] + integral
-
+        ind <- (state - 1) * nBasis * nBasis + (i - 1) * nBasis + j
+        aux[ind] <- aux[ind] + integral
 
         # when i == j, we are on the diagonal of the matrix, no symmetry to apply
         if (i != j) {
-          aux[(state - 1) * nBasis * nBasis + (j - 1) * nBasis + i] <- aux[(state - 1) * nBasis * nBasis + (j - 1) * nBasis + i] + integral
+          ind <- (state - 1) * nBasis * nBasis + (j - 1) * nBasis + i
+          aux[ind] <- aux[ind] + integral
         }
       }
     }
@@ -384,8 +383,7 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   # create F matrix
   Fval <- colMeans(Uval)
   Fmat <- matrix(0, ncol = K * nBasis, nrow = K * nBasis) # diagonal-block matrix with K blocks of size nBasis*nBasis
-  for (i in seq_len(K))
-  {
+  for (i in seq_len(K)) {
     Fmat[((i - 1) * nBasis + 1):(i * nBasis), ((i - 1) * nBasis + 1):(i * nBasis)] <-
       matrix(Fval[((i - 1) * nBasis * nBasis + 1):(i * nBasis * nBasis)], ncol = nBasis, byrow = TRUE)
   }
@@ -401,7 +399,11 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
     # column full of 0
     ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
     if (sum(ind0) > 0) {
-      warning("The F matrix contains at least one column of 0s. At least one state is not present in the support of one basis function. Corresponding coefficients in the alpha output will have a 0 value.")
+      warning(paste(
+        "The F matrix contains at least one column of 0s.",
+        "At least one state is not present in the support of one basis function.",
+        "Corresponding coefficients in the alpha output will have a 0 value."
+      ))
     }
 
     F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
@@ -416,7 +418,10 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
     if (any(dim(F05) != rep(K * nBasis, 2))) {
       cat("\n")
       if (any(colSums(Fmat) == 0)) {
-        stop("F matrix is not invertible. In the support of each basis function, each state must be present at least once (p(x_t) != 0 for t in the support). You can try to change the basis.")
+        stop(paste("F matrix is not invertible. In the support of each basis function,",
+          "each state must be present at least once (p(x_t) != 0 for t in the support).",
+          "You can try to change the basis."
+        ))
       }
 
       stop("F matrix is not invertible. You can try to change the basis.")

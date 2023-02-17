@@ -7,7 +7,8 @@
 \format{
 \code{flours} is a list of 3 elements:
 \itemize{
-  \item \code{data} A matrix of size 241*115 containing the resistance of dough (measured every 2s) during the kneading process. One dough batch = 1 column
+  \item \code{data} A matrix of size 241*115 containing the resistance of dough (measured every 2s) during the kneading
+process. One dough batch = 1 column
   \item \code{quality} Quality of cookies baked with the associated dough (1=Good, 2=Medium, 3=Bad)
   \item \code{time} time values
 }

@@ -16,7 +16,8 @@ get_encoding(x, harm = 1, fdObject = FALSE, nx = NULL)
 \item{nx}{(Only if \code{fdObject = TRUE}) Number of points to evaluate the encoding}
 }
 \value{
-a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing the encoding of the state and \code{x}, the vector with time values.
+a \code{fd} object or a list of two elements \code{y}, a matrix with \code{nx} rows containing
+the encoding of the state and \code{x}, the vector with time values.
 }
 \description{
 Extract the encoding as an \code{fd} object or as a matrix

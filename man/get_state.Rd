@@ -7,11 +7,13 @@
 get_state(data, t, NAafterTmax = FALSE)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state.}
 
 \item{t}{time at which extract the state}
 
-\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)}
+\item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+(useful when individuals has different lengths)}
 }
 \value{
 a vector containing the state of each individual at time t

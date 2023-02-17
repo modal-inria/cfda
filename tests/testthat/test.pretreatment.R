@@ -219,7 +219,11 @@ test_that("remove_duplicated_states.intern works with keep.last = TRUE", {
 })
 
 test_that("remove_duplicated_states works", {
-  data <- data.frame(id = rep(1:3, c(10, 3, 8)), time = c(1:10, 1:3, 1:8), state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1))))
+  data <- data.frame(
+    id = rep(1:3, c(10, 3, 8)),
+    time = c(1:10, 1:3, 1:8),
+    state = c(rep(1:5, each = 2), 1:3, rep(1:3, c(1, 6, 1)))
+  )
 
   out <- remove_duplicated_states(data, keep.last = FALSE)
   expectedOut <- data.frame(id = rep(1:3, c(5, 3, 3)), time = c(1:5 * 2 - 1, 1:3, 1, 2, 8), state = c(1:5, 1:3, 1:3))
@@ -326,7 +330,7 @@ test_that("matrixToCfd errors", {
 
 
 data("CanadianWeather")
-temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
+temp <- CanadianWeather$dailyAv[, , "Temperature.C"]
 basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 fd <- smooth.basis(1:365, temp, basis)$fd
 
@@ -344,7 +348,7 @@ test_that("quantiMatrixToCfd works", {
   expectedOut <- data.frame(id = rep("St. Johns", 10),
                             time = c(0, 94, 164, 271, 275, 276, 335, 340, 341, 364),
                             state = c("Cold", "Fresh", "OK", "Fresh", "OK", "Fresh", "Cold", "Fresh", "Cold", "Cold"))
-  expect_equal(out[out$id==out$id[1], ], expectedOut)
+  expect_equal(out[out$id == out$id[1], ], expectedOut)
 })
 
 test_that("quantiMatrixToCfd errors", {
@@ -369,7 +373,7 @@ test_that("fdToCfd works", {
   expectedOut <- data.frame(id = rep("St. Johns", 6),
                             time = c(1, 97, 161, 271, 340, 365),
                             state = c("Cold", "Fresh", "OK", "Fresh", "Cold", "Cold"))
-  expect_equal(out[out$id==out$id[1], ], expectedOut)
+  expect_equal(out[out$id == out$id[1], ], expectedOut)
 })
 
 test_that("fdToCfd errors", {
@@ -395,7 +399,7 @@ test_that("convertToCfd works with matrix", {
   expectedOut <- data.frame(id = rep("St. Johns", 10),
                             time = c(0, 94, 164, 271, 275, 276, 335, 340, 341, 364),
                             state = c("Cold", "Fresh", "OK", "Fresh", "OK", "Fresh", "Cold", "Fresh", "Cold", "Cold"))
-  expect_equal(out[out$id==out$id[1], ], expectedOut)
+  expect_equal(out[out$id == out$id[1], ], expectedOut)
 })
 
 test_that("convertToCfd works with fd", {
@@ -411,7 +415,7 @@ test_that("convertToCfd works with fd", {
   expectedOut <- data.frame(id = rep("St. Johns", 6),
                             time = c(1, 97, 161, 271, 340, 365),
                             state = c("Cold", "Fresh", "OK", "Fresh", "Cold", "Cold"))
-  expect_equal(out[out$id==out$id[1], ], expectedOut)
+  expect_equal(out[out$id == out$id[1], ], expectedOut)
 })
 
 test_that("convertToCfd errors", {
@@ -423,4 +427,3 @@ test_that("convertToCfd errors", {
                             labels = c("Very Cold"), times = 1:365),
                "The conversion has generated NA. Please, correct your breaks.")
 })
-

@@ -94,21 +94,60 @@ test_that("compute_optimal_encoding throws error", {
   m <- 10
   b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
 
-  expect_error(compute_optimal_encoding(d_JK2, b, nCores = 1, computeCI = 2), regexp = "computeCI must be either TRUE or FALSE.")
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, nCores = 1, computeCI = 2),
+    regexp = "computeCI must be either TRUE or FALSE."
+  )
 
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 0, propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 10.5, propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = NA, propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = c(), propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = c(20, 50), propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = NaN, propBootstrap = 0.5), regexp = "nBootstrap must be an integer > 0.")
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 0, propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 10.5, propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = NA, propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = c(), propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = c(20, 50), propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = NaN, propBootstrap = 0.5),
+    regexp = "nBootstrap must be an integer > 0."
+  )
 
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0), regexp = "propBootstrap must be a real between 0 and 1.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1.5), regexp = "propBootstrap must be a real between 0 and 1.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = c(0.5, 0.8)), regexp = "propBootstrap must be a real between 0 and 1.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = NA), regexp = "propBootstrap must be a real between 0 and 1.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = NaN), regexp = "propBootstrap must be a real between 0 and 1.")
-  expect_error(compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = c()), regexp = "propBootstrap must be a real between 0 and 1.")
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1.5),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = c(0.5, 0.8)),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = NA),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = NaN),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
+  expect_error(
+    compute_optimal_encoding(d_JK2, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = c()),
+    regexp = "propBootstrap must be a real between 0 and 1."
+  )
 })
 
 
@@ -126,10 +165,17 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   row.names(dT) <- NULL
 
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE))
+  expect_silent(
+    fmca <- compute_optimal_encoding(
+      dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE
+    )
+  )
 
   expect_type(fmca, "list")
-  expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt", "bootstrap", "varAlpha", "runTime"))
+  expect_named(
+    fmca,
+    c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt", "bootstrap", "varAlpha", "runTime")
+  )
 
   ## bootstrap
   expect_length(fmca$bootstrap, 50)

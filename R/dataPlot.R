@@ -102,7 +102,9 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
 
   if (addId) {
-    p <- p + scale_y_continuous(name = "Id", breaks = seq_len(nInd), labels = unique(d_graph$id)[order(unique(d_graph$position))])
+    p <- p + scale_y_continuous(
+      name = "Id", breaks = seq_len(nInd), labels = unique(d_graph$id)[order(unique(d_graph$position))]
+    )
   } else {
     p <- p + theme(axis.ticks.y = element_blank(), axis.text.y = element_blank())
   }
@@ -147,7 +149,8 @@ computePosition <- function(data, id, sort = FALSE) {
     ord <- match(id, b$id)
     position <- ord # position of id on the y-axis
   } else {
-    position <- unclass(factor(id, levels = unique(id))) # return integers associated with the different ids (labels from a factor)
+    # return integers associated with the different ids (labels from a factor)
+    position <- unclass(factor(id, levels = unique(id)))
   }
 
   return(position)
@@ -182,6 +185,8 @@ orderFirstState <- function(data) {
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {
     x[order(x$time), ]
   }))
+
+  return(firstStateOrdered)
 }
 
 

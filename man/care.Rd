@@ -13,7 +13,8 @@ A data.frame containing three columns:
 }
 }
 \source{
-https://larmarange.github.io/analyse-R/data/care_trajectories.RData https://larmarange.github.io/analyse-R/trajectoires-de-soins.html
+https://larmarange.github.io/analyse-R/data/care_trajectories.RData
+https://larmarange.github.io/analyse-R/trajectoires-de-soins.html
 }
 \usage{
 data(care)

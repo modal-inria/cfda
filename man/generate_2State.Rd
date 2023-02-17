@@ -10,10 +10,12 @@ generate_2State(n)
 \item{n}{number of individuals}
 }
 \value{
-a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, new state.
+a data.frame with 3 columns: \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, new state.
 }
 \description{
-Generate individuals such that each individual starts at time 0 with state 0 and then an unique change to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
+Generate individuals such that each individual starts at time 0 with state 0 and then an unique change
+to state 1 occurs at a time \eqn{t} generated using an uniform law between 0 and 1.
 }
 \author{
 Cristian Preda, Quentin Grimonprez

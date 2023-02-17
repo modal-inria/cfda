@@ -2,7 +2,8 @@
 #'
 #' For each individual, compute the time spent in each state
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+#' and \code{state}, associated state.
 #'
 #' @return a matrix with \code{K} columns containing the total time spent in each state for each individual
 #'
@@ -114,7 +115,8 @@ boxplot.timeSpent <- function(x, col = NULL, ...) {
 #'
 #' For each individual, compute the duration
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+#' and \code{state}, associated state.
 #'
 #' @return a vector containing the duration of each trajectories
 #'
@@ -195,9 +197,11 @@ hist.duration <- function(x, breaks = NULL, ...) {
 
 #' Extract the state of each individual at a given time
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' \code{state}, associated state.
 #' @param t time at which extract the state
-#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+#' (useful when individuals has different lengths)
 #'
 #' @return a vector containing the state of each individual at time t
 #'
@@ -256,13 +260,16 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 
 #' Estimate probabilities to be in each state
 #'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.
-#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax (useful when individuals has different lengths)
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
+#' and \code{state}, associated state.
+#' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
+#' (useful when individuals has different lengths)
 #'
 #' @return A list of two elements:
 #' \itemize{
 #'   \item{t: vector of time}
-#'   \item{pt: a matrix with K (= number of states) rows and with \code{length(t)} columns containing the probabilities to be in each state at each time.}
+#'   \item{pt: a matrix with K (= number of states) rows and with \code{length(t)} columns containing the
+#' probabilities to be in each state at each time.}
 #' }
 #'
 #'
