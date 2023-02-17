@@ -205,7 +205,7 @@ computeVmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 
 
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
-  V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Vxi, phi = phi, K = K)[uniqueId])
+  V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Vxi, phi = phi, K = K, ...)[uniqueId])
   rownames(V) <- NULL
 
   t3 <- proc.time()
@@ -292,7 +292,7 @@ computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
     pbo <- pboptions(type = "none")
   }
 
-  Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K)[uniqueId])
+  Uval <- do.call(rbind, pblapply(cl = cl, split(data, data$id), compute_Uxij, phi = phi, K = K, ...)[uniqueId])
 
   # stop parallelization
   if (nCores > 1) {
