@@ -59,6 +59,61 @@ test_that("compute_Uxij works with a simple basis of 2 functions", {
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
 
+test_that("compute_integral_U + fillU works with a simple basis of 1 function", {
+  set.seed(42)
+
+  m <- 1
+  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
+  I <- diag(rep(1, m))
+  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+  x <- d_JK2[d_JK2$id == 1, ]
+
+  uniqueTime <- sort(unique(d_JK2$time))
+  index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
+  integrals <- compute_integral_U(phi, uniqueTime)
+  out <- fill_U(x, integrals, index, K, m)
+
+  expectedOut <- rep(0, K)
+  for (i in 1:K) {
+    idx <- which(x$state == i)
+    expectedOut[i] <- sum(x$time[idx + 1] - x$time[idx], na.rm = TRUE)
+  }
+
+  expect_length(out, K * m * m)
+  expect_equal(out, expectedOut)
+})
+
+
+test_that("compute_integral_U + fillU works with a simple basis of 2 functions", {
+  skip_on_cran()
+  m <- 2
+  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  I <- diag(rep(1, m))
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
+  phi <- fd(I, b)
+
+  x <- d_JK2[d_JK2$id == 1, ]
+
+  uniqueTime <- sort(unique(d_JK2$time))
+  index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
+  integrals <- compute_integral_U(phi, uniqueTime)
+  out <- fill_U(x, integrals, index, K, m)
+
+  expectedOut <- rep(0, K * m * m)
+  for (i in 1:K) {
+    idx <- which(x$state == i)
+    idx1 <- idx[x$time[idx] <= 5]
+    expectedOut[1 + (i - 1) * m * m] <- sum(pmin(x$time[idx1 + 1], 5) - x$time[idx1], na.rm = TRUE)
+
+    idx2 <- idx[x$time[idx + 1] > 5]
+    expectedOut[4 + (i - 1) * m * m] <- sum(x$time[idx2 + 1] - pmax(x$time[idx2], 5), na.rm = TRUE)
+  }
+
+  expect_length(out, K * m * m)
+  expect_lte(max(abs(out - expectedOut)), 1e-5)
+})
+
 oldcompute_Uxij <- function(x, phi, K) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
@@ -69,7 +124,8 @@ oldcompute_Uxij <- function(x, phi, K) {
       for (i in 1:nBasis) {
         for (j in 1:nBasis) {
           if (u < nrow(x)) {
-            aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] <- aux[(state - 1) * nBasis * nBasis + (i - 1) * nBasis + j] +
+            ind <- (state - 1) * nBasis * nBasis + (i - 1) * nBasis + j
+            aux[ind] <- aux[ind] +
               integrate(function(t) {
                 eval.fd(t, phi[i]) * eval.fd(t, phi[j])
               },
@@ -150,6 +206,60 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
   expect_length(out, K * m)
   expect_lte(max(abs(out - expectedOut)), 1e-5)
 })
+
+test_that("compute_integral_V + fillV works with a simple basis of 1 function", {
+  m <- 1
+  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
+  I <- diag(rep(1, m))
+  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+
+  x <- d_JK2[d_JK2$id == 1, ]
+
+  uniqueTime <- sort(unique(d_JK2$time))
+  index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
+  integrals <- compute_integral_V(phi, uniqueTime)
+  out <- fill_V(x, integrals, index, K, m)
+
+  expectedOut <- rep(0, K)
+  for (i in 1:K) {
+    idx <- which(x$state == i)
+    expectedOut[i] <- sum(x$time[idx + 1] - x$time[idx], na.rm = TRUE)
+  }
+
+  expect_length(out, K * m)
+  expect_equal(out, expectedOut)
+})
+
+test_that("compute_integral_V + fillV works with a simple basis of 2 functions", {
+  skip_on_cran()
+  m <- 2
+  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
+  I <- diag(rep(1, m))
+  phi <- fd(I, b)
+
+  x <- d_JK2[d_JK2$id == 1, ]
+
+  uniqueTime <- sort(unique(d_JK2$time))
+  index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
+  integrals <- compute_integral_V(phi, uniqueTime)
+  out <- fill_V(x, integrals, index, K, m)
+
+  expectedOut <- rep(0, K * m)
+  for (i in 1:K) {
+    idx <- which(x$state == i)
+    idx1 <- idx[x$time[idx] <= 5]
+    expectedOut[1 + (i - 1) * m] <- sum(pmin(x$time[idx1 + 1], 5) - x$time[idx1], na.rm = TRUE)
+
+    idx2 <- idx[x$time[idx + 1] > 5]
+    expectedOut[2 + (i - 1) * m] <- sum(x$time[idx2 + 1] - pmax(x$time[idx2], 5), na.rm = TRUE)
+  }
+
+  expect_length(out, K * m)
+  expect_lte(max(abs(out - expectedOut)), 1e-5)
+})
+
 
 test_that("computeVmatrix keeps the id order", {
   all_dat_P1S1 <- data.frame(state = c(1, 2, 1), time = c(0, 0.5, 1), id = rep("P1S1", 3))
