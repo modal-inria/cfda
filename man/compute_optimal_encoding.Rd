@@ -12,6 +12,7 @@ compute_optimal_encoding(
   propBootstrap = 1,
   nCores = max(1, ceiling(detectCores()/2)),
   verbose = TRUE,
+  method = c("normal", "precompute"),
   ...
 )
 }
@@ -31,6 +32,9 @@ compute_optimal_encoding(
 \item{nCores}{number of cores used for parallelization. Default is the half of cores.}
 
 \item{verbose}{if TRUE print some information}
+
+\item{method}{computation method: "normal" or "precompute": precompute all integrals
+(efficient when the number of unique time values is low)}
 
 \item{...}{parameters for \code{\link{integrate}} function (see details).}
 }
