@@ -2,7 +2,6 @@
 # https://github.com/actions/upload-release-asset
 on:
   push:
-    # Sequence of patterns matched against refs/tags
     tags:
     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -16,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: ubuntu-20.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest,   r: 'release'}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -25,16 +24,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - uses: r-lib/actions/setup-r@v1
+      - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
 
-      - uses: r-lib/actions/setup-pandoc@v1
+      - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r-dependencies@v1
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             pkgbuild
@@ -56,7 +55,7 @@ jobs:
           prerelease: false
 
       - name: Upload release archive
-        uses: alexellis/upload-assets@0.2.2
+        uses: alexellis/upload-assets@0.4.0
         env:
           GITHUB_TOKEN: ${{ github.token }}
         with:
