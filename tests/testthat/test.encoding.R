@@ -17,10 +17,10 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
   set.seed(42)
 
   m <- 1
-  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  # basis with 1 function: constant function = 1 between 0 and T max
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
-  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+  phi <- fd(I, b) # constant function = 1 between 0 and T max
 
   x <- d_JK2[d_JK2$id == 1, ]
   out <- compute_Uxij(x, phi, K)
@@ -38,7 +38,7 @@ test_that("compute_Uxij works with a simple basis of 1 function", {
 test_that("compute_Uxij works with a simple basis of 2 functions", {
   skip_on_cran()
   m <- 2
-  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  # basis with 2 functions: 1st function: constant = 1 between 0 and Tmax/2 then 0. 2nd function: 0 then 1
   I <- diag(rep(1, m))
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   phi <- fd(I, b)
@@ -63,15 +63,15 @@ test_that("compute_integral_U + fillU works with a simple basis of 1 function", 
   set.seed(42)
 
   m <- 1
-  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  # basis with 1 function: constant function = 1 between 0 and T max
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
-  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+  phi <- fd(I, b) # constant function = 1 between 0 and T max
   x <- d_JK2[d_JK2$id == 1, ]
 
   uniqueTime <- sort(unique(d_JK2$time))
   index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
-  integrals <- compute_integral_U(phi, uniqueTime)
+  integrals <- compute_integral_U(phi, uniqueTime, verbose = FALSE)
   out <- fill_U(x, integrals, index, K, m)
 
   expectedOut <- rep(0, K)
@@ -88,7 +88,7 @@ test_that("compute_integral_U + fillU works with a simple basis of 1 function", 
 test_that("compute_integral_U + fillU works with a simple basis of 2 functions", {
   skip_on_cran()
   m <- 2
-  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  # basis with 2 functions: 1st function: constant = 1 between 0 and Tmax/2 then 0. 2nd function: 0 then 1
   I <- diag(rep(1, m))
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   phi <- fd(I, b)
@@ -97,7 +97,7 @@ test_that("compute_integral_U + fillU works with a simple basis of 2 functions",
 
   uniqueTime <- sort(unique(d_JK2$time))
   index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
-  integrals <- compute_integral_U(phi, uniqueTime)
+  integrals <- compute_integral_U(phi, uniqueTime, verbose = FALSE)
   out <- fill_U(x, integrals, index, K, m)
 
   expectedOut <- rep(0, K * m * m)
@@ -164,10 +164,10 @@ test_that("refactor of compute_Uxij keeps the same results", {
 
 test_that("compute_Vxi works with a simple basis of 1 function", {
   m <- 1
-  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  # basis with 1 function:: constant function = 1 between 0 and T max
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
-  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+  phi <- fd(I, b) # constant function = 1 between 0 and T max
 
   x <- d_JK2[d_JK2$id == 1, ]
   out <- compute_Vxi(x, phi, K)
@@ -186,7 +186,7 @@ test_that("compute_Vxi works with a simple basis of 1 function", {
 test_that("compute_Vxi works with a simple basis of 2 functions", {
   skip_on_cran()
   m <- 2
-  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  # basis with 2 functions: 1st function: constant = 1 between 0 and Tmax/2 then 0. 2nd function: 0 then 1
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
   phi <- fd(I, b)
@@ -209,16 +209,16 @@ test_that("compute_Vxi works with a simple basis of 2 functions", {
 
 test_that("compute_integral_V + fillV works with a simple basis of 1 function", {
   m <- 1
-  # base d'une seule fonction avec fonction constante = 1 entre 0 et Tmax
+  # basis with 1 function:: constant function = 1 between 0 and T max
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
-  phi <- fd(I, b) # fonction constante = 1 entre 0 et Tmax
+  phi <- fd(I, b) # constant function = 1 between 0 and T max
 
   x <- d_JK2[d_JK2$id == 1, ]
 
   uniqueTime <- sort(unique(d_JK2$time))
   index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
-  integrals <- compute_integral_V(phi, uniqueTime)
+  integrals <- compute_integral_V(phi, uniqueTime, verbose = FALSE)
   out <- fill_V(x, integrals, index, K, m)
 
   expectedOut <- rep(0, K)
@@ -234,7 +234,7 @@ test_that("compute_integral_V + fillV works with a simple basis of 1 function", 
 test_that("compute_integral_V + fillV works with a simple basis of 2 functions", {
   skip_on_cran()
   m <- 2
-  # base de deux fonctions:  constante = 1 entre 0 et Tmax/2 puis 0 et réciproquement
+  # basis with 2 functions: 1st function: constant = 1 between 0 and Tmax/2 then 0. 2nd function: 0 then 1
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 1)
   I <- diag(rep(1, m))
   phi <- fd(I, b)
@@ -243,7 +243,7 @@ test_that("compute_integral_V + fillV works with a simple basis of 2 functions",
 
   uniqueTime <- sort(unique(d_JK2$time))
   index <- data.frame(seq_along(uniqueTime), row.names = uniqueTime)
-  integrals <- compute_integral_V(phi, uniqueTime)
+  integrals <- compute_integral_V(phi, uniqueTime, verbose = FALSE)
   out <- fill_V(x, integrals, index, K, m)
 
   expectedOut <- rep(0, K * m)
@@ -358,7 +358,7 @@ test_that("compute_optimal_encoding works", {
   row.names(dT) <- NULL
 
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
+  expect_silent(fmca <- compute_optimal_encoding(dT, b, computeCI = FALSE, method = "parallel", nCores = 1, verbose = FALSE))
 
   expect_type(fmca, "list")
   expect_named(fmca, c("eigenvalues", "alpha", "pc", "F", "G", "V", "basisobj", "label", "pt", "runTime"))
@@ -405,7 +405,7 @@ dT <- cut_data(d, Tmax)
 row.names(dT) <- NULL
 
 b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-fmca <- compute_optimal_encoding(dT, b, nCores = 1, computeCI = FALSE, verbose = FALSE)
+fmca <- compute_optimal_encoding(dT, b, method = "parallel", nCores = 1, computeCI = FALSE, verbose = FALSE)
 ##
 
 test_that("summary.cfda does not produce warnings/errors", {
