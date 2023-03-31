@@ -7,13 +7,16 @@
 estimate_Markov(data)
 }
 \arguments{
-\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state.}
+\item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state.}
 }
 \value{
-list of two elements: \code{Q}, the estimated transition matrix, and \code{lambda}, the estimated time spent in each state
+list of two elements: \code{Q}, the estimated transition matrix, and \code{lambda},
+the estimated time spent in each state
 }
 \description{
-Calculates crude initial values for transition intensities by assuming that the data represent the exact transition times of the Markov process.
+Calculates crude initial values for transition intensities by assuming that the data represent the exact transition
+times of the Markov process.
 }
 \examples{
 # Simulate the Jukes-Cantor model of nucleotide replacement

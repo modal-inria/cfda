@@ -46,7 +46,7 @@ compute_time_spent <- function(data) {
 }
 
 
-# combien de temps passe un id dans [0,T] dans chaque etat, x vient d'un msmT
+# How long an individual stays in each state
 # @author Cristian Preda
 compute_time_spent_intern <- function(data, labels) {
   aux <- rep(0, length(labels))
@@ -244,7 +244,8 @@ get_state <- function(data, t, NAafterTmax = FALSE) {
 
 # return the state at time t
 #
-# x un individu de type msm et t un temps
+# x cfda dataframe
+# t time value
 # NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
 # @author Cristian Preda, Quentin Grimonprez
 id_get_state <- function(x, t, NAafterTmax = FALSE) {
@@ -613,7 +614,7 @@ statetable <- function(data, removeDiagonal = FALSE) {
 
   out <- statetable.msm(newState$state, data$id)
 
-  # il se peut que la matrice aux ne soit pas carré si au moins un état absorbant existe.
+  # If there is at least 1 absorbing state, the matrix is not a square matrix
   out <- completeStatetable(out)
 
   colnames(out) <- newState$label$label[match(colnames(out), newState$label$code)]

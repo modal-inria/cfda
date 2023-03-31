@@ -1,3 +1,6 @@
+v0.11.0 2023-03-31
+- New computation method for U and V matrices
+
 v0.10.1 2022-08-16
 - fix cut_data when state column is a factor
 - fix bug in plotData when id's are unevenly spaced integers
