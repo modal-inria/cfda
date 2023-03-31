@@ -120,7 +120,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
 
 # transform the data format to a new format with 4 columns: id, t_stat, t_end, state.
-# usefull for ggplot
+# useful for ggplot
 # @author Cristian Preda
 rep_large_ind <- function(data) {
   out <- by(data, data$id, function(x) {
@@ -191,7 +191,7 @@ orderFirstState <- function(data) {
 
 
 # function to label group in facet_wrap
-# group name: n=effectif
+# group name: n=count
 createLabeller <- function(group) {
   part <- table(group)
   labelGroup <- as.list(paste0(names(part), ": n=", part))

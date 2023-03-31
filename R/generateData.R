@@ -40,8 +40,34 @@
 #' @author Cristian Preda
 #'
 #' @export
-generate_Markov <- function(n = 5, K = 2, P = (1 - diag(K)) / (K - 1), lambda = rep(1, K), pi0 = c(1, rep(0, K - 1)), Tmax = 1, labels = NULL) {
-  ## check parameters
+generate_Markov <- function(n = 5, K = 2, P = (1 - diag(K)) / (K - 1), lambda = rep(1, K),
+                            pi0 = c(1, rep(0, K - 1)), Tmax = 1, labels = NULL) {
+
+  check_generate_Markov_parameters(n, K, Tmax, P, lambda, pi0, labels)
+
+  d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
+
+  for (i in seq_len(n)) {
+    e <- sample(K, 1, prob = pi0)
+    t <- 0
+    while (t <= Tmax) {
+      d <- rbind(d, data.frame(id = i, time = t, state = e))
+      sej <- rexp(1, lambda[e])
+      t <- t + sej
+      e <- sample(K, 1, prob = P[e, ])
+    }
+  }
+
+  if (!is.null(labels)) {
+    d$state <- labels[d$state]
+  }
+
+  row.names(d) <- NULL
+
+  return(d)
+}
+
+check_generate_Markov_parameters <- function(n, K, Tmax, P, lambda, pi0, labels) {
   if (any(is.na(n)) || (length(n) != 1) || !is.whole.number(n)) {
     stop("n must be a positive integer.")
   }
@@ -65,29 +91,6 @@ generate_Markov <- function(n = 5, K = 2, P = (1 - diag(K)) / (K - 1), lambda = 
       stop("labels must be NULL or a vector of length K.")
     }
   }
-  ## end check
-
-
-  d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
-
-  for (i in seq_len(n)) {
-    e <- sample(K, 1, prob = pi0)
-    t <- 0
-    while (t <= Tmax) {
-      d <- rbind(d, data.frame(id = i, time = t, state = e))
-      sej <- rexp(1, lambda[e])
-      t <- t + sej
-      e <- sample(K, 1, prob = P[e, ])
-    }
-  }
-
-  if (!is.null(labels)) {
-    d$state <- labels[d$state]
-  }
-
-  row.names(d) <- NULL
-
-  return(d)
 }
 
 #' Generate data following a 2 states model
