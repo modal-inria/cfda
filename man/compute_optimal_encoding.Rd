@@ -10,9 +10,9 @@ compute_optimal_encoding(
   computeCI = TRUE,
   nBootstrap = 50,
   propBootstrap = 1,
-  nCores = max(1, ceiling(detectCores()/2)),
+  method = c("precompute", "parallel"),
   verbose = TRUE,
-  method = c("normal", "precompute"),
+  nCores = max(1, ceiling(detectCores()/2)),
   ...
 )
 }
@@ -29,12 +29,12 @@ compute_optimal_encoding(
 
 \item{propBootstrap}{size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals}
 
-\item{nCores}{number of cores used for parallelization. Default is the half of cores.}
+\item{method}{computation method: "parallel" or "precompute": precompute all integrals
+(efficient when the number of unique time values is low)}
 
 \item{verbose}{if TRUE print some information}
 
-\item{method}{computation method: "normal" or "precompute": precompute all integrals
-(efficient when the number of unique time values is low)}
+\item{nCores}{number of cores used for parallelization (only if method == "parallel"). Default is half the cores.}
 
 \item{...}{parameters for \code{\link{integrate}} function (see details).}
 }

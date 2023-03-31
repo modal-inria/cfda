@@ -7,19 +7,25 @@
 \method{predict}{fmca}(
   object,
   newdata = NULL,
-  nCores = max(1, ceiling(detectCores()/2)),
+  method = c("precompute", "parallel"),
   verbose = TRUE,
+  nCores = max(1, ceiling(detectCores()/2)),
   ...
 )
 }
 \arguments{
 \item{object}{output of \link{compute_optimal_encoding} function.}
 
-\item{newdata}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}})..}
+\item{newdata}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+\code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
+(use \code{\link{cut_data}}).}
 
-\item{nCores}{number of cores used for parallelization. Default is the half of cores.}
+\item{method}{computation method: "parallel" or "precompute": precompute all integrals
+(efficient when the number of unique time values is low)}
 
 \item{verbose}{if TRUE print some information}
+
+\item{nCores}{number of cores used for parallelization (only if method == "parallel"). Default is half the cores.}
 
 \item{...}{parameters for \code{\link{integrate}} function (see details).}
 }

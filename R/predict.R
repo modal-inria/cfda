@@ -3,9 +3,13 @@
 #' @description Predict the principal components for new trajectories
 #'
 #' @param object output of \link{compute_optimal_encoding} function.
-#' @param newdata data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use \code{\link{cut_data}})..
-#' @param nCores number of cores used for parallelization. Default is the half of cores.
+#' @param newdata data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
+#' (use \code{\link{cut_data}}).
+#' @param method computation method: "parallel" or "precompute": precompute all integrals
+#' (efficient when the number of unique time values is low)
 #' @param verbose if TRUE print some information
+#' @param nCores number of cores used for parallelization (only if method == "parallel"). Default is half the cores.
 #' @param ... parameters for \code{\link{integrate}} function (see details).
 #'
 #' @return principal components for the individuals
@@ -45,7 +49,10 @@
 #' @family encoding functions
 #' @author Quentin Grimonprez
 #' @export
-predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectCores() / 2)), verbose = TRUE, ...) {
+predict.fmca <- function(
+  object, newdata = NULL, method = c("precompute", "parallel"), verbose = TRUE,
+  nCores = max(1, ceiling(detectCores() / 2)), ...
+  ) {
   if (is.null(newdata)) {
     return(object$pc)
   }
@@ -56,6 +63,7 @@ predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectC
   if (any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1)) {
     stop("nCores must be an integer > 0.")
   }
+  method <- match.arg(method)
   ##
 
   if (verbose) {
@@ -71,7 +79,12 @@ predict.fmca <- function(object, newdata = NULL, nCores = max(1, ceiling(detectC
 
   K <- length(object$label$label)
 
-  V <- computeVmatrix(newdata, object$basisobj, K, uniqueId, nCores, verbose, ...)
+  if (method == "precompute") {
+    uniqueTime <- sort(unique(newdata$time))
+    V <- computeVmatrix2(newdata, object$basisobj, K, uniqueId, uniqueTime, nCores, verbose, ...)
+  } else {
+    V <- computeVmatrix(newdata, object$basisobj, K, uniqueId, nCores, verbose, ...)
+  }
 
   invF05vec <- sapply(object$alpha, as.vector)
   invF05vec[is.na(invF05vec)] <- 0

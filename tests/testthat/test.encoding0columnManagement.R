@@ -158,7 +158,9 @@ test_that("compute_optimal_encodings has the same results as before when there i
   row.names(dT) <- NULL
 
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
-  expect_silent(fmcaNew <- compute_optimal_encoding(dT, b, computeCI = FALSE, nCores = 1, verbose = FALSE))
+  expect_silent(
+    fmcaNew <- compute_optimal_encoding(dT, b, computeCI = FALSE, method = "parallel", nCores = 1, verbose = FALSE)
+  )
 
   expect_silent(fmcaOld <- oldcompute_optimal_encoding(dT, b, nCores = 1, verbose = FALSE))
 
@@ -183,7 +185,7 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
 
   expect_warning(
     {
-      fmcaNew <- compute_optimal_encoding(d, b, computeCI = FALSE, nCores = 1, verbose = FALSE)
+      fmcaNew <- compute_optimal_encoding(d, b, computeCI = FALSE, method = "parallel", nCores = 1, verbose = FALSE)
     },
     regexp = paste(
       "The F matrix contains at least one column of 0s.",
@@ -194,7 +196,7 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
   )
   expect_error(
     {
-      fmcaOld <- oldcompute_optimal_encoding(d, b, nCores = 1, verbose = FALSE)
+      fmcaOld <- oldcompute_optimal_encoding(d, b, method = "parallel", nCores = 1, verbose = FALSE)
     },
     regexp = paste(
       "F matrix is not invertible. In the support of each basis function,",
@@ -213,7 +215,7 @@ test_that("compute_optimal_encodings works when there is some 0-column", {
 
   expect_warning(
     {
-      fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, nCores = 1, verbose = FALSE)
+      fmcaNewBootstrap <- compute_optimal_encoding(d, b, computeCI = TRUE, method = "parallel", nCores = 1, verbose = FALSE)
     },
     regexp = paste(
       "The F matrix contains at least one column of 0s.",
