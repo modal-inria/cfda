@@ -32,7 +32,7 @@ estimate_Markov <- function(data) {
   checkData(data)
   ## end check
 
-  # we msut delete the jumps from a state to the itself
+  # we must delete the jumps from a state to the itself
   data <- remove_duplicated_states(data, keep.last = TRUE)
 
   P_est <- prop.table(statetable(data, removeDiagonal = TRUE), margin = 1)
