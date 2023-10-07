@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">cfda</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.10.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.11.0</span>
       </span>
     </div>
 
@@ -57,8 +57,9 @@
 <span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
 <span>  newdata <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  nCores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu">detectCores</span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"precompute"</span>, <span class="st">"parallel"</span><span class="op">)</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  nCores <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">ceiling</a></span><span class="op">(</span><span class="fu">detectCores</span><span class="op">(</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -70,15 +71,22 @@
 
 
 <dt>newdata</dt>
-<dd><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and <code>state</code>, associated state. All individuals must begin at the same time T0 and end at the same time Tmax (use <code><a href="cut_data.html">cut_data</a></code>)..</p></dd>
+<dd><p>data.frame containing <code>id</code>, id of the trajectory, <code>time</code>, time at which a change occurs and
+<code>state</code>, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
+(use <code><a href="cut_data.html">cut_data</a></code>).</p></dd>
 
 
-<dt>nCores</dt>
-<dd><p>number of cores used for parallelization. Default is the half of cores.</p></dd>
+<dt>method</dt>
+<dd><p>computation method: "parallel" or "precompute": precompute all integrals
+(efficient when the number of unique time values is low)</p></dd>
 
 
 <dt>verbose</dt>
 <dd><p>if TRUE print some information</p></dd>
+
+
+<dt>nCores</dt>
+<dd><p>number of cores used for parallelization (only if method == "parallel"). Default is half the cores.</p></dd>
 
 
 <dt>...</dt>
@@ -132,17 +140,16 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> Basis type: bspline</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of basis functions: 6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Number of cores: 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % elapsed=00s     |=========                                         | 17% elapsed=00s, remaining~00s  |=================                                 | 33% elapsed=00s, remaining~00s  |=========================                         | 50% elapsed=00s, remaining~00s  |==================================                | 67% elapsed=00s, remaining~00s  |==========================================        | 83% elapsed=00s, remaining~00s  |==================================================| 100% elapsed=00s, remaining~00s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.15s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.17s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute U matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~01s            |==========                                        | 20% ~01s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=01s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % elapsed=00s     |===                                               | 5 % elapsed=00s, remaining~01s  |=====                                             | 10% elapsed=00s, remaining~01s  |========                                          | 14% elapsed=00s, remaining~01s  |==========                                        | 19% elapsed=00s, remaining~01s  |============                                      | 24% elapsed=00s, remaining~01s  |===============                                   | 29% elapsed=00s, remaining~01s  |=================                                 | 33% elapsed=00s, remaining~01s  |====================                              | 38% elapsed=00s, remaining~00s  |======================                            | 43% elapsed=00s, remaining~00s  |========================                          | 48% elapsed=00s, remaining~00s  |===========================                       | 52% elapsed=00s, remaining~00s  |=============================                     | 57% elapsed=00s, remaining~00s  |===============================                   | 62% elapsed=00s, remaining~00s  |==================================                | 67% elapsed=01s, remaining~00s  |====================================              | 71% elapsed=01s, remaining~00s  |=======================================           | 76% elapsed=01s, remaining~00s  |=========================================         | 81% elapsed=01s, remaining~00s  |===========================================       | 86% elapsed=01s, remaining~00s  |==============================================    | 90% elapsed=01s, remaining~00s  |================================================  | 95% elapsed=01s, remaining~00s  |==================================================| 100% elapsed=01s, remaining~00s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 1.07s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.9s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute encoding: </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 1.23s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Run Time: 1.08s</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># predict principal components</span></span></span>
 <span class="r-in"><span><span class="va">d_JK_predict</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_Markov.html">generate_Markov</a></span><span class="op">(</span></span></span>
@@ -153,10 +160,9 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">pc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">encoding</span>, <span class="va">d_JK_predict2</span>, nCores <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ######### Predict Principal Components #########</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---- Compute V matrix:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % ~calculating    |=====                                             | 10% ~00s            |==========                                        | 20% ~00s            |===============                                   | 30% ~00s            |====================                              | 40% ~00s            |=========================                         | 50% ~00s            |==============================                    | 60% ~00s            |===================================               | 70% ~00s            |========================================          | 80% ~00s            |=============================================     | 90% ~00s            |==================================================| 100% elapsed=00s  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   |                                                  | 0 % elapsed=00s     |=========                                         | 17% elapsed=00s, remaining~00s  |=================                                 | 33% elapsed=00s, remaining~00s  |=========================                         | 50% elapsed=00s, remaining~00s  |==================================                | 67% elapsed=00s, remaining~00s  |==========================================        | 83% elapsed=00s, remaining~00s  |==================================================| 100% elapsed=00s, remaining~00s</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.15s</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> DONE in 0.14s</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
@@ -173,7 +179,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
