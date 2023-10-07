@@ -261,12 +261,12 @@ computeVmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 # compute_Vxi(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda
-compute_Vxi <- function(x, phi, K, ...) {
+compute_Vxi <- function(x, phi, K, stateColumn = "state", ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis) # V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
 
   for (u in seq_len(nrow(x) - 1)) {
-    state <- x$state[u]
+    state <- x[[stateColumn]][u]
 
     for (j in seq_len(nBasis)) { # j = la base
       ind <- (state - 1) * nBasis + j
@@ -432,12 +432,12 @@ computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 # compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Uxij <- function(x, phi, K, ...) {
+compute_Uxij <- function(x, phi, K, stateColumn = "state", ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
 
   for (u in seq_len(nrow(x) - 1)) {
-    state <- x$state[u]
+    state <- x[[stateColumn]][u]
     for (i in seq_len(nBasis)) {
       for (j in i:nBasis) { # symmetry between i and j
         integral <- integrate(
