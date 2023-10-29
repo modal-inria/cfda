@@ -247,7 +247,7 @@ compute_optimal_encoding_multivariate <- function(
   }
 
   if (!isInverted) {
-    stop("solve.default(F05) : 'F05' doit être carrée. The epsilon is perharps too big.")
+    stop("solve.default(F05) : 'F05' must be squared. The epsilon is perharps too big.")
   }
 
   G <- G[!ind0, !ind0]
@@ -344,7 +344,7 @@ convert2mvcfd <- function(x, state_columns = NULL) {
   # order by id and time
   x <- arrange(x, .data[["id"]], .data[["time"]])
 
-  #  fill missing values with the state before
+  # fill missing values with the state before
   x <- as.data.frame(x %>% group_by(.data[["id"]]) %>% fill(all_of(state_columns), .direction = "downup"))
 
   return(distinct(x))
