@@ -193,7 +193,7 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   if (is.null(epsilon)) {
     epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * c(1e-12, 1e-9, 1e-6, 1e-4, 1e-2, 1e-1)
     if (verbose) {
-      cat(paste0("You did not provide a value for epsilon. Several values will be tested ", epsilon))
+      cat(paste0("You did not provide a value for epsilon. Several values will be tested: ", paste(epsilon, collapse = ", ")))
     }
   }
 
@@ -257,7 +257,7 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
     "V" = V,
     "basisobj" = basisobj,
     "pt" = pt,
-    "epsilon" = eps,
+    "epsilon" = eps
   )
   class(mult_enc) <- "fmca"
 
