@@ -277,18 +277,18 @@ convert2mvcfd <- function(x, state_columns = NULL) {
     state_columns <- paste0("state", seq_len(nDim))
   }
 
+  # rename state columns to each data frame
   for (i in seq_len(nDim)) {
     x[[i]] <- x[[i]] %>% rename(!!state_columns[i] := "state")
-    for (j in seq_len(nDim)) {
-      if (j != i) {
-        x[[i]] <- x[[i]] %>% mutate(!!state_columns[j] := NA)
-      }
-    }
   }
 
-  x <- do.call(rbind, x)
-  x <- arrange(x, "id", "time")
+  # merge data frames
+  x <- Reduce(function(x1, x2) merge(x1, x2, by = c("id", "time"), all = TRUE), x)
 
+  # order by id and time
+  x <- arrange(x, id, time)
+
+  # fill missing values with the state before
   x <- as.data.frame(x %>% group_by(id) %>% fill(all_of(state_columns), .direction = "downup"))
 
   return(distinct(x))
