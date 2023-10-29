@@ -75,7 +75,8 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
 #' All individuals must begin at the same time T0 and end at the same time Tmax.
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
 #' The same basis is used for every dimension.
-#' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F
+#' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
+#' It can be a vector to test several values.
 #' @param state_columns column names for multivariate states. By default, "state1", "state2", ...
 #' @param verbose if TRUE print some information
 #'
@@ -186,23 +187,39 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
     }
   }
 
-  if (is.null(epsilon)) {
-    epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * 1e-6
-    if (verbose) {
-      cat(paste0("You did not provide a value for epsilon. The used one is ", epsilon))
-    }
-  }
-  Fmat <- Fmat_normal + epsilon * diag(ncol(Fmat_normal))
-
   G <- cov(V_multi)
   V <- V_multi
 
-  ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
-  F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
+  if (is.null(epsilon)) {
+    epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * c(1e-12, 1e-9, 1e-6, 1e-4, 1e-2, 1e-1)
+    if (verbose) {
+      cat(paste0("You did not provide a value for epsilon. Several values will be tested ", epsilon))
+    }
+  }
+
+  epsilon <- sort(epsilon)
+  isInverted <- FALSE
+
+  for (eps in epsilon){
+    tryCatch({
+      Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
+      ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
+      F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
+      invF05 <- solve(F05)
+      isInverted <- TRUE
+      break
+    }, error = function(e) {
+      print(paste0("Failed for epsilon=", eps))
+    })
+  }
+
+  if (!isInverted) {
+    stop("solve.default(F05) : 'F05' doit être carrée. The epsilon is perharps too big.")
+  }
+
   G <- G[!ind0, !ind0]
   V <- V[, !ind0]
 
-  invF05 <- solve(F05)
   res <- eigen(t(invF05) %*% G %*% invF05)
 
   invF05vec <- invF05 %*% res$vectors
@@ -229,7 +246,7 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
     ),
     t = uniqueTime
   )
-  class(pt) = "pt"
+  class(pt) <- "pt"
 
   mult_enc <- list(
     "pc" = pc,
@@ -239,7 +256,8 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
     "G" = G,
     "V" = V,
     "basisobj" = basisobj,
-    "pt" = pt
+    "pt" = pt,
+    "epsilon" = eps,
   )
   class(mult_enc) <- "fmca"
 
