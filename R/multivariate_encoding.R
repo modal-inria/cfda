@@ -6,26 +6,39 @@ compute_Vxi_multi <- function(x, phi, K, stateColumns, ...) {
   return(do.call(c, aux))
 }
 
-computeVlist <- function(data, phi, K, stateColumns, verbose, ...) {
-  nId <- length(unique(data$id))
+computeVlist <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, ...) {
+  # declare parallelization
+  if (nCores > 1) {
+    cl <- makeCluster(nCores)
+  } else {
+    cl <- NULL
+  }
 
-  # Compute V
+  nId <- length(uniqueId)
+
+  t3 <- proc.time()
   if (verbose) {
-    cat("\n---- Compute V matrix\n")
-    pb <- timerProgressBar(min = 0, max = nId, width = 50)
-    on.exit(close(pb))
-    jj <- 1
+    cat("---- Compute V matrix:\n")
+    pbo <- pboptions(type = "timer", char = "=")
+  } else {
+    pboptions(type = "none")
   }
-  V_multi <- list()
 
-  for (i in unique(data$id)) {
-    V_multi[[i]] <- compute_Vxi_multi(data[data$id == i, ], phi, K, stateColumns = stateColumns, ...)
-    if (verbose) {
-      setTimerProgressBar(pb, jj)
-      jj <- jj + 1
-    }
+  V_multi <- do.call(
+    rbind,
+    pblapply(cl = cl, split(data, data$id), compute_Vxi_multi, phi = phi, K = K, stateColumns = stateColumns, ...)[uniqueId]
+  )
+  rownames(V_multi) <- NULL
+
+  # stop parallelization
+  if (nCores > 1) {
+    stopCluster(cl)
   }
-  V_multi <- do.call(rbind, V_multi)
+
+  t4 <- proc.time()
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t4 - t3)[3], 2), "s\n"))
+  }
 
   return(V_multi)
 }
@@ -86,8 +99,8 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
   return(U_list)
 }
 
-computeUmean <- function(data, phi, K, stateColumns, verbose, ...) {
-  nId <- length(unique(data$id))
+computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, ...) {
+  nId <- length(uniqueId)
 
   if (verbose) {
     cat("\n")
@@ -98,7 +111,7 @@ computeUmean <- function(data, phi, K, stateColumns, verbose, ...) {
   }
   list_of_Uval <- list()
 
-  for (i in unique(data$id)) {
+  for (i in uniqueId) {
     list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, stateColumns, verbose = FALSE)
     if (verbose) {
       setTimerProgressBar(pb, jj)
@@ -128,6 +141,7 @@ computeUmean <- function(data, phi, K, stateColumns, verbose, ...) {
 #' It can be a vector to test several values.
 #' @param stateColumns column names for multivariate states. By default, "state1", "state2", ...
 #' @param verbose if TRUE print some information
+#' @param nCores number of cores used for parallelization. Default is all cores except 1.
 #'
 #' @return a fmca object
 #'
@@ -150,7 +164,9 @@ computeUmean <- function(data, phi, K, stateColumns, verbose, ...) {
 #' plot(multEnc)
 #' }
 #' @export
-compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL, stateColumns = NULL, verbose = TRUE) {
+compute_optimal_encoding_multivariate <- function(
+    data, basisobj, epsilon = NULL, stateColumns = NULL, verbose = TRUE, nCores = max(1, detectCores() - 1)) {
+  t1 <- proc.time()
   if (verbose) {
     cat("######### Compute multivariate encoding #########\n")
   }
@@ -175,13 +191,12 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   }
 
 
-  V_multi <- computeVlist(data, phi, K, stateColumns, verbose)
+  V_multi <- computeVlist(data, phi, K, stateColumns, uniqueId, verbose, nCores)
 
-  U_mean <- computeUmean(data, phi, K, stateColumns, verbose)
+  U_mean <- computeUmean(data, phi, K, stateColumns, uniqueId, verbose)
 
   if (verbose) {
     cat(paste0("\n---- Compute encoding:\n"))
-    t1 <- proc.time()
   }
 
   Fmat_normal <- matrix(0, nrow = nBasis * sum(K), ncol = nBasis * sum(K))
@@ -276,6 +291,11 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   t2 <- proc.time()
   if (verbose) {
     cat(paste0("\nDONE in ", round((t2 - t1)[3], 2), "s\n"))
+  }
+
+  mult_enc$runTime <- as.numeric((t2 - t1)[3])
+  if (verbose) {
+    cat(paste0("Run Time: ", round(mult_enc$runTime, 2), "s\n"))
   }
 
   return(mult_enc)

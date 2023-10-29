@@ -9,7 +9,8 @@ compute_optimal_encoding_multivariate(
   basisobj,
   epsilon = NULL,
   stateColumns = NULL,
-  verbose = TRUE
+  verbose = TRUE,
+  nCores = max(1, detectCores() - 1)
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ It can be a vector to test several values.}
 \item{stateColumns}{column names for multivariate states. By default, "state1", "state2", ...}
 
 \item{verbose}{if TRUE print some information}
+
+\item{nCores}{number of cores used for parallelization. Default is all cores except 1.}
 }
 \value{
 a fmca object
