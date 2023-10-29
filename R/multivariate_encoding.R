@@ -342,10 +342,10 @@ convert2mvcfd <- function(x, state_columns = NULL) {
   x <- Reduce(function(x1, x2) merge(x1, x2, by = c("id", "time"), all = TRUE), x)
 
   # order by id and time
-  x <- arrange(x, id, time)
+  x <- arrange(x, .data[["id"]], .data[["time"]])
 
   #  fill missing values with the state before
-  x <- as.data.frame(x %>% group_by(id) %>% fill(all_of(state_columns), .direction = "downup"))
+  x <- as.data.frame(x %>% group_by(.data[["id"]]) %>% fill(all_of(state_columns), .direction = "downup"))
 
   return(distinct(x))
 }
