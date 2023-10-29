@@ -1,14 +1,13 @@
-compute_Vxi_multi <- function(x, phi, K, ...) {
-
+compute_Vxi_multi <- function(x, phi, K, stateColumns, ...) {
   aux <- list()
   for (j in seq_along(K)) {
-    aux[[j]] <- compute_Vxi(x, phi, K[j], paste0("state", j), ...)
+    aux[[j]] <- compute_Vxi(x, phi, K[j], stateColumns[j], ...)
   }
   return(do.call(c, aux))
 }
 
 
-compute_Uxij_multi <- function(x, phi, K, state_cols, verbose = FALSE, ...) {
+compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
   m <- phi$basis$nbasis
 
   integrals <- list()
@@ -20,16 +19,13 @@ compute_Uxij_multi <- function(x, phi, K, state_cols, verbose = FALSE, ...) {
   }
 
   for (u in seq_len(nrow(x) - 1)) {
-    states <- as.numeric(x[u, state_cols])
+    states <- as.numeric(x[u, stateColumns])
     if (verbose) {
       cat(paste0("------ row ", u, ": state \n"))
       print(states)
     }
     for (l1 in seq_len(m)) {
       for (l2 in seq_len(m)) {
-        if (verbose) {
-          print(paste0(l1, " ", l2))
-        }
         integral <- integrate(
           function(t) {
             eval.fd(t, phi[l1]) * eval.fd(t, phi[l2])
@@ -77,7 +73,7 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
 #' The same basis is used for every dimension.
 #' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
 #' It can be a vector to test several values.
-#' @param state_columns column names for multivariate states. By default, "state1", "state2", ...
+#' @param stateColumns column names for multivariate states. By default, "state1", "state2", ...
 #' @param verbose if TRUE print some information
 #'
 #' @return a fmca object
@@ -101,7 +97,7 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
 #' plot(multEnc)
 #' }
 #' @export
-compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL, state_columns = NULL, verbose = TRUE) {
+compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL, stateColumns = NULL, verbose = TRUE) {
   if (verbose) {
     cat("######### Compute multivariate encoding #########\n")
   }
@@ -110,10 +106,10 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   phi <- fd(diag(nBasis), basisobj)
 
   uniqueId <- as.character(unique(data$id))
-  if (is.null(state_columns)) {
-    state_columns <- sort(colnames(data)[grep("state", colnames(data))])
+  if (is.null(stateColumns)) {
+    stateColumns <- sort(colnames(data)[grep("state", colnames(data))])
   }
-  K <- sapply(data[state_columns], FUN = function(x) length(unique(x)))
+  K <- sapply(data[stateColumns], FUN = function(x) length(unique(x)))
 
   nId <- length(uniqueId)
 
@@ -136,7 +132,7 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   V_multi <- list()
 
   for (i in unique(data$id)) {
-    V_multi[[i]] <- compute_Vxi_multi(data[data$id == i, ], phi, K)
+    V_multi[[i]] <- compute_Vxi_multi(data[data$id == i, ], phi, K, stateColumns = stateColumns)
     if (verbose) {
       setTimerProgressBar(pb, jj)
       jj <- jj + 1
@@ -155,7 +151,7 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   list_of_Uval <- list()
 
   for (i in unique(data$id)) {
-    list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, state_columns, verbose = FALSE)
+    list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, stateColumns, verbose = FALSE)
     if (verbose) {
       setTimerProgressBar(pb, jj)
       jj <- jj + 1

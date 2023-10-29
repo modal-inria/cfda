@@ -8,7 +8,7 @@ compute_optimal_encoding_multivariate(
   data,
   basisobj,
   epsilon = NULL,
-  state_columns = NULL,
+  stateColumns = NULL,
   verbose = TRUE
 )
 }
@@ -23,7 +23,7 @@ The same basis is used for every dimension.}
 \item{epsilon}{epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
 It can be a vector to test several values.}
 
-\item{state_columns}{column names for multivariate states. By default, "state1", "state2", ...}
+\item{stateColumns}{column names for multivariate states. By default, "state1", "state2", ...}
 
 \item{verbose}{if TRUE print some information}
 }
