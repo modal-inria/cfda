@@ -6,6 +6,29 @@ compute_Vxi_multi <- function(x, phi, K, stateColumns, ...) {
   return(do.call(c, aux))
 }
 
+computeVlist <- function(data, phi, K, stateColumns, verbose, ...) {
+  nId <- length(unique(data$id))
+
+  # Compute V
+  if (verbose) {
+    cat("\n---- Compute V matrix\n")
+    pb <- timerProgressBar(min = 0, max = nId, width = 50)
+    on.exit(close(pb))
+    jj <- 1
+  }
+  V_multi <- list()
+
+  for (i in unique(data$id)) {
+    V_multi[[i]] <- compute_Vxi_multi(data[data$id == i, ], phi, K, stateColumns = stateColumns, ...)
+    if (verbose) {
+      setTimerProgressBar(pb, jj)
+      jj <- jj + 1
+    }
+  }
+  V_multi <- do.call(rbind, V_multi)
+
+  return(V_multi)
+}
 
 compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
   m <- phi$basis$nbasis
@@ -38,7 +61,7 @@ compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
             state1 <- states[i]
             state2 <- states[j]
             num_row <- (state1 - 1) * m + l1
-            num_col <- (state2  - 1) * m + l2
+            num_col <- (state2 - 1) * m + l2
 
             ind2 <- (num_col - 1) * (K[i] * m) + num_row
             integrals[[i]][[j]][ind2] <- integrals[[i]][[j]][ind2] + integral
@@ -52,7 +75,6 @@ compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
 
 
 compute_U_list_matrix <- function(list_of_Uval, K) {
-
   U_list <- list_of_Uval[[1]]
   for (i_sample in seq_along(list_of_Uval[-1])) {
     for (i in seq_along(K)) {
@@ -62,6 +84,37 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
     }
   }
   return(U_list)
+}
+
+computeUmean <- function(data, phi, K, stateColumns, verbose, ...) {
+  nId <- length(unique(data$id))
+
+  if (verbose) {
+    cat("\n")
+    cat("---- Compute U matrix\n")
+    pb <- timerProgressBar(min = 0, max = nId, width = 50)
+    on.exit(close(pb))
+    jj <- 1
+  }
+  list_of_Uval <- list()
+
+  for (i in unique(data$id)) {
+    list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, stateColumns, verbose = FALSE)
+    if (verbose) {
+      setTimerProgressBar(pb, jj)
+      jj <- jj + 1
+    }
+  }
+
+  U_list_matrix <- compute_U_list_matrix(list_of_Uval, K)
+  U_mean <- U_list_matrix
+  for (i in seq_along(K)) {
+    for (j in seq_along(K)) {
+      U_mean[[i]][[j]] <- colMeans(U_mean[[i]][[j]])
+    }
+  }
+
+  return(U_mean)
 }
 
 #' Compute the multivariate optimal encoding
@@ -122,49 +175,9 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   }
 
 
-  # Compute V
-  if (verbose) {
-    cat("\n---- Compute V matrix\n")
-    pb <- timerProgressBar(min = 0, max = nId, width = 50)
-    on.exit(close(pb))
-    jj <- 1
-  }
-  V_multi <- list()
+  V_multi <- computeVlist(data, phi, K, stateColumns, verbose)
 
-  for (i in unique(data$id)) {
-    V_multi[[i]] <- compute_Vxi_multi(data[data$id == i, ], phi, K, stateColumns = stateColumns)
-    if (verbose) {
-      setTimerProgressBar(pb, jj)
-      jj <- jj + 1
-    }
-  }
-  V_multi <- do.call(rbind, V_multi)
-
-  # Compute U
-  if (verbose) {
-    cat("\n")
-    cat("---- Compute U matrix\n")
-    pb <- timerProgressBar(min = 0, max = nId, width = 50)
-    on.exit(close(pb))
-    jj <- 1
-  }
-  list_of_Uval <- list()
-
-  for (i in unique(data$id)) {
-    list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, stateColumns, verbose = FALSE)
-    if (verbose) {
-      setTimerProgressBar(pb, jj)
-      jj <- jj + 1
-    }
-  }
-
-  U_list_matrix <- compute_U_list_matrix(list_of_Uval, K)
-  U_mean <- U_list_matrix
-  for (i in seq_along(K)) {
-    for (j in seq_along(K)) {
-      U_mean[[i]][[j]] <- colMeans(U_mean[[i]][[j]])
-    }
-  }
+  U_mean <- computeUmean(data, phi, K, stateColumns, verbose)
 
   if (verbose) {
     cat(paste0("\n---- Compute encoding:\n"))
@@ -196,17 +209,20 @@ compute_optimal_encoding_multivariate <- function(data, basisobj, epsilon = NULL
   epsilon <- sort(epsilon)
   isInverted <- FALSE
 
-  for (eps in epsilon){
-    tryCatch({
-      Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
-      ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
-      F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
-      invF05 <- solve(F05)
-      isInverted <- TRUE
-      break
-    }, error = function(e) {
-      print(paste0("Failed for epsilon=", eps))
-    })
+  for (eps in epsilon) {
+    tryCatch(
+      {
+        Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
+        ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
+        F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
+        invF05 <- solve(F05)
+        isInverted <- TRUE
+        break
+      },
+      error = function(e) {
+        print(paste0("Failed for epsilon=", eps))
+      }
+    )
   }
 
   if (!isInverted) {
@@ -302,7 +318,7 @@ convert2mvcfd <- function(x, state_columns = NULL) {
   # order by id and time
   x <- arrange(x, id, time)
 
-  # fill missing values with the state before
+  #  fill missing values with the state before
   x <- as.data.frame(x %>% group_by(id) %>% fill(all_of(state_columns), .direction = "downup"))
 
   return(distinct(x))
