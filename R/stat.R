@@ -97,7 +97,7 @@ compute_time_spent_intern <- function(data, labels) {
 #' @export
 boxplot.timeSpent <- function(x, col = NULL, ...) {
   df <- data.frame(timeSpent = as.vector(x), state = factor(rep(colnames(x), each = nrow(x)), levels = colnames(x)))
-  p <- ggplot(df, aes_string(x = "state", y = "timeSpent", fill = "state")) +
+  p <- ggplot(df, aes(x = .data$state, y = .data$timeSpent, fill = .data$state)) +
     geom_boxplot(...) +
     labs(x = "State", y = "Time Spent", fill = "State")
 
@@ -189,7 +189,7 @@ hist.duration <- function(x, breaks = NULL, ...) {
   defaultParam <- list(fill = "lightblue", color = "black", bins = breaks)
   param <- c(extraParam, defaultParam[which(!(names(defaultParam) %in% names(extraParam)))])
 
-  ggplot(data.frame(duration = as.vector(x)), aes_string(x = "duration")) +
+  ggplot(data.frame(duration = as.vector(x)), aes(x = .data$duration)) +
     do.call(geom_histogram, param) +
     labs(x = "Duration", y = "Frequency")
 }
@@ -426,7 +426,7 @@ plot_pt_classic <- function(pt, col = NULL) {
     time = rep(pt$t, nrow(pt$pt))
   )
 
-  p <- ggplot(plot_data, aes_string(x = "time", y = "proba", group = "State", colour = "State")) +
+  p <- ggplot(plot_data, aes(x = .data$time, y = .data$proba, group = .data$State, colour = .data$State)) +
     geom_line() +
     ylim(0, 1) +
     labs(x = "Time", y = "p(t)", title = "P(X(t) = x)")
@@ -458,16 +458,25 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE) {
   plot_data$state0 <- rep(0, nrow(plot_data))
   labels <- c("state0", labels)
 
-  p <- ggplot(plot_data)
+  plot_data_list <- NULL
   for (i in seq_len(nState)) {
-    p <- p + geom_ribbon(aes_string(
-      ymin = paste0("`", labels[i], "`"),
-      ymax = paste0("`", labels[i + 1], "`"), x = "time",
-      fill = shortLabels[i]
-    ),
-    colour = ifelse(addBorder, "black", NA), alpha = 0.8
-    )
+    plot_data_list[[i]] <- plot_data[, c("time", labels[i], labels[i + 1])]
+    plot_data_list[[i]] <- plot_data_list[[i]] %>%
+      rename("lower" = labels[i], "upper" = labels[i + 1]) %>%
+      add_column(label = shortLabels[i])
   }
+  plot_data_list <- bind_rows(plot_data_list)
+
+  p <- ggplot(plot_data_list) +
+    geom_ribbon(
+      aes(
+        x = .data$time,
+        ymin = .data$lower,
+        ymax = .data$upper,
+        fill = .data$label
+      ),
+      colour = ifelse(addBorder, "black", NA), alpha = 0.8
+    )
 
   if (!is.null(col)) {
     p <- p + scale_fill_manual(values = col, drop = FALSE)
@@ -575,7 +584,7 @@ hist.njump <- function(x, breaks = NULL, ...) {
   defaultParam <- list(fill = "lightblue", color = "black", bins = breaks, center = 0)
   param <- c(extraParam, defaultParam[which(!(names(defaultParam) %in% names(extraParam)))])
 
-  ggplot(data.frame(njump = as.vector(x)), aes_string(x = "njump")) +
+  ggplot(data.frame(njump = as.vector(x)), aes(x = .data$njump)) +
     do.call(geom_histogram, param) +
     labs(x = "Number of jumps", y = "Frequency") +
     scale_x_continuous(breaks = function(x) pretty(seq(ceiling(x[1]), floor(x[2]), by = 1)))

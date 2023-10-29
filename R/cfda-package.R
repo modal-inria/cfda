@@ -4,6 +4,7 @@
 #' @importFrom graphics boxplot
 #' @importFrom utils head
 #' @importFrom tidyr fill
+#' @importFrom tibble add_column
 #' @importFrom rlang :=
 #'
 #' @title Categorical Functional Data Analysis
