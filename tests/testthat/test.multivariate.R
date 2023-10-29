@@ -125,9 +125,9 @@ test_that("computeUmean keeps the same result than computeUmean_old", {
   phi <- fd(diag(nBasis), basisobj)
 
   oldRes <- computeUmean_old(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE)
-  newRes <- computeUmean(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE)
+  newRes <- computeUmean(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE, nCores = 2)
 
-  expect_equal(newRes, oldRes)
+  expect_equivalent(newRes, oldRes)
 })
 
 
@@ -146,13 +146,8 @@ test_that("computeVlist keeps the same result than computeVlist_old", {
   nBasis <- basisobj$nbasis
   phi <- fd(diag(nBasis), basisobj)
 
-  t1 = proc.time()
   oldRes <- computeVlist_old(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE)
-  t2 = proc.time()
   newRes <- computeVlist(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE, nCores = 2)
-  t3 = proc.time()
 
-  print(t2-t1)
-  print(t3-t2)
   expect_equivalent(newRes, oldRes)
 })

@@ -14,8 +14,6 @@ computeVlist <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, 
     cl <- NULL
   }
 
-  nId <- length(uniqueId)
-
   t3 <- proc.time()
   if (verbose) {
     cat("---- Compute V matrix:\n")
@@ -99,25 +97,23 @@ compute_U_list_matrix <- function(list_of_Uval, K) {
   return(U_list)
 }
 
-computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, ...) {
-  nId <- length(uniqueId)
+computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, ...) {
+  # declare parallelization
+  if (nCores > 1) {
+    cl <- makeCluster(nCores)
+  } else {
+    cl <- NULL
+  }
 
+  t3 <- proc.time()
   if (verbose) {
-    cat("\n")
-    cat("---- Compute U matrix\n")
-    pb <- timerProgressBar(min = 0, max = nId, width = 50)
-    on.exit(close(pb))
-    jj <- 1
+    cat(paste0("---- Compute U matrix:\n"))
+    pbo <- pboptions(type = "timer", char = "=")
+  } else {
+    pbo <- pboptions(type = "none")
   }
-  list_of_Uval <- list()
 
-  for (i in uniqueId) {
-    list_of_Uval[[i]] <- compute_Uxij_multi(data[data$id == i, ], phi, K, stateColumns, verbose = FALSE)
-    if (verbose) {
-      setTimerProgressBar(pb, jj)
-      jj <- jj + 1
-    }
-  }
+  list_of_Uval <- pblapply(cl = cl, split(data, data$id), compute_Uxij_multi, phi = phi, K = K, stateColumns = stateColumns, ...)[uniqueId]
 
   U_list_matrix <- compute_U_list_matrix(list_of_Uval, K)
   U_mean <- U_list_matrix
@@ -125,6 +121,16 @@ computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, ...) {
     for (j in seq_along(K)) {
       U_mean[[i]][[j]] <- colMeans(U_mean[[i]][[j]])
     }
+  }
+
+  # stop parallelization
+  if (nCores > 1) {
+    stopCluster(cl)
+  }
+
+  t4 <- proc.time()
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t4 - t3)[3], 2), "s\n"))
   }
 
   return(U_mean)
@@ -193,7 +199,7 @@ compute_optimal_encoding_multivariate <- function(
 
   V_multi <- computeVlist(data, phi, K, stateColumns, uniqueId, verbose, nCores)
 
-  U_mean <- computeUmean(data, phi, K, stateColumns, uniqueId, verbose)
+  U_mean <- computeUmean(data, phi, K, stateColumns, uniqueId, verbose, nCores)
 
   if (verbose) {
     cat(paste0("\n---- Compute encoding:\n"))
