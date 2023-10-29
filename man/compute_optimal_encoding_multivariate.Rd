@@ -50,7 +50,7 @@ x <- list(x1, x2)
 mvcfd <- convert2mvcfd(x)
 basisobj <- create.bspline.basis(c(0, Tmax), nbasis = 10, norder = 4)
 
-multEnc <- compute_optimal_encoding_multivariate(mvcfd, basisobj, verbose = FALSE)
+multEnc <- compute_optimal_encoding_multivariate(mvcfd, basisobj, verbose = FALSE, nCores = 1)
 
 plot(multEnc)
 }
