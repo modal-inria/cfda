@@ -1,6 +1,6 @@
 # Check if the data.frame has the required format
 # @author Quentin Grimonprez
-checkData <- function(data) {
+checkData <- function(data, checkNrows = TRUE) {
   if (!is.data.frame(data)) {
     stop("data must be a data.frame.")
   }
@@ -11,7 +11,7 @@ checkData <- function(data) {
     stop(paste0("Missing columns in data: ", paste(requiredColNames[missColNames], collapse = ", "), "."))
   }
 
-  if (nrow(data) <= 1) {
+  if (checkNrows && (nrow(data) <= 1)) {
     stop("There is only one row or less.")
   }
 
