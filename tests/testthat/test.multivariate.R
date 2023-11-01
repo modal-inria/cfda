@@ -2,6 +2,19 @@
 
 context("Multivariate Encoding")
 
+
+## common dataset
+set.seed(42)
+
+K <- 4
+Tmax <- 10
+PJK <- matrix(1 / 3, nrow = K, ncol = K) - diag(rep(1 / 3, K))
+lambda_PJK <- c(1, 1, 1, 1)
+d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = Tmax)
+d_JK2 <- cut_data(d_JK, 10)
+##
+
+
 test_that("convert2mvcfd works with 1 indiv and different time", {
   x1 <- data.frame(id = c(1, 1, 1), time = c(0, 0.5, 1), state = c(1, 2, 1))
   x2 <- data.frame(id = c(1, 1, 1), time = c(0, 0.25, 0.9), state = c(1, 2, 3))
@@ -50,6 +63,12 @@ test_that("convert2mvcfd works with more than 2 dataframes", {
   )
   out <- convert2mvcfd(x)
   expect_equal(out, expectedOut)
+})
+
+test_that("convert2mvcfd throws error with bad input", {
+  x1 <- data.frame(id = c(1, 1, 1), time = c(0, 0.5, 1), state = c(1, 2, 1))
+
+  expect_error(convert2mvcfd(x1), regexp = "data must be a list of data.frames")
 })
 
 
@@ -150,4 +169,41 @@ test_that("computeVlist keeps the same result than computeVlist_old", {
   newRes <- computeVlist(x, phi, K = c(2, 2), stateColumns = c("state1", "state2"), verbose = FALSE, nCores = 2)
 
   expect_equivalent(newRes, oldRes)
+})
+
+test_that("compute_optimal_encoding_multivariate throws error", {
+  # create basis object
+  m <- 10
+  b <- create.bspline.basis(c(0, 1), nbasis = m, norder = 4)
+
+  expect_error(
+    compute_optimal_encoding_multivariate(m, basisobj = b, nCores = 1, verbose = TRUE),
+    regexp = "data must be a data.frame."
+  )
+
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, 3, nCores = 1, verbose = TRUE),
+    regexp = "basisobj is not a basis object."
+  )
+
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, b, nCores = 0, verbose = TRUE),
+    regexp = "nCores must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, b, nCores = 2.5, verbose = TRUE),
+    regexp = "nCores must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, b, nCores = NA, verbose = TRUE),
+    regexp = "nCores must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, b, nCores = NaN, verbose = TRUE),
+    regexp = "nCores must be an integer > 0."
+  )
+  expect_error(
+    compute_optimal_encoding_multivariate(d_JK2, b, nCores = 1, verbose = 2),
+    regexp = "verbose must be either TRUE or FALSE."
+  )
 })

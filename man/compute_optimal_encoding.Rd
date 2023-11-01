@@ -12,7 +12,7 @@ compute_optimal_encoding(
   propBootstrap = 1,
   method = c("precompute", "parallel"),
   verbose = TRUE,
-  nCores = max(1, ceiling(detectCores()/2)),
+  nCores = max(1, detectCores() - 1),
   ...
 )
 }
@@ -34,7 +34,7 @@ compute_optimal_encoding(
 
 \item{verbose}{if TRUE print some information}
 
-\item{nCores}{number of cores used for parallelization (only if method == "parallel"). Default is half the cores.}
+\item{nCores}{number of cores used for parallelization (only if method == "parallel"). Default is all cores except one.}
 
 \item{...}{parameters for \code{\link{integrate}} function (see details).}
 }

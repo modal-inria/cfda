@@ -1,11 +1,10 @@
 # Check if the data.frame has the required format
 # @author Quentin Grimonprez
-checkData <- function(data, checkNrows = TRUE) {
+checkData <- function(data, checkNrows = TRUE, requiredColNames = c("id", "time", "state")) {
   if (!is.data.frame(data)) {
     stop("data must be a data.frame.")
   }
 
-  requiredColNames <- c("id", "time", "state")
   missColNames <- !(requiredColNames %in% colnames(data))
   if (any(missColNames)) {
     stop(paste0("Missing columns in data: ", paste(requiredColNames[missColNames], collapse = ", "), "."))

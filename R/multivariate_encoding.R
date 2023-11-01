@@ -1,3 +1,195 @@
+#' Compute the multivariate optimal encoding
+#'
+#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
+#' and several columns for the associated state for each dimension.
+#' All individuals must begin at the same time T0 and end at the same time Tmax.
+#' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
+#' The same basis is used for every dimension.
+#' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
+#' It can be a vector to test several values.
+#' @param stateColumns column names for multivariate states. By default, "state1", "state2", ...
+#' @param verbose if TRUE print some information
+#' @param nCores number of cores used for parallelization. Default is all cores except 1.
+#'
+#' @return a fmca object
+#'
+#' @examples
+#' \donttest{
+#' set.seed(42)
+#' Tmax <- 2
+#' x1 <- generate_Markov(n = 500, K = 2)
+#' x1 <- cut_data(x1, Tmax = Tmax)
+#' x2 <- generate_Markov(n = 500, K = 2)
+#' x2 <- cut_data(x2, Tmax = Tmax)
+#'
+#' x <- list(x1, x2)
+#'
+#' mvcfd <- convert2mvcfd(x)
+#' basisobj <- create.bspline.basis(c(0, Tmax), nbasis = 10, norder = 4)
+#'
+#' multEnc <- compute_optimal_encoding_multivariate(mvcfd, basisobj, verbose = FALSE, nCores = 1)
+#'
+#' plot(multEnc)
+#' }
+#' @export
+compute_optimal_encoding_multivariate <- function(
+    data, basisobj, epsilon = NULL, stateColumns = NULL, verbose = TRUE, nCores = max(1, detectCores() - 1)) {
+  ## check parameters
+  check_compute_optimal_multivariate_encoding_parameters(data, basisobj, nCores, verbose)
+  nCores <- min(max(1, nCores), detectCores())
+  ## end check
+
+  t1 <- proc.time()
+  if (verbose) {
+    cat("######### Compute multivariate encoding #########\n")
+  }
+
+  nBasis <- basisobj$nbasis
+  phi <- fd(diag(nBasis), basisobj)
+
+  uniqueId <- as.character(unique(data$id))
+  if (is.null(stateColumns)) {
+    stateColumns <- sort(colnames(data)[grep("state", colnames(data))])
+  }
+  K <- sapply(data[stateColumns], FUN = function(x) length(unique(x)))
+
+  nId <- length(uniqueId)
+
+  if (verbose) {
+    cat(paste0("Number of individuals: ", nId, "\n"))
+    cat(paste0("Number of categorical variables: ", length(K), "\n"))
+    cat(paste0("Number of states: ", paste(K, collapse = ", "), "\n"))
+    cat(paste0("Basis type: ", basisobj$type, "\n"))
+    cat(paste0("Number of basis functions: ", nBasis, "\n"))
+  }
+
+
+  V_multi <- computeVlist(data, phi, K, stateColumns, uniqueId, verbose, nCores)
+
+  U_mean <- computeUmean(data, phi, K, stateColumns, uniqueId, verbose, nCores)
+
+  if (verbose) {
+    cat(paste0("\n---- Compute encoding:\n"))
+  }
+
+  Fmat_normal <- matrix(0, nrow = nBasis * sum(K), ncol = nBasis * sum(K))
+
+  for (i in seq_along(K)) {
+    for (j in seq_along(K)) {
+      ind_start_dim1 <- (sum(K) - sum(K[i:length(K)])) * nBasis + 1
+      ind_end_dim1 <- sum(K[seq_len(i)]) * nBasis
+      ind_start_dim2 <- (sum(K) - sum(K[j:length(K)])) * nBasis + 1
+      ind_end_dim2 <- sum(K[seq_len(j)]) * nBasis
+      Fmat_normal[ind_start_dim1:ind_end_dim1, ind_start_dim2:ind_end_dim2] <- U_mean[[i]][[j]]
+    }
+  }
+
+  G <- cov(V_multi)
+  V <- V_multi
+
+  if (is.null(epsilon)) {
+    epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * c(1e-12, 1e-9, 1e-6, 1e-4, 1e-2, 1e-1)
+    if (verbose) {
+      cat(paste0("You did not provide a value for epsilon. Several values will be tested: ", paste(epsilon, collapse = ", ")))
+    }
+  }
+
+  epsilon <- sort(epsilon)
+  isInverted <- FALSE
+
+  for (eps in epsilon) {
+    tryCatch(
+      {
+        Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
+        ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
+        F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
+        invF05 <- solve(F05)
+        isInverted <- TRUE
+        break
+      },
+      error = function(e) {
+        print(paste0("Failed for epsilon=", eps))
+      }
+    )
+  }
+
+  if (!isInverted) {
+    stop("solve.default(F05) : 'F05' must be squared. The epsilon is perharps too big.")
+  }
+
+  G <- G[!ind0, !ind0]
+  V <- V[, !ind0]
+
+  res <- eigen(t(invF05) %*% G %*% invF05)
+
+  invF05vec <- invF05 %*% res$vectors
+  aux1 <- split(invF05vec, rep(seq_len(ncol(res$vectors)), each = nrow(res$vectors)))
+
+  alpha <- lapply(aux1, function(w) {
+    wb <- rep(NA, nBasis * sum(K))
+    wb[!ind0] <- Re(w)
+    name <- paste0(paste0("Dim ", rep(seq_along(K), K), " K"), do.call(c, lapply(K, seq_len)))
+    return(matrix(wb, ncol = sum(K), dimnames = list(NULL, name)))
+  })
+
+  pc <- V %*% invF05vec
+  rownames(pc) <- uniqueId
+
+  # en attendant mieux, besoin pour le plot
+  uniqueTime <- sort(unique(data$time))
+  pt <- list(
+    pt = matrix(
+      1 / ncol(alpha[[1]]),
+      nrow = ncol(alpha[[1]]),
+      ncol = length(uniqueTime),
+      dimnames = list(colnames(alpha[[1]]), uniqueTime)
+    ),
+    t = uniqueTime
+  )
+  class(pt) <- "pt"
+
+  mult_enc <- list(
+    "pc" = pc,
+    "alpha" = alpha,
+    "eigenvalues" = Re(res$values),
+    "F" = Fmat,
+    "G" = G,
+    "V" = V,
+    "basisobj" = basisobj,
+    "pt" = pt,
+    "epsilon" = eps
+  )
+  class(mult_enc) <- "fmca"
+
+  t2 <- proc.time()
+  if (verbose) {
+    cat(paste0("\nDONE in ", round((t2 - t1)[3], 2), "s\n"))
+  }
+
+  mult_enc$runTime <- as.numeric((t2 - t1)[3])
+  if (verbose) {
+    cat(paste0("Run Time: ", round(mult_enc$runTime, 2), "s\n"))
+  }
+
+  return(mult_enc)
+}
+
+check_compute_optimal_multivariate_encoding_parameters <- function(data, basisobj, nCores, verbose) {
+  checkData(data, requiredColNames = c("id", "time"))
+  checkDataBeginTime(data)
+  checkDataEndTmax(data)
+  checkDataNoDuplicatedTimes(data)
+
+  if (!is.basis(basisobj)) {
+    stop("basisobj is not a basis object.")
+  }
+  if (any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1)) {
+    stop("nCores must be an integer > 0.")
+  }
+  checkLogical(verbose, "verbose")
+}
+
+
 compute_Vxi_multi <- function(x, phi, K, stateColumns, ...) {
   aux <- list()
   for (j in seq_along(K)) {
@@ -136,177 +328,6 @@ computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, 
   return(U_mean)
 }
 
-#' Compute the multivariate optimal encoding
-#'
-#' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
-#' and several columns for the associated state for each dimension.
-#' All individuals must begin at the same time T0 and end at the same time Tmax.
-#' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
-#' The same basis is used for every dimension.
-#' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
-#' It can be a vector to test several values.
-#' @param stateColumns column names for multivariate states. By default, "state1", "state2", ...
-#' @param verbose if TRUE print some information
-#' @param nCores number of cores used for parallelization. Default is all cores except 1.
-#'
-#' @return a fmca object
-#'
-#' @examples
-#' \donttest{
-#' set.seed(42)
-#' Tmax <- 2
-#' x1 <- generate_Markov(n = 500, K = 2)
-#' x1 <- cut_data(x1, Tmax = Tmax)
-#' x2 <- generate_Markov(n = 500, K = 2)
-#' x2 <- cut_data(x2, Tmax = Tmax)
-#'
-#' x <- list(x1, x2)
-#'
-#' mvcfd <- convert2mvcfd(x)
-#' basisobj <- create.bspline.basis(c(0, Tmax), nbasis = 10, norder = 4)
-#'
-#' multEnc <- compute_optimal_encoding_multivariate(mvcfd, basisobj, verbose = FALSE, nCores = 1)
-#'
-#' plot(multEnc)
-#' }
-#' @export
-compute_optimal_encoding_multivariate <- function(
-    data, basisobj, epsilon = NULL, stateColumns = NULL, verbose = TRUE, nCores = max(1, detectCores() - 1)) {
-  t1 <- proc.time()
-  if (verbose) {
-    cat("######### Compute multivariate encoding #########\n")
-  }
-
-  nBasis <- basisobj$nbasis
-  phi <- fd(diag(nBasis), basisobj)
-
-  uniqueId <- as.character(unique(data$id))
-  if (is.null(stateColumns)) {
-    stateColumns <- sort(colnames(data)[grep("state", colnames(data))])
-  }
-  K <- sapply(data[stateColumns], FUN = function(x) length(unique(x)))
-
-  nId <- length(uniqueId)
-
-  if (verbose) {
-    cat(paste0("Number of individuals: ", nId, "\n"))
-    cat(paste0("Number of categorical variables: ", length(K), "\n"))
-    cat(paste0("Number of states: ", paste(K, collapse = ", "), "\n"))
-    cat(paste0("Basis type: ", basisobj$type, "\n"))
-    cat(paste0("Number of basis functions: ", nBasis, "\n"))
-  }
-
-
-  V_multi <- computeVlist(data, phi, K, stateColumns, uniqueId, verbose, nCores)
-
-  U_mean <- computeUmean(data, phi, K, stateColumns, uniqueId, verbose, nCores)
-
-  if (verbose) {
-    cat(paste0("\n---- Compute encoding:\n"))
-  }
-
-  Fmat_normal <- matrix(0, nrow = nBasis * sum(K), ncol = nBasis * sum(K))
-
-  for (i in seq_along(K)) {
-    for (j in seq_along(K)) {
-      ind_start_dim1 <- (sum(K) - sum(K[i:length(K)])) * nBasis + 1
-      ind_end_dim1 <- sum(K[seq_len(i)]) * nBasis
-      ind_start_dim2 <- (sum(K) - sum(K[j:length(K)])) * nBasis + 1
-      ind_end_dim2 <- sum(K[seq_len(j)]) * nBasis
-      Fmat_normal[ind_start_dim1:ind_end_dim1, ind_start_dim2:ind_end_dim2] <- U_mean[[i]][[j]]
-    }
-  }
-
-  G <- cov(V_multi)
-  V <- V_multi
-
-  if (is.null(epsilon)) {
-    epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * c(1e-12, 1e-9, 1e-6, 1e-4, 1e-2, 1e-1)
-    if (verbose) {
-      cat(paste0("You did not provide a value for epsilon. Several values will be tested: ", paste(epsilon, collapse = ", ")))
-    }
-  }
-
-  epsilon <- sort(epsilon)
-  isInverted <- FALSE
-
-  for (eps in epsilon) {
-    tryCatch(
-      {
-        Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
-        ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
-        F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
-        invF05 <- solve(F05)
-        isInverted <- TRUE
-        break
-      },
-      error = function(e) {
-        print(paste0("Failed for epsilon=", eps))
-      }
-    )
-  }
-
-  if (!isInverted) {
-    stop("solve.default(F05) : 'F05' must be squared. The epsilon is perharps too big.")
-  }
-
-  G <- G[!ind0, !ind0]
-  V <- V[, !ind0]
-
-  res <- eigen(t(invF05) %*% G %*% invF05)
-
-  invF05vec <- invF05 %*% res$vectors
-  aux1 <- split(invF05vec, rep(seq_len(ncol(res$vectors)), each = nrow(res$vectors)))
-
-  alpha <- lapply(aux1, function(w) {
-    wb <- rep(NA, nBasis * sum(K))
-    wb[!ind0] <- Re(w)
-    name <- paste0(paste0("Dim ", rep(seq_along(K), K), " K"), do.call(c, lapply(K, seq_len)))
-    return(matrix(wb, ncol = sum(K), dimnames = list(NULL, name)))
-  })
-
-  pc <- V %*% invF05vec
-  rownames(pc) <- uniqueId
-
-  # en attendant mieux, besoin pour le plot
-  uniqueTime <- sort(unique(data$time))
-  pt <- list(
-    pt = matrix(
-      1 / ncol(alpha[[1]]),
-      nrow = ncol(alpha[[1]]),
-      ncol = length(uniqueTime),
-      dimnames = list(colnames(alpha[[1]]), uniqueTime)
-    ),
-    t = uniqueTime
-  )
-  class(pt) <- "pt"
-
-  mult_enc <- list(
-    "pc" = pc,
-    "alpha" = alpha,
-    "eigenvalues" = Re(res$values),
-    "F" = Fmat,
-    "G" = G,
-    "V" = V,
-    "basisobj" = basisobj,
-    "pt" = pt,
-    "epsilon" = eps
-  )
-  class(mult_enc) <- "fmca"
-
-  t2 <- proc.time()
-  if (verbose) {
-    cat(paste0("\nDONE in ", round((t2 - t1)[3], 2), "s\n"))
-  }
-
-  mult_enc$runTime <- as.numeric((t2 - t1)[3])
-  if (verbose) {
-    cat(paste0("Run Time: ", round(mult_enc$runTime, 2), "s\n"))
-  }
-
-  return(mult_enc)
-}
-
 
 #' Convert a list of cfd into a multivariate cfd
 #'
@@ -328,6 +349,17 @@ compute_optimal_encoding_multivariate <- function(
 #'
 #' @export
 convert2mvcfd <- function(x, state_columns = NULL) {
+  ### check data
+  if (!inherits(x, "list")) {
+    stop("data must be a list of data.frames")
+  }
+
+  for (elem in x) {
+    checkData(elem)
+    checkDataNoDuplicatedTimes(elem)
+  }
+  ### end check data
+
   nDim <- length(x)
   if (is.null(state_columns)) {
     state_columns <- paste0("state", seq_len(nDim))
