@@ -13,7 +13,7 @@
 #' @param method computation method: "parallel" or "precompute": precompute all integrals
 #' (efficient when the number of unique time values is low)
 #' @param verbose if TRUE print some information
-#' @param nCores number of cores used for parallelization (only if method == "parallel"). Default is half the cores.
+#' @param nCores number of cores used for parallelization (only if method == "parallel"). Default is all cores except one.
 #' @param ... parameters for \code{\link{integrate}} function (see details).
 #'
 #' @return A list containing:
@@ -90,13 +90,13 @@
 #' @export
 compute_optimal_encoding <- function(
   data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, method = c("precompute", "parallel"),
-  verbose = TRUE, nCores = max(1, ceiling(detectCores() / 2)),  ...) {
+  verbose = TRUE, nCores = max(1, detectCores() - 1),  ...) {
   t1 <- proc.time()
 
   ## check parameters
   check_compute_optimal_encoding_parameters(data, basisobj, nCores, verbose, computeCI, nBootstrap, propBootstrap)
   method <- match.arg(method)
-  nCores <- min(max(1, nCores), detectCores() - 1)
+  nCores <- min(max(1, nCores), detectCores())
   ## end check
 
   # used to determine the moments where the probability is 0 in plot.fmca
