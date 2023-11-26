@@ -114,7 +114,7 @@ compute_optimal_encoding_multivariate <- function(
   }
 
   if (!isInverted) {
-    stop("solve.default(F05) : 'F05' must be squared. The epsilon is perharps too big.")
+    stop("solve.default(F05) : 'F05' must be squared. The epsilon is perhaps too big.")
   }
 
   G <- G[!ind0, !ind0]
@@ -326,58 +326,4 @@ computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, 
   }
 
   return(U_mean)
-}
-
-
-#' Convert a list of cfd into a multivariate cfd
-#'
-#' @param x list of cfd
-#' @param state_columns column names for multivariate states. By default, "state1", "state2", ...
-#'
-#' @return a multivariate cfd
-#'
-#' @examples
-#' set.seed(42)
-#' x1 <- generate_Markov(n = 10, K = 2)
-#' x1 <- cut_data(x1, Tmax = 1)
-#' x2 <- generate_Markov(n = 10, K = 2)
-#' x2 <- cut_data(x2, Tmax = 1)
-#'
-#' x <- list(x1, x2)
-#'
-#' mvcfd <- convert2mvcfd(x)
-#'
-#' @export
-convert2mvcfd <- function(x, state_columns = NULL) {
-  ### check data
-  if (!inherits(x, "list")) {
-    stop("data must be a list of data.frames")
-  }
-
-  for (elem in x) {
-    checkData(elem)
-    checkDataNoDuplicatedTimes(elem)
-  }
-  ### end check data
-
-  nDim <- length(x)
-  if (is.null(state_columns)) {
-    state_columns <- paste0("state", seq_len(nDim))
-  }
-
-  # rename state columns to each data frame
-  for (i in seq_len(nDim)) {
-    x[[i]] <- x[[i]] %>% rename(!!state_columns[i] := "state")
-  }
-
-  # merge data frames
-  x <- Reduce(function(x1, x2) merge(x1, x2, by = c("id", "time"), all = TRUE), x)
-
-  # order by id and time
-  x <- arrange(x, .data[["id"]], .data[["time"]])
-
-  # fill missing values with the state before
-  x <- as.data.frame(x %>% group_by(.data[["id"]]) %>% fill(all_of(state_columns), .direction = "downup"))
-
-  return(distinct(x))
 }
