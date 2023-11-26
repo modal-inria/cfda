@@ -13,7 +13,7 @@
 #' @param method computation method: "parallel" or "precompute": precompute all integrals
 #' (efficient when the number of unique time values is low)
 #' @param verbose if TRUE print some information
-#' @param nCores number of cores used for parallelization (only if method == "parallel"). Default is half the cores.
+#' @param nCores number of cores used for parallelization (only if method == "parallel"). Default is all cores except one.
 #' @param ... parameters for \code{\link{integrate}} function (see details).
 #'
 #' @return A list containing:
@@ -90,13 +90,13 @@
 #' @export
 compute_optimal_encoding <- function(
   data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, method = c("precompute", "parallel"),
-  verbose = TRUE, nCores = max(1, ceiling(detectCores() / 2)),  ...) {
+  verbose = TRUE, nCores = max(1, detectCores() - 1),  ...) {
   t1 <- proc.time()
 
   ## check parameters
   check_compute_optimal_encoding_parameters(data, basisobj, nCores, verbose, computeCI, nBootstrap, propBootstrap)
   method <- match.arg(method)
-  nCores <- min(max(1, nCores), detectCores() - 1)
+  nCores <- min(max(1, nCores), detectCores())
   ## end check
 
   # used to determine the moments where the probability is 0 in plot.fmca
@@ -261,12 +261,12 @@ computeVmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 # compute_Vxi(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda
-compute_Vxi <- function(x, phi, K, ...) {
+compute_Vxi <- function(x, phi, K, stateColumn = "state", ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis) # V11, V12,...V1m, V21, V22, ..., V2m, ... etc VK1... VKm
 
   for (u in seq_len(nrow(x) - 1)) {
-    state <- x$state[u]
+    state <- x[[stateColumn]][u]
 
     for (j in seq_len(nBasis)) { # j = la base
       ind <- (state - 1) * nBasis + j
@@ -432,12 +432,12 @@ computeUmatrix <- function(data, basisobj, K, uniqueId, nCores, verbose, ...) {
 # compute_Uxij(d_JK2[d_JK2$id == 1, ], phi, K)
 #
 # @author Cristian Preda, Quentin Grimonprez
-compute_Uxij <- function(x, phi, K, ...) {
+compute_Uxij <- function(x, phi, K, stateColumn = "state", ...) {
   nBasis <- phi$basis$nbasis
   aux <- rep(0, K * nBasis * nBasis)
 
   for (u in seq_len(nrow(x) - 1)) {
-    state <- x$state[u]
+    state <- x[[stateColumn]][u]
     for (i in seq_len(nBasis)) {
       for (j in i:nBasis) { # symmetry between i and j
         integral <- integrate(

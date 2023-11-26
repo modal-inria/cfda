@@ -90,8 +90,8 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
   p <- ggplot() +
     geom_rect(data = d_graph,
-              mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5",
-                                   ymax = "position + 0.5", fill = "state"),
+              mapping = aes(xmin = .data$t_start, xmax = .data$t_end, ymin = .data$position - 0.5,
+                            ymax = .data$position + 0.5, fill = .data$state),
               color = ifelse(addBorder, "black", NA)) +
     scale_x_continuous(name = "Time") +
     labs(fill = "State")
