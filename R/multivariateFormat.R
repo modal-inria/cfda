@@ -51,3 +51,60 @@ convert2mvcfd <- function(x, stateColumns = NULL) {
   return(distinct(x))
 }
 
+#' Convert a multivariate cfd to an univariate one
+#'
+#' @param x multivariate cfd: data.frame with id, time columns and several stateColumns (output of \code{\link{convert2mvcfd}})
+#' @param sep separator used to concatenate states
+#' @param stateColumns names of the state columns. If NULL, it looks for columns with state in their names
+#'
+#' @return univariate cfd to use in \code{\link{compute_optimal_encoding}}. A data.frame with is, time and state columns
+#'
+#' @examples
+#' set.seed(42)
+#' x1 <- generate_Markov(n = 10, K = 2)
+#' x1 <- cut_data(x1, Tmax = 1)
+#' x2 <- generate_Markov(n = 10, K = 2)
+#' x2 <- cut_data(x2, Tmax = 1)
+#'
+#' x <- list(x1, x2)
+#'
+#' mvcfd <- convert2mvcfd(x)
+#' cfd <- convertMvcfd2cfd(mvcfd)
+#'
+#' @export
+convertMvcfd2cfd <- function(x, sep = "_", stateColumns = NULL) {
+  checkData(x, requiredColNames = c("id", "time"))
+
+  if (is.null(stateColumns)) {
+    stateColumns <- colnames(x)[grep("state", colnames(x))]
+  }
+
+  xCfd <- x[c("id", "time")]
+  xCfd$state <- as.factor(do.call(paste, c(x[stateColumns], sep = sep)))
+
+  return(xCfd)
+}
+
+#' Convert a list of univariate cfds to an unique univariate cfd
+#'
+#' @param x list of cfd
+#' @param sep separator used to concatenate states
+#'
+#' @return univariate cfd to use in \code{\link{compute_optimal_encoding}}. A data.frame with is, time and state columns
+#'
+#' @examples
+#' set.seed(42)
+#' x1 <- generate_Markov(n = 10, K = 2)
+#' x1 <- cut_data(x1, Tmax = 1)
+#' x2 <- generate_Markov(n = 10, K = 2)
+#' x2 <- cut_data(x2, Tmax = 1)
+#'
+#' x <- list(x1, x2)
+#'
+#' cfd <- convertListCfd2Cfd(x)
+#'
+#' @export
+convertListCfd2Cfd <- function(x, sep = "_") {
+  xMcfd <- convert2mvcfd(x)
+  return(convertMvcfd2cfd(xMcfd, sep = sep))
+}
