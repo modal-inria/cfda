@@ -87,8 +87,11 @@ compute_optimal_encoding_multivariate <- function(
   G <- cov(V_multi)
   V <- V_multi
 
+  traceFmat <- sum(diag(Fmat_normal))
+
   if (is.null(epsilon)) {
-    epsilon <- min(abs(diag(Fmat_normal)[diag(Fmat_normal) != 0])) * c(1e-12, 1e-9, 1e-6, 1e-4, 1e-2, 1e-1)
+    epsilon <- c(1e-12, 1e-9, 1e-6, 1e-5, 1e-4, 1e-2, 1e-1)
+
     if (verbose) {
       cat(paste0("You did not provide a value for epsilon. Several values will be tested: ", paste(epsilon, collapse = ", ")))
     }
@@ -100,7 +103,7 @@ compute_optimal_encoding_multivariate <- function(
   for (eps in epsilon) {
     tryCatch(
       {
-        Fmat <- Fmat_normal + eps * diag(ncol(Fmat_normal))
+        Fmat <- Fmat_normal + (eps * traceFmat) * diag(ncol(Fmat_normal))
         ind0 <- (colSums(Fmat == 0) == nrow(Fmat))
         F05 <- t(mroot(Fmat[!ind0, !ind0])) # F  = t(F05)%*%F05
         invF05 <- solve(F05)
