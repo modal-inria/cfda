@@ -5,8 +5,8 @@
 #' All individuals must begin at the same time T0 and end at the same time Tmax.
 #' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
 #' The same basis is used for every dimension.
-#' @param epsilon epsilon added to the diagonal of F in order to invert it. If NULL, an epsilon is computed with regards to F.
-#' It can be a vector to test several values.
+#' @param epsilon epsilon (multiplied by the trace) added to the diagonal of F in order to invert it.
+#' If NULL, an epsilon is computed with regards to F. It can be a vector to test several values.
 #' @param stateColumns column names for multivariate states. By default, "state1", "state2", ...
 #' @param verbose if TRUE print some information
 #' @param nCores number of cores used for parallelization. Default is all cores except 1.

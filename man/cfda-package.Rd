@@ -2,6 +2,7 @@
 % Please edit documentation in R/cfda-package.R
 \docType{package}
 \name{cfda-package}
+\alias{cfda}
 \alias{cfda-package}
 \title{Categorical Functional Data Analysis}
 \description{
@@ -75,4 +76,18 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
 \seealso{
 \link{compute_optimal_encoding}
 }
-\keyword{package}
+\author{
+\strong{Maintainer}: Quentin Grimonprez \email{quentingrim@yahoo.fr}
+
+Authors:
+\itemize{
+  \item Cristian Preda \email{cristian.preda@inria.fr}
+}
+
+Other contributors:
+\itemize{
+  \item Vincent Vandewalle \email{vincent.vandewalle@inria.fr} [contributor]
+}
+
+}
+\keyword{internal}
