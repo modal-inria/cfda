@@ -32,7 +32,7 @@
 #' @export
 cut_data <- function(data, Tmax, prolongLastState = "all", NAstate = "Not observed", warning = FALSE) {
   ## check parameters
-  checkData(data)
+  checkData(data, checkNrows = FALSE)
   checkLogical(warning, "warning")
   if (length(NAstate) > 1) {
     stop("NAstate must have a length of 1")

@@ -85,7 +85,7 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
       State = factor(rep(colnames(fdmat$y)[i], each = nrow(fdmat$y)), levels = colnames(fdmat$y))
     )
     p <- p + geom_ribbon(
-      data = df, aes_string(ymin = "ymin", ymax = "ymax", x = "time", fill = "State"),
+      data = df, aes(ymin = .data$ymin, ymax = .data$ymax, x = .data$time, fill = .data$State),
       colour = NA, alpha = 0.8
     )
   }
@@ -98,7 +98,7 @@ plotEncodingCI <- function(fdmat, variance, coeff = 2, states = NULL, harm = 1, 
   df <- df[df$State %in% states, ]
 
   p <- p +
-    geom_line(data = df, mapping = aes_string(x = "x", y = "y", group = "State", colour = "State"), alpha = 1) +
+    geom_line(data = df, mapping = aes(x = .data$x, y = .data$y, group = .data$State, colour = .data$State), alpha = 1) +
     scale_colour_hue(l = 30, drop = FALSE)
 
   p <- p +
@@ -123,7 +123,7 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL) {
   )
 
   df <- df[df$State %in% states, ]
-  p <- ggplot(df, aes_string(x = "x", y = "y", group = "State", colour = "State")) +
+  p <- ggplot(df, aes(x = .data$x, y = .data$y, group = .data$State, colour = .data$State)) +
     geom_line()
 
   p <- p +
@@ -292,12 +292,12 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
   df <- as.data.frame(Re(x$pc))
   df$name <- rownames(x$pc)
 
-  p <- ggplot(df, aes_string(x = paste0("V", comp[1]), y = paste0("V", comp[2]))) +
+  p <- ggplot(df, aes(x = .data[[paste0("V", comp[1])]], y = .data[[paste0("V", comp[2])]])) +
     geom_point(...) +
     labs(x = paste0("Comp ", comp[1]), y = paste0("Comp ", comp[2]))
 
   if (addNames) {
-    p <- p + geom_text(aes_string(label = "name"), nudge_x = nudge_x, nudge_y = nudge_y, size = size)
+    p <- p + geom_text(aes(label = .data$name), nudge_x = nudge_x, nudge_y = nudge_y, size = size)
   }
 
   p
@@ -366,7 +366,7 @@ plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...) {
 
   df <- data.frame(eigenvalues = eigenv, component = comp)
 
-  p <- ggplot(df, aes_string(x = "component", y = "eigenvalues")) +
+  p <- ggplot(df, aes(x = .data$component, y = .data$eigenvalues)) +
     geom_point(...) +
     geom_step() +
     labs(

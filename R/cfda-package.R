@@ -1,8 +1,11 @@
-#' @import diagram fda ggplot2 msm mgcv pbapply
+#' @import diagram fda ggplot2 msm mgcv pbapply dplyr
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot
 #' @importFrom utils head
+#' @importFrom tidyr fill
+#' @importFrom tibble add_column
+#' @importFrom rlang :=
 #'
 #' @title Categorical Functional Data Analysis
 #' @docType package
@@ -79,5 +82,5 @@
 #' encod <- get_encoding(encoding)
 #' @seealso \link{compute_optimal_encoding}
 #'
-#' @keywords package
-NULL
+#' @keywords internal
+"_PACKAGE"

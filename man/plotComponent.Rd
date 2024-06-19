@@ -57,7 +57,6 @@ plotComponent(encoding, comp = c(1, 2), shape = 23) +
   labs(title = "Two first components")
 }
 
-
 }
 \seealso{
 Other encoding functions: 
