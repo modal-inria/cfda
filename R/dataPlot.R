@@ -10,6 +10,7 @@
 #' @param addBorder If TRUE, add black border to each individual
 #' @param sort If TRUE, id are sorted according to the duration in their first state
 #' @param nCol number of columns when \code{group} is given
+#' @param stateColumn column name of the column containing the states, by default "state"
 #'
 #' @return a \code{ggplot} object that can be modified using \code{ggplot2} package.
 #' On the plot, each row represents an individual over [0:Tmax].
@@ -44,7 +45,8 @@
 #' @author Cristian Preda, Quentin Grimonprez
 #' @family Descriptive statistics
 #' @export
-plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL, stateColumn = "state") {
+plotData <- function(
+    data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL, stateColumn = "state") {
   ## check parameters
   checkData(data, requiredColNames = c("id", "time", stateColumn))
   checkLogical(addId, "addId")

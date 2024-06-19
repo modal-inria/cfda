@@ -32,6 +32,8 @@ If \code{group = NA}, the corresponding individuals in \code{data} is ignored.}
 \item{sort}{If TRUE, id are sorted according to the duration in their first state}
 
 \item{nCol}{number of columns when \code{group} is given}
+
+\item{stateColumn}{column name of the column containing the states, by default "state"}
 }
 \value{
 a \code{ggplot} object that can be modified using \code{ggplot2} package.
