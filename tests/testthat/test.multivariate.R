@@ -69,7 +69,6 @@ computeVlist_old <- function(data, phi, K, stateColumns, verbose, ...) {
   return(V_multi)
 }
 
-
 test_that("computeUmean keeps the same result than computeUmean_old", {
   skip_on_cran()
   set.seed(42)
@@ -148,4 +147,24 @@ test_that("compute_optimal_encoding_multivariate throws error", {
     compute_optimal_encoding_multivariate(d_JK2, b, nCores = 1, verbose = 2),
     regexp = "verbose must be either TRUE or FALSE."
   )
+})
+
+
+test_that("compute_optimal_encoding_multivariate gives the same result as compute_optimal_encoding", {
+  set.seed(42)
+  Tmax <- 2
+  x1 <- generate_Markov(n = 100, K = 2)
+  x1 <- cut_data(x1, Tmax = Tmax)
+
+  basisobj <- create.bspline.basis(c(0, Tmax), nbasis = 10, norder = 4)
+
+  multEnc <- compute_optimal_encoding_multivariate(x1, basisobj, stateColumns = c("state"), verbose = FALSE, nCores = 1)
+
+  enc <- compute_optimal_encoding(x1, basisobj, verbose = FALSE, nCores = 1)
+
+  errorEigenvalues <- abs(enc$eigenvalues - multEnc$eigenvalues) / abs(enc$eigenvalues)
+  expect_equal(enc$eigenvalues[1:6], multEnc$eigenvalues[1:6], tolerance = 1e-5)
+  expect_equal(min(enc$F / multEnc$F, na.rm = TRUE), 1, tolerance = 5e-3)
+  expect_equal(min(enc$G / multEnc$G), 1, tolerance = 1e-4)
+  expect_equal(max(enc$G / multEnc$G), 1, tolerance = 1e-4)
 })
