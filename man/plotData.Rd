@@ -11,7 +11,8 @@ plotData(
   addId = TRUE,
   addBorder = TRUE,
   sort = FALSE,
-  nCol = NULL
+  nCol = NULL,
+  stateColumn = "state"
 )
 }
 \arguments{

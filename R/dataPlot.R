@@ -1,4 +1,3 @@
-
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
@@ -45,9 +44,9 @@
 #' @author Cristian Preda, Quentin Grimonprez
 #' @family Descriptive statistics
 #' @export
-plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL) {
+plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL, stateColumn = "state") {
   ## check parameters
-  checkData(data)
+  checkData(data, requiredColNames = c("id", "time", stateColumn))
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   checkLogical(sort, "sort")
@@ -68,7 +67,7 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
     data <- data[!is.na(data$group), ]
   }
 
-  d_graph <- rep_large_ind(data)
+  d_graph <- rep_large_ind(data, stateColumn = stateColumn)
 
   if (!is.null(group)) {
     d_graph <- d_graph[order(d_graph$group), ]
@@ -76,8 +75,8 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 
   # to be sure that state are considered a qualitative
   # if already a factor, we do not execute this in order to not drop unused levels
-  if (!is.factor(d_graph$state)) {
-    d_graph$state <- factor(d_graph$state)
+  if (!is.factor(d_graph[[stateColumn]])) {
+    d_graph[[stateColumn]] <- factor(d_graph[[stateColumn]])
   }
 
   nInd <- length(unique(d_graph$id))
@@ -89,10 +88,14 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   }
 
   p <- ggplot() +
-    geom_rect(data = d_graph,
-              mapping = aes(xmin = .data$t_start, xmax = .data$t_end, ymin = .data$position - 0.5,
-                            ymax = .data$position + 0.5, fill = .data$state),
-              color = ifelse(addBorder, "black", NA)) +
+    geom_rect(
+      data = d_graph,
+      mapping = aes(
+        xmin = .data$t_start, xmax = .data$t_end, ymin = .data$position - 0.5,
+        ymax = .data$position + 0.5, fill = .data[[stateColumn]]
+      ),
+      color = ifelse(addBorder, "black", NA)
+    ) +
     scale_x_continuous(name = "Time") +
     labs(fill = "State")
 
@@ -122,14 +125,15 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
 # transform the data format to a new format with 4 columns: id, t_stat, t_end, state.
 # useful for ggplot
 # @author Cristian Preda
-rep_large_ind <- function(data) {
+rep_large_ind <- function(data, stateColumn = "state") {
   out <- by(data, data$id, function(x) {
     d <- data.frame(
       id = x$id[seq_len(max(nrow(x) - 1, 1))],
       t_start = x$time[seq_len(max(nrow(x) - 1, 1))],
       t_end = x$time[min(2, nrow(x)):nrow(x)],
-      state = x$state[seq_len(max(nrow(x) - 1, 1))], stringsAsFactors = FALSE
+      state = x[[stateColumn]][seq_len(max(nrow(x) - 1, 1))], stringsAsFactors = FALSE
     )
+    names(d)[names(d) == "state"] <- stateColumn
 
     if ("group" %in% names(data)) {
       d$group <- x$group[seq_len(max(nrow(x) - 1, 1))]
@@ -179,8 +183,10 @@ computePositionPerGroup <- function(data, id, group, sort = FALSE) {
 # @author Quentin Grimonprez
 orderFirstState <- function(data) {
   firstState <- do.call(rbind, by(data, data$id, function(x) {
-    data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]),
-               state = x$state[1], stringsAsFactors = FALSE)
+    data.frame(
+      id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]),
+      state = x$state[1], stringsAsFactors = FALSE
+    )
   }))
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {
     x[order(x$time), ]
