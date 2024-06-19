@@ -55,6 +55,15 @@ compute_optimal_encoding_multivariate <- function(
 
   nId <- length(uniqueId)
 
+  # change state as integer
+  label <- list()
+  for (col in stateColumns) {
+    out <- stateToInteger(data[[col]])
+    data[[col]] <- out$state
+    label[[col]] <- out$label
+  }
+
+
   if (verbose) {
     cat(paste0("Number of individuals: ", nId, "\n"))
     cat(paste0("Number of categorical variables: ", length(K), "\n"))
@@ -131,7 +140,8 @@ compute_optimal_encoding_multivariate <- function(
   alpha <- lapply(aux1, function(w) {
     wb <- rep(NA, nBasis * sum(K))
     wb[!ind0] <- Re(w)
-    name <- paste0(paste0("Dim ", rep(seq_along(K), K), " K"), do.call(c, lapply(K, seq_len)))
+    name <- paste0(rep(stateColumns, K), ": ", do.call(c, lapply(label, function(x) x$label)))
+
     return(matrix(wb, ncol = sum(K), dimnames = list(NULL, name)))
   })
 
