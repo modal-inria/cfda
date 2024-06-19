@@ -247,13 +247,13 @@ computeVlist <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, 
 }
 
 compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
-  m <- phi$basis$nbasis
+  nBasis <- phi$basis$nbasis
 
   integrals <- list()
   for (i in seq_along(K)) {
     integrals[[i]] <- list()
     for (j in seq_along(K)) {
-      integrals[[i]][[j]] <- rep(0, m * m * K[i] * K[j])
+      integrals[[i]][[j]] <- rep(0, nBasis * nBasis * K[i] * K[j])
     }
   }
 
@@ -263,23 +263,24 @@ compute_Uxij_multi <- function(x, phi, K, stateColumns, verbose = FALSE, ...) {
       cat(paste0("------ row ", u, ": state \n"))
       print(states)
     }
-    for (l1 in seq_len(m)) {
-      for (l2 in seq_len(m)) {
+    for (l1 in seq_len(nBasis)) {
+      for (l2 in seq_len(nBasis)) {
         integral <- integrate(
           function(t) {
             eval.fd(t, phi[l1]) * eval.fd(t, phi[l2])
           },
           lower = x$time[u], upper = x$time[u + 1],
-          stop.on.error = FALSE, ...
+          stop.on.error = FALSE
         )$value
+
         for (i in seq_along(K)) {
           for (j in seq_along(K)) {
             state1 <- states[i]
             state2 <- states[j]
-            num_row <- (state1 - 1) * m + l1
-            num_col <- (state2 - 1) * m + l2
+            num_row <- (state1 - 1) * nBasis + l1
+            num_col <- (state2 - 1) * nBasis + l2
 
-            ind2 <- (num_col - 1) * (K[i] * m) + num_row
+            ind2 <- (num_col - 1) * (K[i] * nBasis) + num_row
             integrals[[i]][[j]][ind2] <- integrals[[i]][[j]][ind2] + integral
           }
         }
@@ -318,7 +319,9 @@ computeUmean <- function(data, phi, K, stateColumns, uniqueId, verbose, nCores, 
     pbo <- pboptions(type = "none")
   }
 
-  list_of_Uval <- pblapply(cl = cl, split(data, data$id), compute_Uxij_multi, phi = phi, K = K, stateColumns = stateColumns, ...)[uniqueId]
+  list_of_Uval <- pblapply(
+    cl = cl, split(data, data$id), compute_Uxij_multi, phi = phi, K = K, stateColumns = stateColumns, ...
+  )[uniqueId]
 
   U_list_matrix <- compute_U_list_matrix(list_of_Uval, K)
   U_mean <- U_list_matrix
