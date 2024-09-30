@@ -79,5 +79,5 @@
 #' encod <- get_encoding(encoding)
 #' @seealso \link{compute_optimal_encoding}
 #'
-#' @keywords package
-NULL
+#' @keywords internal
+"_PACKAGE"
