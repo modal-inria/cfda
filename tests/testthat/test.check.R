@@ -9,7 +9,10 @@ test_that("checkData works", {
   expect_error(checkData(df), "Missing columns in data: time, state.")
 
   df <- data.frame(id = 1, time = 1, state = "e")
-  expect_error(checkData(df), "There is only one row or less.")
+  expect_error(checkData(df), "There is 1 row or less.")
+
+  df <- data.frame(id = 1, time = 1, state = "e")
+  expect_error(checkData(df, minSize = 10), "There is 10 row or less.")
 
   df <- data.frame(id = 1:2, time = c(1, NA), state = 1:2)
   expect_error(checkData(df), "There is some missing values.")
