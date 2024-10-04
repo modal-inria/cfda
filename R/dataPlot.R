@@ -1,4 +1,3 @@
-
 #' Plot categorical functional data
 #'
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
@@ -47,7 +46,7 @@
 #' @export
 plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = TRUE, sort = FALSE, nCol = NULL) {
   ## check parameters
-  checkData(data)
+  checkData(data, minSize = 0)
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   checkLogical(sort, "sort")
@@ -89,10 +88,14 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   }
 
   p <- ggplot() +
-    geom_rect(data = d_graph,
-              mapping = aes_string(xmin = "t_start", xmax = "t_end", ymin = "position - 0.5",
-                                   ymax = "position + 0.5", fill = "state"),
-              color = ifelse(addBorder, "black", NA)) +
+    geom_rect(
+      data = d_graph,
+      mapping = aes_string(
+        xmin = "t_start", xmax = "t_end", ymin = "position - 0.5",
+        ymax = "position + 0.5", fill = "state"
+      ),
+      color = ifelse(addBorder, "black", NA)
+    ) +
     scale_x_continuous(name = "Time") +
     labs(fill = "State")
 
@@ -179,8 +182,10 @@ computePositionPerGroup <- function(data, id, group, sort = FALSE) {
 # @author Quentin Grimonprez
 orderFirstState <- function(data) {
   firstState <- do.call(rbind, by(data, data$id, function(x) {
-    data.frame(id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]),
-               state = x$state[1], stringsAsFactors = FALSE)
+    data.frame(
+      id = x$id[1], time = ifelse(length(x$time) < 2, Inf, x$time[2] - x$time[1]),
+      state = x$state[1], stringsAsFactors = FALSE
+    )
   }))
   firstStateOrdered <- do.call(rbind, by(firstState, firstState$state, function(x) {
     x[order(x$time), ]
