@@ -265,6 +265,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 #' and \code{state}, associated state.
 #' @param NAafterTmax if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
 #' (useful when individuals has different lengths)
+#' @param timeValues time values at which probabilities are computed, if NULL, unique(data$time) are used
 #'
 #' @return A list of two elements:
 #' \itemize{
@@ -290,12 +291,17 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 #' @family Descriptive statistics
 #'
 #' @export
-estimate_pt <- function(data, NAafterTmax = FALSE) {
+estimate_pt <- function(data, NAafterTmax = FALSE, timeValues = NULL) {
   ## check parameters
   checkData(data)
   ## end check
 
-  t_jumps <- sort(unique(data$time))
+  t_jumps <- timeValues
+  if (is.null(t_jumps)) {
+    t_jumps <- unique(data$time)
+  }
+  t_jumps <- sort(t_jumps)
+
   uniqueId <- unique(data$id)
 
   if (is.factor(data$state)) {
