@@ -89,8 +89,8 @@
 #'
 #' @export
 compute_optimal_encoding <- function(
-  data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, method = c("precompute", "parallel"),
-  verbose = TRUE, nCores = max(1, ceiling(detectCores() / 2)),  ...) {
+    data, basisobj, computeCI = TRUE, nBootstrap = 50, propBootstrap = 1, method = c("precompute", "parallel"),
+    verbose = TRUE, nCores = max(1, ceiling(detectCores() / 2)), ...) {
   t1 <- proc.time()
 
   ## check parameters
@@ -150,8 +150,10 @@ compute_optimal_encoding <- function(
       out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
     } else {
       varAlpha <- computeVarianceAlpha(bootEncoding, K, nBasis)
-      out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt,
-                                  bootstrap = bootEncoding, varAlpha = varAlpha))
+      out <- c(fullEncoding, list(
+        V = V, basisobj = basisobj, label = label, pt = pt,
+        bootstrap = bootEncoding, varAlpha = varAlpha
+      ))
     }
   } else {
     out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
@@ -356,9 +358,9 @@ fill_V <- function(x, integrals, index, K, nBasis) {
     s <- as.character(x$time[u])
     e <- as.character(x$time[u + 1])
     for (i in seq_len(nBasis)) {
-        integral <- sum(integrals[[i]][index[s, ]:(index[e, ] - 1)])
-        ind <- (state - 1) * nBasis + i
-        aux[ind] <- aux[ind] + integral
+      integral <- sum(integrals[[i]][index[s, ]:(index[e, ] - 1)])
+      ind <- (state - 1) * nBasis + i
+      aux[ind] <- aux[ind] + integral
     }
   }
   return(aux)
@@ -484,9 +486,18 @@ computeUmatrix2 <- function(data, basisobj, K, uniqueId, uniqueTime, nCores, ver
   #   pblapply(cl = cl, split(data, data$id), fill_U, integrals = integrals, index = index, K = K, nBasis = nBasis)[uniqueId]
   # )
 
+  cl <- NULL
+
+  if (verbose) {
+    pbo <- pboptions(type = "timer", char = "=")
+  } else {
+    pbo <- pboptions(type = "none")
+  }
+
+
   Uval <- do.call(
     rbind,
-    lapply(split(data, data$id), fill_U, integrals = integrals, index = index, K = K, nBasis = nBasis)[uniqueId]
+    pblapply(cl = cl, split(data, data$id), fill_U, integrals = integrals, index = index, K = K, nBasis = nBasis)[uniqueId]
   )
 
   t4 <- proc.time()
@@ -600,7 +611,8 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
     if (any(dim(F05) != rep(K * nBasis, 2))) {
       cat("\n")
       if (any(colSums(Fmat) == 0)) {
-        stop(paste("F matrix is not invertible. In the support of each basis function,",
+        stop(paste(
+          "F matrix is not invertible. In the support of each basis function,",
           "each state must be present at least once (p(x_t) != 0 for t in the support).",
           "You can try to change the basis."
         ))
