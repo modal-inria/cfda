@@ -46,7 +46,6 @@ plotEigenvalues(encoding, shape = 23) +
   labs(caption = "Jukes-Cantor model of nucleotide replacement")
 }
 
-
 }
 \seealso{
 Other encoding functions: 
