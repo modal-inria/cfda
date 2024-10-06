@@ -4,7 +4,7 @@
 \alias{estimate_pt}
 \title{Estimate probabilities to be in each state}
 \usage{
-estimate_pt(data, NAafterTmax = FALSE)
+estimate_pt(data, NAafterTmax = FALSE, timeValues = NULL)
 }
 \arguments{
 \item{data}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs
@@ -12,6 +12,8 @@ and \code{state}, associated state.}
 
 \item{NAafterTmax}{if TRUE, return NA if t > Tmax otherwise return the state associated with Tmax
 (useful when individuals has different lengths)}
+
+\item{timeValues}{time values at which probabilities are computed, if NULL, unique(data$time) are used}
 }
 \value{
 A list of two elements:
