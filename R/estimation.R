@@ -21,7 +21,7 @@
 #' mark <- estimate_Markov(d_JK)
 #' mark$P
 #' mark$lambda
-#' @seealso \link{plot.Markov}
+#' @seealso \code{\link{plot.Markov}}
 #'
 #' @author Cristian Preda
 #'

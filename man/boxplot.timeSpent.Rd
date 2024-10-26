@@ -42,7 +42,7 @@ boxplot(timeSpent, notch = TRUE, outlier.colour = "black") +
   labs(title = "Time spent in each state")
 }
 \seealso{
-\link{compute_time_spent}
+\code{\link{compute_time_spent}}
 
 Other Descriptive statistics: 
 \code{\link{compute_duration}()},

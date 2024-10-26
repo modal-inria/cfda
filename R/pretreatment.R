@@ -322,7 +322,7 @@ quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, 
 #'   labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
 #'   times = 1:365, byrow = FALSE
 #' )
-#' @seealso \link{flours}
+#' @seealso \code{\link{flours}}
 #' @family format
 #' @export
 convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right = TRUE, times = NULL,

@@ -74,7 +74,7 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
 }
 }
 \seealso{
-\link{compute_optimal_encoding}
+\code{\link{compute_optimal_encoding}}
 }
 \author{
 \strong{Maintainer}: Quentin Grimonprez \email{quentingrim@yahoo.fr}

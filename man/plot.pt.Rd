@@ -35,7 +35,7 @@ pt <- estimate_pt(d_JK2)
 plot(pt, ribbon = TRUE)
 }
 \seealso{
-\link{estimate_pt}
+\code{\link{estimate_pt}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

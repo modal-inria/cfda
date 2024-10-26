@@ -31,7 +31,7 @@ mark$P
 mark$lambda
 }
 \seealso{
-\link{plot.Markov}
+\code{\link{plot.Markov}}
 }
 \author{
 Cristian Preda

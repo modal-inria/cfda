@@ -7,7 +7,7 @@
 \method{summary}{fmca}(object, n = 6, ...)
 }
 \arguments{
-\item{object}{\code{fmca} object (see \link{compute_optimal_encoding} function)}
+\item{object}{\code{fmca} object (see \code{\link{compute_optimal_encoding}} function)}
 
 \item{n}{maximal number of rows and cols to print}
 

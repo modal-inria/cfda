@@ -36,7 +36,7 @@ hist(nJump, fill = "#984EA3") +
   labs(title = "Distribution of the number of jumps")
 }
 \seealso{
-\link{compute_number_jumps}
+\code{\link{compute_number_jumps}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

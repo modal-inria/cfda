@@ -30,7 +30,7 @@ duration <- compute_duration(d_JK)
 hist(duration)
 }
 \seealso{
-\link{hist.duration}
+\code{\link{hist.duration}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

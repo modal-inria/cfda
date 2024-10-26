@@ -78,7 +78,7 @@
 #'
 #' # extract the encoding using the first harmonic
 #' encod <- get_encoding(encoding)
-#' @seealso \link{compute_optimal_encoding}
+#' @seealso \code{\link{compute_optimal_encoding}}
 #'
 #' @keywords internal
 "_PACKAGE"
