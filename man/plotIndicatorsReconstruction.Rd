@@ -7,7 +7,7 @@
 plotIndicatorsReconstruction(reconstruction, id)
 }
 \arguments{
-\item{reconstruction}{output of \link{reconstructIndicators}}
+\item{reconstruction}{output of \code{\link{reconstructIndicators}}}
 
 \item{id}{id of the individual to plot. \code{id} must be in \code{reconstruction$id}}
 }
@@ -43,7 +43,7 @@ plotIndicatorsReconstruction(indicators, id = iInd)
 
 }
 \seealso{
-\link{reconstructIndicators}
+\code{\link{reconstructIndicators}}
 }
 \author{
 Quentin Grimonprez

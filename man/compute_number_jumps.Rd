@@ -29,7 +29,7 @@ d_JK <- generate_Markov(n = 10, K = K, P = PJK, lambda = lambda_PJK, Tmax = 10)
 nJump <- compute_number_jumps(d_JK)
 }
 \seealso{
-\link{hist.njump}
+\code{\link{hist.njump}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

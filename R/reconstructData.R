@@ -39,7 +39,7 @@
 #' plotIndicatorsReconstruction(indicators, id = iInd)
 #' }
 #' @author Quentin Grimonprez
-#' @seealso \link{plotIndicatorsReconstruction}
+#' @seealso \code{\link{plotIndicatorsReconstruction}}
 #' @export
 reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEigenvalues = 1e-6) {
   checkFmca(x)
@@ -100,7 +100,7 @@ reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEig
 
 #' @title Plot reconstructed indicators
 #'
-#' @param reconstruction output of \link{reconstructIndicators}
+#' @param reconstruction output of \code{\link{reconstructIndicators}}
 #' @param id id of the individual to plot. \code{id} must be in \code{reconstruction$id}
 #'
 #' @return ggplot
@@ -130,7 +130,7 @@ reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEig
 #' }
 #'
 #' @author Quentin Grimonprez
-#' @seealso \link{reconstructIndicators}
+#' @seealso \code{\link{reconstructIndicators}}
 #' @export
 plotIndicatorsReconstruction <- function(reconstruction, id) {
   x <- reconstruction[reconstruction$id == id, ]

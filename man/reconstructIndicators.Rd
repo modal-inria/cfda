@@ -56,7 +56,7 @@ plotIndicatorsReconstruction(indicators, id = iInd)
 }
 }
 \seealso{
-\link{plotIndicatorsReconstruction}
+\code{\link{plotIndicatorsReconstruction}}
 }
 \author{
 Quentin Grimonprez

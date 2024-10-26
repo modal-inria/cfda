@@ -39,7 +39,7 @@ d_JK2 <- cut_data(d_JK, 10)
 estimate_pt(d_JK2)
 }
 \seealso{
-\link{plot.pt}
+\code{\link{plot.pt}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

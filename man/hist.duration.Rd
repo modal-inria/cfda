@@ -38,7 +38,7 @@ hist(duration) +
   labs(title = "Distribution of the duration")
 }
 \seealso{
-\link{compute_duration}
+\code{\link{compute_duration}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

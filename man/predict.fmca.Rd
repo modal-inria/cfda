@@ -14,7 +14,7 @@
 )
 }
 \arguments{
-\item{object}{output of \link{compute_optimal_encoding} function.}
+\item{object}{output of \code{\link{compute_optimal_encoding}} function.}
 
 \item{newdata}{data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
 \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax

@@ -19,7 +19,7 @@
 #'
 #' # compute time spent by each id in each state
 #' timeSpent <- compute_time_spent(d_JK2)
-#' @seealso \link{boxplot.timeSpent}
+#' @seealso \code{\link{boxplot.timeSpent}}
 #' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
@@ -91,7 +91,7 @@ compute_time_spent_intern <- function(data, labels) {
 #'   coord_flip() +
 #'   labs(title = "Time spent in each state")
 #' @author Quentin Grimonprez
-#' @seealso \link{compute_time_spent}
+#' @seealso \code{\link{compute_time_spent}}
 #' @family Descriptive statistics
 #'
 #' @export
@@ -132,7 +132,7 @@ boxplot.timeSpent <- function(x, col = NULL, ...) {
 #' duration <- compute_duration(d_JK)
 #'
 #' hist(duration)
-#' @seealso \link{hist.duration}
+#' @seealso \code{\link{hist.duration}}
 #' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
@@ -175,7 +175,7 @@ compute_duration <- function(data) {
 #' hist(duration) +
 #'   labs(title = "Distribution of the duration")
 #' @author Quentin Grimonprez
-#' @seealso \link{compute_duration}
+#' @seealso \code{\link{compute_duration}}
 #' @family Descriptive statistics
 #'
 #' @export
@@ -287,7 +287,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 #' # estimate probabilities
 #' estimate_pt(d_JK2)
 #' @author Cristian Preda, Quentin Grimonprez
-#' @seealso \link{plot.pt}
+#' @seealso \code{\link{plot.pt}}
 #' @family Descriptive statistics
 #'
 #' @export
@@ -332,7 +332,7 @@ estimate_pt <- function(data, NAafterTmax = FALSE, timeValues = NULL) {
 
 # Extract probability to be in each state at a given time
 #
-# @param pt output of \link{estimate_pt} function
+# @param pt output of \code{\link{estimate_pt}} function
 # @param t time value at which the probability is required
 #
 # @return  probability to be in each state at time t
@@ -353,7 +353,7 @@ estimate_pt <- function(data, NAafterTmax = FALSE, timeValues = NULL) {
 # get_proba(pt, 1.5)
 #
 #
-# @seealso \link{estimate_pt}
+# @seealso \code{\link{estimate_pt}}
 #
 # @author Quentin Grimonprez
 #
@@ -405,7 +405,7 @@ get_proba <- function(pt, t) {
 #' plot(pt, ribbon = TRUE)
 #' @author Quentin Grimonprez
 #' @method plot pt
-#' @seealso \link{estimate_pt}
+#' @seealso \code{\link{estimate_pt}}
 #' @family Descriptive statistics
 #'
 #' @export
@@ -518,7 +518,7 @@ plot_pt_ribbon <- function(pt, col = NULL, addBorder = TRUE) {
 #'
 #' # compute the number of jumps
 #' nJump <- compute_number_jumps(d_JK)
-#' @seealso \link{hist.njump}
+#' @seealso \code{\link{hist.njump}}
 #' @family Descriptive statistics
 #' @author Cristian Preda, Quentin Grimonprez
 #'
@@ -578,7 +578,7 @@ compute_number_jumpsIntern <- function(x, countDuplicated = TRUE) {
 #' hist(nJump, fill = "#984EA3") +
 #'   labs(title = "Distribution of the number of jumps")
 #' @author Quentin Grimonprez
-#' @seealso \link{compute_number_jumps}
+#' @seealso \code{\link{compute_number_jumps}}
 #' @family Descriptive statistics
 #'
 #' @export

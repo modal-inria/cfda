@@ -30,7 +30,7 @@ d_JK2 <- cut_data(d_JK, Tmax = 8)
 timeSpent <- compute_time_spent(d_JK2)
 }
 \seealso{
-\link{boxplot.timeSpent}
+\code{\link{boxplot.timeSpent}}
 
 Other Descriptive statistics: 
 \code{\link{boxplot.timeSpent}()},

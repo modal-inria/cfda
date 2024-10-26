@@ -22,7 +22,7 @@
 
 \item{states}{states to plot (default = NULL, it plots all states)}
 
-\item{addCI}{if TRUE, plot confidence interval (only when \code{computeCI = TRUE} in \link{compute_optimal_encoding})}
+\item{addCI}{if TRUE, plot confidence interval (only when \code{computeCI = TRUE} in \code{\link{compute_optimal_encoding}})}
 
 \item{coeff}{the confidence interval is computed with +- coeff * the standard deviation}
 

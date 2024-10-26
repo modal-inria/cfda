@@ -66,7 +66,7 @@ out2 <- convertToCfd(temp,
 )
 }
 \seealso{
-\link{flours}
+\code{\link{flours}}
 
 Other format: 
 \code{\link{cut_data}()},

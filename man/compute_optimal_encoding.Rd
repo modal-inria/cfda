@@ -48,7 +48,7 @@ A list containing:
   \item \code{V} matrix containing the \eqn{V_{(x,i)}}
   \item \code{G} covariance matrix of \code{V}
   \item \code{basisobj} \code{basisobj} input parameter
-  \item \code{pt} output of \link{estimate_pt} function
+  \item \code{pt} output of \code{\link{estimate_pt}} function
   \item \code{bootstrap} Only if \code{computeCI = TRUE}. Output of every bootstrap run
   \item \code{varAlpha} Only if \code{computeCI = TRUE}. Variance of alpha parameters
   \item \code{runTime} Total elapsed time
@@ -110,7 +110,7 @@ Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
 }
 }
 \seealso{
-\link{plot.fmca} \link{print.fmca} \link{summary.fmca} \link{plotComponent} \link{get_encoding}
+\code{link{plot.fmca}} \code{link{print.fmca}} \code{link{summary.fmca}} \code{link{plotComponent}} \code{link{get_encoding}}
 
 Other encoding functions: 
 \code{\link{get_encoding}()},
