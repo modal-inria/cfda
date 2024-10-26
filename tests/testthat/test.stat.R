@@ -427,8 +427,10 @@ test_that("rep_large_ind keeps id order char", {
 })
 
 test_that("rep_large_ind keeps id order factor", {
-  dat <- data.frame(id = factor(rep(c("Flour9", "Flour10"), c(6, 5)), levels = c("Flour10", "Flour9")),
-                    time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5))
+  dat <- data.frame(
+    id = factor(rep(c("Flour9", "Flour10"), c(6, 5)), levels = c("Flour10", "Flour9")),
+    time = c(0:5, 0, 1.5, 2, 3.5, 5), state = c(1:6, 1:5)
+  )
   out <- rep_large_ind(dat)
   expectedOut <- data.frame(
     id = factor(rep(c("Flour9", "Flour10"), c(5, 4)), levels = c("Flour10", "Flour9")),
@@ -473,9 +475,11 @@ test_that("computePosition works", {
 })
 
 test_that("computePosition keeps id orders", {
-  dat <- data.frame(id = rep(c(2, 3, 1, 5, 4), each = 2),
-                    time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)),
-                    state = c(1:2, 2:1, 2:1, 2:1, 1:2))
+  dat <- data.frame(
+    id = rep(c(2, 3, 1, 5, 4), each = 2),
+    time = c(0:1, c(0, 2), c(0, 1), c(0, 3), c(0, 2)),
+    state = c(1:2, 2:1, 2:1, 2:1, 1:2)
+  )
   d <- rep_large_ind(dat)
 
   out <- computePosition(dat, d$id, sort = FALSE)
@@ -581,18 +585,26 @@ test_that("plotData produces an error when nCol is bad", {
   d_JKT <- cut_data(d_JK, Tmax = 10)
 
 
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = -1),
-               regexp = "nCol must be an integer > 0.")
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = "aaa"),
-               regexp = "nCol must be an integer > 0.")
-  expect_error(plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = 1:3),
-               regexp = "nCol must be an integer > 0.")
+  expect_error(
+    plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = -1),
+    regexp = "nCol must be an integer > 0."
+  )
+  expect_error(
+    plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = "aaa"),
+    regexp = "nCol must be an integer > 0."
+  )
+  expect_error(
+    plotData(d_JK, group = rep(1:2, each = 5), addId = FALSE, addBorder = FALSE, sort = FALSE, nCol = 1:3),
+    regexp = "nCol must be an integer > 0."
+  )
 })
 
 test_that("plotData does not produce warnings with factor ids", {
-  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
-                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
-                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  care <- data.frame(
+    id = rep(c(3, 9, 15), c(2, 2, 7)),
+    time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+    state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T")
+  )
   d <- care
   d$id <- as.factor(d$id)
   expect_silent(plotData(d))
@@ -603,9 +615,11 @@ test_that("plotData does not produce warnings with factor ids", {
 })
 
 test_that("plotData does not produce warnings with integer ids", {
-  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
-                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
-                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  care <- data.frame(
+    id = rep(c(3, 9, 15), c(2, 2, 7)),
+    time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+    state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T")
+  )
   d <- care
   expect_silent(plotData(d))
 
@@ -614,9 +628,11 @@ test_that("plotData does not produce warnings with integer ids", {
 })
 
 test_that("plotData does not produce warnings with character ids", {
-  care <- data.frame(id = rep(c(3, 9, 15), c(2, 2, 7)),
-                     time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
-                     state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T"))
+  care <- data.frame(
+    id = rep(c(3, 9, 15), c(2, 2, 7)),
+    time = c(0, 5, 0, 1, 0, 4, 7, 8, 15, 24, 32),
+    state = c("D", "D", "D", "D", "D", "T", "C", "D", "C", "T", "T")
+  )
   d <- care
   d$id <- as.character(d$id)
   expect_silent(plotData(d))

@@ -42,7 +42,6 @@
 #' @export
 generate_Markov <- function(n = 5, K = 2, P = (1 - diag(K)) / (K - 1), lambda = rep(1, K),
                             pi0 = c(1, rep(0, K - 1)), Tmax = 1, labels = NULL) {
-
   check_generate_Markov_parameters(n, K, Tmax, P, lambda, pi0, labels)
 
   d <- data.frame(id = numeric(0), time = numeric(0), state = numeric(0))
@@ -68,12 +67,9 @@ generate_Markov <- function(n = 5, K = 2, P = (1 - diag(K)) / (K - 1), lambda = 
 }
 
 check_generate_Markov_parameters <- function(n, K, Tmax, P, lambda, pi0, labels) {
-  if (any(is.na(n)) || (length(n) != 1) || !is.whole.number(n)) {
-    stop("n must be a positive integer.")
-  }
-  if (any(is.na(K)) || (length(K) != 1) || !is.whole.number(K) || (K <= 1)) {
-    stop("K must be an integer > 1.")
-  }
+  checkInteger(n, minValue = 0, paramName = "n")
+  checkInteger(K, minValue = 1, paramName = "K")
+
   if (any(is.na(Tmax)) || !is.numeric(Tmax) || (length(Tmax) != 1) || (Tmax <= 0)) {
     stop("Tmax must be a positive real.")
   }
@@ -108,11 +104,7 @@ check_generate_Markov_parameters <- function(n, K, Tmax, P, lambda, pi0, labels)
 #'
 #' @export
 generate_2State <- function(n) {
-  ## check parameters
-  if (any(is.na(n)) || (length(n) != 1) || !is.whole.number(n)) {
-    stop("n must be a positive integer.")
-  }
-  ## end check
+  checkInteger(n, minValue = 0, paramName = "n")
 
   temps <- rep(0, 2 * n)
   temps[seq_len(n) * 2] <- runif(n)

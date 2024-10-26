@@ -60,12 +60,14 @@ cut_cfd <- function(data, Tmax, prolongLastState = "all", NAstate = NA, warning 
       return(rbind(data, data.frame(id = data$id[1], state = data$state[l], time = Tmax)))
     } else {
       if (warning) {
-        warning(paste0("id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ",
-                       Tmax, ". Please, add more records or change the Tmax value."))
+        warning(paste0(
+          "id ", data$id[1], " does not end with an absorbing state. Cannot impute the state until time ",
+          Tmax, ". Please, add more records or change the Tmax value."
+        ))
       }
       d <- data
       if (is.factor(d$state)) {
-        levels(d$state) = c(levels(d$state), NAstate)
+        levels(d$state) <- c(levels(d$state), NAstate)
       }
       d$state[l] <- NAstate
       return(rbind(d, data.frame(id = data$id[1], state = NAstate, time = Tmax)))
@@ -178,10 +180,15 @@ remove_duplicated_states.intern <- function(data, keep.last = TRUE) {
 #' @return a data.frame in the cfda format
 #'
 #' @examples
-#' x <- matrix(c("a", "b", "c", "c",
-#'               "c", "a", "a", "a",
-#'               "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
-#'               dimnames = list(NULL, paste0("ind", 1:4)))
+#' x <- matrix(
+#'   c(
+#'     "a", "b", "c", "c",
+#'     "c", "a", "a", "a",
+#'     "b", "c", "a", "b"
+#'   ),
+#'   ncol = 4, byrow = TRUE,
+#'   dimnames = list(NULL, paste0("ind", 1:4))
+#' )
 #' matrixToCfd(x)
 #' @family format
 #' @export
@@ -197,8 +204,8 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
     times <- seq_len(nTimes)
   } else {
     if (!is.numeric(times) || !((is.vector(times) && (length(times) == nTimes)) ||
-                                (is.matrix(times) && (length(times) == nTimes)) ||
-                                (is.matrix(times) && (length(times) == nTimes * nInd)))) {
+      (is.matrix(times) && (length(times) == nTimes)) ||
+      (is.matrix(times) && (length(times) == nTimes * nInd)))) {
       stop(paste0("times must be a numeric vector of length ", nTimes, " or a matrix of length ", nTimes, "x", nInd))
     }
   }
@@ -225,7 +232,7 @@ matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
       labels <- seq_len(ncol(X))
     }
   } else if (!is.vector(labels) || (length(labels) != nInd)) {
-      stop(paste0("labels must be a vector of length ", nInd))
+    stop(paste0("labels must be a vector of length ", nInd))
   }
 
   outData <- data.frame(id = c(), time = c(), state = c())
@@ -260,15 +267,18 @@ fdToCfd <- function(fd, breaks, labels = NULL, include.lowest = FALSE, right = T
     idLabels <- fd$fdnames$reps
   }
   X <- eval.fd(times, fd)
-  return(quantiMatrixToCfd(X, breaks, labels = labels, include.lowest = include.lowest, right = right,
-                          idLabels = idLabels, times = times, byrow = FALSE))
+  return(quantiMatrixToCfd(X, breaks,
+    labels = labels, include.lowest = include.lowest, right = right,
+    idLabels = idLabels, times = times, byrow = FALSE
+  ))
 }
 
 # convert a qualitative matrix to a categorical functional data frame (see convertToCfd)
 quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, right = TRUE,
-                             times = NULL, idLabels = NULL, byrow = FALSE) {
+                              times = NULL, idLabels = NULL, byrow = FALSE) {
   X <- matrix(cut(X, breaks = breaks, labels = labels, right = right, include.lowest = include.lowest),
-              nrow = nrow(X), dimnames = dimnames(X))
+    nrow = nrow(X), dimnames = dimnames(X)
+  )
   if (any(is.na(X))) {
     stop("The conversion has generated NA. Please, correct your breaks.")
   }
@@ -295,19 +305,23 @@ quantiMatrixToCfd <- function(X, breaks, labels = NULL, include.lowest = FALSE, 
 #' @examples
 #' # fd object
 #' data("CanadianWeather")
-#' temp <- CanadianWeather$dailyAv[,, "Temperature.C"]
+#' temp <- CanadianWeather$dailyAv[, , "Temperature.C"]
 #' basis <- create.bspline.basis(c(1, 365), nbasis = 8, norder = 4)
 #' fd <- smooth.basis(1:365, temp, basis)$fd
 #'
 #' # "Very Cold" = [-50:-10), "Cold" = [-10:0), ...
-#' out <- convertToCfd(fd, breaks = c(-50, -10, 0, 10, 20, 50),
-#'                     labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
-#'                     times = 1:365)
+#' out <- convertToCfd(fd,
+#'   breaks = c(-50, -10, 0, 10, 20, 50),
+#'   labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
+#'   times = 1:365
+#' )
 #'
 #' # matrix
-#' out2 <- convertToCfd(temp, breaks = c(-50, -10, 0, 10, 20, 50),
-#'                      labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
-#'                      times = 1:365, byrow = FALSE)
+#' out2 <- convertToCfd(temp,
+#'   breaks = c(-50, -10, 0, 10, 20, 50),
+#'   labels = c("Very Cold", "Cold", "Fresh", "OK", "Hot"),
+#'   times = 1:365, byrow = FALSE
+#' )
 #' @seealso \link{flours}
 #' @family format
 #' @export

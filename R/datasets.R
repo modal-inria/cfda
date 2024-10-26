@@ -148,8 +148,10 @@ NULL
 #' matplot(flours$time, flours$data, col = flours$quality, type = "l", lty = 1)
 #'
 #' # convert to categorical data
-#' flours_cfd <- convertToCfd(flours$data, breaks = c(-Inf, 150, 300, 450, 600, Inf),
-#'                            times = flours$time)
+#' flours_cfd <- convertToCfd(flours$data,
+#'     breaks = c(-Inf, 150, 300, 450, 600, Inf),
+#'     times = flours$time
+#' )
 #'
 #' plotData(flours_cfd, group = flours$quality)
 #'

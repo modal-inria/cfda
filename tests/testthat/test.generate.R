@@ -12,19 +12,19 @@ test_that("generate_Markov returns error", {
 
   expect_error(
     generate_Markov(n = NA, K = K, P = PJK, lambda = lambda_PJK, pi0 = pi0, Tmax = Tmax),
-    "n must be a positive integer."
+    "n must be an integer > 0."
   )
   expect_error(
     generate_Markov(n = NaN, K = K, P = PJK, lambda = lambda_PJK, pi0 = pi0, Tmax = Tmax),
-    "n must be a positive integer."
+    "n must be an integer > 0."
   )
   expect_error(
     generate_Markov(n = 3.5, K = K, P = PJK, lambda = lambda_PJK, pi0 = pi0, Tmax = Tmax),
-    "n must be a positive integer."
+    "n must be an integer > 0."
   )
   expect_error(
     generate_Markov(n = c(3, 2), K = K, P = PJK, lambda = lambda_PJK, pi0 = pi0, Tmax = Tmax),
-    "n must be a positive integer."
+    "n must be an integer > 0."
   )
 
   expect_error(
@@ -202,10 +202,10 @@ test_that("generate_Markov output has the right format with labels", {
 })
 
 test_that("generate_2State returns error", {
-  expect_error(generate_2State(3.5), "n must be a positive integer.")
-  expect_error(generate_2State(c(3, 2)), "n must be a positive integer.")
-  expect_error(generate_2State(NA), "n must be a positive integer.")
-  expect_error(generate_2State(NaN), "n must be a positive integer.")
+  expect_error(generate_2State(3.5), "n must be an integer > 0.")
+  expect_error(generate_2State(c(3, 2)), "n must be an integer > 0.")
+  expect_error(generate_2State(NA), "n must be an integer > 0.")
+  expect_error(generate_2State(NaN), "n must be an integer > 0.")
 })
 
 
