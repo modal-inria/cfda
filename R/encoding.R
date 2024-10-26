@@ -6,7 +6,7 @@
 #' @param data data.frame containing \code{id}, id of the trajectory, \code{time}, time at which a change occurs and
 #' \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
 #' (use \code{\link{cut_data}}).
-#' @param basisobj basis created using the \code{fda} package (cf. \code{\link{create.basis}}).
+#' @param basisobj basis created using the \code{fda} package (cf. \code{\link[fda]{create.basis}}).
 #' @param computeCI if TRUE, perform a bootstrap to estimate the variance of encoding functions coefficients
 #' @param nBootstrap number of bootstrap samples
 #' @param propBootstrap size of bootstrap samples relative to the number of individuals: propBootstrap * number of individuals

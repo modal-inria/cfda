@@ -21,7 +21,7 @@ compute_optimal_encoding(
 \code{state}, associated state. All individuals must begin at the same time T0 and end at the same time Tmax
 (use \code{\link{cut_data}}).}
 
-\item{basisobj}{basis created using the \code{fda} package (cf. \code{\link{create.basis}}).}
+\item{basisobj}{basis created using the \code{fda} package (cf. \code{\link[fda]{create.basis}}).}
 
 \item{computeCI}{if TRUE, perform a bootstrap to estimate the variance of encoding functions coefficients}
 
