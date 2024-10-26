@@ -83,7 +83,7 @@ check_generate_Markov_parameters <- function(n, K, Tmax, P, lambda, pi0, labels)
     stop("pi0 must be a vector of length K of positive real.")
   }
   if (!is.null(labels)) {
-    if (!is.vector(labels) || (length(unique(labels)) != K)) {
+    if (!(is.vector(labels) || is.factor(labels)) || (length(unique(labels)) != K)) {
       stop("labels must be NULL or a vector of length K.")
     }
   }
