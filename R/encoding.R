@@ -159,6 +159,12 @@ compute_optimal_encoding <- function(
     out <- c(fullEncoding, list(V = V, basisobj = basisobj, label = label, pt = pt))
   }
 
+  if (is.complex(out$eigenvalues)) {
+    warning("Eigenvalues contain complex values. Only the real part is returned.")
+    out$eigenvalues <- Re(out$eigenvalues)
+    out$pc <- Re(out$pc)
+  }
+
   class(out) <- "fmca"
   t2 <- proc.time()
 
