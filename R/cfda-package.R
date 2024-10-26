@@ -3,7 +3,7 @@
 #' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot
 #' @importFrom utils head
-#' @importFrom tibble add_column
+#' @importFrom tibble add_column is_tibble
 #'
 #' @title Categorical Functional Data Analysis
 #' @docType package

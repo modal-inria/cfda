@@ -1,7 +1,7 @@
 # Check if the data.frame has the required format
 # @author Quentin Grimonprez
 checkData <- function(data, minSize = 1) {
-  if (!is.data.frame(data)) {
+  if (!is.data.frame(data) && !is_tibble(data)) {
     stop("data must be a data.frame.")
   }
 

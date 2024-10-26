@@ -194,7 +194,7 @@ remove_duplicated_states.intern <- function(data, keep.last = TRUE) {
 #' @export
 matrixToCfd <- function(X, times = NULL, labels = NULL, byrow = FALSE) {
   checkLogical(byrow, "byrow")
-  if (!is.matrix(X) && !is.data.frame(X)) {
+  if (!is.matrix(X) && !is.data.frame(X) && !is_tibble(X)) {
     stop("X must be a matrix or a data.frame")
   }
   nTimes <- ifelse(byrow, ncol(X), nrow(X))
@@ -329,7 +329,7 @@ convertToCfd <- function(x, breaks, labels = NULL, include.lowest = FALSE, right
                          idLabels = NULL, nx = 200, byrow = FALSE) {
   if (inherits(x, "fd")) {
     return(fdToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, nx))
-  } else if (is.matrix(x) || is.data.frame(x)) {
+  } else if (is.matrix(x) || is.data.frame(x) || is_tibble(x)) {
     return(quantiMatrixToCfd(x, breaks, labels, include.lowest, right, times, idLabels = NULL, byrow))
   }
 }
