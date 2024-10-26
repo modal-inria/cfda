@@ -53,7 +53,7 @@ lambda_PJK <- c(1, 1, 1, 1)
 Tmax <- 10
 n <- 100
 
-d_JK <- generate_Markov(n = n, K = 4, P = PJK, lambda = lambda_PJK, Tmax = Tmax, labels = c("A", "C", "G", "T"))
+d_JK <- generate_Markov(n = n, K = 4, P = PJK, lambda = lambda_PJK, Tmax = Tmax, labels = as.factor(c("A", "C", "G", "T")))
 
 head(d_JK, 10)
 ```
@@ -198,12 +198,12 @@ It follows that,
 $$\xi_{t} = \sum_{x\in S}a_{x}(t)\mathbf{1}_{X_t=x}$$
 with $a_x(t) =\mathbb{E}(z|X_t= x), \ \ \forall x \in S$.
 
-For each $x\in S$, the functions $a_x: [0,T_{\max}|\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$.
+For each $x\in S$, the functions $a_x: [0,T_{\max}]\rightarrow \mathbb{R}$ are called *optimal encoding* of the state $x$.
 
 The eigenvalue problem becomes in terms of encodings:
 
 $$\lambda a_x(t) = \sum_{y\in S}\displaystyle\int_{0}^{T_{\max}}\frac{p_{x,y}(t,s)}{p_x(t)}a_y(s)ds, \ \ \ \ \ \forall x \in S, \forall t\in [0,T_{\max}], $$
-where$p_{x,y}(t,s) = \mathbb{P}(X_t=x, X_s=y)$ and $p_x(t)= \mathbb{P}(X_t=x)$.
+where $p_{x,y}(t,s) = \mathbb{P}(X_t=x, X_s=y)$ and $p_x(t)= \mathbb{P}(X_t=x)$.
 
 
 
@@ -215,9 +215,10 @@ The following expansion formula holds (Mercer thm.):
 
 $$p_{x,y}(t,s) = p_x(t)p_y(s)\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)$$
 For $x=y$, one obtains:
-
 $$p_x(t) =\displaystyle\frac{1}{\displaystyle\sum_{i\geq 1}\lambda_{i}a^i_x(t)a^i_y(s)}$$
 
+For the process $X = \{X_t, t\in[0, T]\}$ throughout the indicators $1_x = \{1_x(t), t\in [0, T]\}$:
+$$1_x(t)=\sum_{i\geq 1} z_i a_i^x(t)\frac{1}{p_x(t)}$$
 
 
 We are interested in approximating the encoding functions, $a_x$, by
@@ -246,7 +247,7 @@ F_{(x,i), (y,j)} = \int_{0}^{T_{\max}}\phi_i(t)\phi_{j}(t)\mathbf{1}_x\mathbf{1}
 
 Firstly, a basis of functions must be defined. We choose a B-splines basis of order 4.
 ```{r, echo=TRUE}
-m <- 10
+m <- 20
 basis <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
 ```
 
@@ -263,7 +264,7 @@ The output is a list containing the different elements computed during the proce
 
 The eigenvalues can be computed using:
 ```{r, echo=TRUE}
-plotEigenvalues(fmca, cumulative = TRUE)
+plotEigenvalues(fmca, cumulative = TRUE, normalize = TRUE)
 ```
 
 The first encoding function coefficients $\alpha$'s:
@@ -280,6 +281,9 @@ or extracted as a *fd* object (or matrix):
 encoding <- get_encoding(fmca, fdObject = TRUE)
 ```
 
+Note that the first encoding mainly oppose the G state (in negative values) to other states.
+So, on the first component, individuals with a large negative values will tend to spend time in the G state after time 2.5.
+
 By default, it plots (and returns) the first encoding functions. Other encoding can be accessed with the `harm` argument.
 
 A confidence interval can be plotted using the `addCI` argument:
@@ -290,5 +294,32 @@ plot(fmca, addCI = TRUE, coeff = 2, states = "A")
 
 Plot the two first components:
 ```{r, echo=TRUE}
-plotComponent(fmca, comp = c(1, 2), addNames = FALSE)
+plotComponent(fmca, comp = c(1, 2), addNames = TRUE)
 ```
+
+We can see that the individuals 3 and 14 have extreme ngative values for the first component and are opposed to 67 and 84.
+By plotting them, we can check the statement made on the first component meaning.
+```{r, echo=TRUE}
+plotData(d_JKT[d_JKT$id %in% c(3, 14, 67, 84), ])
+```
+
+
+The components can be used for some other tasks such as clustering, predicting,...
+
+#### Reconstruct indicators
+
+With the encodings, the indicators can be reconstructed as follows:
+```{r, echo=TRUE}
+indicators <- reconstructIndicators(fmca)
+head(indicators)
+```
+
+
+```{r, echo=TRUE}
+iInd <- 3
+plotData(d_JKT[d_JKT$id == iInd, ])
+plotIndicatorsReconstruction(indicators, id = iInd)
+```
+
+We see that the reconstructed indicators gives the same inforamtion as the true ones.
+Using more basis functions for computing encoding or other basis can improve the approximation.
