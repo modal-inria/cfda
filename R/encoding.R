@@ -570,7 +570,7 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
     cat(paste0("---- Compute encoding: "))
   }
 
-  G <- cov(V)
+  G <- cov(V) * (nrow(V) - 1) / nrow(V)
 
   # create F matrix
   Fval <- colMeans(Uval)

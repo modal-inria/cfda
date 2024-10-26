@@ -64,7 +64,7 @@ oldcompute_optimal_encoding <- function(data, basisobj, nCores = max(1, ceiling(
   # on construit les variables V_ij = int(0,T){phi_j(t)*1_X(t)=i} dt
   V <- do.call(rbind, pblapply(cl = cl, split(data, data$id), cfda:::compute_Vxi, phi = phi, K = K))
   rownames(V) <- NULL
-  G <- cov(V)
+  G <- cov(V) * (nrow(V) - 1) / nrow(V)
   t3 <- proc.time()
 
   if (verbose) {
