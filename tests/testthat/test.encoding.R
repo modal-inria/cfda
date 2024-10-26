@@ -427,6 +427,14 @@ test_that("print.cfda does not produce warnings/errors", {
   expect_error(print(fmca), regexp = NA)
 })
 
+test_that("compute_optimal_encoding works with tibble", {
+  skip_on_cran()
+  expect_silent(encoding <- compute_optimal_encoding(
+    tibble(dT[dT$id <= 10, ]), b,
+    computeCI = FALSE, nCores = 1, verbose = FALSE
+  ))
+})
+
 test_that("compute_optimal_encoding works verbose", {
   skip_on_cran()
   expect_output(encoding <- compute_optimal_encoding(dT[dT$id <= 10, ], b, computeCI = FALSE, nCores = 1, verbose = TRUE))
