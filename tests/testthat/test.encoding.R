@@ -126,11 +126,12 @@ oldcompute_Uxij <- function(x, phi, K) {
           if (u < nrow(x)) {
             ind <- (state - 1) * nBasis * nBasis + (i - 1) * nBasis + j
             aux[ind] <- aux[ind] +
-              integrate(function(t) {
-                eval.fd(t, phi[i]) * eval.fd(t, phi[j])
-              },
-              lower = x$time[u], upper = x$time[u + 1],
-              stop.on.error = FALSE
+              integrate(
+                function(t) {
+                  eval.fd(t, phi[i]) * eval.fd(t, phi[j])
+                },
+                lower = x$time[u], upper = x$time[u + 1],
+                stop.on.error = FALSE
               )$value
           }
         }
@@ -273,13 +274,17 @@ test_that("computeVmatrix keeps the id order", {
   all_dat_P3S3 <- data.frame(state = c(3, 1, 1), time = c(0, 0.6, 1), id = rep("P3S3", 3))
 
   # Original dataset
-  all_dat_a <- rbind(all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
-                     all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
-                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3)
+  all_dat_a <- rbind(
+    all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
+    all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+    all_dat_P3S1, all_dat_P3S2, all_dat_P3S3
+  )
 
-  all_dat_b <- rbind(all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
-                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
-                     all_dat_P1S1, all_dat_P1S2, all_dat_P1S3)
+  all_dat_b <- rbind(
+    all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+    all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
+    all_dat_P1S1, all_dat_P1S2, all_dat_P1S3
+  )
   uniqueIdA <- unique(all_dat_a$id)
   uniqueIdB <- unique(all_dat_b$id)
 
@@ -307,13 +312,17 @@ test_that("computeUmatrix keeps the id order", {
   all_dat_P3S3 <- data.frame(state = c(3, 1, 1), time = c(0, 0.6, 1), id = rep("P3S3", 3))
 
   # Original dataset
-  all_dat_a <- rbind(all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
-                     all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
-                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3)
+  all_dat_a <- rbind(
+    all_dat_P1S1, all_dat_P1S2, all_dat_P1S3,
+    all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+    all_dat_P3S1, all_dat_P3S2, all_dat_P3S3
+  )
 
-  all_dat_b <- rbind(all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
-                     all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
-                     all_dat_P1S1, all_dat_P1S2, all_dat_P1S3)
+  all_dat_b <- rbind(
+    all_dat_P2S1, all_dat_P2S2, all_dat_P2S3,
+    all_dat_P3S1, all_dat_P3S2, all_dat_P3S3,
+    all_dat_P1S1, all_dat_P1S2, all_dat_P1S3
+  )
   uniqueIdA <- unique(all_dat_a$id)
   uniqueIdB <- unique(all_dat_b$id)
 
@@ -428,7 +437,8 @@ test_that("compute_optimal_encoding throws a warning when the basis is not well 
   data_msm <- data.frame(id = rep(1:2, each = 3), time = c(0, 3, 5, 0, 4, 5), state = c(1, 2, 2, 1, 2, 2))
   b <- create.bspline.basis(c(0, 5), nbasis = 3, norder = 2)
 
-  expect_warning({
+  expect_warning(
+    {
       fmca <- compute_optimal_encoding(data_msm, b, computeCI = FALSE, nCores = 1)
     },
     regexp = paste(
@@ -456,10 +466,10 @@ test_that("get_encoding throws error", {
   expect_error(get_encoding(fmca, harm = 10), regexp = "harm must be an integer between 1 and the number of components.")
 
 
-  expect_error(get_encoding(fmca, harm = 1, nx = 0), regexp = "nx must be a positive integer.")
-  expect_error(get_encoding(fmca, harm = 1, nx = c(3, 2)), regexp = "nx must be a positive integer.")
-  expect_error(get_encoding(fmca, harm = 1, nx = NA), regexp = "nx must be a positive integer.")
-  expect_error(get_encoding(fmca, harm = 1, nx = NaN), regexp = "nx must be a positive integer.")
+  expect_error(get_encoding(fmca, harm = 1, nx = 0), regexp = "nx must be an integer > 0.")
+  expect_error(get_encoding(fmca, harm = 1, nx = c(3, 2)), regexp = "nx must be an integer > 0.")
+  expect_error(get_encoding(fmca, harm = 1, nx = NA), regexp = "nx must be an integer > 0.")
+  expect_error(get_encoding(fmca, harm = 1, nx = NaN), regexp = "nx must be an integer > 0.")
 })
 
 

@@ -1,4 +1,4 @@
-#' @import diagram fda ggplot2 msm mgcv pbapply dplyr
+#' @import diagram fda ggplot2 msm mgcv pbapply dplyr tidyr
 #' @importFrom parallel detectCores makeCluster stopCluster
 #' @importFrom stats cov integrate rexp runif var
 #' @importFrom graphics boxplot

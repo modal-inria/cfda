@@ -1,4 +1,3 @@
-
 #' Estimate transition matrix and spent time
 #'
 #' Calculates crude initial values for transition intensities by assuming that the data represent the exact transition
@@ -79,9 +78,10 @@ estimateT <- function(data) {
 # @param aux output of statetable.msm
 # @author Cristian Preda
 completeStatetable <- function(aux) {
-
-  aux1 <- matrix(0, nrow = length(colnames(aux)), ncol = length(colnames(aux)),
-                 dimnames = list(colnames(aux), colnames(aux)))
+  aux1 <- matrix(0,
+    nrow = length(colnames(aux)), ncol = length(colnames(aux)),
+    dimnames = list(colnames(aux), colnames(aux))
+  )
 
   aux1[match(rownames(aux), colnames(aux)), ] <- aux
 

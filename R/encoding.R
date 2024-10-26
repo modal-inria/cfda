@@ -185,9 +185,8 @@ check_compute_optimal_encoding_parameters <- function(data, basisobj, nCores, ve
   checkLogical(verbose, "verbose")
   checkLogical(computeCI, "computeCI")
   if (computeCI) {
-    if (any(is.na(nBootstrap)) || (length(nBootstrap) != 1) || !is.whole.number(nBootstrap) || (nBootstrap < 1)) {
-      stop("nBootstrap must be an integer > 0.")
-    }
+    checkInteger(nBootstrap, minValue = 0, minEqual = FALSE, paramName = "nBootstrap")
+
     if (any(is.na(propBootstrap)) || !is.numeric(propBootstrap) || (length(propBootstrap) != 1) || (propBootstrap > 1) || (
       propBootstrap <= 0)) {
       stop("propBootstrap must be a real between 0 and 1.")

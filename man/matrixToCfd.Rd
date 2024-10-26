@@ -22,10 +22,15 @@ a data.frame in the cfda format
 Convert a matrix to a cfda data.frame
 }
 \examples{
-x <- matrix(c("a", "b", "c", "c",
-              "c", "a", "a", "a",
-              "b", "c", "a", "b"), ncol = 4, byrow = TRUE,
-              dimnames = list(NULL, paste0("ind", 1:4)))
+x <- matrix(
+  c(
+    "a", "b", "c", "c",
+    "c", "a", "a", "a",
+    "b", "c", "a", "b"
+  ),
+  ncol = 4, byrow = TRUE,
+  dimnames = list(NULL, paste0("ind", 1:4))
+)
 matrixToCfd(x)
 }
 \seealso{

@@ -294,6 +294,7 @@ id_get_state <- function(x, t, NAafterTmax = FALSE) {
 estimate_pt <- function(data, NAafterTmax = FALSE, timeValues = NULL) {
   ## check parameters
   checkData(data)
+  checkLogical(NAafterTmax, paramName = "NAafterTmax")
   ## end check
 
   t_jumps <- timeValues
@@ -624,6 +625,7 @@ hist.njump <- function(x, breaks = NULL, ...) {
 statetable <- function(data, removeDiagonal = FALSE) {
   ## check parameters
   checkData(data)
+  checkLogical(removeDiagonal, "removeDiagonal")
   ## end check
 
   newState <- stateToInteger(data$state)

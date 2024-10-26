@@ -167,7 +167,8 @@ test_that("compute_optimal_encoding works with computeCI = TRUE", {
   b <- create.bspline.basis(c(0, Tmax), nbasis = m, norder = 4)
   expect_silent(
     fmca <- compute_optimal_encoding(
-      dT, b, computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE
+      dT, b,
+      computeCI = TRUE, nBootstrap = 50, propBootstrap = 0.5, nCores = 1, verbose = FALSE
     )
   )
 

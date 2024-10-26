@@ -50,11 +50,9 @@ plotData <- function(data, group = NULL, col = NULL, addId = TRUE, addBorder = T
   checkLogical(addId, "addId")
   checkLogical(addBorder, "addBorder")
   checkLogical(sort, "sort")
+  checkInteger(nCol, minValue = 0, acceptNULL = TRUE, paramName = "nCol")
   if (!is.null(group) && ((!is.vector(group) && !is.factor(group)) || (length(group) != length(unique(data$id))))) {
     stop("group must be a vector with the same length than the number of ids of data.")
-  }
-  if (!is.null(nCol) && (!is.numeric(nCol) || (length(nCol) != 1) || !is.whole.number(nCol) || (nCol < 1))) {
-    stop("nCol must be an integer > 0.")
   }
   ## end check
 
@@ -237,6 +235,7 @@ createLabeller <- function(group) {
 #' @export
 summary_cfd <- function(data, max.print = 10) {
   checkData(data)
+  checkInteger(max.print, minValue = 0, paramName = "max.print")
 
   nIndiv <- length(unique(data$id))
   if (is.factor(data$state)) {

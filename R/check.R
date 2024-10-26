@@ -67,16 +67,17 @@ checkDataNoDuplicatedTimes <- function(data) {
 # Check if the given parameter is a single boolean
 # @author Quentin Grimonprez
 checkLogical <- function(x, paramName) {
+  errorMessage <- paste0(paramName, " must be either TRUE or FALSE.")
   if (length(x) != 1) {
-    stop(paste0(paramName, " must be either TRUE or FALSE."))
+    stop(errorMessage)
   }
 
   if (is.na(x)) {
-    stop(paste0(paramName, " must be either TRUE or FALSE."))
+    stop(errorMessage)
   }
 
   if (!is.logical(x)) {
-    stop(paste0(paramName, " must be either TRUE or FALSE."))
+    stop(errorMessage)
   }
 
   invisible(NULL)
@@ -85,5 +86,52 @@ checkLogical <- function(x, paramName) {
 # Check if it is an integer (or vector of integer)
 # @author Quentin Grimonprez
 is.whole.number <- function(x) {
-  x == as.integer(x)
+  is.numeric(x) & (x == as.integer(x))
+}
+
+checkInteger <- function(
+    x, minValue = -Inf, maxValue = +Inf, acceptNULL = FALSE, minEqual = FALSE, maxEqual = FALSE,
+    paramName = "x", customMessage = NULL) {
+  errorMessage <- paste(paramName, "must be an integer")
+  addAnd <- FALSE
+  if (minValue > -Inf) {
+    errorMessage <- paste(errorMessage, ifelse(minEqual, ">=", ">"), minValue)
+    addAnd <- TRUE
+  }
+  if (maxValue < +Inf) {
+    if (addAnd) {
+      errorMessage <- paste(errorMessage, "and")
+    }
+    errorMessage <- paste(errorMessage, ifelse(minEqual, "<=", "<"), maxValue)
+  }
+  errorMessage <- paste0(errorMessage, ".")
+
+  is_not_integer <- any(is.na(x)) || (length(x) != 1) || !is.numeric(x) || !is.whole.number(x)
+  if (minEqual) {
+    is_not_integer <- is_not_integer || (x < minValue)
+  } else {
+    is_not_integer <- is_not_integer || (x <= minValue)
+  }
+  if (maxEqual) {
+    is_not_integer <- is_not_integer || (x > maxValue)
+  } else {
+    is_not_integer <- is_not_integer || (x >= maxValue)
+  }
+
+  if (acceptNULL) {
+    is_not_integer <- !is.null(x) && is_not_integer
+  } else {
+    is_not_integer <- is.null(x) || is_not_integer
+  }
+
+  if (is_not_integer) {
+    stop(ifelse(is.null(customMessage), errorMessage, customMessage))
+  }
+}
+
+
+checkFmca <- function(x, paramName = "x") {
+  if (!inherits(x, "fmca")) {
+    stop(paste0(paramName, " must be a fmca object."))
+  }
 }

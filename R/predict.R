@@ -50,9 +50,8 @@
 #' @author Quentin Grimonprez
 #' @export
 predict.fmca <- function(
-  object, newdata = NULL, method = c("precompute", "parallel"), verbose = TRUE,
-  nCores = max(1, ceiling(detectCores() / 2)), ...
-  ) {
+    object, newdata = NULL, method = c("precompute", "parallel"), verbose = TRUE,
+    nCores = max(1, ceiling(detectCores() / 2)), ...) {
   if (is.null(newdata)) {
     return(object$pc)
   }
@@ -60,9 +59,7 @@ predict.fmca <- function(
   ## check parameters
   checkData(newdata)
   checkLogical(verbose, "verbose")
-  if (any(is.na(nCores)) || !is.whole.number(nCores) || (nCores < 1)) {
-    stop("nCores must be an integer > 0.")
-  }
+  checkInteger(nCores, minValue = 0, paramName = "nCores")
   method <- match.arg(method)
   ##
 

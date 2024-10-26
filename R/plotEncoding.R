@@ -181,20 +181,15 @@ plotEncoding <- function(fdmat, states = NULL, harm = 1, col = NULL) {
 #' @export
 get_encoding <- function(x, harm = 1, fdObject = FALSE, nx = NULL) {
   ## check parameters
-  if (!inherits(x, "fmca")) {
-    stop("x must be a fmca object.")
-  }
+  checkFmca(x)
   checkLogical(fdObject, "fdObject")
-  if (!is.null(nx)) {
-    if (any(is.na(nx)) || (length(nx) > 1) || !is.whole.number(nx) || (nx <= 0)) {
-      stop("nx must be a positive integer.")
-    }
-  }
-  if (any(is.na(harm)) || (length(harm) > 1) || !is.whole.number(harm) || (harm < 1) || (harm > length(x$alpha))) {
-    stop("harm must be an integer between 1 and the number of components.")
-  }
+  checkInteger(nx, minValue = 0, acceptNULL = TRUE, paramName = "nx")
+  checkInteger(
+    harm,
+    minValue = 1, maxValue = length(x$alpha), minEqual = TRUE, maxEqual = TRUE,
+    customMessage = "harm must be an integer between 1 and the number of components."
+  )
   ##
-
 
   alpha <- x$alpha[[harm]]
 
@@ -275,9 +270,7 @@ removeTimeAssociatedWithNACoeff <- function(fdmat, timeVal, pt) {
 #' @export
 plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nudge_y = 0.1, size = 4, ...) {
   ## check parameters
-  if (!inherits(x, "fmca")) {
-    stop("x must be a fmca object.")
-  }
+  checkFmca(x)
   checkLogical(addNames, "addNames")
   if (length(comp) != 2) {
     stop("comp must be a vector of positive integers of length 2.")
@@ -341,9 +334,7 @@ plotComponent <- function(x, comp = c(1, 2), addNames = TRUE, nudge_x = 0.1, nud
 #' @export
 plotEigenvalues <- function(x, cumulative = FALSE, normalize = FALSE, ...) {
   ## check parameters
-  if (!inherits(x, "fmca")) {
-    stop("x must be a fmca object.")
-  }
+  checkFmca(x)
   checkLogical(cumulative, "cumulative")
   checkLogical(normalize, "normalize")
   ##
