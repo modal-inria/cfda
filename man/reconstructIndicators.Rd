@@ -8,7 +8,7 @@ reconstructIndicators(
   x,
   nComp = NULL,
   timeValues = NULL,
-  propMinEigenvalues = 1e-06
+  propMinEigenvalues = 1e-04
 )
 }
 \arguments{
@@ -21,11 +21,13 @@ reconstructIndicators(
 \item{propMinEigenvalues}{Only if nComp = NULL. Minimal proportion used to estimate the number of non-null eigenvalues}
 }
 \value{
-a data.frame with columns: time, id, state1, ..., stateK
+a data.frame with columns: time, id, state1, ..., stateK, state.
+state1 contains the estimated indicator values for the first state.
+state contains the state with the maximum values of all indicators
 }
 \description{
 The reconstruction formula is:
-\deqn{1^{x}(t) = p^x(t) ( 1 + \sum_{i\geq 1} z_i^{kx}*a_i^x(t)})
+\deqn{1^{x}(t) = p^x(t) ( 1 + \sum_{i\geq 1} z_i*a_i^x(t)})
 
 with \eqn{z_i}, the i-th principal component,
 encoding \eqn{a_i^x = \sum_j \alpha_{(x, j)} * \phi_j(t)}
@@ -53,6 +55,10 @@ iInd <- 3
 plotData(d_JK2[d_JK2$id == iInd, ])
 
 plotIndicatorsReconstruction(indicators, id = iInd)
+
+# the column state contains the state associated with the greatest indicator.
+# So, the output can be used with plotData function
+plotData(remove_duplicated_states(indicators[indicators$id == iInd, ]))
 }
 }
 \seealso{
