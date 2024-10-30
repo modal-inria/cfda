@@ -39,8 +39,11 @@ iInd <- 3
 plotData(d_JK2[d_JK2$id == iInd, ])
 
 plotIndicatorsReconstruction(indicators, id = iInd)
-}
 
+# the column state contains the state associated with the greatest indicator.
+# So, the output can be used with plotData function
+plotData(remove_duplicated_states(indicators[indicators$id == iInd, ]))
+}
 }
 \seealso{
 \code{\link{reconstructIndicators}}
