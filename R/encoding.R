@@ -636,7 +636,7 @@ computeEncoding <- function(Uval, V, K, nBasis, uniqueId, label, verbose, manage
   # The first matrix is the first eigenvector. This vector (1rst column in res$vectors) contains the coefficients of the
   # encoding for the state 1 in the first m (=nBasis) positions, then for the state 2 in the m next positions and so on
   # until the k-th state.
-  # I put this first column as and matrix and the coefficientsare column of length m
+  # I put this first column as and matrix and the coefficients are column of length m
 
   # transform the matrix of eigenvectors as a list
 

@@ -99,7 +99,7 @@ reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEig
       df[[paste0("state", x$label$label[i])]] <- yy[, i]
     }
     allDf[[iInd]] <- df
-    allDf[[iInd]]$state <- x$label$label[apply(allDf[[iInd]][paste0("state", x$label$label)], 1, which.max)]
+    allDf[[iInd]]$state <- x$label$label[apply(allDf[[iInd]][x$label$label], 1, which.max)]
   }
 
   return(do.call(rbind, allDf))
@@ -110,6 +110,7 @@ reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEig
 #'
 #' @param reconstruction output of \code{\link{reconstructIndicators}}
 #' @param id id of the individual to plot. \code{id} must be in \code{reconstruction$id}
+#' @param states states to plot, by default all states are plotted
 #'
 #' @return ggplot
 #'
@@ -118,10 +119,12 @@ reconstructIndicators <- function(x, nComp = NULL, timeValues = NULL, propMinEig
 #' @author Quentin Grimonprez
 #' @seealso \code{\link{reconstructIndicators}}
 #' @export
-plotIndicatorsReconstruction <- function(reconstruction, id) {
-  x <- reconstruction[reconstruction$id == id, ]
-  x$id <- NULL
-  x$state <- NULL
+plotIndicatorsReconstruction <- function(reconstruction, id, states = NULL) {
+  x <- as_tibble(reconstruction) %>% filter(.data$id == !!id)
+  x <- x %>% select(-.data$id, -.data$state)
+  if (!is.null(states)) {
+    x <- x %>% select(all_of(c("time", states)))
+  }
 
   p <- ggplot(
     data = pivot_longer(x, cols = -1, values_to = "probability", names_to = "state"),
@@ -150,4 +153,21 @@ invProba <- function(x, nComp = NULL) {
   }
 
   return(denominator)
+}
+
+
+
+pxy <- function(x, i, j, t, s) {
+  nComp <- sum(x$eigenvalues / sum(x$eigenvalues) > 1e-6)
+
+  p <- invProba(x, nComp)
+
+  a <- 0
+  for (ii in seq_len(nComp)) {
+    a <- a + eval.fd(
+      fda::fd(x$alpha[[ii]], x$basisobj), t
+    ) * eval.fd(fda::fd(x$alpha[[ii]][j, ], x$basisobj), s) * x$eigenvalues[ii]
+  }
+
+  return(1 / eval.fd(p, t)[i] * 1 / eval.fd(p, s)[j] * a)
 }

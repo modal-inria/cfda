@@ -4,12 +4,14 @@
 \alias{plotIndicatorsReconstruction}
 \title{Plot reconstructed indicators}
 \usage{
-plotIndicatorsReconstruction(reconstruction, id)
+plotIndicatorsReconstruction(reconstruction, id, states = NULL)
 }
 \arguments{
 \item{reconstruction}{output of \code{\link{reconstructIndicators}}}
 
 \item{id}{id of the individual to plot. \code{id} must be in \code{reconstruction$id}}
+
+\item{states}{states to plot, by default all states are plotted}
 }
 \value{
 ggplot
