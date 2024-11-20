@@ -1,3 +1,13 @@
+v0.12.0 2024-11-20
+- add function to reconstruct indicators using encoding
+- use ML estimator of covariance (/n instead of n-1)
+- take real part when there are complex value
+- add timeValues parameter to estimate_pt
+- plotData can plot 1 individual
+- Some functions accept tibble
+- add a missing progressbar
+- remove deprecated aes_string
+
 v0.11.0 2023-10-07
 - New computation method for U and V matrices
 
