@@ -124,6 +124,7 @@ compute_optimal_encoding <- function(
     cat(paste0("Basis type: ", basisobj$type, "\n"))
     cat(paste0("Number of basis functions: ", nBasis, "\n"))
     cat(paste0("Number of cores: ", nCores, "\n"))
+    cat(paste0("Method: ", method, "\n"))
   }
 
   if (method == "precompute") {
