@@ -7,12 +7,18 @@ on:
       - "CITATION.cff"
       - "README.md"
       - ".gitignore"
+      - ".github/workflows/pkgdown.yaml"
+      - ".github/workflows/publish-release.yaml"
+      - "_pkgdown.yml"
   pull_request:
     branches: [main, master]
     paths-ignore:
       - "CITATION.cff"
       - "README.md"
       - ".gitignore"
+      - ".github/workflows/pkgdown.yaml"
+      - ".github/workflows/publish-release.yaml"
+      - "_pkgdown.yml"
 
 name: R-CMD-check
 
