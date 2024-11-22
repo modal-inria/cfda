@@ -1,13 +1,12 @@
 # cfda: Categorical Functional Data Analysis
 
-[![R-CMD-check](https://github.com/modal-inria/cfda/workflows/R-CMD-check/badge.svg?branch=master)](https://github.com/modal-inria/cfda/actions) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda) 
+[![R-CMD-check](https://github.com/modal-inria/cfda/actions/workflows/R-CMD-check.yaml/badge.svg?branch=master)](https://github.com/modal-inria/cfda/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/modal-inria/cfda/branch/master/graphs/badge.svg)](https://codecov.io/gh/modal-inria/cfda)
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/cfda)](https://cran.r-project.org/package=cfda) [![Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/cfda?color=blue)](http://cranlogs.r-pkg.org/badges/grand-total/cfda) [![Downloads](https://cranlogs.r-pkg.org/badges/cfda)](https://cran.rstudio.com/web/packages/cfda/index.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/cfda)](https://CRAN.R-project.org/package=cfda) [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/cfda?color=blue)](https://cranlogs.r-pkg.org/badges/grand-total/cfda) [![Downloads](https://cranlogs.r-pkg.org/badges/cfda)](https://cran.rstudio.com/web/packages/cfda/index.html)
 
-**cfda** provides functions for the analysis of categorical functional data. 
+**cfda** provides functions for the analysis of categorical functional data.
 
 The main contribution is the computation of an optimal encoding (real functional variable) of each state of the categorical functional data.
-
 
 ## Installation
 
@@ -38,11 +37,9 @@ RShowDoc("cfda", package = "cfda")
 
 Copyright Inria - Université de Lille
 
-
 ## Citation
 
 Preda C, Grimonprez Q, Vandewalle V. Categorical Functional Data Analysis. The cfda R Package. Mathematics. 2021; 9(23):3074. https://doi.org/10.3390/math9233074
-
 
 ``` bibtex
 @Article{,
