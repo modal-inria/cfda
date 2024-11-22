@@ -44,8 +44,8 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          name: CRAN ${{ github.ref }}
+          tag_name: ${{ github.ref_name }}
+          name: CRAN ${{ github.ref_name }}
           draft: false
           prerelease: false
           files: '["../cfda_*"]'
